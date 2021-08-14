@@ -1,0 +1,138 @@
+http://localhost/project/
+https://devbanban.com/?p=710
+
+
+create table tbl_staff
+(
+	StaffId int not null AUTO_INCREMENT,
+	StaffName varchar(255),
+	StaffPassword varchar(255),
+	StaffTel varchar(255),
+	StaffEmail varchar(255),
+	DepartId int,
+	Primary key (StaffId),
+	Foreign key (DepartId) REFERENCES tbl_department(DepartId)
+)
+
+create table tbl_department
+(
+	DepartId int not null AUTO_INCREMENT,
+	DepartName varchar(255),
+	Primary key (DepartId)
+)
+
+create table tbl_med
+(
+	MedId int not null AUTO_INCREMENT,
+	MedName varchar(255),
+	MedCate varchar(255),
+	MedVolumn varchar(255),
+	MedUnit varchar(255),
+	MedPack varchar(255),
+	MedPrice varchar(255),
+	MedStatus varchar(255),
+	MedTotal int,
+	MedPath varchar(255),
+	Primary key (MedId)
+	
+)
+
+
+create table tbl_order
+(
+	OrderId int not null Auto_Increment,
+	OrderDate varchar(255),
+	OrderStatus varchar(255),
+	OrderPrice int,
+	OrderTotal int,
+	DealerId int,
+	StaffName varchar(255),
+	Primary key (OrderId),
+	Foreign key (DealerId) REFERENCES tbl_dealer(DealerId)
+)
+
+create table tbl_orderdetail
+(
+	OrderId int,
+	MedId int,
+	Qty int,
+	Price int,
+	Foreign key (OrderId) REFERENCES tbl_order(OrderId),
+	Foreign key (MedId) REFERENCES tbl_med(MedId)		
+)
+
+create table tbl_received
+(
+	RecId int not null Auto_Increment,
+	OrderId  int not null,
+	MedId int not null,
+	RecName varchar(255),
+	RecTime varchar(255),
+	RecDeli varchar(255),
+	Qty int,
+	MfdDate varchar(255),
+	ExpDate varchar(255),
+	Primary key (RecId),
+	Foreign key (OrderId) REFERENCES tbl_order(OrderId)	
+)
+
+create table tbl_lot
+(
+	LotId int not null Auto_Increment,
+	RecId int not null,
+	Qty int,
+	LotStatus varchar(255),
+	Primary key (LotId),
+	Foreign key (RecId) REFERENCES tbl_received(RecId)
+)
+
+
+create table tbl_withdraw
+(
+	WithdrawId int not null Auto_Increment,
+	LotId int not null,
+	MedId int not null,
+	StaffId int,
+	Qty int,
+	WithDate varchar(255),
+	Primary key (WithdrawId),
+	Foreign key (StaffId) REFERENCES tbl_staff(StaffId),
+	Foreign key (MedId) REFERENCES tbl_med(MedId),
+	Foreign key (LotId) REFERENCES tbl_lot(LotId)		
+)
+
+create table tbl_writeoff
+(
+	WriteId int not null Auto_Increment,
+	LotId int not null,
+	MedId int not null,
+	StaffId int not null,
+	Qty int,
+	WriteDate varchar(255),
+	Primary key (WriteId),
+	Foreign key (LotId) REFERENCES tbl_lot(LotId),
+	Foreign key (MedId) REFERENCES tbl_med(MedId),
+	Foreign key (StaffId) REFERENCES tbl_staff(StaffId)
+) 
+
+create table  tbl_claim
+(
+	ClaimId int not null Auto_Increment,
+	LotId int not null,
+	StaffId int not null,
+	DealerId int not null,
+	MedId int not null,
+	Qty int,
+	Reason varchar(255),
+	ClaimDate varchar(255),
+	Primary key(ClaimId),
+	Foreign key (LotId) REFERENCES tbl_lot(LotId),
+	Foreign key (StaffId) REFERENCES tbl_staff(StaffId),
+	Foreign key (DealerId) REFERENCES tbl_dealer(DealerId),
+	Foreign key (MedId) REFERENCES tbl_med(MedId)
+)
+
+
+
+	
+

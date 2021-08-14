@@ -1,0 +1,102 @@
+SELECT tbl_order.OrderId,tbl_order.OrderDate,tbl_order.OrderVat,tbl_order.OrderPrice,tbl_order.OrderStatus,tbl_staff.StaffName,tbl_dealer.DealerName,tbl_dealer.DealerAddress
+FROM tbl_order
+INNER JOIN tbl_staff ON tbl_order.StaffId = tbl_staff.StaffId
+INNER JOIN tbl_dealer ON tbl_order.DealerId = tbl_dealer.DealerId;
+
+
+
+SELECT tbl_orderdetail.OrderId,tbl_orderdetail.MedId,tbl_orderdetail.QTY,tbl_orderdetail.Orderprice,tbl_order.OrderDate,tbl_order.OrderStatus,tbl_order.DealerId,tbl_order.StaffId,tbl_med.MedName
+FROM tbl_orderdetail
+INNER JOIN tbl_order ON tbl_orderdetail.OrderId = tbl_order.OrderId
+INNER JOIN tbl_med ON tbl_orderdetail.MedId = tbl_med.MedId;
+create table  tbl_orderdetail
+
+
+<input type="number" id="quantity" name="qtyPack" min="1" max="999" value="0">QTY/Pack 
+
+<label class="col-sm-3 control-label" for="start">Date Order</label>  
+                                        <input type="date"  name="Orderdate"
+                                            value="3-22-2021"
+                                            min="2021-3-22" max="2030-12-31"> <br>
+
+
+
+SELECT tbl_order.OrderId,tbl_order.OrderDate,tbl_order.OrderVat,tbl_order.OrderPrice,tbl_order.OrderStatus,tbl_staff.StaffName,tbl_dealer.DealerName,tbl_dealer.DealerAddress
+FROM tbl_order
+INNER JOIN tbl_staff ON tbl_order.StaffId = tbl_staff.StaffId
+INNER JOIN tbl_dealer ON tbl_order.DealerId = tbl_dealer.DealerId;
+
+
+
+$sql = "SELECT * FROM tbl_received";
+        $result = $conn->query($sql);
+        $data = array();
+        $i = 0;
+        while($row = $result->fetch_assoc())
+        {
+            
+            $expired = $row["ExpDate"];  
+            $id = $row["RecId"];
+            $date = date("Y-m-d");
+
+            //echo $expired;
+            //echo $date;
+            $date1=date_create($expired);
+            $date2=date_create($date);
+            $diff=date_diff($date2,$date1);
+           //echo $id;
+
+            //$dateexp=data_create($expired);
+            //$datenow=data_create($date);
+            //$diff=date_diff("2021-04-21","2021-04-19");
+            //echo $dateexp;  
+            //echo $datenow;
+            echo $diff->format('%R%a days');
+            //$diff->format("%R%a days");
+            //if($datenow > $expired){
+               // echo $id;
+
+
+
+               if (!isset($errorMsg)) {
+                    
+
+                    $sql = "INSERT INTO tbl_received(OrderId, MedId, RecName, RecTime, RecDeli, Qty, MfdDate, ExpDate) VALUES ('$OrderId', '$MedId', '$RecName', '$RecTime', '$RecDeli', '$Qty', '$MfdDate', '$ExpDate')";
+                    if ($conn->query($sql) === TRUE) {   
+                    } else {
+                        echo "Error updating record: " . $conn->error;
+                    }
+
+                     
+                    $query = "SELECT RecId FROM tbl_received ORDER BY RecId DESC LIMIT 1";
+                    $result = mysqli_query($conn, $query); 
+                    $row = mysqli_fetch_array($result);
+                    $RecId = $row["RecId"];
+                
+                    
+                    $sql = "INSERT INTO tbl_lot(RecId, Qty, LotStatus) VALUES ('$RecId', '$Qty', '$LotStatus')";
+                    if ($conn->query($sql) === TRUE) { 
+                    } else {
+                        echo "Error updating record: " . $conn->error;
+                    }
+
+                    $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
+                    if ($conn->query($sql) === TRUE) {
+                        
+                    } else {
+                        echo "Error updating record: " . $conn->error;
+                    }
+
+                    $sql = "UPDATE tbl_med SET MedTotal = '$MedTotal' WHERE $MedId=MedId";
+                    if ($conn->query($sql) === TRUE) {
+                        
+                    } else {
+                      echo "Error updating record: " . $conn->error;
+                    }
+                      
+                    //if ($insert_stmt->execute()) {
+                       // $insertMsg = "Insert Successfully...";
+                        header("refresh:1;main.php");
+                    }
+                
+            }

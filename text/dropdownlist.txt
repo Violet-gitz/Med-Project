@@ -1,0 +1,71 @@
+<?php 
+                    
+                    $sql = 'SELECT * FROM tbl_dealer';
+                    $result = $conn->query($sql);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
+                        
+                    }
+                    foreach($data as $key => $dealer){                  
+            ?>
+                    <option value ="<?php echo $dealer["DealerId"];?>"><?php echo $dealer["DealerName"];?></option>
+            <?php } ?>   
+
+                
+                            
+                </select>  
+
+
+
+ <label class="col-sm-3 control-label">Medicine</label>
+                            <select name="selmed">       
+                                <?php 
+                                        
+                                        $sql = 'SELECT * FROM tbl_med';
+                                        $result = $conn->query($sql);
+                                        $data = array();
+                                        while($row = $result->fetch_assoc()) {
+                                            $data[] = $row;   
+                                            
+                                        }
+                                        foreach($data as $key => $Med){                  
+                                    ?>
+                                            <option value ="<?php echo $Med["MedId"];?>"><?php echo $Med["MedName"];?></option>
+                                <?php } ?>      
+                            </select>
+
+
+
+
+$sql = "SELECT * FROM yourtable";
+$query = mysqli_query($dbconnectvariable, $sql);
+if($query){
+
+  while($row = mysqli_fetch_assoc($query)){
+  $date = $row['yourdatefield'];
+  $datenow = date("Y-m-d");
+
+     if($datenow > $date){
+
+     DO SOMETHING HERE
+
+     }
+
+  }
+}
+
+
+
+$result = mysql_query("SELECT * FROM users");
+while ($row = mysql_fetch_array($result)) {
+
+    $whoexpired = $row['trial_date_ended'];  
+    $user = $row['user'];
+    $datenow = date("Y-m-d H:i:s");
+
+    if($datenow > $whoexpired){
+        echo $user;
+    }
+
+}
