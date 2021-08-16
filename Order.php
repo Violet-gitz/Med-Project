@@ -1,7 +1,7 @@
 <?php
         include('connect.php');
         session_start();
-        // echo '<pre>';
+        // mainecho '<pre>';
         // print_r($_SESSION);
         // echo '<pre>';
         $MedId = $_REQUEST['MedId'];
