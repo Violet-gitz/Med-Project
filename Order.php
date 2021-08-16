@@ -1,7 +1,7 @@
 <?php
         include('connect.php');
         session_start();
-        // gitecho '<pre>';
+        // gitechotest '<pre>';
         // print_r($_SESSION);
         // echo '<pre>';
         $MedId = $_REQUEST['MedId'];
