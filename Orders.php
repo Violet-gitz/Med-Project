@@ -88,6 +88,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    
 </head>
 
 <body>
@@ -132,81 +134,45 @@
         </div>
     <?php } ?>
 
-  
-    <form name="frmcart" method="post" >
-      <table width="600" border="0" align="center" class="square">
-        <tr>
-          <td colspan="5" bgcolor="#CCCCCC">
-          <b>Cart</span></td>
-        </tr>
-        <tr>
-          <td bgcolor="#EAEAEA">Order</td>
-          <td align="center" bgcolor="#EAEAEA">Price</td>
-          <td align="center" bgcolor="#EAEAEA">Quantity</td>
-          <td align="center" bgcolor="#EAEAEA">Total Price</td>
-          <td align="center" bgcolor="#EAEAEA">Remove</td>
-        </tr>
-    <?php
-    $total=0;
-    if(!empty($_SESSION['cart']))
-    {
-        foreach($_SESSION['cart'] as $MedId=>$Quantity)
-        {
-            $sql = "SELECT* FROM tbl_Med WHERE MedId=$MedId";
-		    $result = $conn->query($sql);
-            $data = array();
-            while($row = $result->fetch_assoc()) {
-            $data[] = $row;  
-            }
-            foreach($data as $key => $Med){
-		    $sum = $Med['MedPrice'] * $Quantity;
-		    $total += $sum;
-            echo "<tr>";
-            echo "<td width='334'>" . $Med["MedName"] . "</td>";
-            echo "<td width='46' align='right'>" .number_format($Med["MedPrice"],2) . "</td>";
-            echo "<td width='57' align='right'>";  
-            echo "<input type='text' name= $Med[MedId]; value='$Quantity' disabled size='2'/></td>";
-            echo "<td width='93' align='right'>".number_format($sum,2)."</td>";
-            
-            echo "<td width='46' align='center'><a href='Order.php?MedId=$MedId&act=remove&quantity=0'>Remove</a></td>";
-            echo "</tr>";
-            }
-            echo "<tr>";
-          //echo "<td colspan='3' bgcolor='#CEE7FF' align='center'><b>ราคารวม</b></td>";
-          
-            //echo "<td align='left' bgcolor='#CEE7FF'></td>";
-       
-    }}
-            echo "<td align = 'right'>Total Price <input type = 'text' name ='total' disabled value = '$total'></td>";
-            //echo "<td align='right' bgcolor='#CEE7FF'>"."<b>".number_format($total,2)."</b>"."</td>";
-            echo "</tr>";
-    ?>
-    <tr>
-    <td><a href="Medshow.php">Medicine</a></td>
-    </tr>
-    </table>
-                    <div class="container">
-                        <label class="col-sm-3 control-label">Dealer</label>
-                            <select name="selDealer">       
-                                <?php 
-                                        
-                                        $sql = 'SELECT * FROM tbl_dealer';
-                                        $result = $conn->query($sql);
-                                        $data = array();
-                                        while($row = $result->fetch_assoc()) {
-                                            $data[] = $row;        
-                                        }
-                                        foreach($data as $key => $dealer){                  
-                                    ?>
-                                            <option value ="<?php echo $dealer["DealerId"];?>"><?php echo $dealer["DealerName"];?></option>
-                                <?php } ?>      
-                            </select>
-
-                            <div class="col-sm-9">
-                                <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order">
-                            </div>
+        <div class="container mt-5">
+            <div class="row">
+                <?php 
+                    
+                        $sql ="SELECT * FROM tbl_med";
+                        $result = $conn->query($sql);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) {
+                            $data[] = $row;   
+                        }
+                        foreach($data as $key => $Med)
                         
-                    </div>           
+                        {         
+                                  
+                ?>
+                    <div class="col-md-4">
+                    <form action = "Order.php" method="post">
+                            <div>
+                                <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $Med["MedPath"]; ?>"> </div> 
+                            </div>
+                            <div>
+                                <h5><?php echo "Name  " . $Med["MedName"]; ?></h5> 
+                                <h5><?php echo "Category  " . $Med["MedCate"]; ?></h5> 
+                                <h5><?php echo "Volumn  " . $Med["MedVolumn"]; ?></h5> 
+                                <h5><?php echo "Unit  " . $Med["MedUnit"]; ?></h5> 
+                                <h5><?php echo "Unit Per Pack  " . $Med["MedPack"] . " Unit"; ?></h5> 
+                                <h5><?php echo "Price Per Pack  " . $Med["MedPrice"] . " Bath"; ?></h5> 
+                                <input type="number" name="quantity" min="1" max="1000" value= "1"></p>
+                                <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
+                                <input type ="hidden" name = "act" value = "add">
+                                <input type="submit" class = "btn btn-info" value = "Add to cart"> 
+                            </div>
+                    </form>
+                    </div>
+                
+            
+                    <?php } ?>
+            </div>
+        </div>
     </form>
     </body>
     </html>

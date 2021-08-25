@@ -1,29 +1,29 @@
 <?php
         include('connect.php');
         session_start();
-        // mainecho '<pre>';
+        // echo '<pre>';
         // print_r($_SESSION);
         // echo '<pre>';
-        $MedId = $_REQUEST['MedId'];
-        $act = $_REQUEST['act'];
-        $Quantity = $_REQUEST['quantity'];
+        // $MedId = !empty($MedId) ? 0 : $_REQUEST['MedId'];
+        // $act = !empty($act) ? 0 : $_REQUEST['act'];
+        // $Quantity = !empty($Quantity) ? 0 : $_REQUEST['quantity'];
     
-        if($act=='add' && !empty($MedId))
-        {
-            if(isset($_SESSION['cart'][$MedId]))
-            {
-                $_SESSION['cart'][$MedId]+=(int)$Quantity;    
-            }
-            else
-            {
-                $_SESSION['cart'][$MedId]=(int)$Quantity;  
-            }
-        }
+        // if($act=='add' && !empty($MedId))
+        // {
+        //     if(isset($_SESSION['cart'][$MedId]))
+        //     {
+        //         $_SESSION['cart'][$MedId]+=(int)$Quantity;    
+        //     }
+        //     else
+        //     {
+        //         $_SESSION['cart'][$MedId]+=(int)$Quantity;  
+        //     }
+        // }
      
-        else if($act=='remove' && !empty($MedId))
-        {
-            unset($_SESSION['cart'][$MedId]);
-        }
+        // else if($act=='remove' && !empty($MedId))
+        // {
+        //     unset($_SESSION['cart'][$MedId]);
+        // }
      
         /*if($act=='update')
         {

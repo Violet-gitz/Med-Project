@@ -15,9 +15,9 @@
     }
 
 
-    if (isset($_REQUEST['update_id'])) {
+    if (isset($_REQUEST['edit_id'])) {
         try {
-            $id = $_REQUEST['update_id'];
+            $id = $_REQUEST['edit_id'];
             $sql ="SELECT * FROM tbl_med WHERE $id = MedId";
             $result = $conn->query($sql);
             $data = array();
@@ -39,9 +39,7 @@
         $MedPrice = $_REQUEST['qtyPrice'];
         $MedTotal = $_REQUEST['txt_MedTotal'];
         $MedStatus = $_REQUEST['dropdownlist-MedStatus'];
-        
-
-        
+    
          if (empty($MedName)) {
             $errorMsg = "Please enter Medicine Name";
         } else if (empty($MedCate)) {
@@ -67,7 +65,7 @@
                     $update_stmt->bindParam(':5name', $MedPack);
                     $update_stmt->bindParam(':6name', $MedPrice);
                     $update_stmt->bindParam(':7name', $MedTotal);
-                    $update_stmt->bindParam(':8name', $MedStatus);
+                    $update_stmt->bindParam(':8name', $MedStatus);  
                     $update_stmt->bindParam(':MedId', $id);
 
                     if ($update_stmt->execute()) {
@@ -253,6 +251,18 @@
                             
 
                         </select><br><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                
+                    <div class="col-sm-3 control-label">
+                        Select image to upload<br>
+                        
+                        <input type="file" name="file">
+                        
                     </div>
                 </div>
             </div>

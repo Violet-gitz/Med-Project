@@ -66,9 +66,11 @@ body {
           <a href="javascript:void(0)" class="navbar-brand" onclick="closeNav()">&times;</a>
           <a href="main.php">Home</a>
           <a href="Staffshow.php">Staff</a>
+          <a href="Departmentshow.php">Department</a>
           <a href="Dealershow.php">Dealer</a>
           <a href="Medshow.php">Medicine</a>
           <a href="Orders.php">Order</a>
+          <a href="Shipping.php">Shipping cart</a>
           <a href="Received.php">Received</a>
           
         </div>

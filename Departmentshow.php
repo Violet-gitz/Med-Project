@@ -1,9 +1,7 @@
 <?php 
      include('Connect.php'); 
-
      session_start();
 
-    
      if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
@@ -21,7 +19,7 @@
 
         //Delete an original record from db
         //$sql = 'DELETE FROM tbl_Med WHERE MedId' =.$id);
-        $sql = "DELETE FROM tbl_med where MedId = '".$id."'";
+        $sql = "DELETE FROM tbl_department where DepartId = '".$id."'";
         if($conn->query($sql) == TRUE){
           echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
         }else{
@@ -47,9 +45,10 @@
             include('slidebar.php');
         ?>
 
+
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-            <h1 class="navbar-brand">Medicine Data</h1>
+            <h1 class="navbar-brand">Department Data</h1>
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -57,15 +56,14 @@
                     <ul class="navbar-nav ms-auto">
 
                         
-                    <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link"><?php echo $_SESSION['StaffName'] ?></a>                
                         </li>  
 
                         <li class="nav-item">
-                            <a href="Medadd.php" class="btn btn-success">Add+</a>
+                            <a href="Departmentadd.php" class="btn btn-success">Add+</a>
                         </li>
 
-                        
                         <li class="nav-item">
                             <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
                         </li>
@@ -75,9 +73,12 @@
             </div>
         </nav>
 
+        
+       
 
-      
 
+
+        
 
 
     <div class="container-sm">
@@ -85,31 +86,35 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Picture</th>
-                    <th>Name</th>
-                    <th>Total</th>
-                    <th>Edit</th>
-                   
+                    <th>DepartmentId</th>
+                    <th>DepartmentName</th>
+                    <th>Edit </th>
+                    <th>Delete</th>
                 </tr>
             </thead>
 
             <tbody>
                 <?php 
+                    //$select_stmt = ;
+                    // $result = mysqli_query($conn, "SELECT * FROM tbl_staff");
                     
-                        $sql = 'SELECT * FROM tbl_med';
+
+                    // $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                        // echo $row;
+                        $sql = 'SELECT * FROM tbl_department';
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
-                        foreach($data as $key => $Med){               
+                        foreach($data as $key => $depart){               
                 ?>
 
                     <tr>
-                        <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
-                        <td><?php echo $Med["MedName"]; ?></td>
-                        <td><?php echo $Med["MedTotal"]; ?></td>
-                        <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Edit</a></td>
+                        <td><?php echo $depart["DepartId"]; ?></td>
+                        <td><?php echo $depart["DepartName"]; ?></td>
+                        <td><a href="Departmentedit.php?update_id=<?php echo $depart["DepartId"];?>" class="btn btn-warning">Edit</a></td>
+                        <td><a href="?delete_id=<?php echo $depart["DepartId"]; ?>" class="btn btn-danger">Delete</a></td>
                     </tr>
 
                     <?php } ?>
