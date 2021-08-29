@@ -51,18 +51,19 @@
             $errorMsg = "Please Enter Medicine Status";
         }else {
 
-        $med_check_query = "SELECT * FROM tbl_med WHERE MedName = '$MedName'  LIMIT 1";
-        $query = mysqli_query($conn, $med_check_query);
-        $result = mysqli_fetch_array($query);
-
-        if ($result) { // if user exists
-            if ($result['MedName'] === $MedName) {
-                $errorsMsg =  "Medicine already exists";
-            }
+            $query = "SELECT * FROM tbl_med WHERE MedName = '$MedName'  LIMIT 1";
+            $result = mysqli_query($conn, $query); 
+            $row = mysqli_fetch_array($result);
+        if ($row["MedName"] === $MedName) {
+            $insertMsg =  "Medicine already exists";
         }
         else {
         $sql = "INSERT INTO tbl_med(MedName , MedCate , MedVolumn , MedUnit , MedPack , MedPrice , MedDes , MedStatus , MedTotal , MedPath ) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedDes', '$MedStatus', '$MedTotal', '$MedPath')";
-        if ($conn->query($sql) === TRUE)header("refresh:1;Medshow.php");
+        if ($conn->query($sql) === TRUE){
+            $insertMsg = "Insert Successfully...";
+            header("refresh:1;Medshow.php");
+        }
+
             else {echo "Error updating record: " . $conn->error;}
         }
     
