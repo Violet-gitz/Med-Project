@@ -156,6 +156,7 @@
                             </div>
                             <div>
                                 <h5><?php echo "Name  " . $Med["MedName"]; ?></h5> 
+                                <h5><?php echo "Description  " . $Med["MedDes"]; ?></h5> 
                                 <h5><?php echo "Category  " . $Med["MedCate"]; ?></h5> 
                                 <h5><?php echo "Volumn  " . $Med["MedVolumn"]; ?></h5> 
                                 <h5><?php echo "Unit  " . $Med["MedUnit"]; ?></h5> 
