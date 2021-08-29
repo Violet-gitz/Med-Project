@@ -66,13 +66,9 @@ create table tbl_received
 (
 	RecId int not null Auto_Increment,
 	OrderId  int not null,
-	MedId int not null,
 	RecName varchar(255),
 	RecTime varchar(255),
 	RecDeli varchar(255),
-	Qty int,
-	MfdDate varchar(255),
-	ExpDate varchar(255),
 	Primary key (RecId),
 	Foreign key (OrderId) REFERENCES tbl_order(OrderId)	
 )

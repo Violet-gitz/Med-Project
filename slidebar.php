@@ -71,7 +71,7 @@ body {
           <a href="Medshow.php">Medicine</a>
           <a href="Orders.php">Order</a>
           <a href="Shipping.php">Shipping cart</a>
-          <a href="Received.php">Received</a>
+          <a href="CheckOrder.php">CheckOrder</a>
           
         </div>
         <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>

@@ -68,63 +68,40 @@
             <thead>
                 <tr>
                     <th>Order</th>
-                    <th>Medicine Name</th>
-                    <th>QTY</th>
-                    <th>Price</th>
                     <th>Date order</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>ToTal</th>
                     <th>Dealer</th>
                     <th>Staff</th>
-                    <th>Status</th>
                     <th>Received</th>
                 </tr>
             </thead>
 
             <tbody>
                 <?php 
-                        $sql = 'SELECT tbl_orderdetail.OrderId,tbl_orderdetail.MedId,tbl_orderdetail.QTY,tbl_orderdetail.OrderPrice,tbl_order.OrderDate,tbl_order.OrderStatus,tbl_order.DealerId,tbl_order.StaffId,tbl_med.MedName
-                        FROM tbl_orderdetail
-                        INNER JOIN tbl_order ON tbl_orderdetail.OrderId = tbl_order.OrderId
-                        INNER JOIN tbl_med ON tbl_orderdetail.MedId = tbl_med.MedId;';
+                        $sql = "SELECT tbl_order.OrderId,tbl_order.OrderDate,tbl_order.OrderStatus,tbl_order.OrderPrice,tbl_order.OrderPrice,tbl_order.OrderTotal,tbl_order.StaffName,tbl_dealer.DealerName,tbl_dealer.DealerAddress
+                        FROM tbl_order
+                        INNER JOIN tbl_dealer ON tbl_order.DealerId = tbl_dealer.DealerId";
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
                         foreach($data as $key => $order){
-
-                            $dealerid = $order["DealerId"];
-                            $sqli ="SELECT * FROM tbl_dealer WHERE $dealerid = DealerId";
-                            $result = $conn->query($sqli);
-                            $data = array();
-                                while($row = $result->fetch_assoc()) {
-                                    $data[] = $row;   
-                                }
-                                foreach($data as $key => $dealer){
-
-                                    $staffid = $order["StaffId"];
-                                    $sqli ="SELECT * FROM tbl_staff WHERE $staffid = StaffId";
-                                    $result = $conn->query($sqli);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) {
-                                    $data[] = $row;   
-                                }
-                                    foreach($data as $key => $staff){
-
-                                        $buttonStatus;
-                                        $OrderStatus = $order["OrderStatus"];
+                            
                 ?>
 
                     <tr>
                         <td><?php echo $order["OrderId"]; ?></td>
-                        <td><?php echo $order["MedName"]; ?></td>
-                        <td><?php echo $order["QTY"]; ?></td>
-                        <td><?php echo $order["OrderPrice"]; ?></td>
                         <td><?php echo $order["OrderDate"]; ?></td>
-                        <td><?php echo $dealer["DealerName"]; ?></td>
-                        <td><?php echo $staff["StaffName"]; ?></td>
                         <td><?php echo $order["OrderStatus"]; ?></td>
-                        <!-- <td><a href="Receiveddata.php?Received_id=<?php echo $order["OrderId"];?>" class="btn btn-primary">Received</a></td> -->
-                        <td>
+                        <td><?php echo $order["OrderPrice"]; ?></td>
+                        <td><?php echo $order["OrderTotal"]; ?></td>
+                        <td><?php echo $order["DealerName"]; ?></td>
+                        <td><?php echo $order["StaffName"]; ?></td>
+                        <td><a href="Receiveddata.php?Received_id=<?php echo $order["OrderId"];?>" class="btn btn-primary">Received</a></td>
+                        <!-- <td>
                             <form method = "POST" action = "Receiveddata.php">
                                 <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Received_id" class = "btn btn-primary"
                                     <?php
@@ -137,12 +114,11 @@
                                     >Received
                                 </button>
                             </form>
-                        </td>
+                        </td> -->
                         
                     </tr>
 
-                    <?php } 
-                    }
+                    <?php 
                 }?>
 
                     
