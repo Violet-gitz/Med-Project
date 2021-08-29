@@ -32,6 +32,7 @@
 
     if (isset($_REQUEST['btn_update'])) {
         $MedName = $_REQUEST['txt_MedName'];
+        $MedDes = $_REQUEST['txt_MedDes'];
         $MedCate = $_REQUEST['dropdownlist-MedCate'];
         $MedVolumn = $_REQUEST['dropdownlist-MedVolumn'];
         $MedUnit = $_REQUEST['dropdownlist-MedUnit'];
@@ -42,6 +43,8 @@
     
          if (empty($MedName)) {
             $errorMsg = "Please enter Medicine Name";
+        }else if (empty($MedDes)) {
+            $errorMsg = "Please Enter Medicine Description";
         } else if (empty($MedCate)) {
             $errorMsg = "Please Enter Medicine Catetory";
         } else if (empty($MedVolumn)) {
@@ -57,7 +60,7 @@
         }  else {
             try {
                 if (!isset($errorMsg)) {
-                    $update_stmt = $db->prepare("UPDATE tbl_med SET MedName = :1name, MedCate = :2name, MedVolumn = :3name, MedUnit = :4name, MedPack = :5name, MedPrice = :6name, MedTotal = :7name,  MedStatus = :8name WHERE MedId = :MedId");
+                    $update_stmt = $db->prepare("UPDATE tbl_med SET MedName = :1name, MedCate = :2name, MedVolumn = :3name, MedUnit = :4name, MedPack = :5name, MedPrice = :6name, MedTotal = :7name,  MedStatus = :8name, MedDes = :9name WHERE MedId = :MedId");
                     $update_stmt->bindParam(':1name', $MedName);
                     $update_stmt->bindParam(':2name', $MedCate);
                     $update_stmt->bindParam(':3name', $MedVolumn);
@@ -65,7 +68,8 @@
                     $update_stmt->bindParam(':5name', $MedPack);
                     $update_stmt->bindParam(':6name', $MedPrice);
                     $update_stmt->bindParam(':7name', $MedTotal);
-                    $update_stmt->bindParam(':8name', $MedStatus);  
+                    $update_stmt->bindParam(':8name', $MedStatus); 
+                    $update_stmt->bindParam(':9name', $MedDes); 
                     $update_stmt->bindParam(':MedId', $id);
 
                     if ($update_stmt->execute()) {
@@ -148,7 +152,7 @@
             
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="MedName" class="col-sm-3 control-label">Medicine Name</label>
+                    <label for="MedicineName" class="col-sm-3 control-label">Medicine Name</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>">
                     </div>
@@ -157,9 +161,18 @@
 
             <div class="form-group text-center">
                 <div class="row">
+                    <label for="MedicineDes" class="col-sm-3 control-label">Medicine Description</label>
+                    <div class="col-sm-7">
+                        <input type="text"  name="txt_MedDes" class="form-control" value="<?php echo $med["MedDes"]?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
                     <label for="Medicineprcie" class="col-sm-3 control-label">Medicine Price/Pack</label>
                     <div class="col-sm-1">
-                        <input type="number" id="quantity" name="qtyPrice" min="1" max="999" value="<?php echo $med["MedPrice"]?>">
+                        <input type="number" id="quantity" name="qtyPrice" min="1" max="9999" value="<?php echo $med["MedPrice"]?>">
                     </div>
                 </div>
             </div>
@@ -168,7 +181,7 @@
                 <div class="row">
                     <label for="Medicinepack" class="col-sm-3 control-label">Medicine Unit/Pack</label>
                     <div class="col-sm-1">
-                    <input type="number" id="quantity" name="qtyPack" min="1" max="999" value="<?php echo $med["MedPack"]?>">
+                    <input type="number" id="quantity" name="qtyPack" min="1" max="9999" value="<?php echo $med["MedPack"]?>">
                     </div>
                 </div>
             </div>
@@ -254,19 +267,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                
-                    <div class="col-sm-3 control-label">
-                        Select image to upload<br>
-                        
-                        <input type="file" name="file">
-                        
-                    </div>
-                </div>
-            </div>
-
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">

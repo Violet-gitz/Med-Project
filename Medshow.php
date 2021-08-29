@@ -87,6 +87,7 @@
                 <tr>
                     <th>Picture</th>
                     <th>Name</th>
+                    <th>Description</th>
                     <th>Total</th>
                     <th>Edit</th>
                    
@@ -108,6 +109,7 @@
                     <tr>
                         <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                         <td><?php echo $Med["MedName"]; ?></td>
+                        <td><?php echo $Med["MedDes"]; ?></td>
                         <td><?php echo $Med["MedTotal"]; ?></td>
                         <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Edit</a></td>
                     </tr>

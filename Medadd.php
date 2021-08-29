@@ -17,6 +17,7 @@
     if (isset($_REQUEST['btn_insert'])) {
         
         $MedName = $_REQUEST['txt_MedName'];
+        $MedDes = $_REQUEST['txt_MedDes'];
         $MedCate = $_REQUEST['dropdownlist-MedCate'];
         $MedVolumn = $_REQUEST['dropdownlist-MedVolumn'];
         $MedUnit = $_REQUEST['dropdownlist-MedUnit'];
@@ -32,44 +33,39 @@
         }
         $MedPath = basename($_FILES["file"]["name"]);
         
-         if (empty($MedName)) {
+        if (empty($MedName)) {
             $errorMsg = "Please enter Medicine Name";
-        } else if (empty($MedCate)) {
+        }else if (empty($MedDes)) {
+            $errorMsg = "Please Enter Medicine Description";
+        }else if (empty($MedCate)) {
             $errorMsg = "Please Enter Medicine Catetory";
-        } else if (empty($MedVolumn)) {
+        }else if (empty($MedVolumn)) {
             $errorMsg = "Please Enter Medicine Volumn";
-        } else if (empty($MedUnit)) {
+        }else if (empty($MedUnit)) {
             $errorMsg = "Please Enter Medicine Unit";
         }else if (empty($MedPack)) {
             $errorMsg = "Please Enter Medicine Pack";
         }else if (empty($MedPrice)) {
             $errorMsg = "Please Enter Medicine Price";
-        } else if (empty($MedStatus)) {
+        }else if (empty($MedStatus)) {
             $errorMsg = "Please Enter Medicine Status";
-        }  else {
-            try {
-                if (!isset($errorMsg)) {
-                    
-                    $insert_stmt = $db->prepare("INSERT INTO tbl_med(MedName, MedCate, MedVolumn, MedUnit, MedPack, MedPrice, MedTotal, MedStatus, MedPath ) VALUES (:1name, :2name, :3name, :4name, :5name, :6name, :7name, :8name, :9name)");
-                    
-                    $insert_stmt->bindParam(':1name', $MedName);
-                    $insert_stmt->bindParam(':2name', $MedCate);
-                    $insert_stmt->bindParam(':3name', $MedVolumn);
-                    $insert_stmt->bindParam(':4name', $MedUnit);
-                    $insert_stmt->bindParam(':5name', $MedPack);
-                    $insert_stmt->bindParam(':6name', $MedPrice);
-                    $insert_stmt->bindParam(':7name', $MedTotal);
-                    $insert_stmt->bindParam(':8name', $MedStatus);
-                    $insert_stmt->bindParam(':9name', $MedPath);  
+        }else {
 
-                    if ($insert_stmt->execute()) {
-                        $insertMsg = "Insert Successfully...";
-                        header("refresh:1;Medshow.php");
-                    }
-                }
-            } catch (PDOException $e) {
-                echo $e->getMessage();
+        $med_check_query = "SELECT * FROM tbl_med WHERE MedName = '$MedName'  LIMIT 1";
+        $query = mysqli_query($conn, $med_check_query);
+        $result = mysqli_fetch_array($query);
+
+        if ($result) { // if user exists
+            if ($result['MedName'] === $MedName) {
+                $errorsMsg =  "Medicine already exists";
             }
+        }
+        else {
+        $sql = "INSERT INTO tbl_med(MedName , MedCate , MedVolumn , MedUnit , MedPack , MedPrice , MedDes , MedStatus , MedTotal , MedPath ) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedDes', '$MedStatus', '$MedTotal', '$MedPath')";
+        if ($conn->query($sql) === TRUE)header("refresh:1;Medshow.php");
+            else {echo "Error updating record: " . $conn->error;}
+        }
+    
         }
     }
 ?>
@@ -144,7 +140,16 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicineprcie" class="col-sm-3 control-label">Medicine Price</label>
+                    <label for="Medicinedes" class="col-sm-3 control-label">Description</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_MedDes" class="form-control" placeholder="Enter Medicine Description...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicineprcie" class="col-sm-3 control-label">Price</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedPrice" class="form-control" placeholder="Enter Medicine Price...">
                     </div>
@@ -153,7 +158,7 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicinepack" class="col-sm-3 control-label">Medicine Pack</label>
+                    <label for="Medicinepack" class="col-sm-3 control-label">Pack</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedPack" class="form-control" placeholder="Enter Medicine Pack...">
                     </div>
