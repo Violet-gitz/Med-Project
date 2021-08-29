@@ -55,7 +55,7 @@
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
         if ($row["MedName"] === $MedName) {
-            $insertMsg =  "Medicine already exists";
+            $errorMsg =  "Medicine already exists";
         }
         else {
         $sql = "INSERT INTO tbl_med(MedName , MedCate , MedVolumn , MedUnit , MedPack , MedPrice , MedDes , MedStatus , MedTotal , MedPath ) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedDes', '$MedStatus', '$MedTotal', '$MedPath')";

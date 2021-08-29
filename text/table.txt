@@ -30,6 +30,7 @@ create table tbl_med
 	MedUnit varchar(255),
 	MedPack varchar(255),
 	MedPrice varchar(255),
+	MedDes varchar(255),
 	MedStatus varchar(255),
 	MedTotal int,
 	MedPath varchar(255),
