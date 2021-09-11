@@ -18,7 +18,7 @@
 
         if (count($errors) == 0) {
             //$password = md5($password_1);
-            $query = "SELECT * FROM tbl_Staff WHERE StaffName = '$username' AND StaffPassword = '$password' ";
+            $query = "SELECT * FROM tbl_staff WHERE StaffName = '$username' AND StaffPassword = '$password' ";
             $result = mysqli_query($conn, $query);
 
             if (mysqli_num_rows($result) == 1) {
