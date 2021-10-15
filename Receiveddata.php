@@ -345,9 +345,72 @@
                 </div>
             </div>
         
+            
+
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Medicine</label>
+                    <label class="col-sm-3 control-label">Received Name</label>
+                        <div class="col-sm-1">
+                            <select name="RecName">       
+                                <?php 
+                                    $sql = 'SELECT * FROM tbl_staff';
+                                    $result = $conn->query($sql);
+                                    $data = array();
+                                    while($row = $result->fetch_assoc()) 
+                                        {
+                                            $data[] = $row;   
+                                        }
+                                        foreach($data as $key => $staff){                  
+                                ?>
+                                    <option value ="<?php echo $staff["StaffId"];?>"><?php echo $staff["StaffName"];?></option>
+                                <?php } ?>      
+                            </select><br>
+                        </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
+                    </div>
+                </div>
+            </div>
+
+            <?php
+                $orderid = $_REQUEST['Received_id'];
+                $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) {
+                $data[] = $row;  
+                }
+                foreach($data as $key => $orderdetailid){
+
+                    $MedId = $orderdetailid["MedId"];
+                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                    $result = $conn->query($sqli);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;   
+                    }
+                    foreach($data as $key => $med){
+            ?>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Name" class="col-sm-3 control-label">Pictures</label>
+                        <div class="col-sm-7">
+                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Name" class="col-sm-3 control-label">Medicine</label>
                         <div class="col-sm-7">
                             <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>" readonly>
                     </div>
@@ -374,49 +437,18 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Quantity" class="col-sm-3 control-label">Quantity/Pack</label>
+                    <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
                     <div class="col-sm-7">
-                        <input type="text" id="quantity" name="qtymed"  class="form-control" value="<?php echo $Orderde["Qty"]?>" readonly>
+                        <input type="text" name="txt_Qty" class="form-control" value="<?php echo $orderdetailid["Qty"]; ?>" readonly>
                     </div>
                 </div>
             </div>
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Cost</label>
+                    <label for="Medicine Price" class="col-sm-3 control-label">Price</label>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_Cost" class="form-control" value="<?php echo $Orderde["OrderPrice"]?>" >
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label class="col-sm-3 control-label">Received Name</label>
-                        <div class="col-sm-1">
-                            <select name="RecName">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_staff';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) 
-                                        {
-                                            $data[] = $row;   
-                                        }
-                                        foreach($data as $key => $staff){                  
-                                ?>
-                                    <option value ="<?php echo $staff["StaffId"];?>"><?php echo $staff["StaffName"];?></option>
-                                <?php } ?>      
-                            </select><br>
-                        </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery man </label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
+                        <input type="text" name="Price" class="form-control" value="<?php echo $orderdetailid["Price"]; ?>" readonly>
                     </div>
                 </div>
             </div>
@@ -443,18 +475,19 @@
                 </div>
             </div>
 
-            
-            
+            <?php
+                }}
+            ?>
 
+            
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
                     <input type="submit" name="btn_received" class="btn btn-success" value="Received">
-                    <a href="Received.php" class="btn btn-danger">Back</a>
+                    <a href="CheckOrder.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
 
-           
-
+            
         </form>
 
     <script src="js/slim.js"></script>
