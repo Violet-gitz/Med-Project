@@ -57,11 +57,6 @@
             </div>
         </nav>
 
-
-      
-
-
-
     <div class="container-sm">
     
         <table class="table table-bordered">
@@ -71,7 +66,7 @@
                     <th>Date order</th>
                     <th>Status</th>
                     <th>Price</th>
-                    <th>ToTal</th>
+                    
                     <th>Dealer</th>
                     <th>Staff</th>
                     <th>Received</th>
@@ -89,6 +84,7 @@
                             $data[] = $row;   
                         }
                         foreach($data as $key => $order){
+                            $OrderStatus = $order["OrderStatus"];
                             
                 ?>
 
@@ -96,12 +92,10 @@
                         <td><?php echo $order["OrderId"]; ?></td>
                         <td><?php echo $order["OrderDate"]; ?></td>
                         <td><?php echo $order["OrderStatus"]; ?></td>
-                        <td><?php echo $order["OrderPrice"]; ?></td>
                         <td><?php echo $order["OrderTotal"]; ?></td>
                         <td><?php echo $order["DealerName"]; ?></td>
                         <td><?php echo $order["StaffName"]; ?></td>
-                        <td><a href="Receiveddata.php?Received_id=<?php echo $order["OrderId"];?>" class="btn btn-primary">Received</a></td>
-                        <!-- <td>
+                        <td>
                             <form method = "POST" action = "Receiveddata.php">
                                 <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Received_id" class = "btn btn-primary"
                                     <?php
@@ -114,7 +108,7 @@
                                     >Received
                                 </button>
                             </form>
-                        </td> -->
+                        </td>
                         
                     </tr>
 
@@ -128,12 +122,5 @@
         </table>
     </div>
     
-
-    
-    
-
-    <script src="js/slim.js"></script>
-    <script src="js/popper.js"></script>
-    <script src="js/bootstrap.js"></script>
 </body>
 </html>

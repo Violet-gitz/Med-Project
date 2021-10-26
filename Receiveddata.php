@@ -25,7 +25,6 @@
                 $data[] = $row;   
             }
             foreach($data as $key => $Orderde)
-
             {
                 $MedId = $Orderde["MedId"];
                 $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
@@ -72,6 +71,7 @@
         foreach($data as $key => $Orderde)
 
         {
+            
             $MedId = $Orderde["MedId"];
             $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
             $result = $conn->query($sqli);
@@ -105,123 +105,107 @@
         }
     }
 
-
-
         $OrderId = $_REQUEST['txt_OrderId'];
-        $RecName = $_REQUEST['RecName'];
+        $staff = $_REQUEST['RecName'];
+        date_default_timezone_set("Asia/Bangkok");
         $RecTime = date("Y-m-d h:i:sa");
-        $Qty = $_REQUEST['qtymed'];
         $RecDeli = $_REQUEST['txt_delivery'];
-        $MfdDate = $_REQUEST['Mfddate'];
-        $ExpDate = $_REQUEST['Expdate'];
         $OrderStatus = "Received";
         $Total = $med["MedTotal"];
 
-        $MedTotal = $Total + $Qty;
-
         $LotStatus = "Avialable";
 
-        $datemfd=date_create($MfdDate);
-        $dateexp=date_create($ExpDate);
-        $diff=date_diff($datemfd,$dateexp);
+        // $datemfd=date_create($MfdDate);
+        // $dateexp=date_create($ExpDate);
+        // $diff=date_diff($datemfd,$dateexp);
         
         
-        if($diff->format("%R%a days")<=0)
-        {
-            $errorMsg ="Error,Please enter a new expiration date. ";
-        }
+        // if($diff->format("%R%a days")<=0)
+        // {
+        //     $errorMsg ="Error,Please enter a new expiration date. ";
+        // }
         
          if (empty($OrderId)) {
             $errorMsg = "Please Enter Lot Id";
-        } else if (empty($RecName)) {
+        } else if (empty($staff)) {
             $errorMsg = "Please Enter Received Name";
-        } else if (empty($Qty)) {
-            $errorMsg = "Please Enter Medicine Quantity";
-        } else if (empty($RecDeli)) {
+        }  else if (empty($RecDeli)) {
             $errorMsg = "Please Enter Received Delivery";
-        }else if (empty($MfdDate)) {
-            $errorMsg = "Please Enter Manufactured Date";
-        }else if (empty($ExpDate)) {
-            $errorMsg = "Please Enter Expiration Date";
         }  else 
-
-                   /* {
-
-                        $sql = "INSERT INTO tbl_received(OrderId, MedId, RecName, RecTime, RecDeli, Qty, MfdDate, ExpDate) VALUES ('$OrderId', '$MedId', '$RecName', '$RecTime', '$RecDeli', '$Qty', '$MfdDate', '$ExpDate')";
-                        $result = mysql_query($sql,$conn);
-
-                        $lastid = mysql_insert_id($conn);
-                        mysql_free_result($result);
-
-                        $sql = "INSERT INTO tbl_lot(RecId, Qty, LotStatus) VALUES ('$lastid', '$Qty', '$LotStatus')";
-                        $result = mysql_query($sql,$conn);
-                        mysql_free_result($result);
-
-
-                        
-                        $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
-                        if ($conn->query($sql) === TRUE) {
-                            
-                        } else {
-                            echo "Error updating record: " . $conn->error;
-                        }
-
-                        $sql = "UPDATE tbl_med set MedTotal = '$MedTotal' WHERE $MedId=MedId";
-                        if ($conn->query($sql) === TRUE) {
-                            
-                        } else {
-                        echo "Error updating record: " . $conn->error;
-                        }
-                        
-                        if ($insert_stmt->execute()) {
-                            $insertMsg = "Insert Successfully...";
-
-                        $user_id = mysql_insert_id( $conn );
-                            header("refresh:1;main.php");
-                    }*/
 
             
                 if (!isset($errorMsg)) {
                     
-
-                    $sql = "INSERT INTO tbl_received(OrderId, MedId, RecName, RecTime, RecDeli, Qty, MfdDate, ExpDate) VALUES ('$OrderId', '$MedId', '$RecName', '$RecTime', '$RecDeli', '$Qty', '$MfdDate', '$ExpDate')";
+                    $sql = "INSERT INTO tbl_received(OrderId,StaffId,RecDate,RecDeli) VALUES ('$OrderId',  '$staff', '$RecTime', '$RecDeli')";
                     if ($conn->query($sql) === TRUE) {   
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
 
-                     
-                    $query = "SELECT RecId FROM tbl_received ORDER BY RecId DESC LIMIT 1";
-                    $result = mysqli_query($conn, $query); 
-                    $row = mysqli_fetch_array($result);
-                    $RecId = $row["RecId"];
-                
-                    
-                    $sql = "INSERT INTO tbl_lot(RecId, Qty, LotStatus) VALUES ('$RecId', '$Qty', '$LotStatus')";
+                    $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
+                    $result = $conn->query($sql);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;  
+                    }
+                    foreach($data as $key => $orderdetailid){
+                    $sumqtylot += $orderdetailid["Qty"];
+                    }
+
+                    $sql = "INSERT INTO tbl_lot(Qty, LotStatus) VALUES ('$sumqtylot', '$LotStatus')";
                     if ($conn->query($sql) === TRUE) { 
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
 
+
                     $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
                     if ($conn->query($sql) === TRUE) {
-                        
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
 
-                    $sql = "UPDATE tbl_med SET MedTotal = '$MedTotal' WHERE $MedId=MedId";
-                    if ($conn->query($sql) === TRUE) {
-                        
-                    } else {
-                      echo "Error updating record: " . $conn->error;
+                    $orderid = $Orderde['OrderId'];
+                    $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
+                    $result = $conn->query($sql);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;  
                     }
+                    foreach($data as $key => $orderdetailid){
+
+                        $query = "SELECT RecId FROM tbl_received ORDER BY RecId DESC LIMIT 1";
+                        $result = mysqli_query($conn, $query); 
+                        $row = mysqli_fetch_array($result);
+                        $RecId = $row["RecId"];
+
+                        $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
+                        $result = mysqli_query($conn, $query); 
+                        $row = mysqli_fetch_array($result);
+                        $LotId = $row["LotId"];
+
+                        $MfdDate = $_REQUEST['Mfddate'];
+                        $ExpDate = $_REQUEST['Expdate'];
+                        $Qty = $orderdetailid["Qty"];
+                        $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";
+                        if ($conn->query($sql) === TRUE) { 
+                        } else {
+                            echo "Error updating record: " . $conn->error;
+                        }
+                    
+                    }
+                    // $sql = "UPDATE tbl_med SET MedTotal = '$MedTotal' WHERE $MedId=MedId";
+                    // if ($conn->query($sql) === TRUE) {
+                        
+                    // } else {
+                    //   echo "Error updating record: " . $conn->error;
+                    // }
                       
                     //if ($insert_stmt->execute()) {
                        // $insertMsg = "Insert Successfully...";
-                        header("refresh:1;main.php");
-                    }
-                
+                        // header("refresh:1;main.php");
+                    
+                }
             } //catch (PDOException $e) {
                 //echo $e->getMessage();
                     
@@ -379,7 +363,7 @@
             </div>
 
             <?php
-                $orderid = $_REQUEST['Received_id'];
+                $orderid = $Orderde['OrderId'];
                 $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
                 $result = $conn->query($sql);
                 $data = array();

@@ -47,7 +47,7 @@
                 if (empty($_SESSION['cart']))
                 {
                 $errorMsg = "Please Select Medicine";
-                header("refresh:1;Medshow.php");
+                header("refresh:1;Orders.php");
                 }else 
                     if (!isset($errorMsg)) 
                     {

@@ -65,23 +65,39 @@ create table tbl_orderdetail
 create table tbl_received
 (
 	RecId int not null Auto_Increment,
-	OrderId  int not null,
-	RecName varchar(255),
-	RecTime varchar(255),
+	OrderId  int,
+	StaffId	int,
+	RecDate varchar(255),
 	RecDeli varchar(255),
 	Primary key (RecId),
-	Foreign key (OrderId) REFERENCES tbl_order(OrderId)	
+	Foreign key (OrderId) REFERENCES tbl_order(OrderId),	
+	Foreign key (StaffId) REFERENCES tbl_staff(StaffId)
 )
 
 create table tbl_lot
 (
 	LotId int not null Auto_Increment,
-	RecId int not null,
 	Qty int,
 	LotStatus varchar(255),
-	Primary key (LotId),
-	Foreign key (RecId) REFERENCES tbl_received(RecId)
+	Primary key (LotId)
 )
+
+
+
+create table tbl_receiveddetail
+(
+	RecId 	int,
+	LotId	int,
+	MedId	int,
+	Qty	int,
+	Mfd	varchar(255),
+	Exd	varchar(255),
+	Foreign key (RecId) REFERENCES tbl_received(RecId),
+	Foreign key (MedId) REFERENCES tbl_med(MedId),
+	Foreign key (LotId) REFERENCES tbl_lot(LotId)	
+)
+
+
 
 
 create table tbl_withdraw
