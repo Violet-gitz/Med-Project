@@ -1,3 +1,4 @@
+
 <?php 
     include('connect.php');
     session_start();
@@ -60,7 +61,7 @@
     }
 
     if (isset($_REQUEST['btn_received'])) {
-
+        $i = 0;
         $orderid = $_REQUEST['txt_OrderId'];
         $sql ="SELECT * FROM tbl_orderdetail WHERE $orderid = OrderId";
         $result = $conn->query($sql);
@@ -135,6 +136,21 @@
 
             
                 if (!isset($errorMsg)) {
+
+                    // $a = $_REQUEST["exd0"];
+                    // $b = $_REQUEST["mfd0"];
+                    // $c = $_REQUEST["exd1"];
+                    // $d = $_REQUEST["mfd1"];
+                    // $e = $_REQUEST["exd2"];
+                    // $f = $_REQUEST["mfd2"];
+                    // echo $a ,"วันผลิต";
+                    // echo $b , "วันหมดอายุ";
+                    // echo $c ,"วันผลิต";
+                    // echo $d , "วันหมดอายุ";
+                    // echo $e ,"วันผลิต";
+                    // echo $f , "วันหมดอายุ";
+
+
                     
                     $sql = "INSERT INTO tbl_received(OrderId,StaffId,RecDate,RecDeli) VALUES ('$OrderId',  '$staff', '$RecTime', '$RecDeli')";
                     if ($conn->query($sql) === TRUE) {   
@@ -173,6 +189,15 @@
                     $data[] = $row;  
                     }
                     foreach($data as $key => $orderdetailid){
+                        
+                        $MedId = $orderdetailid["MedId"];
+                        $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                        $result = $conn->query($sqli);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
+                        }
+                        foreach($data as $key => $med){
 
                         $query = "SELECT RecId FROM tbl_received ORDER BY RecId DESC LIMIT 1";
                         $result = mysqli_query($conn, $query); 
@@ -184,15 +209,26 @@
                         $row = mysqli_fetch_array($result);
                         $LotId = $row["LotId"];
 
-                        $MfdDate = $_REQUEST['Mfddate'];
-                        $ExpDate = $_REQUEST['Expdate'];
+                        // print_r($data);
+                        // echo "<H1>";    echo $key, "</H1>";
+                        
+                        // echo $RecId , "ใบรับ";
+                        // echo $LodId , "รหัสล็อต";
+                        // echo $MedId , "รหัสยา";
+                        // echo $orderdetailid["Qty"] , "จำนวน";
+                     
+
+                        $MfdDate = $_REQUEST["mfd".$i];
+                        $ExpDate = $_REQUEST["exd".$i];
+                  
+
                         $Qty = $orderdetailid["Qty"];
-                        $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";
+                        $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";$i++;
                         if ($conn->query($sql) === TRUE) { 
                         } else {
                             echo "Error updating record: " . $conn->error;
                         }
-                    
+                        }
                     }
                     // $sql = "UPDATE tbl_med SET MedTotal = '$MedTotal' WHERE $MedId=MedId";
                     // if ($conn->query($sql) === TRUE) {
@@ -363,6 +399,7 @@
             </div>
 
             <?php
+                $i = 0;
                 $orderid = $Orderde['OrderId'];
                 $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
                 $result = $conn->query($sql);
@@ -379,7 +416,10 @@
                     while($row = $result->fetch_assoc()) {
                     $data[] = $row;   
                     }
+                    
                     foreach($data as $key => $med){
+                        
+                   
             ?>
 
             <div class="form-group text-center">
@@ -441,7 +481,7 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">MFD Date</label>
                     <div class="col-sm-1">
-                    <input type="date"  name="Mfddate"
+                    <input type="date"  name="mfd<?php echo $i;?>"
                                         value="<?php echo date('Y-m-j'); ?>" required
                                         min="2021-3-22" max="2030-12-31">
                     </div>
@@ -452,7 +492,7 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">EXP Date</label>
                     <div class="col-sm-1">
-                    <input type="date"  name="Expdate"
+                    <input type="date"  name="exd<?php echo $i;?>"
                                         value="<?php echo date('Y-m-j'); ?>" required
                                         min="2021-3-22" max="2030-12-31">
                     </div>
@@ -460,7 +500,7 @@
             </div>
 
             <?php
-                }}
+                $i++;}}
             ?>
 
             
