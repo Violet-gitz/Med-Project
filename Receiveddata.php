@@ -112,19 +112,11 @@
         $RecTime = date("Y-m-d h:i:sa");
         $RecDeli = $_REQUEST['txt_delivery'];
         $OrderStatus = "Received";
-        $Total = $med["MedTotal"];
+        
 
         $LotStatus = "Avialable";
 
-        // $datemfd=date_create($MfdDate);
-        // $dateexp=date_create($ExpDate);
-        // $diff=date_diff($datemfd,$dateexp);
-        
-        
-        // if($diff->format("%R%a days")<=0)
-        // {
-        //     $errorMsg ="Error,Please enter a new expiration date. ";
-        // }
+       
         
          if (empty($OrderId)) {
             $errorMsg = "Please Enter Lot Id";
@@ -137,21 +129,6 @@
             
                 if (!isset($errorMsg)) {
 
-                    // $a = $_REQUEST["exd0"];
-                    // $b = $_REQUEST["mfd0"];
-                    // $c = $_REQUEST["exd1"];
-                    // $d = $_REQUEST["mfd1"];
-                    // $e = $_REQUEST["exd2"];
-                    // $f = $_REQUEST["mfd2"];
-                    // echo $a ,"วันผลิต";
-                    // echo $b , "วันหมดอายุ";
-                    // echo $c ,"วันผลิต";
-                    // echo $d , "วันหมดอายุ";
-                    // echo $e ,"วันผลิต";
-                    // echo $f , "วันหมดอายุ";
-
-
-                    
                     $sql = "INSERT INTO tbl_received(OrderId,StaffId,RecDate,RecDeli) VALUES ('$OrderId',  '$staff', '$RecTime', '$RecDeli')";
                     if ($conn->query($sql) === TRUE) {   
                     } else {
@@ -167,13 +144,6 @@
                     foreach($data as $key => $orderdetailid){
                     $sumqtylot += $orderdetailid["Qty"];
                     }
-
-                    $sql = "INSERT INTO tbl_lot(Qty, LotStatus) VALUES ('$sumqtylot', '$LotStatus')";
-                    if ($conn->query($sql) === TRUE) { 
-                    } else {
-                        echo "Error updating record: " . $conn->error;
-                    }
-
 
                     $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
                     if ($conn->query($sql) === TRUE) {
@@ -209,39 +179,47 @@
                         $row = mysqli_fetch_array($result);
                         $LotId = $row["LotId"];
 
-                        // print_r($data);
-                        // echo "<H1>";    echo $key, "</H1>";
-                        
-                        // echo $RecId , "ใบรับ";
-                        // echo $LodId , "รหัสล็อต";
-                        // echo $MedId , "รหัสยา";
-                        // echo $orderdetailid["Qty"] , "จำนวน";
-                     
-
+                        $MedQty = $orderdetailid["Qty"];
+                        $MedTotal = $med["MedTotal"];
+                        $MedSum = $MedQty + $MedTotal;
                         $MfdDate = $_REQUEST["mfd".$i];
                         $ExpDate = $_REQUEST["exd".$i];
-                  
+                        $datemfd=date_create($MfdDate);
+                        $dateexp=date_create($ExpDate);
+                        $diff=date_diff($datemfd,$dateexp);
+                        // echo $diff->format('%R%a');
+                        
+                        if($diff->format('%R%a')<=30)
+                        {
+                            $errorMsg ="Error,Please enter a new expiration date. ";
+                        }else
+                            if(!isset($errorMsg)) 
+                            {
+                                $Qty = $orderdetailid["Qty"];
+                                $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";$i++;
+                                if ($conn->query($sql) === TRUE) { 
+                                } else {
+                                    echo "Error updating record: " . $conn->error;
+                                }
 
-                        $Qty = $orderdetailid["Qty"];
-                        $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";$i++;
-                        if ($conn->query($sql) === TRUE) { 
-                        } else {
-                            echo "Error updating record: " . $conn->error;
-                        }
+                                $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
+                                if ($conn->query($sql) === TRUE) {
+                                    
+                                } else {
+                                  echo "Error updating record: " . $conn->error;
+                                }
+                            }
                         }
                     }
-                    // $sql = "UPDATE tbl_med SET MedTotal = '$MedTotal' WHERE $MedId=MedId";
-                    // if ($conn->query($sql) === TRUE) {
-                        
-                    // } else {
-                    //   echo "Error updating record: " . $conn->error;
-                    // }
-                      
-                    //if ($insert_stmt->execute()) {
-                       // $insertMsg = "Insert Successfully...";
-                        // header("refresh:1;main.php");
-                    
-                }
+
+                    $sql = "INSERT INTO tbl_lot(Qty, LotStatus) VALUES ('$sumqtylot', '$LotStatus')";
+                    if ($conn->query($sql) === TRUE) { 
+                    } else {
+                        echo "Error updating record: " . $conn->error;
+                    }
+                        header("refresh:1;main.php");
+                    }
+                
             } //catch (PDOException $e) {
                 //echo $e->getMessage();
                     
