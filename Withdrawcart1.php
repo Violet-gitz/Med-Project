@@ -17,9 +17,9 @@
         header('location: login.php');
     }
 
-    if (isset($_REQUEST['withdraw'])) {
+    if (isset($_REQUEST['btn_lotcallback'])) {
                 
-            $Lotid = $_REQUEST['withdraw'];
+            $Lotid = $_REQUEST['lotcallback'];
             $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId=$Lotid";
             $result = $conn->query($sql);
             $data = array();
@@ -118,7 +118,7 @@
     
     
     <div class="container mt-5">
-    
+    <form action = "Withdrawcart.php" method="post">
             <div class="row">
             <div class="form-group text-center">
                 <div class="row">
@@ -201,10 +201,10 @@
                                 <input type="submit" class = "btn btn-info" value = "Add to cart"> 
                                 <input type ="hidden" name = "valueid" value = "<?php echo $Lot["LotId"];?>">
                             </div>
-                            </form>  
+                            </form>
                     </div>
                 
-                               
+                              
                     <?php }} ?>
             </div>
         </div>
@@ -217,6 +217,6 @@
                 </div>
             </div>
                                 
-            </form>  
+    </form>
 </body>
 </html>
