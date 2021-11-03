@@ -309,7 +309,7 @@
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
                     <input type="submit" name="btn_write" class="btn btn-success" value="Writeoff">
-                    <a href="main.php" class="btn btn-danger">Back</a>
+                    <a href="Lot.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
 

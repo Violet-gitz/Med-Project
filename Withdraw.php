@@ -17,20 +17,18 @@
         header('location: login.php');
     }
 
-    if (isset($_POST['draw'])) {
-        
-            $id = $_POST['draw'];
-            $sql = "SELECT tbl_lot.LotId,tbl_received.MedId,tbl_received.MfdDate,tbl_received.ExpDate,tbl_lot.Qty,tbl_lot.LotStatus,tbl_received.RecName,tbl_received.RecTime,tbl_received.RecDeli
-            FROM tbl_lot 
-            INNER JOIN tbl_received ON tbl_lot.RecId = tbl_received.RecId WHERE $id = LotId";
+    if (isset($_REQUEST['withdraw'])) {
+                
+            $Lotid = $_REQUEST['withdraw'];
+            $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId=$Lotid";
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {
-                $data[] = $row;   
+            $data[] = $row;  
             }
-            foreach($data as $key => $Lot)
-
-            {
+            foreach($data as $key => $Lot){
+            
+            
                 $idmed = $Lot["MedId"];
                 $sql ="SELECT * FROM tbl_med WHERE $idmed = MedId";
                 $result = $conn->query($sql);
@@ -38,25 +36,33 @@
                     while($row = $result->fetch_assoc()) {
                         $data[] = $row;   
                     }
-                    foreach($data as $key => $med){}
-            }
-
+                    foreach($data as $key => $med){
+                    }
+    
+                $idrec = $Lot["RecId"];
+                $sql ="SELECT * FROM tbl_received WHERE $idrec = RecId";
+                $result = $conn->query($sql);
+                $data = array();
+                    while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
+                    }
+                    foreach($data as $key => $rec){
+                }
         }
+    }
 
-    if (isset($_REQUEST['btn_Withdraw'])) {
-
-        $idlot = $_REQUEST['txt_Lot'];
-        $sql = "SELECT tbl_lot.LotId,tbl_received.MedId,tbl_received.MfdDate,tbl_received.ExpDate,tbl_lot.Qty,tbl_lot.LotStatus,tbl_received.RecName,tbl_received.RecTime,tbl_received.RecDeli
-        FROM tbl_lot 
-        INNER JOIN tbl_received ON tbl_lot.RecId = tbl_received.RecId WHERE $idlot = LotId";
+    if (isset($_REQUEST['btn_withdraw'])) {
+        $i = 0;   
+        $Lotid = $_REQUEST['txt_LotId'];
+        $sql ="SELECT * FROM tbl_receiveddetail WHERE $Lotid = LotId";
         $result = $conn->query($sql);
         $data = array();
         while($row = $result->fetch_assoc()) {
             $data[] = $row;   
         }
-        foreach($data as $key => $Lot)
+        foreach($data as $key => $Lot){
 
-        {
+        
             $idmed = $Lot["MedId"];
             $sql ="SELECT * FROM tbl_med WHERE $idmed = MedId";
             $result = $conn->query($sql);
@@ -65,73 +71,57 @@
                     $data[] = $row;   
                 }
                 foreach($data as $key => $med){}
-        }
-
         
+
+            }
         $StaffId = $_REQUEST['selstaff'];
-        $Qty = $_REQUEST['qtymed'];
-        $WithTime = $_REQUEST['Time'];
-        $Total = $med["MedTotal"];
-        $Medqty = $Lot["Qty"];
-        
-        if($Qty > $Medqty)
-        {
-            $errorMsg = "Error";
-        }
-
-        
-        $result = $Total-$Qty;
-
-        $Totalrec = $Lot["Qty"];
-        $sum = $Totalrec-$Qty;
-        
+        date_default_timezone_set("Asia/Bangkok");
+        $WithDate = date("Y-m-d h:i:sa");
         
         
          if (empty($StaffId)) {
             $errorMsg = "Please Enter StaffId";
-        } else if (empty($Qty)) {
-            $errorMsg = "Please Enter Medicine Quantity";
-        } else if (empty($Qty)) {
-            $errorMsg = "Medicine quantity is't enough";
         }  else {
-            try {
                 if (!isset($errorMsg)) {
                     
-                    $insert_stmt = $db->prepare("INSERT INTO tbl_withdraw(LotId, MedId, StaffId, Qty, WithDate ) VALUES (:1name, :2name, :3name, :4name, :5name)");
-                    
-                    $insert_stmt->bindParam(':1name', $idlot);
-                    $insert_stmt->bindParam(':2name', $idmed);
-                    $insert_stmt->bindParam(':3name', $StaffId);
-                    $insert_stmt->bindParam(':4name', $Qty);
-                    $insert_stmt->bindParam(':5name', $WithTime);
-
-                    $sql = "UPDATE tbl_med set MedTotal = '$result' WHERE $idmed=MedId";
-                    if ($conn->query($sql) === TRUE) {
-                        
+                    $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate) VALUES ('$StaffId', '$WithDate')";
+                    if ($conn->query($sql) === TRUE) { 
                     } else {
-                      echo "Error updating record: " . $conn->error;
+                        echo "Error updating record: " . $conn->error;
                     }
+                
+                    $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId=$Lotid";
+                    $result = $conn->query($sql);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;  
+                    }
+                    foreach($data as $key => $Rec){
 
-                    $sql = "UPDATE tbl_lot set Qty = '$sum' WHERE $idlot =LotId";
-                    if ($conn->query($sql) === TRUE) {
+                    $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId  DESC LIMIT 1";
+                    $result = mysqli_query($conn, $query); 
+                    $row = mysqli_fetch_array($result);
+                    $WithId  = $row["WithId"];
+
+                        $MedId = $_REQUEST["MedId".$i];
+                        $LotId = $Rec["LotId"];
+                        $QTY = $_REQUEST["qty".$i];
+                        $Mfd = $Rec["Mfd"];
+                        $Exd = $Rec["Exd"];
                         
-                    } else {
-                      echo "Error updating record: " . $conn->error;
+                        $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$LotId', '$QTY', '$Mfd', '$Exd')";
+                        $i++;
+                       
+                        if ($conn->query($sql) === TRUE) { 
+                        } else {
+                            echo "Error updating record: " . $conn->error;
+                        }
+                        // header("refresh:1;main.php");
                     }
-
-                    
-                    if ($insert_stmt->execute()) {
-                        $insertMsg = "Insert Successfully...";
-                        header("refresh:1;main.php");
-                    }
-                }
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-            }
+                }     
         }
     }
-    
-   
+
 
 ?>
 <!DOCTYPE html>
@@ -140,29 +130,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
-        <script>
-            
-                
-  
-                function display_ct6() 
-                    {
-                        var x = new Date()
-                        var ampm = x.getHours( ) >= 12 ? ' PM' : ' AM';
-                        hours = x.getHours( ) % 12;
-                        hours = hours ? hours : 12;
-                        var x1=x.getMonth() + 1+ "/" + x.getDate() + "/" + x.getFullYear(); 
-                        x1 = x1 + " - " +  hours + ":" +  x.getMinutes() + ":" +  x.getSeconds() + ":" + ampm;
-                        document.getElementById('Time').value = x1;
-                        display_c6();
-                        }
-                        function display_c6(){
-                        var refresh=1000; // Refresh rate in milli seconds
-                        mytime=setTimeout('display_ct6()',refresh)
-                    }
-                    display_c6()
-
-        </script>
     
     
 </head>
@@ -220,87 +187,46 @@
 
     
     
-        <form method="post" class="form-horizontal mt-5" name="myform">
-
-        <input type=text id='Time' size='18' name ="Time">
-
-
+    
+    <form method="post" class="form-horizontal mt-5" enctype="multipart/form-data">
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Lot</label>
+                    <label for="Tel" class="col-sm-3 control-label">Lot Id</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_Lot" class="form-control" value="<?php echo $Lot["LotId"]; ?>" readonly>
+                            <input type="text" name="txt_LotId" class="form-control" value="<?php echo $Lot["LotId"]; ?>" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Tel" class="col-sm-3 control-label">Received Id</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_RedId" class="form-control" value="<?php echo $Lot["RecId"]; ?>" readonly>
                     </div>
                 </div>
             </div>
         
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Medicine</label>
+                    <label for="Tel" class="col-sm-3 control-label">Received Date</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>" readonly>
+                            <input type="text" name="txt_RecDate" class="form-control" value="<?php echo $rec["RecDate"]; ?>" readonly>
                     </div>
                 </div>
             </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Tel" class="col-sm-3 control-label">Received Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_RecName" class="form-control" value="<?php echo $rec["RecDeli"]; ?>" readonly>
+                    </div>
+                </div>
+            </div>
+
             
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Category" class="col-sm-3 control-label">Category</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedCate" class="form-control" value="<?php echo $med["MedCate"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Volumn" class="col-sm-3 control-label">Volumn</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedVolumn" class="form-control" value="<?php echo $med["MedVolumn"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Unit" class="col-sm-3 control-label">Unit</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedUnit" class="form-control" value="<?php echo $med["MedUnit"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine pack" class="col-sm-3 control-label">Unit/Pack</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Total/Pack</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_Total" class="form-control" value="<?php echo $Lot["Qty"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Quantity" class="col-sm-3 control-label">Quantity/Pack</label>
-                    <div class="col-sm-7">
-                        <input type="text" id="quantity" name="qtymed"  class="form-control" >
-                    </div>
-                </div>
-            </div>
-
             <div class="form-group text-center">
                         <div class="row">
                             <label class="col-sm-3 control-label">Staff</label>
@@ -323,15 +249,100 @@
                         </div>
                     </div>
 
+                    <?php
+                $i = 0;
+                $Lotid = $Lot["LotId"];
+                $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$Lotid";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) {
+                $data[] = $row;  
+                }
+                foreach($data as $key => $orderdetailid){
+
+                    $MedId = $orderdetailid["MedId"];
+                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                    $result = $conn->query($sqli);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;   
+                    }
+                    
+                    foreach($data as $key => $med){
+                        
+                   
+            ?>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Name" class="col-sm-3 control-label">Pictures</label>
+                        <div class="col-sm-7">
+                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Name" class="col-sm-3 control-label">Medicine</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine pack" class="col-sm-3 control-label">Unit/Pack</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Price/Pack</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_MedPrice" class="form-control" value="<?php echo $med["MedPrice"]; ?>" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_Qty" class="form-control" value="<?php echo $orderdetailid["Qty"]; ?>" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
+                    <div class="col-sm-7">
+                        <input type="number" name="qty<?php echo $i; ?>" class="form-control" value="0" min = "0" max = "<?php echo $orderdetailid["Qty"]; ?>" >
+                    </div>
+                </div>
+            </div>
+
+            <input type ="hidden" name = "MedId<?php echo $i; ?>" value = "<?php echo $med["MedId"];?>">
+
+            <?php
+                $i++;}}
+            ?>
+
+            
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_Withdraw" class="btn btn-success" value="Withdraw">
-                    <a href="main.php" class="btn btn-danger">Back</a>
+                    <input type="submit" name="btn_withdraw" class="btn btn-success" value="Withdraw">
+                    <a href="Lot.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
 
             
-
         </form>
 
     <script src="js/slim.js"></script>

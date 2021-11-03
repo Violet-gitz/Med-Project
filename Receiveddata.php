@@ -70,7 +70,6 @@
             $data[] = $row;   
         }
         foreach($data as $key => $Orderde)
-
         {
             
             $MedId = $Orderde["MedId"];
@@ -112,12 +111,8 @@
         $RecTime = date("Y-m-d h:i:sa");
         $RecDeli = $_REQUEST['txt_delivery'];
         $OrderStatus = "Received";
-        
-
         $LotStatus = "Avialable";
 
-       
-        
          if (empty($OrderId)) {
             $errorMsg = "Please Enter Lot Id";
         } else if (empty($staff)) {
@@ -126,7 +121,6 @@
             $errorMsg = "Please Enter Received Delivery";
         }  else 
 
-            
                 if (!isset($errorMsg)) {
 
                     $sql = "INSERT INTO tbl_received(OrderId,StaffId,RecDate,RecDeli) VALUES ('$OrderId',  '$staff', '$RecTime', '$RecDeli')";
@@ -143,6 +137,12 @@
                     }
                     foreach($data as $key => $orderdetailid){
                     $sumqtylot += $orderdetailid["Qty"];
+                    }
+                    
+                    $sql = "INSERT INTO tbl_lot(Qty, LotStatus) VALUES ('$sumqtylot', '$LotStatus')";
+                    if ($conn->query($sql) === TRUE) { 
+                    } else {
+                        echo "Error updating record: " . $conn->error;
                     }
 
                     $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
@@ -211,17 +211,11 @@
                             }
                         }
                     }
-
-                    $sql = "INSERT INTO tbl_lot(Qty, LotStatus) VALUES ('$sumqtylot', '$LotStatus')";
-                    if ($conn->query($sql) === TRUE) { 
-                    } else {
-                        echo "Error updating record: " . $conn->error;
-                    }
-                        header("refresh:1;main.php");
-                    }
+                        // header("refresh:1;main.php");
+                }
                 
-            } //catch (PDOException $e) {
-                //echo $e->getMessage();
+        } //catch (PDOException $e) {
+             //echo $e->getMessage();
                     
             
  
@@ -302,10 +296,6 @@
     
 
         <form method="post" class="form-horizontal mt-5" name="myform">
-
-        
-
-
 
             <div class="form-group text-center">
                 <div class="row">
@@ -460,7 +450,7 @@
                     <label for="Medicine Price" class="col-sm-3 control-label">MFD Date</label>
                     <div class="col-sm-1">
                     <input type="date"  name="mfd<?php echo $i;?>"
-                                        value="<?php echo date('Y-m-j'); ?>" required
+                                        value="<?php echo date('Y-m-j'); ?>" required 
                                         min="2021-3-22" max="2030-12-31">
                     </div>
                 </div>
