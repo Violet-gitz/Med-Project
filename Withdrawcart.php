@@ -1,9 +1,8 @@
 <?php
         include('connect.php');
         session_start();
-        // mainecho '<pre>';
-        // print_r($_SESSION);
-        // echo '<pre>';
+      
+       
         $MedId = $_REQUEST['testMedId'];
         $act = $_REQUEST['act'];
         $Quantity = $_REQUEST['quantity'];
@@ -33,7 +32,9 @@
                 $_SESSION['cart'][$MedId]=$MedPrice;
             }
         }*/
-        
+        print_r($_SESSION['cart'.$LotId]);
+        echo '<pre>';
+
       
     if (isset($_REQUEST['btn_withdraw'])) {
         $i = 0;   
@@ -159,7 +160,7 @@
     <?php } ?>
 
   
-    <form name="frmcart" method="post" >
+    <form name="frmcart" method="post">
       <table width="600" border="0" align="center" class="square">
         <tr>
           <td colspan="5" bgcolor="#CCCCCC">
@@ -185,25 +186,18 @@
             $data[] = $row;  
             }
             foreach($data as $key => $Med){
-		    $sum = $Med['MedPrice'] * $Quantity;
-		    $total += $sum;
             echo "<tr>";
             echo "<td width='334'>" . $Med["MedName"] . "</td>";
             echo "<td width='57' align='right'>";  
             echo "<input type='text' name= $Med[MedId]; value='$Quantity' disabled size='2'/></td>";
-          
-            
-            echo "<td width='46' align='center'><a href='Withdrawcart.php?MedId=$MedId&act=remove&quantity=0'>Remove</a></td>";
+            echo "<td width='46' align='center'><a href='Withdrawcart.php?testMedId=$MedId&act=remove&quantity=0&valueid=$LotId'>Remove</a></td>";
             echo "</tr>";
             }
             echo "<tr>";
-            //echo "<td colspan='3' bgcolor='#CEE7FF' align='center'><b>ราคารวม</b></td>";
-          
-            //echo "<td align='left' bgcolor='#CEE7FF'></td>";
+           
         }
     }
-    echo "<td align = 'right'>Total Price <input type = 'text' name ='total' readonly value = '$total'  ></td>";
-            //echo "<td align='right' bgcolor='#CEE7FF'>"."<b>".number_format($total,2)."</b>"."</td>";
+  
             echo "</tr>";
     ?>
     <tr>
@@ -211,10 +205,10 @@
     </tr>
     </table>
                     <div class="container">
-                        <label class="col-sm-3 control-label">Dealer</label>
+                        <label class="col-sm-3 control-label">Staff</label>
                             <select name="selDealer">       
                                 <?php 
-                                    $sql = 'SELECT * FROM tbl_dealer';
+                                    $sql = 'SELECT * FROM tbl_staff';
                                     $result = $conn->query($sql);
                                     $data = array();
                                     while($row = $result->fetch_assoc()) {
@@ -222,7 +216,7 @@
                                     }
                                     foreach($data as $key => $dealer){                  
                                 ?>
-                                    <option value ="<?php echo $dealer["DealerId"];?>"><?php echo $dealer["DealerName"];?></option>
+                                    <option value ="<?php echo $dealer["StaffId"];?>"><?php echo $dealer["StaffName"];?></option>
                                 <?php } ?>      
                             </select>
                             <div class="col-sm-9">

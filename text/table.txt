@@ -102,16 +102,25 @@ create table tbl_receiveddetail
 
 create table tbl_withdraw
 (
-	WithdrawId int not null Auto_Increment,
-	LotId int not null,
-	MedId int not null,
+	WithId int not null Auto_Increment,
 	StaffId int,
-	Qty int,
+	Qtysum int,
 	WithDate varchar(255),
-	Primary key (WithdrawId),
-	Foreign key (StaffId) REFERENCES tbl_staff(StaffId),
+	Primary key (WithId),
+	Foreign key (StaffId) REFERENCES tbl_staff(StaffId)	
+)
+
+create table tbl_withdrawdetail
+(
+	WithId int,
+	MedId int,
+	LotId int,
+	Qty int,
+	Mfd varchar(255),
+	Exd varchar(255),
+	Foreign key (WithId) REFERENCES tbl_withdraw(WithId),
 	Foreign key (MedId) REFERENCES tbl_med(MedId),
-	Foreign key (LotId) REFERENCES tbl_lot(LotId)		
+	Foreign key (LotId) REFERENCES tbl_lot(LotId)
 )
 
 create table tbl_writeoff
