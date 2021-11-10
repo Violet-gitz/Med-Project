@@ -104,12 +104,32 @@
                                     echo "Error updating record: " . $conn->error;
                                 }
                                     $qty += $Quantity;
+                                  
                                     
                                 $sql = "UPDATE tbl_withdraw SET Qtysum = $qty WHERE WithId = $WithId"; 
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {
                                     echo "Error updating record: " . $conn->error;
                                 }  
+
+                                $sql = "SELECT * FROM tbl_med WHERE MedId = $MedId";
+                                $result = $conn->query($sql);
+                                $data = array();
+                                
+                                while($row = $result->fetch_assoc()) 
+                                {
+                                    $data[] = $row;  
+                                }
+                                foreach($data as $key => $Med)
+                                {
+                                    $MedTotal = $Med["MedTotal"];
+                                    $Medsum = $MedTotal - $Quantity;
+                                    $sql = "UPDATE tbl_med SET MedTotal = $Medsum WHERE MedId = $MedId"; 
+                                    if ($conn->query($sql) === TRUE) { 
+                                    } else {
+                                        echo "Error updating record: " . $conn->error;
+                                    }
+                                }
 
                                 $sql = "SELECT * FROM tbl_lot WHERE LotId = $Lotid";
                                 $result = $conn->query($sql);
@@ -252,7 +272,7 @@
     </form>
 
 
-    <form action = "Withdrawcart1.php" method="post">
+    <form action = "Withdraw1.php" method="post">
         <input type="submit" name="btn_lotcallback" class="btn btn-success" value="listorder">
         <input type ="hidden" name = "lotcallback" value = "<?php echo $LotId;?>">
     </from>

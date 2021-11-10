@@ -122,10 +122,11 @@
                                     $Qty = $lot["Qty"];
                                     if ($Qty<=0)
                                     {
-                                        $LotId = $lot["LotId"];
-                                        $status = "Not Available"; 
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
+                                        // $LotId = $lot["LotId"];
+                                        // $status = "Not Available"; 
+                                        // $buttonStatus = "disabled";
+                                        // echo $buttonStatus;
+
                                         // $sql = "UPDATE tbl_lot SET LotStatus = $status WHERE LotId = $LotId"; 
                                         // if ($conn->query($sql) === TRUE) { 
                                         // } 

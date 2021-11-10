@@ -187,15 +187,29 @@
                                 <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $Med["MedPath"]; ?>"> </div> 
                             </div>
                             <div>
-                                <!-- <h5><?php echo "Med Id " . $Med["MedId"]; ?></h5>  -->
+                                <?php  
+                                    $withqty = 0 ;
+                                    $WithId = $Lot["LotId"];
+                                    $sql = "SELECT* FROM tbl_withdrawdetail WHERE LotId = $Lotid and MedId = $MedId";
+                                    $result = $conn->query($sql);
+                                    $data = array();
+                                    while($row = $result->fetch_assoc()) 
+                                    {
+                                        $data[] = $row;   
+                                    }
+                                    foreach($data as $key => $with)
+                                        $withqty += $with["Qty"];
+                                        $medqty = $Lot["Qty"];
+                                        $sumqty = $medqty - $withqty;           
+                                ?>
                                 <h5><?php echo "Name  " . $Med["MedName"]; ?></h5> 
                                 <h5><?php echo "Description  " . $Med["MedDes"]; ?></h5> 
                                 <h5><?php echo "Category  " . $Med["MedCate"]; ?></h5> 
                                 <h5><?php echo "Volumn  " . $Med["MedVolumn"]; ?></h5> 
                                 <h5><?php echo "Unit  " . $Med["MedUnit"]; ?></h5> 
                                 <h5><?php echo "Unit Per Pack  " . $Med["MedPack"] . " Unit"; ?></h5> 
-                                <h5><?php echo "Price Per Pack  " . $Med["MedPrice"] . " Bath"; ?></h5> 
-                                <input type="number" name="quantity" min="1" max="1000" value= "1"></p>
+                                <h5><?php echo "Quantity  " . $sumqty . " Pack"; ?></h5> 
+                                <input type="number" name="quantity" min="1" max="<?php echo $sumqty; ?>" value= "1"></p>
                                 <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
                                 <input type="submit" class = "btn btn-info" value = "Add to cart"> 
