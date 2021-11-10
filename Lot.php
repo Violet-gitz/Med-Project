@@ -76,17 +76,10 @@
 
 
 <body>
-
     <?php
             include('slidebar.php');
             
     ?>
-
-
-  
-
-<body>
-
 
 <div class="container-sm">
     
@@ -126,11 +119,20 @@
                         <form method="POST" action="Withdraw.php">
                             <button type="submit" value = "<?php echo $lot["LotId"]; ?>" name = "withdraw" class = "btn btn-success"
                                 <?php 
-                                    // if ($Qty<=0)
-                                    // {
-                                    //     $buttonStatus = "disabled";
-                                    //     echo $buttonStatus;
-                                    // }
+                                    $Qty = $lot["Qty"];
+                                    if ($Qty<=0)
+                                    {
+                                        $LotId = $lot["LotId"];
+                                        $status = "Not Available"; 
+                                        $buttonStatus = "disabled";
+                                        echo $buttonStatus;
+                                        // $sql = "UPDATE tbl_lot SET LotStatus = $status WHERE LotId = $LotId"; 
+                                        // if ($conn->query($sql) === TRUE) { 
+                                        // } 
+                                        // else {
+                                        // echo "Error updating record: " . $conn->error;
+                                        // }
+                                    }
                                     // else if ($LotStatus == "Writeoff")
                                     // {
                                     //     $buttonStatus = "disabled";

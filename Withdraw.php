@@ -165,10 +165,7 @@
                             $data[] = $row;   
                         }
                         foreach($data as $key => $Lot)
-
-                        
-
-                        {         
+                        { 
                             $MedId = $Lot["MedId"];
                             $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
                             $result = $conn->query($sqli);

@@ -2,7 +2,6 @@
         include('connect.php');
         session_start();
       
-       
         $MedId = $_REQUEST['testMedId'];
         $act = $_REQUEST['act'];
         $Quantity = $_REQUEST['quantity'];
@@ -32,13 +31,13 @@
                 $_SESSION['cart'][$MedId]=$MedPrice;
             }
         }*/
-        print_r($_SESSION['cart'.$LotId]);
-        echo '<pre>';
 
+        // print_r($_SESSION['cart'.$LotId]);
+        // echo '<pre>';
       
     if (isset($_REQUEST['btn_withdraw'])) {
         $i = 0;   
-        $Lotid = $_REQUEST['txt_LotId'];
+        $Lotid = $_REQUEST['LotId'];
         $sql ="SELECT * FROM tbl_receiveddetail WHERE $Lotid = LotId";
         $result = $conn->query($sql);
         $data = array();
@@ -74,38 +73,68 @@
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
-                
-                    $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId=$Lotid";
-                    $result = $conn->query($sql);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                    $data[] = $row;  
-                    }
-                    foreach($data as $key => $Rec){
+                            $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId  DESC LIMIT 1";
+                            $result = mysqli_query($conn, $query); 
+                            $row = mysqli_fetch_array($result);
+                            $WithId  = $row["WithId"];
+                        foreach($_SESSION['withdraw'.$Lotid] as $MedId=>$Quantity)
+                        {
+                            $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId = $Lotid and MedId = $MedId";
+                            $result = $conn->query($sql);
+                            $data = array();
+                            
+                            while($row = $result->fetch_assoc()) 
+                            {
+                                $data[] = $row;  
+                            }
+                            foreach($data as $key => $Rec)
+                            {          
+                                $MedId = $Rec["MedId"];
+                                $LotId = $Rec["LotId"];
+                                $Mfd = $Rec["Mfd"];
+                                $Exd = $Rec["Exd"];
+                                
+                                $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$LotId', '$Quantity', '$Mfd', '$Exd')";
+                            
+                                // echo $MedId;
+                                // echo $sql;
+                            
+                                if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw'.$Lotid]);
+                                } else {
+                                    echo "Error updating record: " . $conn->error;
+                                }
+                                    $qty += $Quantity;
+                                    
+                                $sql = "UPDATE tbl_withdraw SET Qtysum = $qty WHERE WithId = $WithId"; 
+                                if ($conn->query($sql) === TRUE) { 
+                                } else {
+                                    echo "Error updating record: " . $conn->error;
+                                }  
 
-                    $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId  DESC LIMIT 1";
-                    $result = mysqli_query($conn, $query); 
-                    $row = mysqli_fetch_array($result);
-                    $WithId  = $row["WithId"];
-
-                        $MedId = $_REQUEST["MedId".$i];
-                        $LotId = $Rec["LotId"];
-                        $QTY = $_REQUEST["qty".$i];
-                        $Mfd = $Rec["Mfd"];
-                        $Exd = $Rec["Exd"];
-                        
-                        $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$LotId', '$QTY', '$Mfd', '$Exd')";
-                        $i++;
-                       
-                        if ($conn->query($sql) === TRUE) { 
-                        } else {
-                            echo "Error updating record: " . $conn->error;
-                        }
+                                $sql = "SELECT * FROM tbl_lot WHERE LotId = $Lotid";
+                                $result = $conn->query($sql);
+                                $data = array();
+                                
+                                while($row = $result->fetch_assoc()) 
+                                {
+                                    $data[] = $row;  
+                                }
+                                foreach($data as $key => $Lot)
+                                {
+                                    $Lotqty = $Lot["Qty"];
+                                    $sum = $Lotqty - $Quantity;
+                                    $sql = "UPDATE tbl_lot SET Qty = $sum WHERE LotId = $LotId"; 
+                                    if ($conn->query($sql) === TRUE) { 
+                                    } else {
+                                        echo "Error updating record: " . $conn->error;
+                                    }
+                                }
+                            }
                         // header("refresh:1;main.php");
-                    }
+                 
                 }     
         }
-    }
+    }}
 
 ?>
      
@@ -159,7 +188,6 @@
         </div>
     <?php } ?>
 
-  
     <form name="frmcart" method="post">
       <table width="600" border="0" align="center" class="square">
         <tr>
@@ -168,9 +196,7 @@
         </tr>
         <tr>
           <td bgcolor="#EAEAEA">Order</td>
-         
           <td align="center" bgcolor="#EAEAEA">Quantity</td>
-         
           <td align="center" bgcolor="#EAEAEA">Remove</td>
         </tr>
     <?php
@@ -194,10 +220,8 @@
             echo "</tr>";
             }
             echo "<tr>";
-           
         }
     }
-  
             echo "</tr>";
     ?>
     <tr>
@@ -206,7 +230,7 @@
     </table>
                     <div class="container">
                         <label class="col-sm-3 control-label">Staff</label>
-                            <select name="selDealer">       
+                            <select name="selstaff">       
                                 <?php 
                                     $sql = 'SELECT * FROM tbl_staff';
                                     $result = $conn->query($sql);
@@ -221,6 +245,7 @@
                             </select>
                             <div class="col-sm-9">
                                 <input type="submit" name = "btn_withdraw"class = "btn btn-info" value = "Withdraw">
+                                <input type ="hidden" name = "LotId" value = "<?php echo $LotId;?>">
                             </div>
                         
                     </div>           
