@@ -149,6 +149,8 @@
                                         echo "Error updating record: " . $conn->error;
                                     }
                                 }
+
+                               
                             }
                         // header("refresh:1;main.php");
                  

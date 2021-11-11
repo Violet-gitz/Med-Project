@@ -40,6 +40,8 @@
         }
       
     }*/
+
+
     
 ?>
 <!DOCTYPE html>
@@ -97,17 +99,26 @@
 
         <tbody>
             <?php 
-                
                     $sql = "SELECT * FROM tbl_lot";
-
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
                         $data[] = $row;   
                     }
-                    foreach($data as $key => $lot){ 
-                         
-                            
+                    foreach($data as $key => $lot){
+                        $checkqty = $lot["Qty"];
+                        $LotId = $lot["LotId"];
+                        $status = "Not Available"; 
+                        
+                        if($checkqty == '0')
+                        {
+                            $sql = "UPDATE tbl_lot SET LotStatus = '$status' WHERE LotId = $LotId"; 
+                            // echo $sql;
+                            if ($conn->query($sql) === TRUE) { 
+                            } else {
+                                echo "Error updating record: " . $conn->error;
+                            }
+                        }
             ?>
 
                 <tr>
@@ -127,12 +138,7 @@
                                         // $buttonStatus = "disabled";
                                         // echo $buttonStatus;
 
-                                        // $sql = "UPDATE tbl_lot SET LotStatus = $status WHERE LotId = $LotId"; 
-                                        // if ($conn->query($sql) === TRUE) { 
-                                        // } 
-                                        // else {
-                                        // echo "Error updating record: " . $conn->error;
-                                        // }
+                                      
                                     }
                                     // else if ($LotStatus == "Writeoff")
                                     // {
@@ -192,6 +198,7 @@
     </table>
 </div>
 
+    
 
   
 </body>
