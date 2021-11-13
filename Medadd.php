@@ -23,6 +23,7 @@
         $MedUnit = $_REQUEST['dropdownlist-MedUnit'];
         $MedPack = $_REQUEST['txt_MedPack'];
         $MedPrice = $_REQUEST['txt_MedPrice'];
+        $MedLow = $_REQUEST['txt_Medlow'];
         $MedTotal = 0;
         $MedStatus = "Out of stock";
      
@@ -47,6 +48,8 @@
             $errorMsg = "Please Enter Medicine Pack";
         }else if (empty($MedPrice)) {
             $errorMsg = "Please Enter Medicine Price";
+        }else if (empty($MedLow)) {
+            $errorMsg = "Please Enter Medicine Minimum purchase";
         }else if (empty($MedStatus)) {
             $errorMsg = "Please Enter Medicine Status";
         }else {
@@ -58,7 +61,7 @@
             $errorMsg =  "Medicine already exists";
         }
         else {
-        $sql = "INSERT INTO tbl_med(MedName , MedCate , MedVolumn , MedUnit , MedPack , MedPrice , MedDes , MedStatus , MedTotal , MedPath ) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedDes', '$MedStatus', '$MedTotal', '$MedPath')";
+        $sql = "INSERT INTO tbl_med(MedName , MedCate , MedVolumn , MedUnit , MedPack , MedPrice , MedLow , MedDes , MedStatus , MedTotal , MedPath ) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedStatus', '$MedTotal', '$MedPath')";
         if ($conn->query($sql) === TRUE){
             $insertMsg = "Insert Successfully...";
             header("refresh:1;Medshow.php");
@@ -128,118 +131,135 @@
 
 
         <form method="post" class="form-horizontal mt-5" enctype="multipart/form-data">
-
-            
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicinename" class="col-sm-3 control-label">Medicine Name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedName" class="form-control" placeholder="Enter Medicine Name...">
+            <table class="table table-sm">
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Medicinename" class="col-sm-3 control-label">Medicine Name</label></td>
+                            <div class="col-sm-7">
+                                <td><input type="text" name="txt_MedName" class="form-control" placeholder="Enter Medicine Name..."></td>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </tr>
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicinedes" class="col-sm-3 control-label">Description</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedDes" class="form-control" placeholder="Enter Medicine Description...">
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Medicinedes" class="col-sm-3 control-label">Description</label></td>
+                            <div class="col-sm-7">
+                                <td><input type="text" name="txt_MedDes" class="form-control" placeholder="Enter Medicine Description..."></td>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </tr>
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicineprcie" class="col-sm-3 control-label">Price</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedPrice" class="form-control" placeholder="Enter Medicine Price...">
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Medicineprcie" class="col-sm-3 control-label">Price per Pack</label></td>
+                            <div class="col-sm-7">
+                                <td><input type="text" name="txt_MedPrice" class="form-control" placeholder="Enter Medicine Price..."></td>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </tr>
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicinepack" class="col-sm-3 control-label">Pack</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedPack" class="form-control" placeholder="Enter Medicine Pack...">
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Medicinepack" class="col-sm-3 control-label">Unit per Pack</label></td>
+                            <div class="col-sm-7">
+                                <td><input type="text" name="txt_MedPack" class="form-control" placeholder="Enter Medicine Pack..."></td>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </tr>
 
-            <div class="form-group text-center">
-                <div class="row">
-                <label for="Category" class="col-sm-3 control-label">Category</label>
-                    <div class="col-sm-1">
-                        <select name = "dropdownlist-MedCate">
-                            <option value="Select">Select</option> 
-                            <option value="Vitamins">Vitamins</option>
-                            <option value="Antipyretics">Antipyretics</option>
-                            <option value="Antibiotics">Antibiotics</option>
-                            <option value="Mood stabilizers">Mood stabilizers</option>
-                            
-
-                        </select><br><br>
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Medicinelow" class="col-sm-3 control-label">Minimum purchase</label></td>
+                            <div class="col-sm-7">
+                                <td><input type="text" name="txt_Medlow" class="form-control" placeholder="Enter Medicine Minimum purchase..."></td>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </tr>
 
-            <div class="form-group text-center">
-                <div class="row">
-                <label for="Volumn" class="col-sm-3 control-label">Volumn</label>
-                    <div class="col-sm-1">
-                        <select name = "dropdownlist-MedVolumn">
-
-                            <option value="Select">Select</option> 
-                            <option value="100 CC">100 CC</option>
-                            <option value="500 CC">500 CC</option>
-                            <option value="1000 CC">1000 CC</option>
-                            <option value="250 MG">250 MG</option>
-                            <option value="500 MG">500 MG</option>
-                            <option value="1000 MG">1000 MG</option>
-                            
-
-                        </select><br><br>
+                </tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Category" class="col-sm-3 control-label">Category</label></td>
+                            <div class="col-sm-1">
+                                <td><select name = "dropdownlist-MedCate">
+                                    <option value="Select">Select</option> 
+                                    <option value="Vitamins">Vitamins</option>
+                                    <option value="Antipyretics">Antipyretics</option>
+                                    <option value="Antibiotics">Antibiotics</option>
+                                    <option value="Mood stabilizers">Mood stabilizers</option>
+                                </select><br><br></td>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-             <div class="form-group text-center">
-                <div class="row">
-                <label for="Unit" class="col-sm-3 control-label">Unit</label>
-                    <div class="col-sm-1">
-                        <select name = "dropdownlist-MedUnit">
-                        
-                            <option value="Select">Select</option> 
-                            <option value="Capsule">Pill</option>
-                            <option value="Tablet">Tablet</option>
-                            <option value="Capsule">Capsule</option>  
-                        
-                        </select><br><br>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group text-center">
-                <div class="row">
+                </tr>
                 
-                    <div class="col-sm-3 control-label">
-                        Select image to upload<br>
-                        
-                        <input type="file" name="file">
-                        
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Volumn" class="col-sm-3 control-label">Volumn per unit</label></td>
+                            <div class="col-sm-1">
+                                <td><select name = "dropdownlist-MedVolumn">
+                                    <option value="Select">Select</option> 
+                                    <option value="100 CC">100 CC</option>
+                                    <option value="500 CC">500 CC</option>
+                                    <option value="1000 CC">1000 CC</option>
+                                    <option value="250 MG">250 MG</option>
+                                    <option value="500 MG">500 MG</option>
+                                    <option value="1000 MG">1000 MG</option>
+                                </select><br><br></td>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </tr>
 
-            <div class="form-group text-center">
-                <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
-                    <a href="Medshow.php" class="btn btn-danger">Back</a>
-                </div>
-            </div>
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Unit" class="col-sm-3 control-label">Unit</label></td>
+                            <div class="col-sm-1">
+                                <td><select name = "dropdownlist-MedUnit">
+                                    <option value="Select">Select</option> 
+                                    <option value="Capsule">Pill</option>
+                                    <option value="Tablet">Tablet</option>
+                                    <option value="Capsule">Capsule</option>  
+                                </select><br><br></td>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
 
+                </tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                        
+                            <td><div class="col-sm-3 control-label">
+                                Select image to upload<br></td>
+                                
+                                <td><input type="file" name="file"></td>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+         </table>
 
+                    <div class="form-group text-center">
+                        <div class="col-md-12 mt-3">
+                            <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
+                            <a href="Medshow.php" class="btn btn-danger">Back</a>
+                        </div>
+                    </div>
         </form>
 
     <script src="js/slim.js"></script>

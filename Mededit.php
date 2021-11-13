@@ -38,6 +38,7 @@
         $MedUnit = $_REQUEST['dropdownlist-MedUnit'];
         $MedPack = $_REQUEST['qtyPack'];
         $MedPrice = $_REQUEST['qtyPrice'];
+        $MedLow = $_REQUEST['txt_MedLow'];
         $MedTotal = $_REQUEST['txt_MedTotal'];
         $MedStatus = $_REQUEST['dropdownlist-MedStatus'];
     
@@ -60,7 +61,7 @@
         }  else {
             try {
                 if (!isset($errorMsg)) {
-                    $update_stmt = $db->prepare("UPDATE tbl_med SET MedName = :1name, MedCate = :2name, MedVolumn = :3name, MedUnit = :4name, MedPack = :5name, MedPrice = :6name, MedTotal = :7name,  MedStatus = :8name, MedDes = :9name WHERE MedId = :MedId");
+                    $update_stmt = $db->prepare("UPDATE tbl_med SET MedName = :1name, MedCate = :2name, MedVolumn = :3name, MedUnit = :4name, MedPack = :5name, MedPrice = :6name, MedTotal = :7name,  MedStatus = :8name, MedDes = :9name, MedLow = :10name WHERE MedId = :MedId");
                     $update_stmt->bindParam(':1name', $MedName);
                     $update_stmt->bindParam(':2name', $MedCate);
                     $update_stmt->bindParam(':3name', $MedVolumn);
@@ -70,6 +71,7 @@
                     $update_stmt->bindParam(':7name', $MedTotal);
                     $update_stmt->bindParam(':8name', $MedStatus); 
                     $update_stmt->bindParam(':9name', $MedDes); 
+                    $update_stmt->bindParam(':10name', $MedLow); 
                     $update_stmt->bindParam(':MedId', $id);
 
                     if ($update_stmt->execute()) {
@@ -149,124 +151,153 @@
     
     
         <form method="post" class="form-horizontal mt-5">
+            <table class="table table-sm">
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                        <td><label for="MedicineName" class="col-sm-3 control-label">Medicine Name</label></td>
+                        <div class="col-sm-7">
+                            <td><input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>"></td>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="MedicineDes" class="col-sm-3 control-label">Medicine Description</label></td>
+                        <div class="col-sm-7">
+                        <td><input type="text"  name="txt_MedDes" class="form-control" value="<?php echo $med["MedDes"]?>"></td>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="Medicineprcie" class="col-sm-3 control-label">Medicine Price/Pack</label></td>
+                        <div class="col-sm-1">
+                        <td><input type="number" id="quantity" name="qtyPrice" class="form-control" min="1" max="9999" value="<?php echo $med["MedPrice"]?>"></td>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="Medicinepack" class="col-sm-3 control-label">Medicine Unit/Pack</label></td>
+                        <div class="col-sm-1">
+                        <td><input type="number" id="quantity" name="qtyPack" class="form-control" min="1" max="9999" value="<?php echo $med["MedPack"]?>"></td>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="MedTotal" class="col-sm-3 control-label">Minimum purchase</label></td>
+                        <div class="col-sm-7">
+                        <td><input type="number" name="txt_MedLow" class="form-control" value="<?php echo $med["MedLow"]; ?>"></td>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="MedTotal" class="col-sm-3 control-label">Medicine Total</label></td>
+                        <div class="col-sm-7">
+                        <td><input type="number" name="txt_MedTotal" class="form-control" value="<?php echo $med["MedTotal"]; ?>"></td>
+                        </div>
+                    </div>
+                </div>
+            </tr>
             
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="MedicineName" class="col-sm-3 control-label">Medicine Name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>">
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="Tel" class="col-sm-3 control-label">Category</label></td>
+                        <div class="col-sm-1">
+                        <td><select name = "dropdownlist-MedCate">
+                                <option value="<?php echo $med["MedCate"]; ?>"><?php echo $med["MedCate"]; ?></option> 
+                                <option value="Vitamins">Vitamins</option>
+                                <option value="Antipyretics">Antipyretics</option>
+                                <option value="Antibiotics">Antibiotics</option>
+                                <option value="OMood stabilizers">Mood stabilizers</option>
+                                
+
+                            </select><br><br></td>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </tr>
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="MedicineDes" class="col-sm-3 control-label">Medicine Description</label>
-                    <div class="col-sm-7">
-                        <input type="text"  name="txt_MedDes" class="form-control" value="<?php echo $med["MedDes"]?>">
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="Tel" class="col-sm-3 control-label">Volumn</label></td>
+                        <div class="col-sm-1">
+                        <td><select name = "dropdownlist-MedVolumn">
+
+                                <option value="<?php echo $med["MedVolumn"]; ?>"><?php echo $med["MedVolumn"]; ?></option> 
+                                <option value="100 CC">100 CC</option>
+                                <option value="500 CC">500 CC</option>
+                                <option value="1000 CC">1000 CC</option>
+                                <option value="250 MG">250 MG</option>
+                                <option value="500 MG">500 MG</option>
+                                <option value="1000 MG">1000 MG</option>
+                                
+
+                            </select><br><br></td>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </tr>
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicineprcie" class="col-sm-3 control-label">Medicine Price/Pack</label>
-                    <div class="col-sm-1">
-                        <input type="number" id="quantity" name="qtyPrice" min="1" max="9999" value="<?php echo $med["MedPrice"]?>">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicinepack" class="col-sm-3 control-label">Medicine Unit/Pack</label>
-                    <div class="col-sm-1">
-                    <input type="number" id="quantity" name="qtyPack" min="1" max="9999" value="<?php echo $med["MedPack"]?>">
-                    </div>
-                </div>
-            </div>
-
-            
-
-            <div class="form-group text-center">
-                <div class="row">
-                <label for="Tel" class="col-sm-3 control-label">Category</label>
-                    <div class="col-sm-1">
-                        <select name = "dropdownlist-MedCate">
-                            <option value="<?php echo $med["MedCate"]; ?>"><?php echo $med["MedCate"]; ?></option> 
-                            <option value="Vitamins">Vitamins</option>
-                            <option value="Antipyretics">Antipyretics</option>
-                            <option value="Antibiotics">Antibiotics</option>
-                            <option value="OMood stabilizers">Mood stabilizers</option>
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="Tel" class="col-sm-3 control-label">Unit</label></td>
+                        <div class="col-sm-1">
+                        <td><select name = "dropdownlist-MedUnit">
                             
-
-                        </select><br><br>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                <label for="Tel" class="col-sm-3 control-label">Volumn</label>
-                    <div class="col-sm-1">
-                        <select name = "dropdownlist-MedVolumn">
-
-                            <option value="<?php echo $med["MedVolumn"]; ?>"><?php echo $med["MedVolumn"]; ?></option> 
-                            <option value="100 CC">100 CC</option>
-                            <option value="500 CC">500 CC</option>
-                            <option value="1000 CC">1000 CC</option>
-                            <option value="250 MG">250 MG</option>
-                            <option value="500 MG">500 MG</option>
-                            <option value="1000 MG">1000 MG</option>
+                                <option value="<?php echo $med["MedUnit"]; ?>"><?php echo $med["MedUnit"]; ?></option> 
+                                <option value="Drops">Drops</option>
+                                <option value="Tablet">Tablet</option>
+                                <option value="Capsule">Capsule</option>
                             
-
-                        </select><br><br>
+                            </select><br><br></td>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </tr>
 
-             <div class="form-group text-center">
-                <div class="row">
-                <label for="Tel" class="col-sm-3 control-label">Unit</label>
-                    <div class="col-sm-1">
-                        <select name = "dropdownlist-MedUnit">
-                        
-                            <option value="<?php echo $med["MedUnit"]; ?>"><?php echo $med["MedUnit"]; ?></option> 
-                            <option value="Drops">Drops</option>
-                            <option value="Tablet">Tablet</option>
-                            <option value="Capsule">Capsule</option>
-                        
-                        </select><br><br>
+
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                    <td><label for="Tel" class="col-sm-3 control-label">Status</label></td>
+                        <div class="col-sm-1">
+                        <td><select name = "dropdownlist-MedStatus">
+                                <option value="<?php echo $med["MedStatus"]; ?>"><?php echo $med["MedStatus"]; ?></option> 
+                                <option value="Avialable">Avialable</option>
+                                <option value="Not use">Not use</option>
+                                <option value="Out of stock">Out of stock</option>
+                                <option value="Re stock">Re stock</option>
+                                
+
+                            </select><br><br></td>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </tr>
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="MedTotal" class="col-sm-3 control-label">Medicine Total</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedTotal" class="form-control" value="<?php echo $med["MedTotal"]; ?>">
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group text-center">
-                <div class="row">
-                <label for="Tel" class="col-sm-3 control-label">Status</label>
-                    <div class="col-sm-1">
-                        <select name = "dropdownlist-MedStatus">
-                            <option value="<?php echo $med["MedStatus"]; ?>"><?php echo $med["MedStatus"]; ?></option> 
-                            <option value="Avialable">Avialable</option>
-                            <option value="Not use">Not use</option>
-                            <option value="Out of stock">Out of stock</option>
-                            <option value="Re stock">Re stock</option>
-                            
-
-                        </select><br><br>
-                    </div>
-                </div>
-            </div>
+        </table>
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">

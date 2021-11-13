@@ -89,27 +89,31 @@
         <thead>
             <tr>
                 <th>Lot Id</th>
+                <th>Medicine</th>
+                <th>Pictures</th>
                 <th>Quantity</th>
                 <th>Status</th>
-                <th>Withdraw</th>
-                <th>Write off </th>
+                <th>Action</th>
+                <th>backup </th>
                 <th>Claim</th> 
             </tr>
         </thead>
 
         <tbody>
             <?php 
-                    $sql = "SELECT * FROM tbl_lot";
+                    $sql = "SELECT tbl_lot.LotId,tbl_lot.Qty,tbl_lot.LotStatus,tbl_receiveddetail.RecId,tbl_receiveddetail.MedId,tbl_receiveddetail.Mfd,tbl_receiveddetail.Exd 
+                    FROM tbl_lot
+                    INNER JOIN tbl_receiveddetail ON tbl_lot.LotId = tbl_receiveddetail.LotId";
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
                         $data[] = $row;   
                     }
                     foreach($data as $key => $lot){
+
                         $checkqty = $lot["Qty"];
                         $LotId = $lot["LotId"];
                         $status = "Not Available"; 
-                        
                         if($checkqty == '0')
                         {
                             $sql = "UPDATE tbl_lot SET LotStatus = '$status' WHERE LotId = $LotId"; 
@@ -119,38 +123,69 @@
                                 echo "Error updating record: " . $conn->error;
                             }
                         }
+
+                    $MedId = $lot["MedId"];
+                    $sql = "SELECT* FROM tbl_med WHERE MedId = $MedId";
+                    $result = $conn->query($sql);
+                    $data = array();
+                        while($row = $result->fetch_assoc()) 
+                        {
+                            $data[] = $row;  
+                        }
+                        foreach($data as $key => $Med){
+                        
+                      
             ?>
 
                 <tr>
                     <td><?php echo $lot["LotId"]; ?></td>
+                    <td><?php echo $Med["MedName"]; ?></td>
+                    <td><?php echo '<img style = "width:100px;height:100px"  src="upload/'. $Med["MedPath"]; ?>"></td>
                     <td><?php echo $lot["Qty"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
-                    
+
                     <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="Withdraw.php?withdraw=<?php echo $lot["LotId"]; ?>">Wtihdraw</a>
+
+                                <form method="POST" action="Writeoff.php">
+                                    <a class="dropdown-item" href="Writeoff.php?Write=<?php echo $lot["LotId"]; ?>">Writeoff</a>
+                                    <input type ="hidden" name ='Write' value ="<?php echo $lot["LotId"]; ?>">
+                                </form>
+
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </td>
+                    
+                    <!-- <td>
                         <form method="POST" action="Withdraw.php">
                             <button type="submit" value = "<?php echo $lot["LotId"]; ?>" name = "withdraw" class = "btn btn-success"
                                 <?php 
                                     $Qty = $lot["Qty"];
                                     if ($Qty<=0)
                                     {
-                                        // $LotId = $lot["LotId"];
-                                        // $status = "Not Available"; 
-                                        // $buttonStatus = "disabled";
-                                        // echo $buttonStatus;
+                                        $LotId = $lot["LotId"];
+                                        $status = "Not Available"; 
+                                        $buttonStatus = "disabled";
+                                        echo $buttonStatus;
 
                                       
                                     }
-                                    // else if ($LotStatus == "Writeoff")
-                                    // {
-                                    //     $buttonStatus = "disabled";
-                                    //     echo $buttonStatus;
-                                    // }
+                                    else if ($LotStatus == "Writeoff")
+                                    {
+                                        $buttonStatus = "disabled";
+                                        echo $buttonStatus;
+                                    }
                                 ?> 
                             >Withdraw</button>    
                         </form>
-                    </td>
+                    </td> -->
 
-                 
                     <!-- <td>
                         <form method = "POST" action ="Writeoff.php">
                             <button type = "submit" value ="<?php echo $lot["LotId"]; ?>" name = "Write" class = "btn btn-success"
@@ -169,8 +204,8 @@
                             >Write-off</button>
                         </form>
                     </td> -->
-<!-- 
-                    <td>
+
+                    <!-- <td>
                         <form method = "POST" action = "Claim.php">
                             <button type ="submit" value = "<?php echo $lot["LotId"]; ?>" name = "Claim" class = "btn btn-warning"
                                 <?php
@@ -191,14 +226,16 @@
 
                 </tr>
 
-                <?php }  ?>
+                <?php } } ?>
             
             
         </tbody>
     </table>
 </div>
 
-    
+    <script src="js/slim.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.js"></script>
 
   
 </body>

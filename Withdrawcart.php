@@ -6,21 +6,23 @@
         $act = $_REQUEST['act'];
         $Quantity = $_REQUEST['quantity'];
         $LotId = $_REQUEST['valueid'];
-        if($act=='add' && !empty($MedId))
+        if($act=='add' && !empty($MedId) && !empty($LotId))
         {
-            if(isset($_SESSION['withdraw'.$LotId][$MedId]))
-            {
-                $_SESSION['withdraw'.$LotId][$MedId]+=(int)$Quantity;    
+            if(isset($_SESSION['withdraw'][$LotId]))
+            { 
+                $_SESSION['withdraw'][$LotId][2]+=(int)$Quantity;   
             }
             else
             {
-                $_SESSION['withdraw'.$LotId][$MedId]=(int)$Quantity;  
+                $_SESSION['withdraw'][$LotId][0]=$LotId;   
+                $_SESSION['withdraw'][$LotId][1]=(int)$MedId;   
+                $_SESSION['withdraw'][$LotId][2]=(int)$Quantity;  
             }
         }
      
-        else if($act=='remove' && !empty($MedId))
+        else if($act=='remove' && !empty($MedId) && !empty($LotId))
         {
-            unset($_SESSION['withdraw'.$LotId][$MedId]);
+            unset($_SESSION['withdraw'][$LotId]);
         }
      
         /*if($act=='update')
@@ -32,7 +34,7 @@
             }
         }*/
 
-        // print_r($_SESSION['cart'.$LotId]);
+        // print_r($_SESSION['withdraw']);
         // echo '<pre>';
       
     if (isset($_REQUEST['btn_withdraw'])) {
@@ -77,9 +79,10 @@
                             $result = mysqli_query($conn, $query); 
                             $row = mysqli_fetch_array($result);
                             $WithId  = $row["WithId"];
-                        foreach($_SESSION['withdraw'.$Lotid] as $MedId=>$Quantity)
+
+                            foreach($_SESSION['withdraw'] as $value)
                         {
-                            $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId = $Lotid and MedId = $MedId";
+                            $sql = 'SELECT * FROM tbl_receiveddetail WHERE LotId ='.$value[0].' and MedId = '.$value[1];
                             $result = $conn->query($sql);
                             $data = array();
                             
@@ -88,7 +91,8 @@
                                 $data[] = $row;  
                             }
                             foreach($data as $key => $Rec)
-                            {          
+                            {       
+                                $Quantity = $value[2];   
                                 $MedId = $Rec["MedId"];
                                 $LotId = $Rec["LotId"];
                                 $Mfd = $Rec["Mfd"];
@@ -99,11 +103,11 @@
                                 // echo $MedId;
                                 // echo $sql;
                             
-                                if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw'.$Lotid]);
+                                if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw']);
                                 } else {
                                     echo "Error updating record: " . $conn->error;
                                 }
-                                    $qty += $Quantity;
+                                    $qty += $value[2];
                                   
                                     
                                 $sql = "UPDATE tbl_withdraw SET Qtysum = $qty WHERE WithId = $WithId"; 
@@ -223,22 +227,29 @@
         </tr>
     <?php
     $total=0;
-    if(!empty($_SESSION['withdraw'.$LotId]))
+    if(!empty($_SESSION['withdraw']))
     {
-        foreach($_SESSION['withdraw'.$LotId] as $MedId=>$Quantity)
+    //    echo count($_SESSION['withdraw']);
+        
+        foreach($_SESSION['withdraw'] as $value)
+        // echo "lot".$value[0] . "MedId" .$value[1] . "qty" . $value[2] . "<br>";
         {
-            $sql = "SELECT* FROM tbl_Med WHERE MedId=$MedId";
+            $sql = 'SELECT* FROM tbl_Med WHERE MedId='.$value[1];
 		    $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {
             $data[] = $row;  
             }
+            echo $row;
             foreach($data as $key => $Med){
             echo "<tr>";
+         
             echo "<td width='334'>" . $Med["MedName"] . "</td>";
             echo "<td width='57' align='right'>";  
-            echo "<input type='text' name= $Med[MedId]; value='$Quantity' disabled size='2'/></td>";
-            echo "<td width='46' align='center'><a href='Withdrawcart.php?testMedId=$MedId&act=remove&quantity=0&valueid=$LotId'>Remove</a></td>";
+            // echo "<input type='number'name=".$Med["MedId"]."value=".$value[2]." size='2'/></td>";
+            echo "<input type ='number' name='".$Med["MedId"]."' value='".$value[2]."'></td>"; 
+            
+            echo "<td width='46' align='center'><a href='Withdrawcart.php?testMedId=".$value[1]."&act=remove&quantity=0&valueid=".$value[0]."'>Remove</a></td>";
             echo "</tr>";
             }
             echo "<tr>";
@@ -274,9 +285,9 @@
     </form>
 
 
-    <form action = "Withdraw1.php" method="post">
+    <form action = "Lot.php" method="post">
         <input type="submit" name="btn_lotcallback" class="btn btn-success" value="listorder">
-        <input type ="hidden" name = "lotcallback" value = "<?php echo $LotId;?>">
+        
     </from>
 
     </body>

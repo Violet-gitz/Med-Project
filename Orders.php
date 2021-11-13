@@ -99,7 +99,7 @@
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-            <h1 class="navbar-brand">Cart</h1>
+            <h1 class="navbar-brand">Order list</h1>
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -108,8 +108,12 @@
 
                         <li class="nav-item">
                             <a class="nav-link"><?php echo $_SESSION['StaffName'] ?></a>                
-                        </li>  
-                        
+                        </li>  &nbsp;&nbsp;
+
+                        <li class="nav-item">
+                            <td><a href="Shipping.php" class ="btn btn-info">Cart</a></td>
+                        </li>&nbsp;&nbsp;&nbsp;&nbsp;
+
                         <li class="nav-item">
                             <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
                         </li>
@@ -162,7 +166,7 @@
                                 <h5><?php echo "Unit  " . $Med["MedUnit"]; ?></h5> 
                                 <h5><?php echo "Unit Per Pack  " . $Med["MedPack"] . " Unit"; ?></h5> 
                                 <h5><?php echo "Price Per Pack  " . $Med["MedPrice"] . " Bath"; ?></h5> 
-                                <input type="number" name="quantity" min="1" max="1000" value= "1"></p>
+                                <input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p>
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
                                 <input type="submit" class = "btn btn-info" value = "Add to cart"> 

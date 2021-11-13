@@ -136,15 +136,10 @@
                     $data[] = $row;  
                     }
                     foreach($data as $key => $orderdetailid){
-                    $sumqtylot += $orderdetailid["Qty"];
+                    
                     }
                     
-                    $sql = "INSERT INTO tbl_lot(Qty, LotStatus) VALUES ('$sumqtylot', '$LotStatus')";
-                    if ($conn->query($sql) === TRUE) { 
-                    } else {
-                        echo "Error updating record: " . $conn->error;
-                    }
-
+                  
                     $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
                     if ($conn->query($sql) === TRUE) {
                     } else {
@@ -174,11 +169,7 @@
                         $row = mysqli_fetch_array($result);
                         $RecId = $row["RecId"];
 
-                        $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
-                        $result = mysqli_query($conn, $query); 
-                        $row = mysqli_fetch_array($result);
-                        $LotId = $row["LotId"];
-
+                     
                         $MedQty = $orderdetailid["Qty"];
                         $MedTotal = $med["MedTotal"];
                         $MedSum = $MedQty + $MedTotal;
@@ -195,6 +186,17 @@
                         }else
                             if(!isset($errorMsg)) 
                             {
+                                $sql = "INSERT INTO tbl_lot(Qty, LotStatus) VALUES ('$MedQty', '$LotStatus')";
+                                if ($conn->query($sql) === TRUE) { 
+                                } else {
+                                    echo "Error updating record: " . $conn->error;
+                                }
+            
+                                $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
+                                $result = mysqli_query($conn, $query); 
+                                $row = mysqli_fetch_array($result);
+                                $LotId = $row["LotId"];
+        
                                 $Qty = $orderdetailid["Qty"];
                                 $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";$i++;
                                 if ($conn->query($sql) === TRUE) { 
@@ -211,7 +213,7 @@
                             }
                         }
                     }
-                        // header("refresh:1;main.php");
+                        header("refresh:1;main.php");
                 }
                 
         } //catch (PDOException $e) {

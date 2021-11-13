@@ -30,6 +30,7 @@ create table tbl_med
 	MedUnit varchar(255),
 	MedPack varchar(255),
 	MedPrice varchar(255),
+	MedLow int,
 	MedDes varchar(255),
 	MedStatus varchar(255),
 	MedTotal int,
@@ -37,7 +38,6 @@ create table tbl_med
 	Primary key (MedId)
 	
 )
-
 
 create table tbl_order
 (
@@ -54,10 +54,12 @@ create table tbl_order
 
 create table tbl_orderdetail
 (
+	OrderdeId int not null Auto_Increment,
 	OrderId int,
 	MedId int,
 	Qty int,
 	Price int,
+	Primary key (OrderdeId),
 	Foreign key (OrderId) REFERENCES tbl_order(OrderId),
 	Foreign key (MedId) REFERENCES tbl_med(MedId)		
 )
@@ -86,18 +88,18 @@ create table tbl_lot
 
 create table tbl_receiveddetail
 (
+	RecdeId int not null Auto_Increment,
 	RecId 	int,
 	LotId	int,
 	MedId	int,
 	Qty	int,
 	Mfd	varchar(255),
 	Exd	varchar(255),
+	Primary key (RecdeId),
 	Foreign key (RecId) REFERENCES tbl_received(RecId),
 	Foreign key (MedId) REFERENCES tbl_med(MedId),
 	Foreign key (LotId) REFERENCES tbl_lot(LotId)	
 )
-
-
 
 
 create table tbl_withdraw
@@ -112,12 +114,14 @@ create table tbl_withdraw
 
 create table tbl_withdrawdetail
 (
+	WithdeId int not null Auto_Increment,	
 	WithId int,
 	MedId int,
 	LotId int,
 	Qty int,
 	Mfd varchar(255),
 	Exd varchar(255),
+	Primary key (WithdeId),
 	Foreign key (WithId) REFERENCES tbl_withdraw(WithId),
 	Foreign key (MedId) REFERENCES tbl_med(MedId),
 	Foreign key (LotId) REFERENCES tbl_lot(LotId)

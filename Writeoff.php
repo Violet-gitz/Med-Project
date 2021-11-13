@@ -17,12 +17,13 @@
         header('location: login.php');
     }
 
-    if (isset($_POST['Write'])) {
+    if (isset($_REQUEST['Write'])) {
         
-            $id = $_POST['Write'];
-            $sql = "SELECT tbl_lot.LotId,tbl_received.MedId,tbl_received.MfdDate,tbl_received.ExpDate,tbl_lot.Qty,tbl_lot.LotStatus,tbl_received.RecName,tbl_received.RecTime,tbl_received.RecDeli
-            FROM tbl_lot 
-            INNER JOIN tbl_received ON tbl_lot.RecId = tbl_received.RecId WHERE $id = LotId";
+            $id = $_REQUEST['Write'];
+            echo $id;
+            $sql = "SELECT tbl_lot.LotId,tbl_lot.Qty,tbl_lot.LotStatus,tbl_receiveddetail.RecId,tbl_receiveddetail.MedId,tbl_receiveddetail.Mfd,tbl_receiveddetail.Exd 
+            FROM tbl_lot
+            INNER JOIN tbl_receiveddetail ON tbl_lot.LotId = tbl_receiveddetail.LotId";
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {

@@ -70,7 +70,6 @@ body {
           <a href="Dealershow.php">Dealer</a>
           <a href="Medshow.php">Medicine</a>
           <a href="Orders.php">Order</a>
-          <a href="Shipping.php">Shipping cart</a>
           <a href="CheckOrder.php">Check Order</a>
           <a href="Lot.php">Lot</a>
           
