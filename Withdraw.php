@@ -164,11 +164,11 @@
                         while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
-                        foreach($data as $key => $Lot)
+                        foreach($data as $key => $rec)
                         { 
                            
 
-                            $MedId = $Lot["MedId"];
+                            $MedId = $rec["MedId"];
                             $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
                             $result = $conn->query($sqli);
                             $data = array();
@@ -187,18 +187,15 @@
                             <div>
                                 <?php  
                                     $withqty = 0 ;
-                                    $WithId = $Lot["LotId"];
-                                    $sql = "SELECT* FROM tbl_withdrawdetail WHERE LotId = $Lotid and MedId = $MedId";
+                                    $WithId = $rec["LotId"];
+                                    $sql = "SELECT* FROM tbl_lot WHERE LotId = $Lotid";
                                     $result = $conn->query($sql);
                                     $data = array();
                                     while($row = $result->fetch_assoc()) 
                                     {
                                         $data[] = $row;   
                                     }
-                                    foreach($data as $key => $with)
-                                        $withqty += $with["Qty"];
-                                        $medqty = $Lot["Qty"];
-                                        $sumqty = $medqty - $withqty;           
+                                    foreach($data as $key => $Lot)           
                                 ?>
                                 <h5><?php echo "Name  " . $Med["MedName"]; ?></h5> 
                                 <h5><?php echo "Description  " . $Med["MedDes"]; ?></h5> 
@@ -206,12 +203,12 @@
                                 <h5><?php echo "Volumn  " . $Med["MedVolumn"]; ?></h5> 
                                 <h5><?php echo "Unit  " . $Med["MedUnit"]; ?></h5> 
                                 <h5><?php echo "Unit Per Pack  " . $Med["MedPack"] . " Unit"; ?></h5> 
-                                <h5><?php echo "Quantity  " . $sumqty . " Pack"; ?></h5>  
-                                <input type="number" name="quantity" min="1" max="<?php echo $sumqty; ?>" value= "1"></p>
+                                <h5><?php echo "Quantity  " . $Lot["Qty"] . " Pack"; ?></h5>  
+                                <input type="number" name="quantity" min="1" max="<?php echo $Lot["Qty"]; ?>" value= "1"></p>
                                 <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">
                                 <input type ="hidden" name = "act" value = "add">
                                 <input type="submit" class = "btn btn-info" value = "Add to cart"> 
-                                <input type ="hidden" name = "valueid" value = "<?php echo $Lot["LotId"];?>">
+                                <input type ="hidden" name = "valueid" value = "<?php echo $rec["LotId"];?>">
                             </div>
                             </form>  
                     </div>

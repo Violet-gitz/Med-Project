@@ -20,10 +20,8 @@
     if (isset($_REQUEST['Write'])) {
         
             $id = $_REQUEST['Write'];
-            echo $id;
-            $sql = "SELECT tbl_lot.LotId,tbl_lot.Qty,tbl_lot.LotStatus,tbl_receiveddetail.RecId,tbl_receiveddetail.MedId,tbl_receiveddetail.Mfd,tbl_receiveddetail.Exd 
-            FROM tbl_lot
-            INNER JOIN tbl_receiveddetail ON tbl_lot.LotId = tbl_receiveddetail.LotId";
+            $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$id;
+
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {
@@ -47,15 +45,14 @@
     if (isset($_REQUEST['btn_write'])) {
 
         $idlot = $_REQUEST['txt_Lot'];
-        $sql = "SELECT tbl_lot.LotId,tbl_received.MedId,tbl_received.MfdDate,tbl_received.ExpDate,tbl_lot.Qty,tbl_lot.LotStatus,tbl_received.RecName,tbl_received.RecTime,tbl_received.RecDeli
-        FROM tbl_lot 
-        INNER JOIN tbl_received ON tbl_lot.RecId = tbl_received.RecId WHERE $idlot = LotId";
+        $sql = "SELECT* FROM tbl_lot WHERE LotId = $idlot";
         $result = $conn->query($sql);
         $data = array();
-        while($row = $result->fetch_assoc()) {
+        while($row = $result->fetch_assoc()) 
+        {
             $data[] = $row;   
         }
-        foreach($data as $key => $Lot)
+        foreach($data as $key => $Lot)           
 
         {
             $idmed = $Lot["MedId"];
@@ -104,12 +101,12 @@
                       echo "Error updating record: " . $conn->error;
                     }
 
-                    $sql = "UPDATE tbl_lot set Qty = '$sum' WHERE $idlot =LotId";
-                    if ($conn->query($sql) === TRUE) {
+                    // $sql = "UPDATE tbl_lot set Qty = '$sum' WHERE $idlot =LotId";
+                    // if ($conn->query($sql) === TRUE) {
                         
-                    } else {
-                      echo "Error updating record: " . $conn->error;
-                    }
+                    // } else {
+                    //   echo "Error updating record: " . $conn->error;
+                    // }
 
                     $sql = "UPDATE tbl_lot set LotStatus = '$lotstatus' WHERE $idlot =LotId";
                     if ($conn->query($sql) === TRUE) {

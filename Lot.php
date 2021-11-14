@@ -101,7 +101,7 @@
 
         <tbody>
             <?php 
-                    $sql = "SELECT tbl_lot.LotId,tbl_lot.Qty,tbl_lot.LotStatus,tbl_receiveddetail.RecId,tbl_receiveddetail.MedId,tbl_receiveddetail.Mfd,tbl_receiveddetail.Exd 
+                    $sql = "SELECT tbl_lot.LotId,tbl_lot.MedId,tbl_lot.Qty,tbl_lot.LotStatus,tbl_receiveddetail.RecId,tbl_receiveddetail.Mfd,tbl_receiveddetail.Exd 
                     FROM tbl_lot
                     INNER JOIN tbl_receiveddetail ON tbl_lot.LotId = tbl_receiveddetail.LotId";
                     $result = $conn->query($sql);
@@ -133,7 +133,7 @@
                             $data[] = $row;  
                         }
                         foreach($data as $key => $Med){
-                        
+                            $LotStatus = $lot["LotStatus"];
                       
             ?>
 
@@ -146,18 +146,40 @@
 
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Action
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            <?php 
+                                    $Qty = $lot["Qty"];
+                                    if ($Qty<=0)
+                                    {
+                                        $LotId = $lot["LotId"];
+                                        $buttonStatus = "disabled";
+                                        echo $buttonStatus;
+
+                                      
+                                    }
+                                    else if ($LotStatus == "Writeoff")
+                                    {
+                                        $buttonStatus = "disabled";
+                                        echo $buttonStatus;
+                                    }
+                                ?> 
+                                >Action
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="Withdraw.php?withdraw=<?php echo $lot["LotId"]; ?>">Wtihdraw</a>
+                                <form method="POSt" action="Withdraw.php">
+                                    <a class="dropdown-item" href="Withdraw.php?withdraw=<?php echo $lot["LotId"]; ?>">Wtihdraw</a>
+                                    <input type="hidden" name ='withdraw' value ="<?php echo $lot["LotId"]; ?>">
+                                </from>
 
                                 <form method="POST" action="Writeoff.php">
                                     <a class="dropdown-item" href="Writeoff.php?Write=<?php echo $lot["LotId"]; ?>">Writeoff</a>
                                     <input type ="hidden" name ='Write' value ="<?php echo $lot["LotId"]; ?>">
                                 </form>
 
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                <form method="POST" action="Claim.php">
+                                    <a class="dropdown-item" href="Claim.php?Claim=<?php echo $lot["LotId"]; ?>">Claim</a>
+                                    <input type ="hidden" name ='Claim' value ="<?php echo $lot["LotId"]; ?>">
+                                </form>
                             </div>
                         </div>
                     </td>
