@@ -17,31 +17,38 @@
         header('location: login.php');
     }
 
-    if (isset($_POST['Claim'])) {
+    if (isset($_REQUEST['Claim'])) {
         
-            $id = $_POST['Claim'];
-            $sql = "SELECT tbl_lot.LotId,tbl_lot.MedId,tbl_lot.Qty,tbl_lot.LotStatus,tbl_receiveddetail.RecId,tbl_receiveddetail.Mfd,tbl_receiveddetail.Exd 
-                    FROM tbl_lot
-                    INNER JOIN tbl_receiveddetail ON tbl_lot.LotId = tbl_receiveddetail.LotId WHERE $id = LotId";
+            $id = $_REQUEST['Claim'];
+            $sql = 'SELECT * FROM tbl_receiveddetail WHERE LotId ='.$id;;
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {
                 $data[] = $row;   
             }
-            foreach($data as $key => $Lot)
-
+            foreach($data as $key => $Recde)
             {
-                $idmed = $Lot["MedId"];
-                $sql ="SELECT * FROM tbl_med WHERE $idmed = MedId";
+
+                $idmed = $Recde["MedId"];
+                $sql ="SELECT * FROM tbl_med WHERE MedId = $idmed";
                 $result = $conn->query($sql);
                 $data = array();
                     while($row = $result->fetch_assoc()) {
                         $data[] = $row;   
                     }
-                    foreach($data as $key => $med){}
+                    foreach($data as $key => $med){
 
-                    $idorder = $Lot["OrderId"];
-                    $sql ="SELECT * FROM tbl_order WHERE $idorder = OrderId";
+                $idrec = $Recde["RecId"];
+                $sql ="SELECT * FROM tbl_received WHERE RecId = $idrec";
+                $result = $conn->query($sql);
+                $data = array();
+                    while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
+                    }
+                    foreach($data as $key => $Rec){
+
+                    $idorder = $Rec["OrderId"];
+                    $sql ="SELECT * FROM tbl_order WHERE OrderId = $idorder";
                     $result = $conn->query($sql);
                     $data = array();
                         while($row = $result->fetch_assoc()) {
@@ -56,37 +63,48 @@
                                 while($row = $result->fetch_assoc()) {
                                     $data[] = $row;   
                                 }
-                                foreach($data as $key => $Dealer){}
+                                foreach($data as $key => $Dealer){
+
+                                }
                             
                     }
+                }
             }
-
         }
+    }
 
     if (isset($_REQUEST['btn-Claim'])) {
 
         $idlot = $_REQUEST['txt_Lot'];
-        $sql = "SELECT tbl_lot.LotId,tbl_received.MedId,tbl_received.OrderId,tbl_received.MfdDate,tbl_received.ExpDate,tbl_lot.Qty,tbl_lot.LotStatus,tbl_received.RecName,tbl_received.RecTime,tbl_received.RecDeli
-        FROM tbl_lot 
-        INNER JOIN tbl_received ON tbl_lot.RecId = tbl_received.RecId WHERE $idlot = LotId";
+        $sql ="SELECT * FROM tbl_receiveddetail WHERE LotId = $idlot";
         $result = $conn->query($sql);
         $data = array();
         while($row = $result->fetch_assoc()) {
             $data[] = $row;   
         }
-        foreach($data as $key => $Lot)
+        foreach($data as $key => $Recde)
 
         {
-            $idmed = $Lot["MedId"];
+            $idmed = $Recde["MedId"];
             $sql ="SELECT * FROM tbl_med WHERE $idmed = MedId";
             $result = $conn->query($sql);
             $data = array();
                 while($row = $result->fetch_assoc()) {
                     $data[] = $row;   
                 }
-                foreach($data as $key => $med){}
+                foreach($data as $key => $med){
 
-                $idorder = $Lot["OrderId"];
+                    $idrec = $Recde["RecId"];
+                    $sql ="SELECT * FROM tbl_order WHERE $idorder = OrderId";
+                    $result = $conn->query($sql);
+                    $data = array();
+                        while($row = $result->fetch_assoc()) {
+                            $data[] = $row;   
+                        }
+                        foreach($data as $key => $Rec){
+        
+
+                $idorder = $Rec["OrderId"];
                 $sql ="SELECT * FROM tbl_order WHERE $idorder = OrderId";
                 $result = $conn->query($sql);
                 $data = array();
@@ -105,22 +123,22 @@
                             foreach($data as $key => $Dealer){}
                         
                 }
-
-           
+            }
         }
-
+        }
+        date_default_timezone_set("Asia/Bangkok");
         $ClaimDate = date("Y-m-d h:i:sa");
         $StaffId = $_REQUEST['selstaff'];
         $Qty = $_REQUEST['txt_Total'];
         $DealerId = $Order["DealerId"];
         $Reason = $_REQUEST['txt_Reason'];
         $Total = $med["MedTotal"];
-        $Medqty = $Lot["Qty"];
+        $Medqty = $Recde["Qty"];
         
         
         $result = $Total-$Qty;
 
-        $Totalrec = $Lot["Qty"];
+        $Totalrec = $Recde["Qty"];
         $sum = $Totalrec-$Qty;
         
         $lotstatus = "Claim";
@@ -148,12 +166,12 @@
                       echo "Error updating record: " . $conn->error;
                     }
 
-                    $sql = "UPDATE tbl_lot set Qty = '$sum' WHERE $idlot =LotId";
-                    if ($conn->query($sql) === TRUE) {
+                    // $sql = "UPDATE tbl_lot set Qty = '$sum' WHERE $idlot =LotId";
+                    // if ($conn->query($sql) === TRUE) {
                         
-                    } else {
-                      echo "Error updating record: " . $conn->error;
-                    }
+                    // } else {
+                    //   echo "Error updating record: " . $conn->error;
+                    // }
 
                     $sql = "UPDATE tbl_lot set LotStatus = '$lotstatus' WHERE $idlot =LotId";
                     if ($conn->query($sql) === TRUE) {
@@ -238,9 +256,6 @@
         </nav>
 
 
-      
-
-
     
     <?php 
          if (isset($errorMsg)) {
@@ -263,12 +278,11 @@
     
         <form method="post" class="form-horizontal mt-5" name="myform">
 
-
             <div class="form-group text-center">
                 <div class="row">
                     <label for="Tel" class="col-sm-3 control-label">Lot</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_Lot" class="form-control" value="<?php echo $Lot["LotId"]; ?>" readonly>
+                            <input type="text" name="txt_Lot" class="form-control" value="<?php echo $Recde["LotId"]; ?>" readonly>
                     </div>
                 </div>
             </div>
@@ -323,7 +337,7 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">Total/Pack</label>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_Total" class="form-control" value="<?php echo $Lot["Qty"]; ?>" readonly>
+                        <input type="text" name="txt_Total" class="form-control" value="<?php echo $Recde["Qty"]; ?>" readonly>
                     </div>
                 </div>
             </div>
@@ -369,8 +383,6 @@
                 </div>
             </div>
 
-        
-
             <div class="form-group text-center">
                 <div class="row">
                     <label for="Reason" class="col-sm-3 control-label">Reason</label>
@@ -380,11 +392,10 @@
                 </div>
             </div>
 
-
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
                     <input type="submit" name="btn-Claim" class="btn btn-success" value="Claim">
-                    <a href="main.php" class="btn btn-danger">Back</a>
+                    <a href="Lot.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
 

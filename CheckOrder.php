@@ -121,6 +121,91 @@
             </tbody>
         </table>
     </div>
+
+
+
+    <div class="container-sm">
+    
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ClaimId</th>
+                <th>LotId</th>
+                <th>Date Claim</th>
+                <th>Reason</th>
+                <th>Qty</th>
+                <th>Dealer</th>
+                <th>Dealer Address</th>
+                <th>Staff</th>
+                <th>Received</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php 
+                    $sql = "SELECT * FROM tbl_claim";
+                    $result = $conn->query($sql);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
+                    }
+                    foreach($data as $key => $claim){
+
+                        $dealerid = $claim["DealerId"];
+                        $sql ="SELECT * FROM tbl_dealer WHERE DealerId = $dealerid";
+                        $result = $conn->query($sql);
+                        $data = array();
+                            while($row = $result->fetch_assoc()) {
+                                $data[] = $row;   
+                            }
+                            foreach($data as $key => $deal){
+                                
+                        $staffid = $claim["StaffId"];
+                        $sql ="SELECT * FROM tbl_staff WHERE StaffId = $staffid";
+                        $result = $conn->query($sql);
+                        $data = array();
+                            while($row = $result->fetch_assoc()) {
+                                $data[] = $row;   
+                            }
+                            foreach($data as $key => $staff){
+                        
+            ?>
+
+                <tr>
+                    <td><?php echo $claim["ClaimId"]; ?></td>
+                    <td><?php echo $claim["LotId"]; ?></td>
+                    <td><?php echo $claim["ClaimDate"]; ?></td>
+                    <td><?php echo $claim["Reason"]; ?></td>
+                    <td><?php echo $claim["Qty"]; ?></td>
+                    <td><?php echo $deal["DealerName"]; ?></td>
+                    <td><?php echo $deal["DealerAddress"]; ?></td>
+                    <td><?php echo $staff["StaffName"]; ?></td>
+                    <td>
+                        <form method = "POST" action = "Receiveddata.php">
+                            <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Received_id" class = "btn btn-primary"
+                                <?php
+                                    if($OrderStatus == "Received")
+                                    {
+                                        $buttonStatus = "Disabled";
+                                        echo $buttonStatus;
+                                    }
+                                ?>
+                                >Received
+                            </button>
+                        </form>
+                    </td>
+                    
+                </tr>
+
+                <?php 
+            }}}?>
+
+                
+
+            
+        </tbody>
+    </table>
+</div>
     
 </body>
 </html>

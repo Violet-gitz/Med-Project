@@ -21,6 +21,14 @@ create table tbl_department
 	Primary key (DepartId)
 )
 
+create table tbl_dealer
+(
+	DealerId int not null AUTO_INCREMENT,
+	DealerName varchar(255),
+	DealerAddress varchar(255),
+	Primary key (DeakerId)
+)
+
 create table tbl_med
 (
 	MedId int not null AUTO_INCREMENT,
@@ -79,8 +87,10 @@ create table tbl_received
 create table tbl_lot
 (
 	LotId int not null Auto_Increment,
+	MedId int,
 	Qty int,
 	LotStatus varchar(255),
+	Foreign key (MedId) REFERENCES tbl_med(MedId),
 	Primary key (LotId)
 )
 

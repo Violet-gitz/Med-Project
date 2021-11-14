@@ -23,6 +23,7 @@
             $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$id;
 
             $result = $conn->query($sql);
+            
             $data = array();
             while($row = $result->fetch_assoc()) {
                 $data[] = $row;   
@@ -64,7 +65,8 @@
                 }
                 foreach($data as $key => $med){}
         }
-
+        
+        date_default_timezone_set("Asia/Bangkok");
         $WriteDate = date("Y-m-d h:i:sa");
         $StaffId = $_REQUEST['selstaff'];
         $Qty = $_REQUEST['txt_Total'];

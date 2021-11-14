@@ -162,6 +162,11 @@
                                         $buttonStatus = "disabled";
                                         echo $buttonStatus;
                                     }
+                                    else if ($LotStatus == "Claim")
+                                    {
+                                        $buttonStatus = "disabled";
+                                        echo $buttonStatus;
+                                    }
                                 ?> 
                                 >Action
                             </button>
