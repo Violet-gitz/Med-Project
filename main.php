@@ -70,21 +70,14 @@
                 </div>
             </div>
         </nav> 
-  
-
 </head>
 
 
 <body>
 
     <?php
-            include('slidebar.php');
-            
+            include('slidebar.php');    
     ?>
-
-
-        
-        
 
         <script>
             function display_ct6() 

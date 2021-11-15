@@ -173,9 +173,7 @@
 </head>
 
 <body>
-        <?php
-            include('slidebar.php');
-        ?>
+ 
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
@@ -197,7 +195,10 @@
                 </div>
             </div>
         </nav>
-    
+        
+        <?php
+            include('slidebar.php');
+        ?>
     <?php 
          if (isset($errorMsg)) {
     ?>

@@ -141,23 +141,20 @@
         $Totalrec = $Recde["Qty"];
         $sum = $Totalrec-$Qty;
         
-        $lotstatus = "Claim";
+        $status = "Claim";
         
         if (empty($Reason)) {
             $errorMsg = "Please Enter Reason";
         }  else {
-            try {
+            
                 if (!isset($errorMsg)) {
                     
-                    $insert_stmt = $db->prepare("INSERT INTO tbl_claim(LotId, StaffId, DealerId, MedId, Qty, Reason, ClaimDate ) VALUES (:1name, :2name, :3name, :4name, :5name, :6name, :7name)");
-                    
-                    $insert_stmt->bindParam(':1name', $idlot);
-                    $insert_stmt->bindParam(':2name', $StaffId);
-                    $insert_stmt->bindParam(':3name', $DealerId);
-                    $insert_stmt->bindParam(':4name', $idmed);
-                    $insert_stmt->bindParam(':5name', $Qty);
-                    $insert_stmt->bindParam(':6name', $Reason);
-                    $insert_stmt->bindParam(':7name', $ClaimDate);
+                    $sql = "INSERT INTO tbl_claim(LotId, StaffId, DealerId, MedId, Qty, Reason, ClaimDate, ClaimStatus) VALUES ('$idlot', '$StaffId', '$DealerId', '$idmed', '$Qty', '$Reason', '$ClaimDate', '$status')";
+                    if ($conn->query($sql) === TRUE) {
+                        
+                    } else {
+                      echo "Error updating record: " . $conn->error;
+                    }
 
                     $sql = "UPDATE tbl_med set MedTotal = '$result' WHERE $idmed=MedId";
                     if ($conn->query($sql) === TRUE) {
@@ -173,7 +170,7 @@
                     //   echo "Error updating record: " . $conn->error;
                     // }
 
-                    $sql = "UPDATE tbl_lot set LotStatus = '$lotstatus' WHERE $idlot =LotId";
+                    $sql = "UPDATE tbl_lot set LotStatus = '$status' WHERE $idlot =LotId";
                     if ($conn->query($sql) === TRUE) {
                         
                     } else {
@@ -181,16 +178,12 @@
                     }
 
                     
-                    if ($insert_stmt->execute()) {
-                        $insertMsg = "Insert Successfully...";
-                        header("refresh:1;main.php");
-                    }
+                   
                 }
-            } catch (PDOException $e) {
-                echo $e->getMessage();
-            }
+            } 
+            // header("refresh:1;main.php");
         }
-    }
+    
     
    
 

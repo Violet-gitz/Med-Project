@@ -241,13 +241,6 @@
 
 <body>
 
-
-
-        <?php
-            include('slidebar.php');
-        ?>
-
-
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
             <h1 class="navbar-brand">Received Data</h1>
@@ -274,10 +267,10 @@
             </div>
         </nav>
 
+        <?php
+            include('slidebar.php');
+        ?>
 
-      
-        
-    
     <?php 
          if (isset($errorMsg)) {
     ?>

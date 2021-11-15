@@ -64,10 +64,6 @@
 </head>
 <body>
 
-        <?php
-            include('slidebar.php');
-        ?>
-
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
             <h1 class="navbar-brand">Staff Add+</h1>
@@ -91,8 +87,9 @@
             </div>
         </nav>
 
-        
-
+        <?php
+            include('slidebar.php');
+        ?>
 
     <?php 
          if (isset($errorMsg)) {
@@ -112,51 +109,61 @@
     <?php } ?>
 
 
-    
+    <center><table class="table table-sm" style ="width: 80%">
         <form method="post" class="form-horizontal mt-5">
-            
-        <div class="form-group text-center">
+        <thead>
+            Infomation
+        </thead>
+        <tr>
+            <div class="form-group text-center">
                 <div class="row">
-                    <label for="Name" class="col-sm-3 control-label">Name</label>
+                    <td style="width: 20%;"><label for="Name" class="col-sm-3 control-label">Name</label></td>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_Name" class="form-control" placeholder="Enter Name...">
+                    <td style="width: 70%;"><input type="text" name="txt_Name" class="form-control" placeholder="Enter Name..."></td>
                     </div>
                 </div>
             </div>
+         </tr>
 
+         <tr>
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Password" class="col-sm-3 control-label">Password</label>
+                    <td><label for="Password" class="col-sm-3 control-label">Password</label></td>
                     <div class="col-sm-7">
-                        <input type="Password" name="txt_Password" class="form-control" placeholder="Enter Password...">
+                        <td><input type="Password" name="txt_Password" class="form-control" placeholder="Enter Password..."></td>
                     </div>
                 </div>
             </div>
+        </tr>
 
+        <tr>
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Telephone</label>
+                    <td><label for="Tel" class="col-sm-3 control-label">Telephone</label></td>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_Tel" class="form-control" placeholder="Enter Telephone...">
+                        <td><input type="text" name="txt_Tel" class="form-control" placeholder="Enter Telephone..."></td>
                     </div>
                 </div>
             </div>
+        </tr>
 
-            
+        <tr>
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Mail" class="col-sm-3 control-label">Mail</label>
+                    <td><label for="Mail" class="col-sm-3 control-label">Mail</label></td>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_Mail" class="form-control" placeholder="Enter Mail...">
+                        <td><input type="text" name="txt_Mail" class="form-control" placeholder="Enter Mail..."></td>
                     </div>
                 </div>
             </div>
+        </tr>
             
+        <tr>
             <div class="form-group text-center">
                 <div class="row">
-                    <label class="col-sm-3 control-label">Department Name</label>
+                    <td><label class="col-sm-3 control-label">Department Name</label></td>
                         <div class="col-sm-1">
-                            <select name="Seldepart">       
+                            <td><select name="Seldepart">       
                                 <?php 
                                     $sql = 'SELECT * FROM tbl_department';
                                     $result = $conn->query($sql);
@@ -169,11 +176,13 @@
                                 ?>
                                     <option value ="<?php echo $depart["DepartId"];?>"><?php echo $depart["DepartName"];?></option>
                                 <?php } ?>      
-                            </select><br>
+                            </select><br></td>
                         </div>
                 </div>
             </div>
+        </tr>
 
+        </table>
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
                     <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
@@ -181,10 +190,8 @@
                 </div>
             </div>
 
-          
-
-
-        </form>
+        </form></center>
+    
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>

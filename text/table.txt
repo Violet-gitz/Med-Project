@@ -49,7 +49,7 @@ create table tbl_med
 
 create table tbl_order
 (
-	OrderId int not null Auto_Increment,
+	OrderId int not null AUTO_INCREMENT,
 	OrderDate varchar(255),
 	OrderStatus varchar(255),
 	OrderPrice int,
@@ -62,7 +62,7 @@ create table tbl_order
 
 create table tbl_orderdetail
 (
-	OrderdeId int not null Auto_Increment,
+	OrderdeId int not null AUTO_INCREMENT,
 	OrderId int,
 	MedId int,
 	Qty int,
@@ -74,7 +74,7 @@ create table tbl_orderdetail
 
 create table tbl_received
 (
-	RecId int not null Auto_Increment,
+	RecId int not null AUTO_INCREMENT,
 	OrderId  int,
 	StaffId	int,
 	RecDate varchar(255),
@@ -86,19 +86,19 @@ create table tbl_received
 
 create table tbl_lot
 (
-	LotId int not null Auto_Increment,
+	LotId int not null AUTO_INCREMENT,
 	MedId int,
+	RecClaimid int,
 	Qty int,
 	LotStatus varchar(255),
-	Foreign key (MedId) REFERENCES tbl_med(MedId),
-	Primary key (LotId)
+	Primary key (LotId),
+	Foreign key (MedId) REFERENCES tbl_med(MedId)
 )
-
 
 
 create table tbl_receiveddetail
 (
-	RecdeId int not null Auto_Increment,
+	RecdeId int not null AUTO_INCREMENT,
 	RecId 	int,
 	LotId	int,
 	MedId	int,
@@ -114,7 +114,7 @@ create table tbl_receiveddetail
 
 create table tbl_withdraw
 (
-	WithId int not null Auto_Increment,
+	WithId int not null AUTO_INCREMENT,
 	StaffId int,
 	Qtysum int,
 	WithDate varchar(255),
@@ -124,7 +124,7 @@ create table tbl_withdraw
 
 create table tbl_withdrawdetail
 (
-	WithdeId int not null Auto_Increment,	
+	WithdeId int not null AUTO_INCREMENT,
 	WithId int,
 	MedId int,
 	LotId int,
@@ -139,10 +139,10 @@ create table tbl_withdrawdetail
 
 create table tbl_writeoff
 (
-	WriteId int not null Auto_Increment,
-	LotId int not null,
-	MedId int not null,
-	StaffId int not null,
+	WriteId int not null AUTO_INCREMENT,
+	LotId int,
+	MedId int,
+	StaffId int,
 	Qty int,
 	WriteDate varchar(255),
 	Primary key (WriteId),
@@ -154,13 +154,14 @@ create table tbl_writeoff
 create table  tbl_claim
 (
 	ClaimId int not null Auto_Increment,
-	LotId int not null,
-	StaffId int not null,
-	DealerId int not null,
-	MedId int not null,
+	LotId int,
+	StaffId int,
+	DealerId int,
+	MedId int,
 	Qty int,
 	Reason varchar(255),
 	ClaimDate varchar(255),
+	ClaimStatus varchar(255),
 	Primary key(ClaimId),
 	Foreign key (LotId) REFERENCES tbl_lot(LotId),
 	Foreign key (StaffId) REFERENCES tbl_staff(StaffId),
@@ -168,7 +169,20 @@ create table  tbl_claim
 	Foreign key (MedId) REFERENCES tbl_med(MedId)
 )
 
+create table tbl_recclaim
+(
+	RecClaimid int not null AUTO_INCREMENT,
+	ClaimId int,
+	StaffId int,
+	RecClaimName varchar(255),
+	RecClaimdate varchar(255),
+	Primary key(RecClaimid),
+	Foreign key (ClaimId) REFERENCES tbl_claim(ClaimId),
+	Foreign key (StaffId) REFERENCES tbl_staff(StaffId)
+		
+)
 
+ALTER TABLE tbl_lot
+ADD FOREIGN KEY (RecClaimid) REFERENCES tbl_recclaim(RecClaimid);
 
-	
 

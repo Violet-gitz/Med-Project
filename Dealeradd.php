@@ -52,18 +52,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    
-    
-    
+
 </head>
 <body>
 
-        <?php
-            include('slidebar.php');
-        ?>
-
-
-    
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
             <h1 class="navbar-brand">Dealer Add+</h1>
@@ -74,7 +66,7 @@
                     <ul class="navbar-nav ms-auto">
                         
                         <li class="nav-item">
-                            <a class="nav-link"><?php echo $_SESSION['StaffName'] ?></a>                
+                            <a class="nav-link"><?php echo $_SESSION['StaffName']; ?></a>                
                         </li>
                         
                        
@@ -87,10 +79,9 @@
             </div>
         </nav>
 
-
-        
-     
-
+        <?php
+            include('slidebar.php');
+        ?>
 
     <?php 
          if (isset($errorMsg)) {
@@ -109,8 +100,6 @@
         </div>
     <?php } ?>
 
-
-    <
         <form method="post" class="form-horizontal mt-5">
             
             <div class="form-group text-center">

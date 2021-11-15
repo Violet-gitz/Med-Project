@@ -41,11 +41,6 @@
 </head>
 <body>
 
-        <?php
-            include('slidebar.php');
-        ?>
-
-
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
             <h1 class="navbar-brand">Department Data</h1>
@@ -54,15 +49,14 @@
                 </button>
                 <div id="navbar1" class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
-
-                        
+ 
                         <li class="nav-item">
                             <a class="nav-link"><?php echo $_SESSION['StaffName'] ?></a>                
-                        </li>  
+                        </li> &nbsp;&nbsp;&nbsp;&nbsp;
 
                         <li class="nav-item">
                             <a href="Departmentadd.php" class="btn btn-success">Add+</a>
-                        </li>
+                        </li> &nbsp;&nbsp;&nbsp;&nbsp;
 
                         <li class="nav-item">
                             <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
@@ -73,13 +67,9 @@
             </div>
         </nav>
 
-        
-       
-
-
-
-        
-
+        <?php
+            include('slidebar.php');
+        ?>
 
     <div class="container-sm">
     
