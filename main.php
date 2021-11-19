@@ -70,6 +70,25 @@
                 </div>
             </div>
         </nav> 
+
+        <script>
+            function showResult(str) {
+            if (str == "") {
+                document.getElementById("livesearch").innerHTML = "";
+                return;
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("livesearch").innerHTML = this.responseText;
+                }
+                };
+                xmlhttp.open("GET","main.php?q="+str,true);
+                xmlhttp.send();
+            }
+            }
+        </script>
+
 </head>
 
 
@@ -79,178 +98,48 @@
             include('slidebar.php');    
     ?>
 
-        <script>
-            function display_ct6() 
-            {
-                var x = new Date()
-                var ampm = x.getHours( ) >= 12 ? ' PM' : ' AM';
-                hours = x.getHours( ) % 12;
-                hours = hours ? hours : 12;
-                var x1=x.getMonth() + 1+ "/" + x.getDate() + "/" + x.getFullYear(); 
-                x1 = x1 + " - " +  hours + ":" +  x.getMinutes() + ":" +  x.getSeconds() + ":" + ampm;
-                document.getElementById('ct6').innerHTML = x1;
-                display_c6();
-                }
-                function display_c6(){
-                var refresh=1000; // Refresh rate in milli seconds
-                mytime=setTimeout('display_ct6()',refresh)
-            }
-            display_c6()
-        </script>
-
+   
 
 <body>
 
-
-<span id='ct6'></span>
-
-<div class="container-sm">
-    
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Lot Id</th>
-                <th>Medicine Name</th>
-                <th>Manufactured Date</th>
-                <th>Expiration Date</th>
-                <th>Quantity</th>
-                <th>Status</th>
-                <th>Received Name</th>
-                <th>Time left</th>
-                <th>Withdraw</th>
-                <th>Write off </th>
-                <th>Claim</th> 
-            </tr>
-        </thead>
-
-        <tbody>
-            <?php 
-                
-                    $sql = "SELECT tbl_lot.LotId,tbl_lot.LotStatus,tbl_received.MedId,tbl_received.MfdDate,tbl_received.ExpDate,tbl_lot.Qty,tbl_lot.LotStatus,tbl_received.RecName,tbl_received.RecTime,tbl_received.RecDeli
-                    FROM tbl_lot
-                    INNER JOIN tbl_received ON tbl_lot.RecId = tbl_received.RecId";
-
-                    $result = $conn->query($sql);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                        $data[] = $row;   
-                        
-                    }
-                    foreach($data as $key => $Lot){ 
-                        
-                        $MedId = $Lot["MedId"];
-                        $sql = "SELECT * FROM tbl_med WHERE $MedId = MedId";
-                        $result = $conn->query($sql);
-                        $data = array();
-                        while($row = $result->fetch_assoc()) {
-                            $data[] = $row;   
-                        }
-                        foreach($data as $key => $Med){ 
-
-
-                        $StaffId = $Lot["RecName"];
-                        $sql = "SELECT * FROM tbl_staff WHERE $StaffId = StaffId";
-                        $result = $conn->query($sql);
-                        $data = array();
-                        while($row = $result->fetch_assoc()) {
-                            $data[] = $row;   
-                        }
-                        foreach($data as $key => $Staff){ 
-
-                            
-                            $buttonStatus;
-                            $Qty = $Lot["Qty"];
-                            $LotStatus = $Lot["LotStatus"];                            
-                            
-            ?>
-
-                <tr>
-                    <td><?php echo $Lot["LotId"]; ?></td>
-                    <td><?php echo $Med["MedName"]; ?></td>
-                    <td><?php echo $Lot["MfdDate"]; ?></td>
-                    <td><?php echo $Lot["ExpDate"]; ?></td>
-                    <td><?php echo $Lot["Qty"]; ?></td>
-                    <td><?php echo $Lot["LotStatus"]; ?></td>
-                    <td><?php echo $Staff["StaffName"]; ?></td>
-                    <td>
-                        <?php 
-                        
-                            $date = date("Y-m-d");
-                            $expired = $Lot["ExpDate"];
-                            $date1=date_create($expired);
-                            $date2=date_create($date);
-                            $diff=date_diff($date2,$date1);
-                            echo $diff->format('%R%a days');
-                        ?>
-                    </td>
-
-                    <td>
-                        <form method="POST" action="Withdraw.php">
-                            <button type="submit" value = "<?php echo $Lot["LotId"]; ?>" name = "draw" class = "btn btn-success"
-                                <?php 
-                                    if ($Qty<=0)
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                    else if ($LotStatus == "Writeoff")
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                ?> 
-                            >Withdraw</button>    
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-4 ms-auto">
+                        <form>
+                            <input type="text" size="30" onkeyup="showResult(this.value)">
+                            <div id="livesearch"></div>
                         </form>
-                    </td>
-
-                    <td>
-                        <form method = "POST" action ="Writeoff.php">
-                            <button type = "submit" value ="<?php echo $Lot["LotId"]; ?>" name = "Write" class = "btn btn-success"
-                                <?php
-                                    if ($LotStatus == "Writeoff")
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                    else if ($Qty<=0)
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                ?>
-                            >Write-off</button>
-                        </form>
-                    </td>
-
-                    <td>
-                        <form method = "POST" action = "Claim.php">
-                            <button type ="submit" value = "<?php echo $Lot["LotId"]; ?>" name = "Claim" class = "btn btn-warning"
-                                <?php
-                                    if ($Qty<=0)
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                    else if ($LotStatus == "Claim")
-                                    {
-                                        $buttonStatus = "disable";
-                                        echo $buttonStatus;
-                                    }
-                                ?>
-                            >Claim</button>
-                        </form>
-                    </td>
-
-                </tr>
-
-                <?php } } } ?>
-            
-            
-        </tbody>
-    </table>
-</div>
-
+                    </div>
+            </div>
+        </div><br>
 
   
+        <?php
+            $q = intval($_GET['q']);
+
+            $sql="SELECT * FROM tbl_lot WHERE MedId = '".$q."'";
+            $result = $conn->query($sql);
+            $data = array();
+            while($row = $result->fetch_assoc()) {
+            $data[] = $row;   
+            }
+            foreach($data as $key => $Lot){
+                $medid = $Lot["MedId"];
+                $sql="SELECT * FROM tbl_med WHERE MedId = '".$q."'";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) {
+                $data[] = $row;   
+                }
+                foreach($data as $key => $Med){
+            echo "<table>";
+            echo "<tr>";
+            echo "<td>" . $Med['MedName'] . "</td>";
+
+            echo "</tr>";
+            }}
+            echo "</table>";
+            
+        ?>
 </body>
 </html>

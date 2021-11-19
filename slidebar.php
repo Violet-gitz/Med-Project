@@ -72,6 +72,7 @@ body {
           <a href="Orders.php">Order</a>
           <a href="CheckOrder.php">List order buy</a>
           <a href="CheckClaim.php">List order claim</a>
+          <a href="Approve.php">Approve</a>
           <a href="Lot.php">Lot</a>
           
         </div>

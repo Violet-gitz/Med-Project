@@ -67,6 +67,16 @@
         <?php
             include('slidebar.php');
         ?>
+<div class="container">
+  <div class="row">
+        <div class="col-md-4 ms-auto">
+            <form action="" method="post">
+                <input type="text" name="search" placeholder = "search">
+                <input type="submit" name="submit" value="Search">
+            </form>
+        </div>
+  </div>
+</div><br>
 
 
     <div class="container-sm">

@@ -16,19 +16,19 @@
     }
 
 
-    if (isset($_REQUEST['Received_id'])) {
+    if (isset($_REQUEST['Claim_id'])) {
         
-            $id = $_REQUEST['Received_id'];
-            $sql ="SELECT * FROM tbl_orderdetail WHERE $id = OrderId";
+            $id = $_REQUEST['Claim_id'];
+            $sql ="SELECT * FROM tbl_claim WHERE ClaimId = $id";
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {
                 $data[] = $row;   
             }
-            foreach($data as $key => $Orderde)
+            foreach($data as $key => $Claim)
             {
-                $MedId = $Orderde["MedId"];
-                $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                $MedId = $Claim["MedId"];
+                $sqli ="SELECT * FROM tbl_med WHERE MedId = $MedId";
                 $result = $conn->query($sqli);
                 $data = array();
                     while($row = $result->fetch_assoc()) {
@@ -36,16 +36,8 @@
                     }
                     foreach($data as $key => $med){}
 
-                $OrderId = $Orderde["OrderId"];
-                $sql ="SELECT * FROM tbl_Order WHERE $OrderId = OrderId";
-                $result = $conn->query($sql);
-                $data = array();
-                    while($row = $result->fetch_assoc()) {
-                        $data[] = $row;   
-                    }
-                    foreach($data as $key => $Order){
 
-                $DealerId = $Order["DealerId"];
+                $DealerId = $Claim["DealerId"];
                 $sql ="SELECT * FROM tbl_dealer WHERE $DealerId = DealerId";
                 $result = $conn->query($sql);
                 $data = array();
@@ -57,22 +49,19 @@
                 }
         }
 
-        
-    }
-
-    if (isset($_REQUEST['btn_received'])) {
-        $i = 0;
-        $orderid = $_REQUEST['txt_OrderId'];
-        $sql ="SELECT * FROM tbl_orderdetail WHERE $orderid = OrderId";
+    if (isset($_REQUEST['btn_receivedclaim'])) {
+    
+        $Claimid = $_REQUEST['txt_ClaimId'];
+        $sql ="SELECT * FROM tbl_claim WHERE ClaimId = $Claimid";
         $result = $conn->query($sql);
         $data = array();
         while($row = $result->fetch_assoc()) {
             $data[] = $row;   
         }
-        foreach($data as $key => $Orderde)
+        foreach($data as $key => $Claim)
         {
             
-            $MedId = $Orderde["MedId"];
+            $MedId = $Claim["MedId"];
             $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
             $result = $conn->query($sqli);
             $data = array();
@@ -81,16 +70,8 @@
                 }
                 foreach($data as $key => $med){
 
-            $OrderId = $Orderde["OrderId"];
-            $sql ="SELECT * FROM tbl_Order WHERE $OrderId = OrderId";
-            $result = $conn->query($sql);
-            $data = array();
-                while($row = $result->fetch_assoc()) {
-                    $data[] = $row;   
-                }
-                foreach($data as $key => $Order){
 
-            $DealerId = $Order["DealerId"];
+            $DealerId = $Claim["DealerId"];
             $sql ="SELECT * FROM tbl_dealer WHERE $DealerId = DealerId";
             $result = $conn->query($sql);
             $data = array();
@@ -101,11 +82,10 @@
 
                 }
         
-            }
-        }
+            }     
     }
 
-        $OrderId = $_REQUEST['txt_OrderId'];
+        $Claimid = $_REQUEST['txt_ClaimId'];
         $staff = $_REQUEST['RecName'];
         date_default_timezone_set("Asia/Bangkok");
         $RecTime = date("Y-m-d h:i:sa");
@@ -113,7 +93,7 @@
         $OrderStatus = "Received";
         $LotStatus = "Avialable";
 
-         if (empty($OrderId)) {
+         if (empty($Claimid)) {
             $errorMsg = "Please Enter Lot Id";
         } else if (empty($staff)) {
             $errorMsg = "Please Enter Received Name";
@@ -123,58 +103,39 @@
 
                 if (!isset($errorMsg)) {
 
-                    $sql = "INSERT INTO tbl_received(OrderId,StaffId,RecDate,RecDeli) VALUES ('$OrderId',  '$staff', '$RecTime', '$RecDeli')";
+                    $sql = "INSERT INTO tbl_recclaim(ClaimId,StaffId,RecClaimName,RecClaimdate) VALUES ('$Claimid',  '$staff', '$RecTime', '$RecDeli')";
                     if ($conn->query($sql) === TRUE) {   
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
 
-                    $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
-                    $result = $conn->query($sql);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                    $data[] = $row;  
-                    }
-                    foreach($data as $key => $orderdetailid){
+                    // $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
+                    // $result = $conn->query($sql);
+                    // $data = array();
+                    // while($row = $result->fetch_assoc()) {
+                    // $data[] = $row;  
+                    // }
+                    // foreach($data as $key => $orderdetailid){
                     
-                    }
-                    
+                    // }
                   
-                    $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
+                    $sql = "UPDATE tbl_claim SET ClaimStatus = 'Received' WHERE ClaimId = $Claimid";
                     if ($conn->query($sql) === TRUE) {
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
 
-                    $orderid = $Orderde['OrderId'];
-                    $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
-                    $result = $conn->query($sql);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                    $data[] = $row;  
-                    }
-                    foreach($data as $key => $orderdetailid){
-                        
-                        $MedId = $orderdetailid["MedId"];
-                        $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                        $result = $conn->query($sqli);
-                        $data = array();
-                        while($row = $result->fetch_assoc()) {
-                        $data[] = $row;   
-                        }
-                        foreach($data as $key => $med){
+                    $query = "SELECT RecClaimid FROM tbl_recclaim ORDER BY RecClaimid DESC LIMIT 1";
+                    $result = mysqli_query($conn, $query); 
+                    $row = mysqli_fetch_array($result);
+                    $RecClaimid = $row["RecClaimid"];
 
-                        $query = "SELECT RecId FROM tbl_received ORDER BY RecId DESC LIMIT 1";
-                        $result = mysqli_query($conn, $query); 
-                        $row = mysqli_fetch_array($result);
-                        $RecId = $row["RecId"];
-
-                     
-                        $MedQty = $orderdetailid["Qty"];
+                        $LotId = $Claim["LotId"];
+                        $MedQty = $Claim["Qty"];
                         $MedTotal = $med["MedTotal"];
                         $MedSum = $MedQty + $MedTotal;
-                        $MfdDate = $_REQUEST["mfd".$i];
-                        $ExpDate = $_REQUEST["exd".$i];
+                        $MfdDate = $_REQUEST["mfd1"];
+                        $ExpDate = $_REQUEST["exd1"];
                         $datemfd=date_create($MfdDate);
                         $dateexp=date_create($ExpDate);
                         $diff=date_diff($datemfd,$dateexp);
@@ -186,23 +147,34 @@
                         }else
                             if(!isset($errorMsg)) 
                             {
-                                $sql = "INSERT INTO tbl_lot(Qty, MedId, LotStatus,Mfd,Exd) VALUES ('$MedQty', '$MedId','$LotStatus','$MfdDate','$ExpDate')";
+                                $sql = "INSERT INTO tbl_lot(Qty, MedId,LotStatus,RecClaimid,Mfd,Exd) VALUES ('$MedQty', '$MedId','$LotStatus','$RecClaimid','$MfdDate','$ExpDate')";
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {
                                     echo "Error updating record: " . $conn->error;
                                 }
-            
-                                $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
-                                $result = mysqli_query($conn, $query); 
-                                $row = mysqli_fetch_array($result);
-                                $LotId = $row["LotId"];
+
+                                // $sql = "UPDATE tbl_lot SET LotStatus = 'Avialable',RecClaimid = $RecClaimid  WHERE LotId = $LotId";
+                                // if ($conn->query($sql) === TRUE) { 
+                                // } else {
+                                //     echo "Error updating record: " . $conn->error;
+                                // }
+
+                                // $sql = "UPDATE tbl_receiveddetail SET Mfd = $MfdDate,Exd = $ExpDate  WHERE LotId = $LotId and MedId = $MedId";
+                                // if ($conn->query($sql) === TRUE) { 
+                                // } else {
+                                //     echo "Error updating record: " . $conn->error;
+                                // }
+                                // $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
+                                // $result = mysqli_query($conn, $query); 
+                                // $row = mysqli_fetch_array($result);
+                                // $LotId = $row["LotId"];
         
-                                $Qty = $orderdetailid["Qty"];
-                                $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";$i++;
-                                if ($conn->query($sql) === TRUE) { 
-                                } else {
-                                    echo "Error updating record: " . $conn->error;
-                                }
+                                // $Qty = $orderdetailid["Qty"];
+                                // $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";
+                                // if ($conn->query($sql) === TRUE) { 
+                                // } else {
+                                //     echo "Error updating record: " . $conn->error;
+                                // }
 
                                 $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
                                 if ($conn->query($sql) === TRUE) {
@@ -211,18 +183,11 @@
                                   echo "Error updating record: " . $conn->error;
                                 }
                             }
-                        }
-                    }
-                        header("refresh:1;main.php");
-                }
-                
-        } //catch (PDOException $e) {
-             //echo $e->getMessage();
                     
-            
- 
-
-   
+                    }
+                    $updateMsg = "Record update successfully...";
+                    header("refresh:1;main.php");
+                }
 
 ?>
 <!DOCTYPE html>
@@ -233,10 +198,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-
-
-
-    
 </head>
 
 <body>
@@ -294,18 +255,18 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Order </label>
+                    <label for="Tel" class="col-sm-3 control-label">Order Claim</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_OrderId" class="form-control" value="<?php echo $Orderde["OrderId"]; ?>" readonly>
+                            <input type="text" name="txt_ClaimId" class="form-control" value="<?php echo $Claim["ClaimId"]; ?>" readonly>
                     </div>
                 </div>
             </div>
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Order Date</label>
+                    <label for="Tel" class="col-sm-3 control-label">Order Claim Date</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_OrderDate" class="form-control" value="<?php echo $Order["OrderDate"]; ?>" readonly>
+                            <input type="text" name="txt_ClaimDate" class="form-control" value="<?php echo $Claim["ClaimDate"]; ?>" readonly>
                     </div>
                 </div>
             </div>
@@ -323,7 +284,7 @@
                 <div class="row">
                     <label for="Tel" class="col-sm-3 control-label">Dealer Address</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_OrderDate" class="form-control" value="<?php echo $Dealer["DealerAddress"]; ?>" readonly>
+                            <input type="text" name="txt_DealerAddress" class="form-control" value="<?php echo $Dealer["DealerAddress"]; ?>" readonly>
                     </div>
                 </div>
             </div>
@@ -362,17 +323,7 @@
             </div>
 
             <?php
-                $i = 0;
-                $orderid = $Orderde['OrderId'];
-                $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
-                $result = $conn->query($sql);
-                $data = array();
-                while($row = $result->fetch_assoc()) {
-                $data[] = $row;  
-                }
-                foreach($data as $key => $orderdetailid){
-
-                    $MedId = $orderdetailid["MedId"];
+                    $MedId = $Claim["MedId"];
                     $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
                     $result = $conn->query($sqli);
                     $data = array();
@@ -426,25 +377,17 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_Qty" class="form-control" value="<?php echo $orderdetailid["Qty"]; ?>" readonly>
+                        <input type="text" name="txt_Qty" class="form-control" value="<?php echo $Claim["Qty"]; ?>" readonly>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Price</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="Price" class="form-control" value="<?php echo $orderdetailid["Price"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
 
             <div class="form-group text-center">
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">MFD Date</label>
                     <div class="col-sm-1">
-                    <input type="date"  name="mfd<?php echo $i;?>"
+                    <input type="date"  name="mfd1"
                                         value="<?php echo date('Y-m-j'); ?>" required 
                                         min="2021-3-22" max="2030-12-31">
                     </div>
@@ -455,7 +398,7 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">EXP Date</label>
                     <div class="col-sm-1">
-                    <input type="date"  name="exd<?php echo $i;?>"
+                    <input type="date"  name="exd1"
                                         value="<?php echo date('Y-m-j'); ?>" required
                                         min="2021-3-22" max="2030-12-31">
                     </div>
@@ -463,14 +406,14 @@
             </div>
 
             <?php
-                $i++;}}
+                }
             ?>
 
             
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_received" class="btn btn-success" value="Received">
-                    <a href="CheckOrder.php" class="btn btn-danger">Back</a>
+                    <input type="submit" name="btn_receivedclaim" class="btn btn-success" value="Received">
+                    <a href="CheckClaim.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
 

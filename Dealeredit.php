@@ -33,19 +33,30 @@
     if (isset($_REQUEST['btn_update'])) {
         $DealerName = $_REQUEST['txt_DealerName'];
         $DealerAddress = $_REQUEST['txt_DealerAddress'];
-        
+        $DealerPhone = $_REQUEST['txt_DealerPhone'];
+        $ContractStart = $_REQUEST['ContractStart'];
+        $ContractEnd = $_REQUEST['ContractEnd'];
         
 
         if (empty($DealerName)) {
             $errorMsg = "Please Enter Dealer Name";
         } else if (empty($DealerAddress)) {
             $errorMsg = "Please Enter Dealer Address";
+        } else if (empty($DealerPhone)) {
+            $errorMsg = "please Enter Dealer Phone";
+        } else if (empty($ContractStart)) {
+            $errorMsg = "please Enter Dealer Contract Start";
+        } else if (empty($ContractEnd)) {
+            $errorMsg = "please Enter Dealer Contract End";
         } else {
             try {
                 if (!isset($errorMsg)) {
-                    $update_stmt = $db->prepare("UPDATE tbl_dealer SET DealerName = :1name, DealerAddress = :2name WHERE DealerId = :DealerId");
+                    $update_stmt = $db->prepare("UPDATE tbl_dealer SET DealerName = :1name, DealerAddress = :2name, DealerPhone = :3name, ContractStart = :4name, ContractEnd = :5name WHERE DealerId = :DealerId");
                     $update_stmt->bindParam(':1name', $DealerName);
                     $update_stmt->bindParam(':2name', $DealerAddress);
+                    $insert_stmt->bindParam(':3name', $DealerPhone);
+                    $insert_stmt->bindParam(':4name', $ContractStart);
+                    $insert_stmt->bindParam(':5name', $ContractEnd);
                     $update_stmt->bindParam(':DealerId', $id);
 
                     if ($update_stmt->execute()) {
@@ -134,6 +145,33 @@
                     <label for="DealerAddress" class="col-sm-3 control-label">Dealer Address</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_DealerAddress" class="form-control" placeholder="<?php echo $dealer["DealerAddress"]; ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="DealerAddress" class="col-sm-3 control-label">Dealer Phone</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_DealerPhone" class="form-control" placeholder="<?php echo $dealer["DealerPhone"]; ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="DealerAddress" class="col-sm-3 control-label">Contract Start</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="ContractStart" class="form-control" placeholder="<?php echo $dealer["ContractStart"]; ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="DealerAddress" class="col-sm-3 control-label">Contract End</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="ContractEnd" class="form-control" placeholder="<?php echo $dealer["ContractEnd"]; ?>">
                     </div>
                 </div>
             </div>

@@ -111,8 +111,7 @@
                     // }
 
                     $sql = "UPDATE tbl_lot set LotStatus = '$lotstatus' WHERE $idlot =LotId";
-                    if ($conn->query($sql) === TRUE) {
-                        
+                    if ($conn->query($sql) === TRUE) {     
                     } else {
                       echo "Error updating record: " . $conn->error;
                     }
@@ -212,6 +211,10 @@
     
         <form method="post" class="form-horizontal mt-5" name="myform">
 
+
+            <div>
+                <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
+            </div>
 
             <div class="form-group text-center">
                 <div class="row">

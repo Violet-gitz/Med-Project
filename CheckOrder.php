@@ -15,6 +15,19 @@
         header('location: login.php');
     }
 
+    if (isset($_REQUEST['Cancel_id'])) 
+    {
+        $orderid = $_REQUEST['Cancel_id'];
+        $status = "Cancel";
+        $sql = "UPDATE tbl_order SET OrderStatus = 'Cancel' WHERE OrderId = $orderid";
+        if ($conn->query($sql) === TRUE) {     
+        } else {
+          echo "Error updating record: " . $conn->error;
+        }
+    }
+
+    
+
     
 ?>
 
@@ -68,11 +81,11 @@
                     <th>Order</th>
                     <th>Date order</th>
                     <th>Status</th>
-                    <th>Price</th>
-                    
+                    <th>Price</th>   
                     <th>Dealer</th>
                     <th>Staff</th>
                     <th>Received</th>
+                    <th>Cancel</th>
                 </tr>
             
 
@@ -107,8 +120,33 @@
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
                                         }
+                                        else if($OrderStatus == "Cancel")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
                                     ?>
                                     >Received
+                                </button>
+                            </form>
+                        </td>
+
+                        <td>
+                            <form method = "POST" action = "CheckOrder.php">
+                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Cancel_id" class="btn btn-danger"
+                                    <?php
+                                        if($OrderStatus == "Received")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if($OrderStatus == "Cancel")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                    ?>
+                                    >Cancel
                                 </button>
                             </form>
                         </td>

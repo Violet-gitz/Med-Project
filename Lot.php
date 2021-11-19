@@ -65,6 +65,10 @@
                         </li>  
                             &nbsp;&nbsp;
                         <li class="nav-item">
+                            <td><a href="Withdrawcart.php" class ="btn btn-info">Cart</a></td>
+                        </li>&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <li class="nav-item">
                             <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
                         </li>
 
@@ -83,6 +87,18 @@
             
     ?>
 
+
+<div class="container">
+  <div class="row">
+        <div class="col-md-4 ms-auto">
+            <form action="" method="post">
+                <input type="text" name="search" placeholder = "search">
+                <input type="submit" name="submit" value="Search">
+            </form>
+        </div>
+  </div>
+</div><br>
+
 <div class="container-sm">
     
     <table class="table table-bordered">
@@ -93,31 +109,42 @@
                 <th>Pictures</th>
                 <th>Quantity</th>
                 <th>Status</th>
+                <th>Expire</th>
                 <th>Action</th>
-                <th>backup </th>
-                <th>Claim</th> 
             </tr>
         </thead>
 
         <tbody>
             <?php 
-                    $sql = "SELECT tbl_lot.LotId,tbl_lot.MedId,tbl_lot.Qty,tbl_lot.LotStatus,tbl_receiveddetail.RecId,tbl_receiveddetail.Mfd,tbl_receiveddetail.Exd 
-                    FROM tbl_lot
-                    INNER JOIN tbl_receiveddetail ON tbl_lot.LotId = tbl_receiveddetail.LotId";
+                    $sql = "SELECT *FROM tbl_lot";
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
                         $data[] = $row;   
                     }
                     foreach($data as $key => $lot){
+                        $MfdDate = $lot["Mfd"];
+                        $ExpDate = $lot["Exd"];
+                        $datemfd=date_create($MfdDate);
+                        $dateexp=date_create($ExpDate);
+                        $diff=date_diff($datemfd,$dateexp);
+                        // echo $diff->format('%R%a');
 
                         $checkqty = $lot["Qty"];
                         $LotId = $lot["LotId"];
-                        $status = "Not Available"; 
-                        if($checkqty == '0')
+                        $LotStatus = $lot["LotStatus"];
+                        $status = "Not Available";
+                        // if ($checkqty == '0' and $LotStatus == 'Claim') 
+                        // {
+                        //     $sql = "UPDATE tbl_lot SET LotStatus = 'Claim' WHERE LotId = $LotId"; 
+                        //     if ($conn->query($sql) === TRUE) { 
+                        //     } else {
+                        //         echo "Error updating record: " . $conn->error;
+                        //     }
+                        // }
+                        if($checkqty == '0' and $LotStatus != 'Claim')
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = '$status' WHERE LotId = $LotId"; 
-                            // echo $sql;
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'Not Available' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;
@@ -133,7 +160,7 @@
                             $data[] = $row;  
                         }
                         foreach($data as $key => $Med){
-                            $LotStatus = $lot["LotStatus"];
+                            
                       
             ?>
 
@@ -143,7 +170,7 @@
                     <td><?php echo '<img style = "width:100px;height:100px"  src="upload/'. $Med["MedPath"]; ?>"></td>
                     <td><?php echo $lot["Qty"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
-
+                    <td><?php echo $diff->format('%R%a'); ?></td>
                     <td>
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -154,8 +181,6 @@
                                         $LotId = $lot["LotId"];
                                         $buttonStatus = "disabled";
                                         echo $buttonStatus;
-
-                                      
                                     }
                                     else if ($LotStatus == "Writeoff")
                                     {

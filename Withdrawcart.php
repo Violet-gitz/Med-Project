@@ -63,14 +63,15 @@
         $StaffId = $_REQUEST['selstaff'];
         date_default_timezone_set("Asia/Bangkok");
         $WithDate = date("Y-m-d h:i:sa");
-        
+        $WithStatus = "Pending approval";
         
          if (empty($StaffId)) {
             $errorMsg = "Please Enter StaffId";
-        }  else {
-                if (!isset($errorMsg)) {
-                    
-                    $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate) VALUES ('$StaffId', '$WithDate')";
+        }  else 
+            {
+                if (!isset($errorMsg))
+                {
+                    $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate, WithStatus) VALUES ('$StaffId', '$WithDate', '$WithStatus')";
                     if ($conn->query($sql) === TRUE) { 
                     } else {
                         echo "Error updating record: " . $conn->error;
@@ -81,8 +82,9 @@
                             $WithId  = $row["WithId"];
 
                             foreach($_SESSION['withdraw'] as $value)
-                        {
+                            {
                             $sql = 'SELECT * FROM tbl_receiveddetail WHERE LotId ='.$value[0].' and MedId = '.$value[1];
+                            echo $sql;
                             $result = $conn->query($sql);
                             $data = array();
                             
@@ -100,9 +102,6 @@
                                 
                                 $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$LotId', '$Quantity', '$Mfd', '$Exd')";
                             
-                                // echo $MedId;
-                                // echo $sql;
-                            
                                 if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw']);
                                 } else {
                                     echo "Error updating record: " . $conn->error;
@@ -115,52 +114,12 @@
                                 } else {
                                     echo "Error updating record: " . $conn->error;
                                 }  
-
-                                $sql = "SELECT * FROM tbl_med WHERE MedId = $MedId";
-                                $result = $conn->query($sql);
-                                $data = array();
-                                
-                                while($row = $result->fetch_assoc()) 
-                                {
-                                    $data[] = $row;  
-                                }
-                                foreach($data as $key => $Med)
-                                {
-                                    $MedTotal = $Med["MedTotal"];
-                                    $Medsum = $MedTotal - $Quantity;
-                                    $sql = "UPDATE tbl_med SET MedTotal = $Medsum WHERE MedId = $MedId"; 
-                                    if ($conn->query($sql) === TRUE) { 
-                                    } else {
-                                        echo "Error updating record: " . $conn->error;
-                                    }
-                                }
-
-                                $sql = "SELECT * FROM tbl_lot WHERE LotId = $Lotid";
-                                $result = $conn->query($sql);
-                                $data = array();
-                                
-                                while($row = $result->fetch_assoc()) 
-                                {
-                                    $data[] = $row;  
-                                }
-                                foreach($data as $key => $Lot)
-                                {
-                                    $Lotqty = $Lot["Qty"];
-                                    $sum = $Lotqty - $Quantity;
-                                    $sql = "UPDATE tbl_lot SET Qty = $sum WHERE LotId = $LotId"; 
-                                    if ($conn->query($sql) === TRUE) { 
-                                    } else {
-                                        echo "Error updating record: " . $conn->error;
-                                    }
-                                }
-
-                               
                             }
                         // header("refresh:1;main.php");
-                 
-                }     
-        }
-    }}
+                    }     
+                }
+            }   
+}
 
 ?>
      
@@ -248,7 +207,7 @@
             echo "<td width='334'>" . $Med["MedName"] . "</td>";
             echo "<td width='57' align='right'>";  
             // echo "<input type='number'name=".$Med["MedId"]."value=".$value[2]." size='2'/></td>";
-            echo "<input type ='number' name='".$Med["MedId"]."' value='".$value[2]."'></td>"; 
+            echo "<input type ='number' name='".$Med["MedId"]."' value='".$value[2]."'disabled size='2'></td>"; 
             
             echo "<td width='46' align='center'><a href='Withdrawcart.php?testMedId=".$value[1]."&act=remove&quantity=0&valueid=".$value[0]."'>Remove</a></td>";
             echo "</tr>";

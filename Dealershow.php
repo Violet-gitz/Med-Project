@@ -80,6 +80,9 @@
                     <th>DealerId</th>
                     <th>DealerName</th>
                     <th>DealerAddress</th>
+                    <th>DealerPhone</th>
+                    <th>ContractStart</th>
+                    <th>ContractEnd</th>
                     <th>Edit </th>
                     <th>Delete</th>
                 </tr>
@@ -106,6 +109,9 @@
                         <td><?php echo $dealer["DealerId"]; ?></td>
                         <td><?php echo $dealer["DealerName"]; ?></td>
                         <td><?php echo $dealer["DealerAddress"]; ?></td> 
+                        <td><?php echo $dealer["DealerPhone"]; ?></td> 
+                        <td><?php echo $dealer["ContractStart"]; ?></td> 
+                        <td><?php echo $dealer["ContractEnd"]; ?></td> 
                         <td><a href="Dealeredit.php?update_id=<?php echo $dealer["DealerId"];?>" class="btn btn-warning">Edit</a></td>
                         <td><a href="?delete_id=<?php echo $dealer["DealerId"]; ?>" class="btn btn-danger">Delete</a></td>
                     </tr>

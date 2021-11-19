@@ -1,7 +1,6 @@
 http://localhost/project/
 https://devbanban.com/?p=710
 
-
 create table tbl_staff
 (
 	StaffId int not null AUTO_INCREMENT,
@@ -26,7 +25,10 @@ create table tbl_dealer
 	DealerId int not null AUTO_INCREMENT,
 	DealerName varchar(255),
 	DealerAddress varchar(255),
-	Primary key (DeakerId)
+	DealerPhone varchar(255),
+	ContractStart varchar(255),
+	ContractEnd varchar(255),
+	Primary key (DealerId)
 )
 
 create table tbl_med
@@ -90,6 +92,8 @@ create table tbl_lot
 	MedId int,
 	RecClaimid int,
 	Qty int,
+	Mfd	varchar(255),
+	Exd	varchar(255),
 	LotStatus varchar(255),
 	Primary key (LotId),
 	Foreign key (MedId) REFERENCES tbl_med(MedId)
@@ -117,6 +121,7 @@ create table tbl_withdraw
 	WithId int not null AUTO_INCREMENT,
 	StaffId int,
 	Qtysum int,
+	WithStatus varchar(255),
 	WithDate varchar(255),
 	Primary key (WithId),
 	Foreign key (StaffId) REFERENCES tbl_staff(StaffId)	
@@ -151,7 +156,7 @@ create table tbl_writeoff
 	Foreign key (StaffId) REFERENCES tbl_staff(StaffId)
 ) 
 
-create table  tbl_claim
+create table tbl_claim
 (
 	ClaimId int not null Auto_Increment,
 	LotId int,
@@ -181,7 +186,7 @@ create table tbl_recclaim
 	Foreign key (StaffId) REFERENCES tbl_staff(StaffId)
 		
 )
-
+SET FOREIGN_KEY_CHECKS = 1;
 ALTER TABLE tbl_lot
 ADD FOREIGN KEY (RecClaimid) REFERENCES tbl_recclaim(RecClaimid);
 

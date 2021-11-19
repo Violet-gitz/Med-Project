@@ -163,12 +163,12 @@
                       echo "Error updating record: " . $conn->error;
                     }
 
-                    // $sql = "UPDATE tbl_lot set Qty = '$sum' WHERE $idlot =LotId";
-                    // if ($conn->query($sql) === TRUE) {
+                    $sql = "UPDATE tbl_lot set Qty = '$sum' WHERE $idlot =LotId";
+                    if ($conn->query($sql) === TRUE) {
                         
-                    // } else {
-                    //   echo "Error updating record: " . $conn->error;
-                    // }
+                    } else {
+                      echo "Error updating record: " . $conn->error;
+                    }
 
                     $sql = "UPDATE tbl_lot set LotStatus = '$status' WHERE $idlot =LotId";
                     if ($conn->query($sql) === TRUE) {
@@ -181,7 +181,7 @@
                    
                 }
             } 
-            // header("refresh:1;main.php");
+            header("refresh:1;main.php");
         }
     
     

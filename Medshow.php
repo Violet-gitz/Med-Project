@@ -39,7 +39,6 @@
     <title>Document</title>
 
     
-    
 </head>
 <body>
 
@@ -70,10 +69,24 @@
                 </div>
             </div>
         </nav>
-
+        
         <?php
             include('slidebar.php');
         ?>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-4 ms-auto">
+                        <form action="" method="post">
+                            <input type="text" name="search" placeholder = "Search" onchange="showUser(this.value)">
+                            <input type="submit" name="submit" value="Search">
+                            <!-- <select name="users" onchange="showUser(this.value)"> -->
+                        </form>
+                    </div>
+            </div>
+        </div><br>
+
+        
 
     <div class="container-sm">
     
@@ -85,6 +98,7 @@
                     <th>Description</th>
                     <th>Total</th>
                     <th>Edit</th>
+                    <th>Check Lot</th>
                    
                 </tr>
             </thead>

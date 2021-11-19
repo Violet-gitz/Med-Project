@@ -18,19 +18,33 @@
     if (isset($_REQUEST['btn_insert'])) {
         $DealerName = $_REQUEST['txt_DealerName'];
         $DealerAddress = $_REQUEST['txt_DealerAddress'];
+        $DealerPhone = $_REQUEST['txt_DealerPhone'];
+        $ContractStart = $_REQUEST['ContractStart'];
+        $ContractEnd = $_REQUEST['ContractEnd'];
+
+        
         
 
         if (empty($DealerName)) {
             $errorMsg = "Please enter Desler Name";
         } else if (empty($DealerAddress)) {
             $errorMsg = "please Enter Dealer Address";
+        } else if (empty($DealerPhone)) {
+            $errorMsg = "please Enter Dealer Phone";
+        } else if (empty($ContractStart)) {
+            $errorMsg = "please Enter Dealer Contract Start";
+        } else if (empty($ContractEnd)) {
+            $errorMsg = "please Enter Dealer Contract End";
         } else {
             try {
                 if (!isset($errorMsg)) {
                     
-                    $insert_stmt = $db->prepare("INSERT INTO tbl_dealer(DealerName, DealerAddress) VALUES (:1name, :2name)");
+                    $insert_stmt = $db->prepare("INSERT INTO tbl_dealer(DealerName,DealerAddress,DealerPhone,ContractStart,ContractEnd) VALUES (:1name,:2name,:3name,:4name,:5name)");
                     $insert_stmt->bindParam(':1name', $DealerName);
                     $insert_stmt->bindParam(':2name', $DealerAddress);
+                    $insert_stmt->bindParam(':3name', $DealerPhone);
+                    $insert_stmt->bindParam(':4name', $ContractStart);
+                    $insert_stmt->bindParam(':5name', $ContractEnd);
                     
 
                     if ($insert_stmt->execute()) {
@@ -116,6 +130,37 @@
                     <label for="DealerAddress" class="col-sm-3 control-label">Dealer Address</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_DealerAddress" class="form-control" placeholder="Enter Dealer Address...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="DealerAddress" class="col-sm-3 control-label">Dealer Phone</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_DealerPhone" class="form-control" placeholder="Enter Dealer Phone...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract Start</label>
+                    <div class="col-sm-1">
+                    <input type="date"  name="ContractStart"
+                                        value="<?php echo date('Y-m-j'); ?>" required 
+                                        min="2021-3-22" max="2030-12-31">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract End</label>
+                    <div class="col-sm-1">
+                    <input type="date"  name="ContractEnd"
+                                        value="<?php echo date('Y-m-j'); ?>" required 
+                                        min="2021-3-22" max="2030-12-31">
                     </div>
                 </div>
             </div>

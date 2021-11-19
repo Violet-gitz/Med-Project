@@ -31,7 +31,7 @@
 <body>
          <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-            <h1 class="navbar-brand">Received Medicine</h1>
+            <h1 class="navbar-brand">Received claim Medicine</h1>
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -114,8 +114,8 @@
                     <td><?php echo $deal["DealerName"]; ?></td>
                     <td><?php echo $deal["DealerAddress"]; ?></td>
                     <td>
-                        <form method = "POST" action = "Receiveddata.php">
-                            <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Received_id" class = "btn btn-primary"
+                        <form method = "POST" action = "ReceivdClaim.php">
+                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Claim_id" class = "btn btn-primary"
                                 <?php
                                     if($ClaimStatus == "Received")
                                     {
