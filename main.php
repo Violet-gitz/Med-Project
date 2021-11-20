@@ -63,7 +63,9 @@
                         </li>  
                             &nbsp;&nbsp;
                         <li class="nav-item">
+                            
                             <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
+                            
                         </li>
 
                     </ul>
@@ -141,5 +143,6 @@
             echo "</table>";
             
         ?>
+
 </body>
 </html>

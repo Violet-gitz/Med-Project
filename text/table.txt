@@ -1,5 +1,8 @@
 http://localhost/project/
-https://devbanban.com/?p=710
+
+go to path Project
+run composer require mpdf/mpdf
+
 
 create table tbl_staff
 (

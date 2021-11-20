@@ -29,6 +29,7 @@
         }
       
     }
+    
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +39,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    
+        <script>
+            function showResult(str) {
+            if (str == "") {
+                document.getElementById("livesearch").innerHTML = "";
+                return;
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("livesearch").innerHTML = this.responseText;
+                }
+                };
+                xmlhttp.open("GET","main.php?q="+str,true);
+                xmlhttp.send();
+            }
+            }
+        </script>
+
 </head>
 <body>
 
@@ -121,6 +139,7 @@
                         <td><?php echo $Med["MedDes"]; ?></td>
                         <td><?php echo $Med["MedTotal"]; ?></td>
                         <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Edit</a></td>
+                        <td><a href="Checklot.php?checklot=<?php echo $Med["MedId"];?>" class="btn btn-info">Check</a></td>
                     </tr>
 
                     <?php } ?>
@@ -132,6 +151,33 @@
         </table>
     </div>
     
+        <?php
+
+            $q = intval($_GET['q']);
+
+            $sql="SELECT * FROM tbl_lot WHERE MedId = '".$q."'";
+            $result = $conn->query($sql);
+            $data = array();
+            while($row = $result->fetch_assoc()) {
+            $data[] = $row;   
+            }
+            foreach($data as $key => $Lot){
+                $medid = $Lot["MedId"];
+                $sql="SELECT * FROM tbl_med WHERE MedId = '".$q."'";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) {
+                $data[] = $row;   
+                }
+                foreach($data as $key => $Med){
+            echo "<table>";
+            echo "<tr>";
+            echo "<td>" . $Med['MedName'] . "</td>";
+
+            echo "</tr>";
+            }}
+            echo "</table>";           
+        ?>
 
     
     

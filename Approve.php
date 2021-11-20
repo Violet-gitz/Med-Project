@@ -1,6 +1,5 @@
 <?php 
      include('Connect.php'); 
-     
 
     session_start();
 
@@ -41,15 +40,12 @@
       
     }*/
 
-    if (isset($_GET['print'])) {
-       require_once("/mpdf-development/vendor/autoload.php");
-       $mpdf =new MpdfMpdf();
-       $mpdf ->allow_charset_conversion=true;
-
-       $content = "test";
-       $mpdf->WriteHTML($content);
-       $mpdf->Output();
-    }
+    // if (isset($_GET['print'])) {
+    //     require_once __DIR__ . '/vendor/autoload.php';
+    //     $mpdf = new \mpdf\mpdf();
+    //     $mpdf->WriteHTML('<h1>Hello world!</h1>');
+    //     $mpdf->Output();
+    // }
 
     
 ?>

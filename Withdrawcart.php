@@ -83,7 +83,7 @@
 
                             foreach($_SESSION['withdraw'] as $value)
                             {
-                            $sql = 'SELECT * FROM tbl_receiveddetail WHERE LotId ='.$value[0].' and MedId = '.$value[1];
+                            $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$value[0].' and MedId = '.$value[1];
                             echo $sql;
                             $result = $conn->query($sql);
                             $data = array();
@@ -92,13 +92,13 @@
                             {
                                 $data[] = $row;  
                             }
-                            foreach($data as $key => $Rec)
+                            foreach($data as $key => $lot)
                             {       
                                 $Quantity = $value[2];   
-                                $MedId = $Rec["MedId"];
-                                $LotId = $Rec["LotId"];
-                                $Mfd = $Rec["Mfd"];
-                                $Exd = $Rec["Exd"];
+                                $MedId = $lot["MedId"];
+                                $LotId = $lot["LotId"];
+                                $Mfd = $lot["Mfd"];
+                                $Exd = $lot["Exd"];
                                 
                                 $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$LotId', '$Quantity', '$Mfd', '$Exd')";
                             
