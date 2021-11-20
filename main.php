@@ -23,23 +23,19 @@
             unset($_SESSION['StaffUsername']);
             header('location: login.php');
         }
+        
+        $staff =  $_SESSION['StaffName'];
+        $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $staff){      
 
-        /*if (isset($_GET['delete'])) {
-            $id = $_GET['delete'];
-
-
-        // Delete an original record from db
-        //$sql = 'DELETE FROM tbl_Staff WHERE StaffId' =.$id);
-
-
-        $sql = "DELETE FROM tbl_lot WHERE LotId = '".$id."'";
-        if($conn->query($sql) == TRUE){
-            echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
-        }else{
-            echo "<script type='text/javascript'>alert('ลบข้อมูลไม่สำเร็จ');</script>";
-        }
-      
-    }*/
+            }
+        
     
 ?>
 <!DOCTYPE html>
@@ -56,19 +52,23 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div id="navbar1" class="collapse navbar-collapse">
-                    <ul class="navbar-nav ms-auto">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        ><?php echo $_SESSION['StaffName'] ?>
+                        </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                        <li class="nav-item">
-                            <a class="nav-link"><?php echo $_SESSION['StaffName'] ?></a>                
-                        </li>  
-                            &nbsp;&nbsp;
-                        <li class="nav-item">
-                            
-                            <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
-                            
-                        </li>
+                                <form method="POSt" action="Staffedit.php">
+                                    <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                    <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
+                                </from>
 
-                    </ul>
+                                <form method="POST" action="index.php">
+                                    <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                    <input type ="hidden" name ='logout' value ="1">
+                                </form>
+                            </div>
+                    </div>
                 </div>
             </div>
         </nav> 
@@ -91,6 +91,8 @@
             }
         </script>
 
+
+    
 </head>
 
 
@@ -103,7 +105,7 @@
    
 
 <body>
-
+        
         <div class="container">
             <div class="row">
                     <div class="col-md-4 ms-auto">
@@ -143,6 +145,10 @@
             echo "</table>";
             
         ?>
+
+    <script src="js/slim.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.js"></script>
 
 </body>
 </html>

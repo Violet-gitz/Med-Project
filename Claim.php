@@ -184,7 +184,17 @@
             header("refresh:1;main.php");
         }
     
-    
+        $staff =  $_SESSION['StaffName'];
+        $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $staff){      
+
+            }
    
 
 ?>
@@ -195,26 +205,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-        <!-- <script>
-            
-                function display_ct6() 
-                    {
-                        var x = new Date()
-                        var ampm = x.getHours( ) >= 12 ? ' PM' : ' AM';
-                        hours = x.getHours( ) % 12;
-                        hours = hours ? hours : 12;
-                        var x1=x.getMonth() + 1+ "/" + x.getDate() + "/" + x.getFullYear(); 
-                        x1 = x1 + " - " +  hours + ":" +  x.getMinutes() + ":" +  x.getSeconds() + ":" + ampm;
-                        document.getElementById('Time').value = x1;
-                        display_c6();
-                        }
-                        function display_c6(){
-                        var refresh=1000; // Refresh rate in milli seconds
-                        mytime=setTimeout('display_ct6()',refresh)
-                    }
-                    display_c6()
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container">
+                <a href="main.php" class="navbar-brand">Home Page</a>
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="navbar1" class="collapse navbar-collapse">
+                    <div class="dropdown">
 
-        </script> -->
+                        <div id="navbar1" class="collapse navbar-collapse">
+                            <ul class="navbar-nav ms-auto">
+
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                ><?php echo $_SESSION['StaffName'] ?>
+                                </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                        <form method="POSt" action="Staffedit.php">
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
+                                        </from>
+
+                                        <form method="POST" action="index.php">
+                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <input type ="hidden" name ='logout' value ="1">
+                                        </form>
+                                    </div>                               
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav> 
     
     
 </head>
@@ -225,31 +248,6 @@
             include('slidebar.php');
         ?>
 
-
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-            <div class="container">
-            <h1 class="navbar-brand">Medicine Withdraw</h1>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div id="navbar1" class="collapse navbar-collapse">
-                    <ul class="navbar-nav ms-auto">
-
-                        <li class="nav-item">
-                            <a class="nav-link"><?php echo $_SESSION['StaffName'] ?></a>                
-                        </li>  
-                        
-                        
-                        <li class="nav-item">
-                            <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-
-    
     <?php 
          if (isset($errorMsg)) {
     ?>

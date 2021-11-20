@@ -3,7 +3,8 @@
 
      session_start();
 
-    if (!isset($_SESSION['StaffName'])) {
+    
+     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
     }
@@ -14,21 +15,27 @@
         header('location: login.php');
     }
 
-
     if (isset($_GET['delete_id'])) {
         $id = $_GET['delete_id'];
 
 
-        // Delete an original record from db
-        //$sql = 'DELETE FROM tbl_Staff WHERE StaffId' =.$id);
-        $sql = "DELETE FROM tbl_Staff WHERE StaffId = '".$id."'";
+        //Delete an original record from db
+        //$sql = 'DELETE FROM tbl_Med WHERE MedId' =.$id);
+        $sql = "DELETE FROM tbl_med where MedId = '".$id."'";
         if($conn->query($sql) == TRUE){
-            echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
+          echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
         }else{
-            echo "<script type='text/javascript'>alert('ลบข้อมูลไม่สำเร็จ');</script>";
+          echo "<script type='text/javascript'>alert('ลบข้อมูลไม่สำเร็จ');</script>";
         }
       
     }
+
+    if (isset($_REQUEST['submit'])) {
+        $search = $_REQUEST['textsearch'];
+
+       
+    }
+
 
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -41,6 +48,7 @@
         foreach($data as $key => $staff){      
 
         }
+    
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +58,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+        <script>
+            function showResult(str) {
+            if (str == "") {
+                document.getElementById("livesearch").innerHTML = "";
+                return;
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("livesearch").innerHTML = this.responseText;
+                }
+                };
+                xmlhttp.open("GET","main.php?q="+str,true);
+                xmlhttp.send();
+            }
+            }
+        </script>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <a href="main.php" class="navbar-brand">Home Page</a>
@@ -85,76 +110,83 @@
             </div>
         </nav> 
 
-    
-    
 </head>
 <body>
+
         <?php
             include('slidebar.php');
         ?>
 
     <div class="container-sm">
-        
+    
         <table class="table table-bordered">
-            
+            <thead>
                 <tr>
-                    <th>StaffID</th>
+                    <th>Picture</th>
                     <th>Name</th>
-                    <th>Telephone</th>
-                    <th>Email</th> 
-                    <th>Department</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Description</th>
+                    <th>Total</th>
+                    <!-- <th>Edit</th> -->
+                    <th>Check Lot</th>
+                   
                 </tr>
-            
+            </thead>
 
             <tbody>
                 <?php 
-                    //$select_stmt = ;
-                    // $result = mysqli_query($conn, "SELECT * FROM tbl_staff");
-                    
-
-                    // $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                        // echo $row;
-                        $sql = 'SELECT * FROM tbl_staff';
+                        $search = $_REQUEST['textsearch'];
+                        $sql = "SELECT * FROM tbl_med WHERE MedId LIKE '%{$search}%' || MedName LIKE '%{$search}%' ";
                         $result = $conn->query($sql);
                         $data = array();
-                        while($row = $result->fetch_assoc()) 
-                        {
+                        while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
-                        foreach($data as $key => $staff){
-
-                            $Depart = $staff["DepartId"];
-                                $sql ="SELECT * FROM tbl_department WHERE $Depart = DepartId";
-                                $result = $conn->query($sql);
-                                $data = array();
-                                    while($row = $result->fetch_assoc()) 
-                                    {
-                                        $data[] = $row;   
-                                    }
-                                    foreach($data as $key => $de){           
+                        foreach($data as $key => $Med){               
                 ?>
 
                     <tr>
-                        <td><?php echo $staff["StaffId"]; ?></td>
-                        <td><?php echo $staff["StaffName"]; ?></td>
-                        <td><?php echo $staff["StaffTel"]; ?></td>
-                        <td><?php echo $staff["StaffEmail"]; ?></td>
-                        <td><?php echo $de["DepartName"]; ?></td>
-                        <td><a href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>" class="btn btn-warning">Edit</a></td>
-                        <td><a href="?delete_id=<?php echo $staff["StaffId"];; ?>" class="btn btn-danger">Delete</a></td>
+                        <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
+                        <td><?php echo $Med["MedName"]; ?></td>
+                        <td><?php echo $Med["MedDes"]; ?></td>
+                        <td><?php echo $Med["MedTotal"]; ?></td>
+                        <!-- <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Edit</a></td> -->
+                        <td><a href="Checklot.php?checklot=<?php echo $Med["MedId"];?>" class="btn btn-info">Check</a></td>
                     </tr>
 
-                    <?php } }?>
+                    <?php } ?>
 
-                    
-
-                
             </tbody>
         </table>
     </div>
     
+        <?php
+
+            // $q = intval($_GET['q']);
+
+            // $sql="SELECT * FROM tbl_lot WHERE MedId = '".$q."'";
+            // $result = $conn->query($sql);
+            // $data = array();
+            // while($row = $result->fetch_assoc()) {
+            // $data[] = $row;   
+            // }
+            // foreach($data as $key => $Lot){
+            //     $medid = $Lot["MedId"];
+            //     $sql="SELECT * FROM tbl_med WHERE MedId = '".$q."'";
+            //     $result = $conn->query($sql);
+            //     $data = array();
+            //     while($row = $result->fetch_assoc()) {
+            //     $data[] = $row;   
+            //     }
+            //     foreach($data as $key => $Med){
+            // echo "<table>";
+            // echo "<tr>";
+            // echo "<td>" . $Med['MedName'] . "</td>";
+
+            // echo "</tr>";
+            // }}
+            // echo "</table>";           
+        ?>
+
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>

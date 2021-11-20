@@ -80,6 +80,17 @@
                             header("refresh:1;main.php");
                     }
         }
+        $staff =  $_SESSION['StaffName'];
+        $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $staff){      
+
+            }
 ?>
      
      <!DOCTYPE html>
@@ -89,34 +100,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    
-</head>
-
-<body>
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-            <h1 class="navbar-brand">Order list</h1>
+                <a href="main.php" class="navbar-brand">Home Page</a>
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div id="navbar1" class="collapse navbar-collapse">
-                    <ul class="navbar-nav ms-auto">
+                    <div class="dropdown">
 
-                        <li class="nav-item">
-                            <a class="nav-link"><?php echo $_SESSION['StaffName'] ?></a>                
-                        </li>  &nbsp;&nbsp;
+                        <div id="navbar1" class="collapse navbar-collapse">
+                            <ul class="navbar-nav ms-auto">
 
-                        <li class="nav-item">
-                            <td><a href="Shipping.php" class ="btn btn-info">Cart</a></td>
-                        </li>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <li class="nav-item">
+                                    <td><a href="Withdrawcart.php" class ="btn btn-info">Cart</a></td>
+                                </li>
 
-                        <li class="nav-item">
-                            <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
-                        </li>
-                    </ul>
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                ><?php echo $_SESSION['StaffName'] ?>
+                                </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                        <form method="POSt" action="Staffedit.php">
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
+                                        </from>
+
+                                        <form method="POST" action="index.php">
+                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <input type ="hidden" name ='logout' value ="1">
+                                        </form>
+                                    </div>                               
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </nav> 
+
+</head>
+
+<body>
+
 
         <?php
             include('slidebar.php');
@@ -179,5 +204,9 @@
             </div>
         </div>
     </form>
+
+    <script src="js/slim.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.js"></script>
     </body>
     </html>

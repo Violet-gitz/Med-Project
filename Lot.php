@@ -42,6 +42,17 @@
     }*/
 
 
+    $staff =  $_SESSION['StaffName'];
+    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+    $result = $conn->query($sql);
+    $data = array();
+        while($row = $result->fetch_assoc()) 
+        {
+            $data[] = $row;  
+        }
+        foreach($data as $key => $staff){      
+
+        }
     
 ?>
 <!DOCTYPE html>
@@ -51,6 +62,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     
+    
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <a href="main.php" class="navbar-brand">Home Page</a>
@@ -58,26 +70,33 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div id="navbar1" class="collapse navbar-collapse">
-                    <ul class="navbar-nav ms-auto">
+                    <div class="dropdown">
 
-                        <li class="nav-item">
-                            <a class="nav-link"><?php echo $_SESSION['StaffName'] ?></a>                
-                        </li>  
-                            &nbsp;&nbsp;
-                        <li class="nav-item">
-                            <td><a href="Withdrawcart.php" class ="btn btn-info">Cart</a></td>
-                        </li>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div id="navbar1" class="collapse navbar-collapse">
+                            <ul class="navbar-nav ms-auto">
 
-                        <li class="nav-item">
-                            <td><a href="index.php?logout='1'" class ="btn btn-warning">Logout</a></td>
-                        </li>
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                ><?php echo $_SESSION['StaffName'] ?>
+                                </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                    </ul>
+                                        <form method="POSt" action="Staffedit.php">
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
+                                        </from>
+
+                                        <form method="POST" action="index.php">
+                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <input type ="hidden" name ='logout' value ="1">
+                                        </form>
+
+                                    </div>                               
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav> 
-  
-
 </head>
 
 
