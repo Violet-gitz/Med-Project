@@ -84,7 +84,7 @@
                             foreach($_SESSION['withdraw'] as $value)
                             {
                             $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$value[0].' and MedId = '.$value[1];
-                            echo $sql;
+
                             $result = $conn->query($sql);
                             $data = array();
                             
@@ -115,10 +115,11 @@
                                     echo "Error updating record: " . $conn->error;
                                 }  
                             }
-                        // header("refresh:1;main.php");
+                           
                     }     
                 }
-            }   
+            } $insertMsg = "Insert Successfully...";
+            header("refresh:1;main.php");   
 }
 
 $staff =  $_SESSION['StaffName'];

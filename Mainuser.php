@@ -1,3 +1,4 @@
+
 <?php 
      include('Connect.php'); 
      
@@ -63,8 +64,8 @@
                         </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                <form method="POSt" action="Staffedit.php">
-                                    <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                <form method="POSt" action="useredit.php">
+                                    <a class="dropdown-item" href="useredit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
                                     <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                 </from>
 
@@ -104,48 +105,75 @@
 <body>
 
     <?php
-            include('slidebar.php');   
-            
-            
-            echo '
-            <script type="text/javascript">
-        
-            $(document).ready(function(){
-        
-            swal({
-                position: "top-end",
-                type: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500
-            })
-            });
-        
-        </script>
-        ';
+            include('slidebaruser.php');   
     ?>
 
    
-
-<body>
-        
-        <div class="container">
+    <div class="container">
             <div class="row">
                     <div class="col-md-4 ms-auto">
-                        <form>
-                            <input type="text" size="30" onkeyup="showResult(this.value)">
-                            <div id="livesearch"></div>
+                        <form action="" method="post">
+                            <input type="text" name="textsearch" placeholder = "Search">
+                            <input type="submit" name="submit" value="Search">
                         </form>
                     </div>
             </div>
         </div><br>
 
-  
-      
+        
+
+    <div class="container-sm">
+    
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Picture</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Total</th>
+                    <th>Quantity</th>
+                    <th>Withdraw</th>
+
+                   
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php 
+                    
+                        $sql = 'SELECT * FROM tbl_med';
+                        $result = $conn->query($sql);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) {
+                            $data[] = $row;   
+                        }
+                        foreach($data as $key => $Med){               
+                ?>
+
+                    <tr>
+                        <form action = "cartuser.php" method="post">
+                        <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
+                        <td><?php echo $Med["MedName"]; ?></td>
+                        <td><?php echo $Med["MedDes"]; ?></td>
+                        <td><?php echo $Med["MedTotal"]; ?></td>
+                        <td><input type="number" name="quantity" min="1" max="<?php echo $Med["MedTotal"]; ?>" value= "1"></td>
+                        <td><input type="submit" class = "btn btn-info" value = "Add to cart"></td>
+                        <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">
+                        <input type ="hidden" name = "act" value = "add">
+                        </form>
+                    </tr>
+
+                    <?php } ?>
+
+                    
+
+                
+            </tbody>
+        </table>
+    </div>
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
-
 </body>
 </html>
