@@ -53,7 +53,23 @@
         foreach($data as $key => $staff){      
 
         }
-    
+
+        // echo "  <script>
+        // Swal.fire('foreach($_SESSION['swal'] as $value)')
+        // </script>";
+
+        if(!empty($_SESSION['swal']))
+        {
+
+            foreach($_SESSION['swal'] as $value)
+            {
+                echo "  <script>
+                Swal.fire('test".print_r($_SESSION['swal'])."')
+                        </script>";
+            }
+    }
+        print_r($_SESSION['swal']);
+        echo '<pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,8 +77,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
-    
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/sweetalert2@11.2.0/dist/sweetalert2.min.css">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+   
+  
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <a href="main.php" class="navbar-brand">Home Page</a>
@@ -74,6 +97,10 @@
 
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
+
+                                <li class="nav-item">
+                                    <td><a href="Withdrawcart.php" class ="btn btn-info">Cart</a></td>
+                                </li>
 
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
@@ -102,15 +129,14 @@
 
 <body>
     <?php
-            include('slidebar.php');
-            
+            include('slidebar.php');           
     ?>
 
 
 <div class="container">
   <div class="row">
         <div class="col-md-4 ms-auto">
-            <form action="" method="post">
+            <form action="LotSearch.php" method="post">
                 <input type="text" name="search" placeholder = "search">
                 <input type="submit" name="submit" value="Search">
             </form>
@@ -142,13 +168,7 @@
                         $data[] = $row;   
                     }
                     foreach($data as $key => $lot){
-                        $MfdDate = $lot["Mfd"];
-                        $ExpDate = $lot["Exd"];
-                        $datemfd=date_create($MfdDate);
-                        $dateexp=date_create($ExpDate);
-                        $diff=date_diff($datemfd,$dateexp);
-                        // echo $diff->format('%R%a');
-
+                       
                         $checkqty = $lot["Qty"];
                         $LotId = $lot["LotId"];
                         $LotStatus = $lot["LotStatus"];
@@ -179,8 +199,21 @@
                             $data[] = $row;  
                         }
                         foreach($data as $key => $Med){
-                            
-                      
+
+                            $MfdDate = $lot["Mfd"];
+                            $ExpDate = $lot["Exd"];
+                            $datemfd=date_create($MfdDate);
+                            $dateexp=date_create($ExpDate);
+                            $diff=date_diff($datemfd,$dateexp);
+                            // if($diff->format('%R%a')<=1005)
+                                // {
+                                //     echo "  <script>
+                                //     Swal.fire('ชื่อ".$Med["MedName"]."')
+                                //             </script>";
+                                // }
+                            // echo $diff->format('%R%a');
+                            // $_SESSION['swal'][$LotId] = $lot["LotId"];
+                           
             ?>
 
                 <tr>
@@ -189,8 +222,12 @@
                     <td><?php echo '<img style = "width:100px;height:100px"  src="upload/'. $Med["MedPath"]; ?>"></td>
                     <td><?php echo $lot["Qty"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
-                    <td><?php echo $diff->format('%R%a'); ?></td>
-                    <td>
+                    <td><?php echo $diff->format('%R%a');
+                     if($diff->format('%R%a')<=100)
+                     {
+                        echo " test";  
+                        $_SESSION['swal'][$LotId] = $lot["LotId"];
+                     } ?><td>
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             <?php 
@@ -233,75 +270,22 @@
                         </div>
                     </td>
                     
-                    <!-- <td>
-                        <form method="POST" action="Withdraw.php">
-                            <button type="submit" value = "<?php echo $lot["LotId"]; ?>" name = "withdraw" class = "btn btn-success"
-                                <?php 
-                                    $Qty = $lot["Qty"];
-                                    if ($Qty<=0)
-                                    {
-                                        $LotId = $lot["LotId"];
-                                        $status = "Not Available"; 
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-
-                                      
-                                    }
-                                    else if ($LotStatus == "Writeoff")
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                ?> 
-                            >Withdraw</button>    
-                        </form>
-                    </td> -->
-
-                    <!-- <td>
-                        <form method = "POST" action ="Writeoff.php">
-                            <button type = "submit" value ="<?php echo $lot["LotId"]; ?>" name = "Write" class = "btn btn-success"
-                                <?php
-                                    if ($LotStatus == "Writeoff")
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                    else if ($Qty<=0)
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                ?>
-                            >Write-off</button>
-                        </form>
-                    </td> -->
-
-                    <!-- <td>
-                        <form method = "POST" action = "Claim.php">
-                            <button type ="submit" value = "<?php echo $lot["LotId"]; ?>" name = "Claim" class = "btn btn-warning"
-                                <?php
-                                    if ($Qty<=0)
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                    else if ($LotStatus == "Claim")
-                                    {
-                                        $buttonStatus = "disable";
-                                        echo $buttonStatus;
-                                    }
-                                ?>
-                            >Claim</button>
-                        </form>
-                    </td> -->
 
                 </tr>
 
-                <?php } } ?>
+                <?php } }  
+                if(!empty($_SESSION['swal']))
+        {
+                echo "  <script>
+                Swal.fire('test".print_r($_SESSION['swal'])."')
+                        </script>";
+                        // print_r($_SESSION['swal']);
+    } ?>
             
             
         </tbody>
     </table>
+ 
 </div>
 
     <script src="js/slim.js"></script>

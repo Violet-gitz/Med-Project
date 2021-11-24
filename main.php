@@ -44,6 +44,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="sweetalert2.all.min.js"></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
     
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
@@ -73,7 +78,7 @@
             </div>
         </nav> 
 
-        <script>
+        <!-- <script>
             function showResult(str) {
             if (str == "") {
                 document.getElementById("livesearch").innerHTML = "";
@@ -89,7 +94,7 @@
                 xmlhttp.send();
             }
             }
-        </script>
+        </script> -->
 
 
     
@@ -99,7 +104,25 @@
 <body>
 
     <?php
-            include('slidebar.php');    
+            include('slidebar.php');   
+            
+            
+            echo '
+            <script type="text/javascript">
+        
+            $(document).ready(function(){
+        
+            swal({
+                position: "top-end",
+                type: "success",
+                title: "Your work has been saved",
+                showConfirmButton: false,
+                timer: 1500
+            })
+            });
+        
+        </script>
+        ';
     ?>
 
    
@@ -118,33 +141,7 @@
         </div><br>
 
   
-        <?php
-            $q = intval($_GET['q']);
-
-            $sql="SELECT * FROM tbl_lot WHERE MedId = '".$q."'";
-            $result = $conn->query($sql);
-            $data = array();
-            while($row = $result->fetch_assoc()) {
-            $data[] = $row;   
-            }
-            foreach($data as $key => $Lot){
-                $medid = $Lot["MedId"];
-                $sql="SELECT * FROM tbl_med WHERE MedId = '".$q."'";
-                $result = $conn->query($sql);
-                $data = array();
-                while($row = $result->fetch_assoc()) {
-                $data[] = $row;   
-                }
-                foreach($data as $key => $Med){
-            echo "<table>";
-            echo "<tr>";
-            echo "<td>" . $Med['MedName'] . "</td>";
-
-            echo "</tr>";
-            }}
-            echo "</table>";
-            
-        ?>
+      
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>

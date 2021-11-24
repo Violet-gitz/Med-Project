@@ -189,8 +189,8 @@ create table tbl_recclaim
 	Foreign key (StaffId) REFERENCES tbl_staff(StaffId)
 		
 )
-SET FOREIGN_KEY_CHECKS = 1;
+
 ALTER TABLE tbl_lot
 ADD FOREIGN KEY (RecClaimid) REFERENCES tbl_recclaim(RecClaimid);
 
-
+ 

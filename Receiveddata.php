@@ -186,7 +186,7 @@
                         }else
                             if(!isset($errorMsg)) 
                             {
-                                $sql = "INSERT INTO tbl_lot(Qty, MedId, LotStatus,Mfd,Exd) VALUES ('$MedQty', '$MedId','$LotStatus','$MfdDate','$ExpDate')";
+                                $sql = "INSERT INTO tbl_lot(Qty, MedId, LotStatus, Mfd, Exd) VALUES ('$MedQty', '$MedId','$LotStatus','$MfdDate','$ExpDate')";
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {
                                     echo "Error updating record: " . $conn->error;

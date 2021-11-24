@@ -81,6 +81,17 @@
             include('slidebar.php');
         ?>
 
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-4 ms-auto">
+                        <form action="ClaimSearch.php" method="post">
+                            <input type="text" name="textsearch" placeholder = "Search">
+                            <input type="submit" name="submit" value="Search">
+                        </form>
+                    </div>
+            </div>
+        </div><br>
+
     <div class="container-sm">
     
     <table class="table table-bordered">

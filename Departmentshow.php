@@ -60,6 +60,10 @@
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
 
+                                <li class="nav-item">
+                                    <td><a href="Departmentadd.php" class ="btn btn-info">Add</a></td>
+                                </li>
+
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
