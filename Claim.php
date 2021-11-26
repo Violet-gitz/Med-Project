@@ -20,7 +20,7 @@
     if (isset($_REQUEST['Claim'])) {
         
             $id = $_REQUEST['Claim'];
-            $sql = 'SELECT * FROM tbl_receiveddetail WHERE LotId ='.$id;;
+            $sql = 'SELECT * FROM tbl_receiveddetail WHERE LotId ='.$id;
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {
@@ -95,7 +95,7 @@
                 foreach($data as $key => $med){
 
                     $idrec = $Recde["RecId"];
-                    $sql ="SELECT * FROM tbl_order WHERE $idorder = OrderId";
+                    $sql ="SELECT * FROM tbl_received WHERE $idrec = OrderId";
                     $result = $conn->query($sql);
                     $data = array();
                         while($row = $result->fetch_assoc()) {
@@ -175,12 +175,10 @@
                         
                     } else {
                       echo "Error updating record: " . $conn->error;
-                    }
-
-                    
-                   
+                    }    
                 }
-            } 
+            }      
+            $insertMsg = "Insert Successfully...";
             header("refresh:1;main.php");
         }
     

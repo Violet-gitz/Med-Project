@@ -58,18 +58,18 @@
         // Swal.fire('foreach($_SESSION['swal'] as $value)')
         // </script>";
 
-        if(!empty($_SESSION['swal']))
-        {
+        // if(!empty($_SESSION['swal']))
+        // {
 
-            foreach($_SESSION['swal'] as $value)
-            {
-                echo "  <script>
-                Swal.fire('test".print_r($_SESSION['swal'])."')
-                        </script>";
-            }
-    }
-        print_r($_SESSION['swal']);
-        echo '<pre>';
+        //     foreach($_SESSION['swal'] as $value)
+        //     {
+        //         echo "  <script>
+        //         Swal.fire('test".print_r($_SESSION['swal'])."')
+        //                 </script>";
+        //     }
+        // }
+        // print_r($_SESSION['swal']);
+        // echo '<pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -155,6 +155,7 @@
                 <th>Quantity</th>
                 <th>Status</th>
                 <th>Expire</th>
+                <th>Claim</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -173,6 +174,7 @@
                         $LotId = $lot["LotId"];
                         $LotStatus = $lot["LotStatus"];
                         $status = "Not Available";
+                        $checkclaim = $lot["RecClaimid"];
                         // if ($checkqty == '0' and $LotStatus == 'Claim') 
                         // {
                         //     $sql = "UPDATE tbl_lot SET LotStatus = 'Claim' WHERE LotId = $LotId"; 
@@ -227,8 +229,28 @@
                      {
                         echo " test";  
                         $_SESSION['swal'][$LotId] = $lot["LotId"];
-                     } ?><td>
-                        <div class="dropdown">
+                     } ?></td>
+                    <!-- <td>
+                        <form method = "POST" action ="Claim.php">
+                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "Claim" class="btn btn-danger"
+                                    <?php
+                                        if(is_null($checkclaim))
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if ($checkclaim == "Claim")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus; 
+                                        }
+                                    ?>
+                                    >Claim
+                            </button>
+                        </form>
+                    
+                    </td>  -->
+                    <td><div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             <?php 
                                     $Qty = $lot["Qty"];
@@ -263,24 +285,32 @@
                                 </form>
 
                                 <form method="POST" action="Claim.php">
+                                    <?php
+                                        if(is_null($checkclaim))
+                                        {
+                                    ?>
                                     <a class="dropdown-item" href="Claim.php?Claim=<?php echo $lot["LotId"]; ?>">Claim</a>
                                     <input type ="hidden" name ='Claim' value ="<?php echo $lot["LotId"]; ?>">
+                                    <?php }
+                                    ?>
                                 </form>
+ 
                             </div>
                         </div>
+
                     </td>
                     
-
                 </tr>
 
                 <?php } }  
-                if(!empty($_SESSION['swal']))
-        {
-                echo "  <script>
-                Swal.fire('test".print_r($_SESSION['swal'])."')
-                        </script>";
-                        // print_r($_SESSION['swal']);
-    } ?>
+    //             if(!empty($_SESSION['swal']))
+    //     {
+    //             echo "  <script>
+    //             Swal.fire('test".print_r($_SESSION['swal'])."')
+    //                     </script>";
+    //                     // print_r($_SESSION['swal']);
+    // } 
+    ?>
             
             
         </tbody>
@@ -295,3 +325,4 @@
   
 </body>
 </html>
+
