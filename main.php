@@ -78,26 +78,6 @@
             </div>
         </nav> 
 
-        <!-- <script>
-            function showResult(str) {
-            if (str == "") {
-                document.getElementById("livesearch").innerHTML = "";
-                return;
-            } else {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("livesearch").innerHTML = this.responseText;
-                }
-                };
-                xmlhttp.open("GET","main.php?q="+str,true);
-                xmlhttp.send();
-            }
-            }
-        </script> -->
-
-
-    
 </head>
 
 
@@ -105,41 +85,13 @@
 
     <?php
             include('slidebar.php');   
-            
-            
-            echo '
-            <script type="text/javascript">
-        
-            $(document).ready(function(){
-        
-            swal({
-                position: "top-end",
-                type: "success",
-                title: "Your work has been saved",
-                showConfirmButton: false,
-                timer: 1500
-            })
-            });
-        
-        </script>
-        ';
     ?>
 
    
 
 <body>
         
-        <div class="container">
-            <div class="row">
-                    <div class="col-md-4 ms-auto">
-                        <form>
-                            <input type="text" size="30" onkeyup="showResult(this.value)">
-                            <div id="livesearch"></div>
-                        </form>
-                    </div>
-            </div>
-        </div><br>
-
+    
   
       
 

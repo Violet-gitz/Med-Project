@@ -26,10 +26,24 @@
         }
     }
 
-   
+    // if (isset($_REQUEST['Report'])) 
+    // {
+    //     require_once __DIR__ . '/vendor/autoload.php';
+    //     $mpdf = new \Mpdf\Mpdf();
+
+    //     $orderid = $_REQUEST["valueid"];
+       
+    //     $mpdf->WriteHTML
+    //     (
+    //        "Test" . $orderid
+
+    //             );
+    //     // Output a PDF file directly to the browser
+    //     $mpdf->Output();
+    // }
 
     $staff =  $_SESSION['StaffName'];
-    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+    $sql = "SELECT * FROM tbl_staff WHERE StaffName = '$staff'";
     $result = $conn->query($sql);
     $data = array();
         while($row = $result->fetch_assoc()) 
@@ -123,6 +137,8 @@
                     <th>Staff</th>
                     <th>Received</th>
                     <th>Cancel</th>
+                    <th>Report</th>
+                    
                 </tr>
             
 
@@ -185,6 +201,13 @@
                                     ?>
                                     >Cancel
                                 </button>
+                            </form>
+                        </td>
+
+                        <td>
+                            <form method = "POST" action = "Reportorder.php">
+                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
+                                <input type ="hidden" name = "valueid" value = "<?php echo $order["OrderId"];?>">
                             </form>
                         </td>
                         
