@@ -24,21 +24,19 @@
             'default_font' => 'TH Krub'
         ]);
         ob_start();   
-        $orderid = $_REQUEST["valueid"];
+        $claimid = $_REQUEST["valueid"];
        
-        $sql = "SELECT * FROM tbl_order WHERE OrderId = '$orderid'";
+        $sql = "SELECT * FROM tbl_claim WHERE ClaimId = '$claimid'";
         $result = $conn->query($sql);
         $data = array();
         while($row = $result->fetch_assoc()) 
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $order)
-        $orderprice = $order["OrderPrice"];
-        $ordertotal = $order["OrderTotal"];
-        $ordertax = $ordertotal - $orderprice;
+        foreach($data as $key => $claim)
+        
         {      
-            $derlarid = $order["DealerId"];
+            $derlarid = $claim["DealerId"];
             $sql = "SELECT * FROM tbl_dealer WHERE DealerId = '$derlarid'";
             $result = $conn->query($sql);
             $data = array();
@@ -46,10 +44,10 @@
             {
                 $data[] = $row;  
             }
-            foreach($data as $key => $dealer){} 
-            
-            $staffid = $order["StaffName"];
-            $sql = "SELECT * FROM tbl_staff WHERE StaffName = '$staffid'";
+            foreach($data as $key => $dealer){}    
+
+            $staffid = $claim["StaffId"];
+            $sql = "SELECT * FROM tbl_staff WHERE StaffId = '$staffid'";
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) 
@@ -68,7 +66,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase order</title>
+    <title>Claim order</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -239,7 +237,7 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Purchase order </h3><br>".$dealer["DealerName"]."<br>";
+                                            echo "<h3>Claim order </h3>".$dealer["DealerName"] ."<br>";
                                         ?><br>
 
 								</div>
@@ -251,7 +249,7 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<address>
 										<?php 
-                                            echo "Address : " .$dealer["DealerAddress"] . "<br>";
+                                            echo "Address : ". $dealer["DealerAddress"] . "<br>";
                                             echo "Contract : ". $dealer["DealerPhone"] . "<br>";
                                         ?>
 										</address>
@@ -261,8 +259,8 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<div class="invoice-num">
                                             <?php 
-                                                echo "Purchase order : #" .$order["OrderId"] . "<br>";
-                                                echo "Date order : ". $order["OrderDate"] . "<br>";
+                                                echo "Claim order : #". $claim["ClaimId"] . "<br>";
+                                                echo "Date order : ". $claim["ClaimDate"] . "<br>";
                                             ?>
 										</div>
 									</div>													
@@ -278,71 +276,55 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th>Order Summary</th>
-													<th>Product ID</th>
-													<th>Quantity</th>
-													<th>Sub Total</th>
+													<th width = "220">Order Summary</th>
+                                                    <th with = "80">Lot ID</th>
+													<th width = "100">Product ID</th>
+													<th width = "80">Quantity</th>
+													<th>Reason</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
                                                 <?php
-                                                      $orderid = $order['OrderId'];
-                                                      $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
-                                                      $result = $conn->query($sql);
-                                                      $data = array();
-                                                      while($row = $result->fetch_assoc()) {
-                                                      $data[] = $row;  
-                                                      }
-                                                      foreach($data as $key => $orderdetailid){
-                                      
-                                                          $MedId = $orderdetailid["MedId"];
-                                                          $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                                                          $result = $conn->query($sqli);
-                                                          $data = array();
-                                                          while($row = $result->fetch_assoc()) {
-                                                          $data[] = $row;   
-                                                          }
-                                                          
-                                                          foreach($data as $key => $med){
+                                                    $MedId = $claim["MedId"];
+                                                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                                                    $result = $conn->query($sqli);
+                                                    $data = array();
+                                                    while($row = $result->fetch_assoc()) 
+                                                    {
+                                                    $data[] = $row;   
+                                                    }   
+                                                        foreach($data as $key => $med){
                                                 ?>
 												<tr>
-													<td><?php echo $med["MedName"];?></td>
-													<td><?php echo "#".$med["MedId"];?></td>
-													<td><?php echo $orderdetailid["Qty"];?></td>
-													<td><?php echo "฿ ".$orderdetailid["Price"];?></td>
+													<td width = "220"><?php echo $med["MedName"];?></td>
+                                                    <td width = "100"><?php echo "#".$claim["LotId"];?></td>
+													<td width = "100"><?php echo "#".$med["MedId"];?></td>
+													<td width = "80"><?php echo $claim["Qty"];?></td>
+													<td><?php echo $claim["Reason"];?></td>
 												</tr>
                                                     <?php
-                                                            }}
+                                                            }
                                                     ?>
-										
+											
 												<tr>
-													<td colspan="3">
-														<p>
-															Subtotal<br>
-															Tax (7%)<br>
-														</p>
-														<h5 class="text-success"><strong>Grand Total</strong></h5>
-													</td>			
-													<td>
-														<p>
-                                                            <?php echo "฿ ".$order["OrderPrice"]. "<br>";?>
-															<?php echo "฿ ".$ordertax. "<br>";?>
-															
-														</p>
-														<h5 class="text-success"><strong><?php echo "฿ ".$order["OrderTotal"]. "<br>";?></strong></h5>
-													</td>
+													<td colspan="3"></td>			
+													<td></td>
+                                                    <td></td>
+                                                    <td></td>
 												</tr>
 											</tbody>
 										</table>
+
+                                       
 									</div>
 								</div>
 							</div>
 							<!-- Row end -->
 						</div>
-
+				
                         <div class="row">
                             <div class="col-md-12 text-right identity">
-                                <p><?php echo $staff["StaffName"];?><br><strong>..........................</strong></p>
+                            <p><?php echo $staff["StaffName"];?><br><strong>..........................</strong></p>
                             </div>
 						</div>
 
@@ -356,7 +338,7 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Orderreport.pdf");
+    $mpdf->Output("report/Claimreport.pdf");
     ob_end_flush();
 ?>
 </html>

@@ -155,7 +155,6 @@
                 <th>Quantity</th>
                 <th>Status</th>
                 <th>Expire</th>
-                <th>Claim</th>
                 <th>Action</th>
             </tr>
         </thead>

@@ -107,6 +107,7 @@
                 <th>Dealer</th>
                 <th>Dealer Address</th>
                 <th>Received</th>
+                <th>Report</th>
             </tr>
         
 
@@ -161,6 +162,13 @@
                                 ?>
                                 >Received
                             </button>
+                        </form>
+                    </td>
+
+                    <td>
+                        <form method = "POST" action = "Reportclaim.php">
+                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
+                            <input type ="hidden" name = "valueid" value = "<?php echo $claim["ClaimId"];?>">
                         </form>
                     </td>
                     

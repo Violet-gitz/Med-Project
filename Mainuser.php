@@ -25,13 +25,7 @@
             header('location: login.php');
         }
  
-        require_once __DIR__ . '/vendor/autoload.php';
-        // Create an instance of the class:
-        $mpdf = new \Mpdf\Mpdf();
-        // Write some HTML code:
-        $mpdf->WriteHTML('Hello World');
-        // Output a PDF file directly to the browser
-        $mpdf->Output();
+       
                     
 ?>
 <!DOCTYPE html>
@@ -41,17 +35,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="sweetalert2.all.min.js"></script>
-    <script src="sweetalert2.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="sweetalert2.min.css">
-    <style>
-    body{
-        font-family: 'Sarabun', sans-serif;
-    }
-</style>
-    
+
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <a href="Mainuser.php" class="navbar-brand">Home Page</a>
@@ -172,8 +156,6 @@
             </tbody>
         </table>
     </div>
-
-<a href="MyReport.pdf" class="btn btn-primary">โหลดผลการเรียน (pdf)</a>
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
