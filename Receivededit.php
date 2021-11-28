@@ -16,18 +16,18 @@
     }
 
 
-    if (isset($_REQUEST['Received_id'])) {
+    if (isset($_REQUEST['Edit'])) {
         
-            $id = $_REQUEST['Received_id'];
-            $sql ="SELECT * FROM tbl_orderdetail WHERE $id = OrderId";
+            $id = $_REQUEST['Edit'];
+            $sql ="SELECT * FROM tbl_receiveddetail WHERE RecId = $id";
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {
                 $data[] = $row;   
             }
-            foreach($data as $key => $Orderde)
+            foreach($data as $key => $recde)
             {
-                $MedId = $Orderde["MedId"];
+                $MedId = $recde["MedId"];
                 $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
                 $result = $conn->query($sqli);
                 $data = array();
@@ -36,14 +36,22 @@
                     }
                     foreach($data as $key => $med){}
 
-                $OrderId = $Orderde["OrderId"];
-                $sql ="SELECT * FROM tbl_Order WHERE $OrderId = OrderId";
+                $sql ="SELECT * FROM tbl_received WHERE RecId = $id";
                 $result = $conn->query($sql);
                 $data = array();
                     while($row = $result->fetch_assoc()) {
                         $data[] = $row;   
                     }
-                    foreach($data as $key => $Order){
+                    foreach($data as $key => $rec){
+
+                        $orderid = $rec["OrderId"];
+                        $sql ="SELECT * FROM tbl_order WHERE OrderId = $orderid";
+                        $result = $conn->query($sql);
+                        $data = array();
+                            while($row = $result->fetch_assoc()) {
+                                $data[] = $row;   
+                            }
+                            foreach($data as $key => $Order){
 
                 $DealerId = $Order["DealerId"];
                 $sql ="SELECT * FROM tbl_dealer WHERE $DealerId = DealerId";
@@ -55,6 +63,7 @@
                     foreach($data as $key => $Dealer){}
             
                 }
+            }
         }
 
         
@@ -123,39 +132,37 @@
 
                 if (!isset($errorMsg)) {
 
-                    $sql = "INSERT INTO tbl_received(OrderId,StaffId,RecDate,RecDeli) VALUES ('$OrderId',  '$staff', '$RecTime', '$RecDeli')";
+                    $sql = "UPDATE tbl_received SET StaffId = '$staff' , RecDate = '$RecTime' , RecDeli = '$RecDeli'WHERE OrderId = $OrderId";
                     if ($conn->query($sql) === TRUE) {   
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
-
-                    $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
-                    $result = $conn->query($sql);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                    $data[] = $row;  
-                    }
-                    foreach($data as $key => $orderdetailid){
-                    
-                    }
-                    
-                  
+      
                     $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
                     if ($conn->query($sql) === TRUE) {
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
 
-                    $orderid = $Orderde['OrderId'];
-                    $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
+                    $orderid = $Order['OrderId'];
+                    $sql = "SELECT* FROM tbl_received WHERE OrderId=$orderid";
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
                     $data[] = $row;  
                     }
-                    foreach($data as $key => $orderdetailid){
+                    foreach($data as $key => $order){
+
+                        $recid = $order["RecId"];
+                        $sql = "SELECT* FROM tbl_receiveddetail WHERE RecId=$recid";
+                        $result = $conn->query($sql);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) {
+                        $data[] = $row;  
+                        }
+                        foreach($data as $key => $rec){
                         
-                        $MedId = $orderdetailid["MedId"];
+                        $MedId = $rec["MedId"];
                         $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
                         $result = $conn->query($sqli);
                         $data = array();
@@ -164,15 +171,6 @@
                         }
                         foreach($data as $key => $med){
 
-                        $query = "SELECT RecId FROM tbl_received ORDER BY RecId DESC LIMIT 1";
-                        $result = mysqli_query($conn, $query); 
-                        $row = mysqli_fetch_array($result);
-                        $RecId = $row["RecId"];
-
-                     
-                        $MedQty = $orderdetailid["Qty"];
-                        $MedTotal = $med["MedTotal"];
-                        $MedSum = $MedQty + $MedTotal;
                         $MfdDate = $_REQUEST["mfd".$i];
                         $ExpDate = $_REQUEST["exd".$i];
                         $datemfd=date_create($MfdDate);
@@ -186,38 +184,41 @@
                         }else
                             if(!isset($errorMsg)) 
                             {
-                                $sql = "INSERT INTO tbl_lot(Qty, MedId, LotStatus, Mfd, Exd) VALUES ('$MedQty', '$MedId','$LotStatus','$MfdDate','$ExpDate')";
-                                if ($conn->query($sql) === TRUE) { 
-                                } else {
-                                    echo "Error updating record: " . $conn->error;
-                                }
-            
-                                $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
-                                $result = mysqli_query($conn, $query); 
-                                $row = mysqli_fetch_array($result);
-                                $LotId = $row["LotId"];
-        
-                                $Qty = $orderdetailid["Qty"];
-                                $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";$i++;
+                                $sql = "UPDATE tbl_receiveddetail SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE RecId = $recid and MedId = $MedId";
+                                
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {
                                     echo "Error updating record: " . $conn->error;
                                 }
 
-                                $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
-                                if ($conn->query($sql) === TRUE) {
-                                    
+                                $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
+                                $result = mysqli_query($conn, $query); 
+                                $row = mysqli_fetch_array($result);
+                                $LotId = $row["LotId"];
+        
+                                $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  MedId = $MedId";
+                                $i++;
+                                if ($conn->query($sql) === TRUE) { 
                                 } else {
-                                  echo "Error updating record: " . $conn->error;
+                                    echo "Error updating record: " . $conn->error;
                                 }
+ 
+                                // $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
+                                // if ($conn->query($sql) === TRUE) {
+                                    
+                                // } else {
+                                //   echo "Error updating record: " . $conn->error;
+                                // }
                             }
                         }
                     }$updateMsg = "Record update successfully...";
                     header("refresh:1;main.php");
-                }
-                
-        } //catch (PDOException $e) {
-             //echo $e->getMessage();
+            }
+            
+        } 
+        
+    } //catch (PDOException $e) {
+       //echo $e->getMessage();
                     
             
              $staff =  $_SESSION['StaffName'];
@@ -309,7 +310,7 @@
                 <div class="row">
                     <label for="Tel" class="col-sm-3 control-label">Order </label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_OrderId" class="form-control" value="<?php echo $Orderde["OrderId"]; ?>" readonly>
+                            <input type="text" name="txt_OrderId" class="form-control" value="<?php echo $Order["OrderId"]; ?>" readonly>
                     </div>
                 </div>
             </div>
@@ -369,14 +370,14 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
+                        <input type="text" name="txt_delivery" class="form-control" value="<?php echo $rec["RecDeli"]; ?>">
                     </div>
                 </div>
             </div>
 
             <?php
                 $i = 0;
-                $orderid = $Orderde['OrderId'];
+                $orderid = $Order['OrderId'];
                 $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
                 $result = $conn->query($sql);
                 $data = array();
@@ -406,6 +407,7 @@
                     </div>
                 </div>
             </div>
+
 
             <div class="form-group text-center">
                 <div class="row">
@@ -482,7 +484,7 @@
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
                     <input type="submit" name="btn_received" class="btn btn-success" value="Received">
-                    <a href="CheckOrder.php" class="btn btn-danger">Back</a>
+                    <a href="CheckReceived.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
 

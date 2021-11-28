@@ -209,6 +209,10 @@ body{margin-top:20px;
 .custom-actions-btns .btn {
     margin: .3rem 0 .3rem .3rem;
 }
+
+.container {
+    width: 786px;
+}
 </style>
 
 <body>
@@ -242,6 +246,13 @@ body{margin-top:20px;
                                             echo "<h3>Purchase order </h3><br>".$dealer["DealerName"]."<br>";
                                         ?><br>
 
+								</div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+									<address class="text-right">
+										M38 Petchkasem Rd, Bang Wa <br>
+										SPhasi Charoen, Bangkok 10160.<br>
+										02 867 8088
+									</address>
 								</div>
 				
 							<!-- Row end -->

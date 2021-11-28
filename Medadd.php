@@ -18,14 +18,16 @@
         
         $MedName = $_REQUEST['txt_MedName'];
         $MedDes = $_REQUEST['txt_MedDes'];
+        $MedIndi = $_REQUEST['txt_MedIndi'];
         $MedCate = $_REQUEST['dropdownlist-MedCate'];
         $MedVolumn = $_REQUEST['dropdownlist-MedVolumn'];
         $MedUnit = $_REQUEST['dropdownlist-MedUnit'];
         $MedPack = $_REQUEST['txt_MedPack'];
         $MedPrice = $_REQUEST['txt_MedPrice'];
         $MedLow = $_REQUEST['txt_Medlow'];
+        $MedPoint = $_REQUEST['txt_MedPoint'];
+        $MedType = $_REQUEST['txt_Medtype'];
         $MedTotal = 0;
-        $MedStatus = "Out of stock";
      
         $dir = "upload/";
         $fileImage = $dir . basename($_FILES["file"]["name"]);
@@ -50,18 +52,22 @@
             $errorMsg = "Please Enter Medicine Price";
         }else if (empty($MedLow)) {
             $errorMsg = "Please Enter Medicine Minimum purchase";
-        }else if (empty($MedStatus)) {
-            $errorMsg = "Please Enter Medicine Status";
+        }else if (empty($MedIndi)) {
+            $errorMsg = "Please Enter Medicine Indication";
+        }else if (empty($MedPoint)) {
+            $errorMsg = "Please Enter Point of Order";
+        }else if (empty($MedType)) {
+            $errorMsg = "Please Enter Medicine Type";
         }else {
 
             $query = "SELECT * FROM tbl_med WHERE MedName = '$MedName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
-        if ($row["MedName"] === $MedName) {
+        if($row["MedName"] === $MedName) {
             $errorMsg =  "Medicine already exists";
         }
         else {
-        $sql = "INSERT INTO tbl_med(MedName , MedCate , MedVolumn , MedUnit , MedPack , MedPrice , MedLow , MedDes , MedStatus , MedTotal , MedPath ) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedStatus', '$MedTotal', '$MedPath')";
+        $sql = "INSERT INTO tbl_med(MedName , MedCate , MedVolumn , MedUnit , MedPack , MedPrice , MedLow , MedDes , MedPoint , MedTotal , MedPath , MedIndi , MedType) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedPoint', '$MedTotal', '$MedPath' , '$MedIndi' , '$MedType')";
         if ($conn->query($sql) === TRUE){
             $insertMsg = "Insert Successfully...";
             header("refresh:1;Medshow.php");
@@ -172,7 +178,29 @@
                         <div class="row">
                             <td><label for="Medicinedes" class="col-sm-3 control-label">Description</label></td>
                             <div class="col-sm-7">
-                                <td><input type="text" name="txt_MedDes" class="form-control" placeholder="Enter Medicine Description..."></td>
+                            <td><textarea id="w3review" name="txt_MedDes" rows="4" cols="50" placeholder="Enter Medicine Description..."></textarea></td>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Medicinedes" class="col-sm-3 control-label">Indication</label></td>
+                            <div class="col-sm-7">
+                            <td><textarea id="w3review" name="txt_MedIndi" rows="4" cols="50" placeholder="Enter Medicine Indication..."></textarea></td>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Medicinelow" class="col-sm-3 control-label">Medicine Type</label></td>
+                            <div class="col-sm-7">
+                                <td><input type="text" name="txt_Medtype" class="form-control" placeholder="Enter Medicine Type..."></td>
                             </div>
                         </div>
                     </div>
@@ -211,7 +239,19 @@
                     </div>
                 </tr>
 
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
+                            <td><label for="Medicineprcie" class="col-sm-3 control-label">Point of order</label></td>
+                            <div class="col-sm-7">
+                                <td><input type="text" name="txt_MedPoint" class="form-control" placeholder="Enter Medicine Point"></td>
+                            </div>
+                        </div>
+                    </div>
                 </tr>
+
+
+                <tr>
                     <div class="form-group text-center">
                         <div class="row">
                             <td><label for="Category" class="col-sm-3 control-label">Category</label></td>
@@ -227,6 +267,8 @@
                         </div>
                     </div>
                 </tr>
+
+                
                 
                 <tr>
                     <div class="form-group text-center">
@@ -239,6 +281,7 @@
                                     <option value="500 CC">500 CC</option>
                                     <option value="1000 CC">1000 CC</option>
                                     <option value="250 MG">250 MG</option>
+                                    <option value="300 MG">300 MG</option>
                                     <option value="500 MG">500 MG</option>
                                     <option value="1000 MG">1000 MG</option>
                                 </select><br><br></td>

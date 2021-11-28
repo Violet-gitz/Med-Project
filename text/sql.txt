@@ -9,8 +9,17 @@ SELECT tbl_orderdetail.OrderId,tbl_orderdetail.MedId,tbl_orderdetail.QTY,tbl_ord
 FROM tbl_orderdetail
 INNER JOIN tbl_order ON tbl_orderdetail.OrderId = tbl_order.OrderId
 INNER JOIN tbl_med ON tbl_orderdetail.MedId = tbl_med.MedId;
-create table  tbl_orderdetail
 
+SELECT tbl_received.RecId,tbl_received.RecDate,tbl_received.RecDeli,tbl_order.OrderId,tbl_order.OrderStatus,tbl_order.OrderPrice,tbl_order.OrderTotal,tbl_staff.StaffName 
+FROM tbl_received
+INNER JOIN tbl_order ON tbl_received.OrderId = tbl_order.OrderId
+INNER JOIN tbl_staff ON tbl_received.StaffId = tbl_staff.StaffId 
+
+SELECT tbl_writeoff.WriteId,tbl_writeoff.LotId,tbl_writeoff.Qty,tbl_writeoff.WriteDate,tbl_lot.LotStatus,tbl_med.MedName,tbl_staff.StaffName 
+FROM tbl_writeoff
+INNER JOIN tbl_staff ON tbl_writeoff.StaffId = tbl_staff.StaffId
+INNER JOIN tbl_lot ON tbl_writeoff.LotId = tbl_lot.LotId
+INNER JOIN tbl_med ON tbl_writeoff.MedId = tbl_med.MedId;
 
 <input type="number" id="quantity" name="qtyPack" min="1" max="999" value="0">QTY/Pack 
 

@@ -45,8 +45,10 @@ create table tbl_med
 	MedPrice varchar(255),
 	MedLow int,
 	MedDes varchar(255),
-	MedStatus varchar(255),
+	MedIndi varchar(255),
+	MedType varchar(255),
 	MedTotal int,
+	MedPoint int,
 	MedPath varchar(255),
 	Primary key (MedId)
 	

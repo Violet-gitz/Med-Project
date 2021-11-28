@@ -24,38 +24,21 @@
             'default_font' => 'TH Krub'
         ]);
         ob_start();   
-        $claimid = $_REQUEST["valueid"];
+        $writeid = $_REQUEST["valueid"];
        
-        $sql = "SELECT * FROM tbl_claim WHERE ClaimId = '$claimid'";
+        $sql = "SELECT tbl_writeoff.WriteId,tbl_writeoff.LotId,tbl_writeoff.MedId,tbl_writeoff.Qty,tbl_writeoff.WriteDate,tbl_lot.LotStatus,tbl_med.MedName,tbl_staff.StaffName 
+        FROM tbl_writeoff
+        INNER JOIN tbl_staff ON tbl_writeoff.StaffId = tbl_staff.StaffId
+        INNER JOIN tbl_lot ON tbl_writeoff.LotId = tbl_lot.LotId
+        INNER JOIN tbl_med ON tbl_writeoff.MedId = tbl_med.MedId
+        WHERE WriteId = '$writeid'";
         $result = $conn->query($sql);
         $data = array();
         while($row = $result->fetch_assoc()) 
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $claim)
-        
-        {      
-            $derlarid = $claim["DealerId"];
-            $sql = "SELECT * FROM tbl_dealer WHERE DealerId = '$derlarid'";
-            $result = $conn->query($sql);
-            $data = array();
-            while($row = $result->fetch_assoc()) 
-            {
-                $data[] = $row;  
-            }
-            foreach($data as $key => $dealer){}    
-
-            $staffid = $claim["StaffId"];
-            $sql = "SELECT * FROM tbl_staff WHERE StaffId = '$staffid'";
-            $result = $conn->query($sql);
-            $data = array();
-            while($row = $result->fetch_assoc()) 
-            {
-                $data[] = $row;  
-            }
-            foreach($data as $key => $staff){}    
-        }
+        foreach($data as $key => $write){}
     }
 
     
@@ -237,7 +220,7 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Claim order </h3>".$dealer["DealerName"] ."<br>";
+                                            echo "<h3>Writeoff </h3>";
                                         ?><br>
 
 								</div>
@@ -256,22 +239,19 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<address>
 										<?php 
-                                            echo "Address : ". $dealer["DealerAddress"] . "<br>";
-                                            echo "Contract : ". $dealer["DealerPhone"] . "<br>";
+                                           echo "Writeoff Id : #". $write["WriteId"] . "<br>";
+                                           echo "Date order : ". $write["WriteDate"] . "<br>";
                                         ?>
 										</address>
 									</div>
 								</div>
-								<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+								<!-- <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<div class="invoice-num">
-                                            <?php 
-                                                echo "Claim order : #". $claim["ClaimId"] . "<br>";
-                                                echo "Date order : ". $claim["ClaimDate"] . "<br>";
-                                            ?>
+                                           
 										</div>
 									</div>													
-								</div>
+								</div> -->
 							</div>
 							<!-- Row end -->
 						</div>
@@ -283,17 +263,16 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th width = "220">Order Summary</th>
+													<th width = "220">Writeoff</th>
                                                     <th with = "80">Lot ID</th>
 													<th width = "100">Product ID</th>
 													<th width = "80">Quantity</th>
-													<th>Reason</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
                                                 <?php
-                                                    $MedId = $claim["MedId"];
-                                                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                                                    $Med = $write["MedId"];
+                                                    $sqli ="SELECT * FROM tbl_med WHERE $Med = MedId";
                                                     $result = $conn->query($sqli);
                                                     $data = array();
                                                     while($row = $result->fetch_assoc()) 
@@ -304,10 +283,10 @@ body{margin-top:20px;
                                                 ?>
 												<tr>
 													<td width = "220"><?php echo $med["MedName"];?></td>
-                                                    <td width = "100"><?php echo "#".$claim["LotId"];?></td>
+                                                    <td width = "100"><?php echo "#".$write["LotId"];?></td>
 													<td width = "100"><?php echo "#".$med["MedId"];?></td>
-													<td width = "80"><?php echo $claim["Qty"];?></td>
-													<td><?php echo $claim["Reason"];?></td>
+													<td width = "80"><?php echo $write["Qty"];?></td>
+													
 												</tr>
                                                     <?php
                                                             }
@@ -331,7 +310,7 @@ body{margin-top:20px;
 				
                         <div class="row">
                             <div class="col-md-12 text-right identity">
-                            <p><?php echo $staff["StaffName"];?><br><strong>..........................</strong></p>
+                            <p><?php echo $write["StaffName"];?><br><strong>..........................</strong></p>
                             </div>
 						</div>
 
@@ -345,7 +324,7 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Claimreport.pdf");
+    $mpdf->Output("report/Writeoffreport.pdf");
     ob_end_flush();
 ?>
 </html>

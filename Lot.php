@@ -224,7 +224,7 @@
                     <td><?php echo $lot["Qty"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
                     <td><?php echo $diff->format('%R%a');
-                     if($diff->format('%R%a')<=100)
+                     if($diff->format('%R%a')<=104)
                      {
                         echo " test";  
                         $_SESSION['swal'][$LotId] = $lot["LotId"];
@@ -302,13 +302,13 @@
                 </tr>
 
                 <?php } }  
-    //             if(!empty($_SESSION['swal']))
-    //     {
-    //             echo "  <script>
-    //             Swal.fire('test".print_r($_SESSION['swal'])."')
-    //                     </script>";
-    //                     // print_r($_SESSION['swal']);
-    // } 
+                if(!empty($_SESSION['swal']))
+        {
+                echo "  <script>
+                Swal.fire('test".print_r($_SESSION['swal'])."')
+                        </script>";
+                        // print_r($_SESSION['swal']);
+    } 
     ?>
             
             
