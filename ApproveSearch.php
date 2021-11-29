@@ -27,9 +27,18 @@
         }else{
           echo "<script type='text/javascript'>alert('ลบข้อมูลไม่สำเร็จ');</script>";
         }
-        header("refresh:1;Medshow.php");
+      
     }
+
+    if (isset($_REQUEST['submit'])) {
+        $search = $_REQUEST['textsearch'];
+
+       
+    }
+
     
+
+
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
     $result = $conn->query($sql);
@@ -41,6 +50,7 @@
         foreach($data as $key => $staff){      
 
         }
+    
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +59,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+      
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
@@ -84,8 +96,7 @@
                 </div>
             </div>
         </nav> 
-    
-    
+
 </head>
 <body>
 
@@ -93,55 +104,99 @@
             include('slidebar.php');
         ?>
 
-</div><br>
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-4 ms-auto">
+                        <form action="ApproveSearch.php" method="post">
+                            <input type="text" name="textsearch" placeholder = "Search">
+                            <input type="submit" name="submit" value="Search">
+                        </form>
+                    </div>
+            </div>
+        </div><br>
 
-
-    <div class="container-sm">
+        <div class="container-sm">
     
-        <table class="table table-bordered">
+    <table class="table table-bordered">
+        <thead>
+            List Approve
+        </thead>
+            <tr>
+                <th>WithId</th>
+                <th>StaffId</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>WithDate</th>
+                <th>Action</th>
+                <th>Report<th>
+            </tr>
+        <tbody>
+            <?php 
+                    $sql = "SELECT * FROM tbl_withdraw WHERE WithId  LIKE '%{$search}%' || WithDate  LIKE '%{$search}%' || WithStatus  LIKE '%{$search}%'";
+                    $result = $conn->query($sql);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
+                    }
+                    foreach($data as $key => $with){
 
-            <tbody>
-                <?php 
-                    if (isset($_REQUEST['detail_id'])) {  
-                        $id = $_REQUEST['detail_id'];
-                        $sql ="SELECT * FROM tbl_med WHERE $id = MedId";
+                        $staffid = $with["StaffId"];
+                        $sql = "SELECT * FROM tbl_staff WHERE StaffId = $staffid";
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
-                        foreach($data as $key => $Med){               
-                ?>
+                        foreach($data as $key => $staff){
+                            $withstatus = $with["WithStatus"];
+                        // $OrderStatus = $order["OrderStatus"];
+                       
+                        
+            ?>
 
-                
-                    <tr>    
-                    <div class="product-item">
-                        <form action="Order.php" method="post">
-                            <div class="product-image"><?php echo '<img src="upload/'. $Med['MedPath']; ?>"></div>
-                            <div class="product-tile-footer">
-                            <div class = "Product-title"><?php echo "Name : " . $Med["MedName"]; ?></div>
-                            <div class = "Product-title"><?php echo "Description : "?><textarea id="w3review" name="txt_MedIndi" rows="5" cols="100"><?php echo $Med["MedDes"]?></textarea></div>
-                            <div class = "Product-title"><?php echo "Indication : "?><textarea id="w3review" name="txt_MedIndi" rows="5" cols="100"><?php echo $Med["MedIndi"]?></textarea></div>
-                            <div class = "Product-title"><?php echo "Type : " . $Med["MedType"]; ?></div>
-                            <div class = "Product-title"><?php echo "Category : " . $Med["MedCate"]; ?></div>
-                            <div class = "Product-title"><?php echo "Volumn : " . $Med["MedVolumn"]; ?></div>
-                            <div class = "Product-title"><?php echo "Unit : " . $Med["MedUnit"]; ?></div>
-                            <div class = "Product-title"><?php echo "Unit Per Pack : " . $Med["MedPack"] . " Unit"; ?></div>
-                            <div class = "Product-price"><?php echo "Price Per Pack : " . $Med["MedPrice"] . " Bath"; ?></div>
-                            <a href = "Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class = "btn btn-info">Edit</a>
-                            <a href="Medshow.php" class="btn btn-secondary">Back</a>   
+                    <tr>
+                        <td><?php echo $with["WithId"]; ?></td>
+                        <td><?php echo $staff["StaffName"]; ?></td>
+                        <td><?php echo $with["Qtysum"]; ?></td>
+                        <td><?php echo $with["WithStatus"]; ?></td>
+                        <td><?php echo $with["WithDate"]; ?></td>
+                    <td>
+                            <form method = "POST" action = "Approvedetaill.php?">
+                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Approve" class = "btn btn-primary"
+                                    <?php
+                                        if($withstatus == "Approved")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                       
+                                    ?>
+                                    >Approve
+                                </button>
+                            </form>
+                    </td>
+                    
+                    <td>
+                        <form method = "POST" action = "Reportwithdraw.php">
+                            <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
+                            <input type ="hidden" name = "valueid" value = "<?php echo $with["WithId"]; ?>">
                         </form>
-                    </div>
-                    </tr>
-                    <?php }} ?>
+                    </td>
+                    
+                  
+                </tr>
 
-            </tbody>
-        </table>
-    </div>
-    
-    
+                <?php } } ?>
+            
+            
+        </tbody>
+    </table>
+</div>
+
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+  
 </body>
 </html>

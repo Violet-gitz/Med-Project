@@ -136,6 +136,7 @@
                     <th>Name</th>
                     <th>Description</th>
                     <th>Total</th>
+                    <th>Details</th>
                     <th>Edit</th>
                     <th>Check Lot</th>
                    
@@ -159,6 +160,7 @@
                         <td><?php echo $Med["MedName"]; ?></td>
                         <td><?php echo $Med["MedDes"]; ?></td>
                         <td><?php echo $Med["MedTotal"]; ?></td>
+                        <td><a href="Meddetail.php?detail_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Details</a></td>
                         <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Edit</a></td>
                         <td><a href="Checklot.php?checklot=<?php echo $Med["MedId"];?>" class="btn btn-info">Check</a></td>
                     </tr>

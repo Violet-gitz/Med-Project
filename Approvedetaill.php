@@ -278,7 +278,7 @@ $data = array();
 
     <?php
         $i = 0;
-        $sql = "SELECT* FROM tbl_withdrawdetail WHERE WithId = $withid";
+        $sql = "SELECT * FROM tbl_withdrawdetail WHERE WithId = $withid";
         $result = $conn->query($sql);
         $data = array();
         while($row = $result->fetch_assoc()) {

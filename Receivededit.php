@@ -196,7 +196,7 @@
                                 $row = mysqli_fetch_array($result);
                                 $LotId = $row["LotId"];
         
-                                $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  MedId = $MedId";
+                                $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  LotId = $LotId";
                                 $i++;
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {

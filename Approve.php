@@ -100,8 +100,8 @@
 <div class="container">
   <div class="row">
         <div class="col-md-4 ms-auto">
-            <form action="" method="post">
-                <input type="text" name="search" placeholder = "search">
+            <form action="ApproveSearch.php" method="post">
+                <input type="text" name="textsearch" placeholder = "search">
                 <input type="submit" name="submit" value="Search">
             </form>
         </div>
@@ -112,6 +112,8 @@
     
     <table class="table table-bordered">
         <thead>
+            List Approve
+        </thead>
             <tr>
                 <th>WithId</th>
                 <th>StaffId</th>
@@ -119,8 +121,8 @@
                 <th>Status</th>
                 <th>WithDate</th>
                 <th>Action</th>
+                <th>Report<th>
             </tr>
-        </thead>
 
         <tbody>
             <?php 
@@ -151,30 +153,26 @@
                     <td><?php echo $with["WithStatus"]; ?></td>
                     <td><?php echo $with["WithDate"]; ?></td>
                     <td>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                <?php 
-                                    if ($withstatus == "Approved")
-                                    {
-                                        $buttonStatus = "disabled";
-                                        echo $buttonStatus;
-                                    }
-                                ?> 
-                                >Action
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                                <form method="POSt" action="Approvedetaill.php">
-                                    <a class="dropdown-item" href="Approvedetaill.php?Approve=<?php echo $with["WithId"]; ?>">Approve</a>
-                                    <input type="hidden" name ='Approve' value ="<?php echo $with["WithId"]; ?>">
-                                </from>
-
-                                <form method="POSt" action="Approve.php">
-                                    <a class="dropdown-item" href="Approve.php?print=<?php echo $with["WithId"]; ?>">Print</a>
-                                    <input type="hidden" name ='print' value ="<?php echo $with["WithId"]; ?>">
-                                </from>
-                            </div>
-                        </div>
+                            <form method = "POST" action = "Approvedetaill.php?">
+                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Approve" class = "btn btn-primary"
+                                    <?php
+                                        if($withstatus == "Approved")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                       
+                                    ?>
+                                    >Approve
+                                </button>
+                            </form>
+                    </td>
+                    
+                    <td>
+                        <form method = "POST" action = "Reportwithdraw.php">
+                            <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
+                            <input type ="hidden" name = "valueid" value = "<?php echo $with["WithId"]; ?>">
+                        </form>
                     </td>
                     
                   
