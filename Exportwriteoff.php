@@ -24,38 +24,23 @@
             'default_font' => 'TH Krub'
         ]);
         ob_start();   
-        $withdrawid = $_REQUEST["valueid"];
+        $Year = $_REQUEST["Year"];
+        $Month = $_REQUEST["Month"];
+        $date=$Year.$Month;
        
-        $sql = "SELECT * FROM tbl_withdraw WHERE WithId = '$withdrawid'";
+        $sql = "SELECT tbl_writeoff.WriteId,tbl_writeoff.LotId,tbl_writeoff.MedId,tbl_writeoff.Qty,tbl_writeoff.WriteDate,tbl_lot.LotStatus,tbl_med.MedName,tbl_staff.StaffName 
+        FROM tbl_writeoff
+        INNER JOIN tbl_staff ON tbl_writeoff.StaffId = tbl_staff.StaffId
+        INNER JOIN tbl_lot ON tbl_writeoff.LotId = tbl_lot.LotId
+        INNER JOIN tbl_med ON tbl_writeoff.MedId = tbl_med.MedId
+        WHERE WriteDate LIKE '%{$date}%'";
         $result = $conn->query($sql);
         $data = array();
         while($row = $result->fetch_assoc()) 
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $with)
-        {      
-            $staffid = $with["StaffId"];
-            $sql = "SELECT * FROM tbl_staff WHERE StaffId = '$staffid'";
-            $result = $conn->query($sql);
-            $data = array();
-            while($row = $result->fetch_assoc()) 
-            {
-                $data[] = $row;  
-            }
-            foreach($data as $key => $staff)
-            {
-                $departid = $staff["DepartId"];
-                $sql = "SELECT * FROM tbl_department WHERE DepartId = '$departid'";
-                $result = $conn->query($sql);
-                $data = array();
-                while($row = $result->fetch_assoc()) 
-                {
-                    $data[] = $row;  
-                }
-                foreach($data as $key => $depart){}
-            }    
-        }
+        foreach($data as $key => $write){}
     }
 
     
@@ -66,7 +51,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase order</title>
+    <title>Claim order</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -207,10 +192,6 @@ body{margin-top:20px;
 .custom-actions-btns .btn {
     margin: .3rem 0 .3rem .3rem;
 }
-
-.container {
-    width: 786px;
-}
 </style>
 
 <body>
@@ -241,7 +222,7 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Wtihdraw </h3><br>";
+                                           echo "<h3>Monthly report<br> </h3><br>";
                                         ?><br>
 
 								</div>
@@ -260,24 +241,21 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<address>
 										<?php 
-                                           echo "Purchase order : #" .$with["WithId"] . "<br>";
-                                           echo "Date  : ". $with["WithDate"] . "<br>";
+                                           date_default_timezone_set("Asia/Bangkok");
+                                           $Datereport = date("Y-m-d h:i:sa");
+                                           echo "Date : ". $Datereport;
                                         ?>
 										</address>
 									</div>
 								</div>
-                                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+								<!-- <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<div class="invoice-num">
-                                            <?php 
-                                                // echo "Purchase order : #" .$order["OrderId"] . "<br>";
-                                                // echo "Date order : ". $order["OrderDate"] . "<br>";
-                                            ?>
+                                           
 										</div>
 									</div>													
-								</div>
-                            </div>
-							
+								</div> -->
+							</div>
 							<!-- Row end -->
 						</div>
 						<div class="invoice-body">
@@ -288,66 +266,69 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th>Order Summary</th>
-													<th>Product ID</th>
-													<th>Quantity</th>
-													
+													<th width = "220">Writeoff</th>
+                                                    <th with = "80">Lot ID</th>
+													<th width = "100">Product ID</th>
+													<th width = "80">Quantity</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
                                                 <?php
-                                                      $WithId = $with['WithId'];
-                                                      $sql = "SELECT* FROM tbl_withdrawdetail WHERE WithId = $WithId";
-                                                      $result = $conn->query($sql);
-                                                      $data = array();
-                                                      while($row = $result->fetch_assoc()) {
-                                                      $data[] = $row;  
-                                                      }
-                                                      foreach($data as $key => $withde){
-                                      
-                                                          $MedId = $withde["MedId"];
-                                                          $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                                                          $result = $conn->query($sqli);
-                                                          $data = array();
-                                                          while($row = $result->fetch_assoc()) {
-                                                          $data[] = $row;   
-                                                          }
-                                                          
-                                                          foreach($data as $key => $med){
+                                                    $sum = 0;
+                                                    $sql = "SELECT tbl_writeoff.WriteId,tbl_writeoff.LotId,tbl_writeoff.MedId,tbl_writeoff.Qty,tbl_writeoff.WriteDate,tbl_lot.LotStatus,tbl_med.MedName,tbl_staff.StaffName 
+                                                    FROM tbl_writeoff
+                                                    INNER JOIN tbl_staff ON tbl_writeoff.StaffId = tbl_staff.StaffId
+                                                    INNER JOIN tbl_lot ON tbl_writeoff.LotId = tbl_lot.LotId
+                                                    INNER JOIN tbl_med ON tbl_writeoff.MedId = tbl_med.MedId
+                                                    WHERE WriteDate LIKE '%{$date}%'";
+                                                    $result = $conn->query($sql);
+                                                    $data = array();
+                                                    while($row = $result->fetch_assoc()) 
+                                                    {
+                                                        $data[] = $row;  
+                                                    }
+                                                    foreach($data as $key => $write){
+                                                $sum = $sum + $write["Qty"];
+                                                    $Med = $write["MedId"];
+                                                    $sqli ="SELECT * FROM tbl_med WHERE $Med = MedId";
+                                                    $result = $conn->query($sqli);
+                                                    $data = array();
+                                                    while($row = $result->fetch_assoc()) 
+                                                    {
+                                                    $data[] = $row;   
+                                                    }   
+                                                        foreach($data as $key => $med){
                                                 ?>
 												<tr>
-													<td><?php echo $med["MedName"];?></td>
-													<td><?php echo "#".$med["MedId"];?></td>
-													<td><?php echo $withde["Qty"];?></td>
+													<td width = "220"><?php echo $med["MedName"];?></td>
+                                                    <td width = "100"><?php echo "#".$write["LotId"];?></td>
+													<td width = "100"><?php echo "#".$med["MedId"];?></td>
+													<td width = "80"><?php echo $write["Qty"];?></td>
 													
 												</tr>
                                                     <?php
                                                             }}
                                                     ?>
-										
+											
 												<tr>
-													<td colspan="2">
-														<p>
-															<!-- Subtotal<br>
-															Tax (7%)<br> -->
-                                                            <h5 class="text-success"><strong>Grand Total</strong></h5>
-														</p>
-														
-													</td>			
-                                                    <td><h5 class="text-success"><strong><?php echo $with["Qtysum"]. "<br>". "<br>";?></strong></h5></td>
+                                                    <td colspan="1"><h5 class="text-success"><strong>Grand Total</strong></h5></td>	
+                                                    <td><h5 class="text-success"><strong></strong></h5></td>	
+                                                    <td></td>	
+													<td><h5 class="text-success"><strong><?php echo $sum. "<br>";?></strong></h5></td>
 												</tr>
 											</tbody>
 										</table>
+
+                                       
 									</div>
 								</div>
 							</div>
 							<!-- Row end -->
 						</div>
-
+				
                         <div class="row">
                             <div class="col-md-12 text-right identity">
-                                <p><?php echo "Department : ".$depart["DepartName"];?><br></p>
-                                <p><?php echo $staff["StaffName"];?><br><strong>..........................</strong></p>
+                          
                             </div>
 						</div>
 
@@ -361,7 +342,7 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Withdrawreport.pdf");
+    $mpdf->Output("report/Export-Writeoff.pdf");
     ob_end_flush();
 ?>
 </html>

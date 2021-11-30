@@ -33,13 +33,11 @@
         $data = array();
         while($row = $result->fetch_assoc()) 
         {
-            $data[] = $row;  
+            $data[] = $row;          
         }
+        $sum = 0;
         foreach($data as $key => $with)
-            // $sum = 0;
-            $qty = $with["Qtysum"];
-            echo $qty;
-            $sum =+ $qty;
+            $sum = $sum + $with["Qtysum"];
         {      
             $staffid = $with["StaffId"];
             $sql = "SELECT * FROM tbl_staff WHERE StaffId = '$staffid'";
@@ -49,7 +47,18 @@
             {
                 $data[] = $row;  
             }
-            foreach($data as $key => $staff){}    
+            foreach($data as $key => $staff)
+            {
+                $departid = $staff["DepartId"];
+                $sql = "SELECT * FROM tbl_department WHERE DepartId = '$departid'";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $depart){}
+            }    
         }
     }
 ?>
@@ -239,7 +248,11 @@ body{margin-top:20px;
 								<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<address>
-                                            <div>Writdraw <?php echo $date;?></div>
+                                                <?php
+                                                     date_default_timezone_set("Asia/Bangkok");
+                                                     $Datereport = date("Y-m-d h:i:sa");
+                                                     echo "Date : ". $Datereport;
+                                                ?>
 										</address>
 									</div>
 								</div>
@@ -252,11 +265,12 @@ body{margin-top:20px;
                                 <thead>
                                 </thead>
                                     <tr>
-                                        <th>WithId</th>
-                                        <th>StaffId</th>
-                                        <th>WithDate</th>
-                                        <th>Status</th>
-                                        <th>Quantity</th>
+                                        <th width = "30">With Order</th>
+                                        <th width = "40">Name</th>
+                                        <th width = "50">Department</th>
+                                        <th width = "50">Status</th>
+                                        <th width = "180">WithDate</th>
+                                        <th width = "50">Quantity</th>
                                     </tr>
 
                                 <tbody>
@@ -275,22 +289,53 @@ body{margin-top:20px;
                                             $result = $conn->query($sql);
                                             $data = array();
                                             while($row = $result->fetch_assoc()) {
-                                                $data[] = $row;   
+                                                $data[] = $row; 
+                                                 
                                             }
                                             foreach($data as $key => $staff){
                                             $withstatus = $with["WithStatus"];
-                                            
                                     ?>
                                         <tr>
                                             <td><?php echo "#".$with["WithId"]; ?></td>
                                             <td><?php echo $staff["StaffName"]; ?></td>
-                                            <td><?php echo $with["WithDate"]; ?></td>
+                                            <td><?php echo $depart["DepartName"]; ?></td>
                                             <td><?php echo $with["WithStatus"]; ?></td>
+                                            <td><?php echo $with["WithDate"]; ?></td>
                                             <td><?php echo $with["Qtysum"]; ?></td>
                                         </tr>
+
+                                       
+                                            <?php
+                                                $withid = $with["WithId"];
+                                                $sql = "SELECT * FROM tbl_withdrawdetail WHERE WithId = $withid";
+                                                $result = $conn->query($sql);
+                                                $data = array();
+                                                while($row = $result->fetch_assoc()) {
+                                                    $data[] = $row;   
+                                                }
+                                                foreach($data as $key => $withde){
+
+                                                    $medid = $withde["MedId"];
+
+                                                    $sql = "SELECT * FROM tbl_med WHERE MedId = $medid";
+                                                    $result = $conn->query($sql);
+                                                    $data = array();
+                                                    while($row = $result->fetch_assoc()) {
+                                                        $data[] = $row;   
+                                                    }
+                                                    foreach($data as $key => $med){
+                                            ?>
+                                        <tr>
+                                            <td colspan = "4"></td>
+                                            <th colspan = "2"><?php echo "Name : ".$med["MedName"] ."  :  ". $withde["Qty"]; ?></td>
+
+                                        
+                                            <?php } } ?>
+                                        </tr>
+
                                         <?php } } ?>
                                         <tr>
-                                            <td colspan = "4">ToTal</td>
+                                            <td colspan = "5">ToTal</td>
                                             <td><?php echo $sum; ?></td>
                                             
                                         </tr>

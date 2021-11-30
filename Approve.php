@@ -121,7 +121,7 @@
                 <th>Status</th>
                 <th>WithDate</th>
                 <th>Action</th>
-                <th>Report<th>
+                <th>Report</th>
             </tr>
 
         <tbody>
@@ -184,7 +184,7 @@
         </tbody>
     </table>
     </div>
-                    <td>
+
                         <form method = "POST" action = "Exportapprove.php">
                             <select name="Year">
                                 <option value="2021-">2021</option>
@@ -209,8 +209,7 @@
                             </select>
                             <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
                         </form>
-                    </td>
-
+ 
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>

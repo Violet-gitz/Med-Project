@@ -283,8 +283,8 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th width = "220">Order Summary</th>
-                                                    <th with = "80">Lot ID</th>
+                                                    <th width = "220">Medicine Name</th>
+                                                    <th width = "80">Lot ID</th>
 													<th width = "100">Product ID</th>
 													<th width = "80">Quantity</th>
 													<th>Reason</th>
