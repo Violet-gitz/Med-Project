@@ -40,8 +40,28 @@
                 {
                     foreach($_SESSION['usercart'] as $MedId=>$Quantity)
                     {
-                        echo $MedId;
-                        echo $Quantity;
+                        // echo $MedId;
+                        // echo $Quantity;
+                        $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId'";
+                        $result = $conn->query($sql);
+                                $data = array();
+                                
+                                while($row = $result->fetch_assoc()) 
+                                {
+                                    $data[] = $row;  
+                                }
+                                foreach($data as $key => $lot)
+                                {      
+                                    $MfdDate = $lot["Mfd"];
+                                    $ExpDate = $lot["Exd"];
+                                    $datemfd=date_create($MfdDate);
+                                    $dateexp=date_create($ExpDate);
+                                    $diff=date_diff($datemfd,$dateexp);
+                                    
+                                    echo $lot["LotId"] . $diff->format('%R%a') . "<br>";
+
+                                }
+
                     }
                 }
             //     $idmed = $_REQUEST['testMedId'];

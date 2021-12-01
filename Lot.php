@@ -3,8 +3,6 @@
      
 
     session_start();
-
-    
     
     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
@@ -41,6 +39,67 @@
       
     }*/
 
+    $sql = "SELECT *FROM tbl_lot";
+    $result = $conn->query($sql);
+    $data = array();
+    while($row = $result->fetch_assoc()) 
+    {
+    $data[] = $row;   
+    }
+    foreach($data as $key => $lot)
+    {
+        $MedId = $lot["MedId"];
+        $sql = "SELECT* FROM tbl_med WHERE MedId = $MedId";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $Med)
+            {
+                $MfdDate = $lot["Mfd"];
+                $ExpDate = $lot["Exd"];
+                $datemfd=date_create($MfdDate);
+                $dateexp=date_create($ExpDate);
+                $diff=date_diff($datemfd,$dateexp);
+                if($diff->format('%R%a')<=150)
+                {
+                    ini_set('display_errors', 1);
+                    ini_set('display_startup_errors', 1);
+                    error_reporting(E_ALL);
+                    date_default_timezone_set("Asia/Bangkok");
+                    $sToken = "5QZMmRQRyNbvtvPsg0utZxUal4y02ag6Ec1Eqhrz1ch";
+            
+                    $lot = $lot["LotId"];
+                    $medname = $Med["MedName"];
+                
+                    $sMessage = $medname ." Lot #". $lot." Expiry tracking alert "."in ".$diff->format('%R%a'). " day ! " . "link http://localhost/project/Lot.php";
+                    $chOne = curl_init(); 
+                    curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
+                    curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
+                    curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
+                    curl_setopt( $chOne, CURLOPT_POST, 1); 
+                    curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
+                    $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
+                    curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
+                    curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1);
+                    $result = curl_exec( $chOne ); 
+                    //Result error 
+                        if(curl_error($chOne)) 
+                        { 
+                            echo 'error:' . curl_error($chOne);
+                        } 
+                        else 
+                        { 
+                            $result_ = json_decode($result, true); 
+                                // echo "status : ".$result_['status']; echo "message : ". $result_['message'];
+                        } 
+                            curl_close( $chOne );
+                }
+            }
+    }
+
 
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -54,22 +113,7 @@
 
         }
 
-        // echo "  <script>
-        // Swal.fire('foreach($_SESSION['swal'] as $value)')
-        // </script>";
-
-        // if(!empty($_SESSION['swal']))
-        // {
-
-        //     foreach($_SESSION['swal'] as $value)
-        //     {
-        //         echo "  <script>
-        //         Swal.fire('test".print_r($_SESSION['swal'])."')
-        //                 </script>";
-        //     }
-        // }
-        // print_r($_SESSION['swal']);
-        // echo '<pre>';
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -206,12 +250,10 @@
                             $datemfd=date_create($MfdDate);
                             $dateexp=date_create($ExpDate);
                             $diff=date_diff($datemfd,$dateexp);
-                            // if($diff->format('%R%a')<=1005)
-                                // {
-                                //     echo "  <script>
-                                //     Swal.fire('ชื่อ".$Med["MedName"]."')
-                                //             </script>";
-                                // }
+                            // if($diff->format('%R%a')<=150)
+                            //     {
+                            //         echo "test";
+                            //     }
                             // echo $diff->format('%R%a');
                             // $_SESSION['swal'][$LotId] = $lot["LotId"];
                            
@@ -224,11 +266,12 @@
                     <td><?php echo $lot["Qty"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
                     <td><?php echo $diff->format('%R%a');
-                     if($diff->format('%R%a')<=104)
-                     {
-                        echo " test";  
-                        $_SESSION['swal'][$LotId] = $lot["LotId"];
-                     } ?></td>
+                    //  if($diff->format('%R%a')<=150)
+                    //  {
+                    //     echo " test";  
+                    //     $_SESSION['swal'][$LotId] = $lot["LotId"];
+                    //  } 
+                    ?></td>
                     <!-- <td>
                         <form method = "POST" action ="Claim.php">
                             <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "Claim" class="btn btn-danger"
@@ -301,15 +344,7 @@
                     
                 </tr>
 
-                <?php } }  
-                if(!empty($_SESSION['swal']))
-        {
-                echo "  <script>
-                Swal.fire('test".print_r($_SESSION['swal'])."')
-                        </script>";
-                        // print_r($_SESSION['swal']);
-    } 
-    ?>
+                <?php } }?>
             
             
         </tbody>
