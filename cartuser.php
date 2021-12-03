@@ -33,110 +33,6 @@
                 $_SESSION['cart'][$MedId]=$MedPrice;
             }
         }*/
-        
-        if (isset($_REQUEST['btn-Order'])) 
-        {   
-            if(!empty($_SESSION['usercart']))
-                {
-                    foreach($_SESSION['usercart'] as $MedId=>$Quantity)
-                    {
-                        // echo $MedId;
-                        // echo $Quantity;
-                        $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId'";
-                        $result = $conn->query($sql);
-                                $data = array();
-                                
-                                while($row = $result->fetch_assoc()) 
-                                {
-                                    $data[] = $row;  
-                                }
-                                foreach($data as $key => $lot)
-                                {      
-                                    $MfdDate = $lot["Mfd"];
-                                    $ExpDate = $lot["Exd"];
-                                    $datemfd=date_create($MfdDate);
-                                    $dateexp=date_create($ExpDate);
-                                    $diff=date_diff($datemfd,$dateexp);
-                                    
-                                    echo $lot["LotId"] . $diff->format('%R%a') . "<br>";
-
-                                }
-
-                    }
-                }
-            //     $idmed = $_REQUEST['testMedId'];
-            //     echo $idmed;
-            //     $sql ="SELECT * FROM tbl_med WHERE MedId = $idmed";
-            //     echo $sql;
-            //     $result = $conn->query($sql);
-            //     $data = array();
-            //         while($row = $result->fetch_assoc()) {
-            //             $data[] = $row;   
-            //         }
-            //         foreach($data as $key => $med){}
-            
-
-            // $StaffId = $_REQUEST['selstaff'];
-            // date_default_timezone_set("Asia/Bangkok");
-            // $WithDate = date("Y-m-d h:i:sa");
-            // $WithStatus = "Pending approval";
-            
-            // if (empty($StaffId)) {
-            //     $errorMsg = "Please Enter StaffId";
-            // }  else 
-            //     {
-            //         if (!isset($errorMsg))
-            //         {
-            //             $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate, WithStatus) VALUES ('$StaffId', '$WithDate', '$WithStatus')";
-            //             if ($conn->query($sql) === TRUE) { 
-            //             } else {
-            //                 echo "Error updating record: " . $conn->error;
-            //             }
-            //                     $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId  DESC LIMIT 1";
-            //                     $result = mysqli_query($conn, $query); 
-            //                     $row = mysqli_fetch_array($result);
-            //                     $WithId  = $row["WithId"];
-
-                        //         foreach($_SESSION['withdraw'] as $value)
-                        //         {
-                        //         $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$value[0].' and MedId = '.$value[1];
-
-                        //         $result = $conn->query($sql);
-                        //         $data = array();
-                                
-                        //         while($row = $result->fetch_assoc()) 
-                        //         {
-                        //             $data[] = $row;  
-                        //         }
-                        //         foreach($data as $key => $lot)
-                        //         {       
-                        //             $Quantity = $value[2];   
-                        //             $MedId = $lot["MedId"];
-                        //             $LotId = $lot["LotId"];
-                        //             $Mfd = $lot["Mfd"];
-                        //             $Exd = $lot["Exd"];
-                                    
-                        //             $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$LotId', '$Quantity', '$Mfd', '$Exd')";
-                                
-                        //             if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw']);
-                        //             } else {
-                        //                 echo "Error updating record: " . $conn->error;
-                        //             }
-                        //                 $qty += $value[2];
-                                    
-                                        
-                        //             $sql = "UPDATE tbl_withdraw SET Qtysum = $qty WHERE WithId = $WithId"; 
-                        //             if ($conn->query($sql) === TRUE) { 
-                        //             } else {
-                        //                 echo "Error updating record: " . $conn->error;
-                        //             }  
-                        //         }
-                            
-                        // }     
-                //     }
-                // } $insertMsg = "Insert Successfully...";
-                // header("refresh:1;main.php");   
-        }
 
         $staff =  $_SESSION['StaffName'];
         $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -147,9 +43,124 @@
                 $data[] = $row;  
             }
             foreach($data as $key => $staff){      
-
+                $StaffId = $staff["StaffId"];
             }
 
+        
+        if (isset($_REQUEST['btn-Order'])) 
+        {   
+
+            $WithStatus = "Pending approval";
+            date_default_timezone_set("Asia/Bangkok");
+            $WithDate = date("Y-m-d h:i:sa");
+
+            $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate, WithStatus) VALUES ('$StaffId', '$WithDate', '$WithStatus')";
+            if ($conn->query($sql) === TRUE) { 
+            } else {
+            echo "Error updating record: " . $conn->error;
+            }
+
+            if(!empty($_SESSION['usercart']))
+                {
+                    unset($_SESSION['test']);
+                    foreach($_SESSION['usercart'] as $MedId=>$Quantity)
+                    {
+                        $test = 0;
+                        // echo $Quantity. "<br>";
+                        $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId' AND LotStatus != 'Claim' AND LotStatus != 'Writeoff' AND LotStatus != 'Not Available'";
+                        $result = $conn->query($sql);
+                        $data = array();
+                                
+                        while($row = $result->fetch_assoc()) 
+                        {
+                            $data[] = $row;  
+                        }
+                            foreach($data as $key => $lot)
+                            {      
+                                $MfdDate = $lot["Mfd"];
+                                $ExpDate = $lot["Exd"];
+                                $datemfd=date_create($MfdDate);
+                                $dateexp=date_create($ExpDate);
+                                $diff=date_diff($datemfd,$dateexp);
+                                    
+                                // echo $lot["LotId"] . $diff->format('%R%a') . "qty ".$lot["Qty"]. "<br>";
+
+                             
+                                $lotid = $lot["LotId"];
+                                $qty = $lot["Qty"];
+                                
+                                if($test < $Quantity)
+                                {
+                                    if($qty > ($Quantity-$test))
+                                    {
+                                        $_SESSION['test'][$lotid][0]=$lotid;   
+                                        $_SESSION['test'][$lotid][1]=(int)$qty;   
+                                        $_SESSION['test'][$lotid][2]=(int)$qty - ($Quantity - $test);
+                                        $_SESSION['test'][$lotid][3]=(int)$Quantity - $test;
+
+                                        $test += $qty;
+                                    }
+                                    else if($qty < ($Quantity-$test))
+                                    {
+                                        $_SESSION['test'][$lotid][0]=$lotid;   
+                                        $_SESSION['test'][$lotid][1]=(int)$qty;   
+                                        $_SESSION['test'][$lotid][2]=(int)$qty; 
+                                        $_SESSION['test'][$lotid][3]=(int)$qty; 
+                                        $test += $qty;
+                                    }
+                                }  
+
+                            }
+
+                    }
+                }
+              
+        }
+                                
+
+            if(!empty($_SESSION['test']))
+            {   
+                $sum = 0;
+                foreach($_SESSION['test'] as $value)
+                    {
+                        $idlot = $value[0]; 
+                        $Qty = $value[3];
+                        $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$idlot.' AND MedId = '.$MedId.'';
+                        $result = $conn->query($sql);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) 
+                        {
+                            $data[] = $row;  
+                        }
+                        foreach($data as $key => $lot)
+
+                        $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId  DESC LIMIT 1";
+                        $result = mysqli_query($conn, $query); 
+                        $row = mysqli_fetch_array($result);
+        
+                        $WithId  = $row["WithId"];
+
+                        $MfdDate = $lot["Mfd"];
+                        $ExpDate = $lot["Exd"];
+                        {
+                            $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$idlot', '$Qty', '$MfdDate', '$ExpDate')";
+                            if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw']);
+                            } else {
+                            echo "Error updating record: " . $conn->error;
+                            }
+                            $sum = $sum + $value[3];
+
+                            $sql = "UPDATE tbl_withdraw SET Qtysum = $sum WHERE WithId = $WithId"; 
+                            if ($conn->query($sql) === TRUE) { 
+                            } else {
+                            echo "Error updating record: " . $conn->error;
+                            }
+                        }
+                    }unset($_SESSION['test']);
+            }
+        
+
+       
 ?>
      
      <!DOCTYPE html>

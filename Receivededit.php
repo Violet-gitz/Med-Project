@@ -191,17 +191,29 @@
                                     echo "Error updating record: " . $conn->error;
                                 }
 
-                                $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
-                                $result = mysqli_query($conn, $query); 
-                                $row = mysqli_fetch_array($result);
-                                $LotId = $row["LotId"];
-        
-                                $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  LotId = $LotId";
-                                $i++;
-                                if ($conn->query($sql) === TRUE) { 
-                                } else {
-                                    echo "Error updating record: " . $conn->error;
+                                $sql = "SELECT * FROM tbl_receiveddetail WHERE RecId = $recid AND MedId = $MedId";
+                                $result = $conn->query($sql);
+                                $data = array();
+                                while($row = $result->fetch_assoc()) {
+                                $data[] = $row;   
                                 }
+                                foreach($data as $key => $recde)
+                                {
+                                    $LotId = $recde["LotId"];
+                                    
+                                    $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  LotId = $LotId";
+                                    $i++;
+                                    if ($conn->query($sql) === TRUE) { 
+                                    } else {
+                                        echo "Error updating record: " . $conn->error;
+                                    }
+                                }
+
+                                // $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
+                                // $result = mysqli_query($conn, $query); 
+                                // $row = mysqli_fetch_array($result);
+                                // $LotId = $row["LotId"];
+        
  
                                 // $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
                                 // if ($conn->query($sql) === TRUE) {
