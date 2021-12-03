@@ -62,7 +62,7 @@
 
             if(!empty($_SESSION['usercart']))
                 {
-                    unset($_SESSION['test']);
+                    // unset($_SESSION['test']);
                     foreach($_SESSION['usercart'] as $MedId=>$Quantity)
                     {
                         $test = 0;
@@ -84,23 +84,22 @@
                                 $diff=date_diff($datemfd,$dateexp);
                                     
                                 // echo $lot["LotId"] . $diff->format('%R%a') . "qty ".$lot["Qty"]. "<br>";
-
-                             
+                            
                                 $lotid = $lot["LotId"];
                                 $qty = $lot["Qty"];
-                                
+                                echo $test . "จำนวนที่ตัด<br>";
+                                echo $Quantity . "จำนวนที่ต้องตัด<br>";
                                 if($test < $Quantity)
                                 {
                                     if($qty > ($Quantity-$test))
                                     {
                                         $_SESSION['test'][$lotid][0]=$lotid;   
-                                        $_SESSION['test'][$lotid][1]=(int)$qty;   
-                                        $_SESSION['test'][$lotid][2]=(int)$qty - ($Quantity - $test);
-                                        $_SESSION['test'][$lotid][3]=(int)$Quantity - $test;
-
-                                        $test += $qty;
+                                        $_SESSION['test'][$lotid][1]=(int)$qty;   //จำนวนทั้งหมดของ lot
+                                        $_SESSION['test'][$lotid][2]=(int)$qty - ($Quantity - $test); //จำนวนคงเหลือ 
+                                        $_SESSION['test'][$lotid][3]=(int)$Quantity - $test; //จำนวนที่ตัด ****
+                                        $test += ($Quantity - $test);
                                     }
-                                    else if($qty < ($Quantity-$test))
+                                    else if($qty <= ($Quantity-$test))
                                     {
                                         $_SESSION['test'][$lotid][0]=$lotid;   
                                         $_SESSION['test'][$lotid][1]=(int)$qty;   
@@ -114,10 +113,8 @@
 
                     }
                 }
-              
+  
         }
-                                
-
             if(!empty($_SESSION['test']))
             {   
                 $sum = 0;
@@ -125,7 +122,8 @@
                     {
                         $idlot = $value[0]; 
                         $Qty = $value[3];
-                        $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$idlot.' AND MedId = '.$MedId.'';
+                        $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$idlot.'';
+                        echo $sql;
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) 
@@ -133,18 +131,18 @@
                             $data[] = $row;  
                         }
                         foreach($data as $key => $lot)
-
-                        $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId  DESC LIMIT 1";
-                        $result = mysqli_query($conn, $query); 
+                        {
+                        $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId DESC LIMIT 1";
+                        $result = $conn->query($query); 
                         $row = mysqli_fetch_array($result);
-        
                         $WithId  = $row["WithId"];
 
                         $MfdDate = $lot["Mfd"];
                         $ExpDate = $lot["Exd"];
                         {
                             $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$idlot', '$Qty', '$MfdDate', '$ExpDate')";
-                            if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw']);
+                            // echo $sql;
+                            if ($conn->query($sql) === TRUE) { 
                             } else {
                             echo "Error updating record: " . $conn->error;
                             }
@@ -156,7 +154,8 @@
                             echo "Error updating record: " . $conn->error;
                             }
                         }
-                    }unset($_SESSION['test']);
+                        }
+                    }// unset($_SESSION['test']);
             }
         
 
