@@ -18,12 +18,24 @@
     if (isset($_REQUEST['Cancel_id'])) 
     {
         $orderid = $_REQUEST['Cancel_id'];
-        $status = "Cancel";
+
         $sql = "UPDATE tbl_order SET OrderStatus = 'Cancel' WHERE OrderId = $orderid";
         if ($conn->query($sql) === TRUE) {     
         } else {
           echo "Error updating record: " . $conn->error;
         }
+
+        $sql = "DELETE FROM tbl_orderdetail where OrderId = '".$orderid."'";
+        if($conn->query($sql) == TRUE){}
+        else{}
+
+        $sql = "DELETE FROM tbl_order where OrderId = '".$orderid."'";
+        echo $sql;
+        if($conn->query($sql) == TRUE){}
+        else{}     
+
+
+        
     }
 
     // if (isset($_REQUEST['Report'])) 

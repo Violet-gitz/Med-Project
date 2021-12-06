@@ -57,7 +57,7 @@
                         <div class="col-sm-1">
                             <select name="Seldepart">       
                                 <?php 
-                                    $sql = 'SELECT * FROM tbl_department';
+                                    $sql = 'SELECT * FROM tbl_department WHERE DepartId != 1 ';
                                     $result = $conn->query($sql);
                                     $data = array();
                                     while($row = $result->fetch_assoc()) 

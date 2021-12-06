@@ -197,6 +197,7 @@
                 <th>Medicine</th>
                 <th>Pictures</th>
                 <th>Quantity</th>
+                <th>Reserve</th>
                 <th>Status</th>
                 <th>Expire</th>
                 <th>Action</th>
@@ -218,14 +219,16 @@
                         $LotStatus = $lot["LotStatus"];
                         $status = "Not Available";
                         $checkclaim = $lot["RecClaimid"];
-                        // if ($checkqty == '0' and $LotStatus == 'Claim') 
-                        // {
-                        //     $sql = "UPDATE tbl_lot SET LotStatus = 'Claim' WHERE LotId = $LotId"; 
-                        //     if ($conn->query($sql) === TRUE) { 
-                        //     } else {
-                        //         echo "Error updating record: " . $conn->error;
-                        //     }
-                        // }
+                        $Reserve = $lot["Reserve"];
+                        $checkreserve = $checkqty - $Reserve;
+                        if ($checkreserve == '0') 
+                        {
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
+                            if ($conn->query($sql) === TRUE) { 
+                            } else {
+                                echo "Error updating record: " . $conn->error;
+                            }
+                        }
                         if($checkqty == '0' and $LotStatus != 'Claim')
                         {
                             $sql = "UPDATE tbl_lot SET LotStatus = 'Not Available' WHERE LotId = $LotId"; 
@@ -264,6 +267,7 @@
                     <td><?php echo $Med["MedName"]; ?></td>
                     <td><?php echo '<img style = "width:100px;height:100px"  src="upload/'. $Med["MedPath"]; ?>"></td>
                     <td><?php echo $lot["Qty"]; ?></td>
+                    <td><?php echo $lot["Reserve"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
                     <td><?php echo $diff->format('%R%a');
                     //  if($diff->format('%R%a')<=150)

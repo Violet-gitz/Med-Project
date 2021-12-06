@@ -97,6 +97,7 @@ create table tbl_lot
 	MedId int,
 	RecClaimid int,
 	Qty int,
+	Reserve int,
 	Mfd	varchar(255),
 	Exd	varchar(255),
 	LotStatus varchar(255),
@@ -196,4 +197,4 @@ ALTER TABLE tbl_lot
 ADD FOREIGN KEY (RecClaimid) REFERENCES tbl_recclaim(RecClaimid);
 
  
-ทดสอบแจ้งเตือนด้วย LINE Notify
+

@@ -106,9 +106,13 @@
                                 } else {
                                     echo "Error updating record: " . $conn->error;
                                 }
+                                $sql = "UPDATE tbl_lot SET Reserve = '$Quantity' WHERE LotId = '$LotId'";
+                                if ($conn->query($sql) === TRUE) { 
+                                } else {
+                                    echo "Error updating record: " . $conn->error;
+                                }
                                     $qty += $value[2];
-                                  
-                                    
+   
                                 $sql = "UPDATE tbl_withdraw SET Qtysum = $qty WHERE WithId = $WithId"; 
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {

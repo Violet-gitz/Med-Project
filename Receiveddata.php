@@ -138,8 +138,7 @@
                     foreach($data as $key => $orderdetailid){
                     
                     }
-                    
-                  
+
                     $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
                     if ($conn->query($sql) === TRUE) {
                     } else {
@@ -169,12 +168,12 @@
                         $row = mysqli_fetch_array($result);
                         $RecId = $row["RecId"];
 
-                     
                         $MedQty = $orderdetailid["Qty"];
                         $MedTotal = $med["MedTotal"];
                         $MedSum = $MedQty + $MedTotal;
                         $MfdDate = $_REQUEST["mfd".$i];
                         $ExpDate = $_REQUEST["exd".$i];
+                        $Reserve = 0;
                         $datemfd=date_create($MfdDate);
                         $dateexp=date_create($ExpDate);
                         $diff=date_diff($datemfd,$dateexp);
@@ -183,10 +182,21 @@
                         if($diff->format('%R%a')<=30)
                         {
                             $errorMsg ="Error,Please enter a new expiration date. ";
+
+                            $sql = "DELETE FROM tbl_received where RecId = '".$RecId."'";
+                            if($conn->query($sql) == TRUE){}
+                            else{}
+
+                            $sql = "UPDATE tbl_order SET OrderStatus = 'Ordering' WHERE $OrderId=OrderId";
+                            if ($conn->query($sql) === TRUE) {
+                            } else {
+                                echo "Error updating record: " . $conn->error;
+                            }
+
                         }else
                             if(!isset($errorMsg)) 
                             {
-                                $sql = "INSERT INTO tbl_lot(Qty, MedId, LotStatus, Mfd, Exd) VALUES ('$MedQty', '$MedId','$LotStatus','$MfdDate','$ExpDate')";
+                                $sql = "INSERT INTO tbl_lot(Qty, MedId, LotStatus, Mfd, Exd, Reserve) VALUES ('$MedQty', '$MedId','$LotStatus','$MfdDate','$ExpDate','$Reserve')";
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {
                                     echo "Error updating record: " . $conn->error;
@@ -212,7 +222,7 @@
                                 }
                             }
                         }
-                    }$updateMsg = "Record update successfully...";
+                    }
                     header("refresh:1;main.php");
                 }
                 

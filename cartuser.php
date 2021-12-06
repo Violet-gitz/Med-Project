@@ -1,9 +1,9 @@
 <?php
         include('connect.php');
         session_start();
-        echo '<pre>';
-        print_r($_SESSION);
-        echo '<pre>';
+        // echo '<pre>';
+        // print_r($_SESSION);
+        // echo '<pre>';
         $MedId = !empty($MedId) ? 0 : $_REQUEST['testMedId'];
         $act = !empty($act) ? 0 : $_REQUEST['act'];
         $Quantity = !empty($Quantity) ? 0 : $_REQUEST['quantity'];
@@ -67,7 +67,7 @@
                     {
                         $test = 0;
                         // echo $Quantity. "<br>";
-                        $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId' AND LotStatus != 'Claim' AND LotStatus != 'Writeoff' AND LotStatus != 'Not Available'";
+                        $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId' AND LotStatus != 'Claim' AND LotStatus != 'Writeoff' AND LotStatus != 'Not Available' AND LotStatus != 'Reserve'";
                         $result = $conn->query($sql);
                         $data = array();
                                 
@@ -86,9 +86,9 @@
                                 // echo $lot["LotId"] . $diff->format('%R%a') . "qty ".$lot["Qty"]. "<br>";
                             
                                 $lotid = $lot["LotId"];
-                                $qty = $lot["Qty"];
-                                echo $test . "จำนวนที่ตัด<br>";
-                                echo $Quantity . "จำนวนที่ต้องตัด<br>";
+                                $qtylot = $lot["Qty"];
+                                $Reserve = $lot["Reserve"];
+                                $qty = $qtylot - $Reserve;
                                 if($test < $Quantity)
                                 {
                                     if($qty > ($Quantity-$test))
@@ -123,7 +123,6 @@
                         $idlot = $value[0]; 
                         $Qty = $value[3];
                         $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$idlot.'';
-                        echo $sql;
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) 
@@ -148,6 +147,12 @@
                             }
                             $sum = $sum + $value[3];
 
+                            $sql = "UPDATE tbl_lot SET Reserve = $Qty WHERE LotId = $idlot"; 
+                            if ($conn->query($sql) === TRUE) { 
+                            } else {
+                            echo "Error updating record: " . $conn->error;
+                            }
+
                             $sql = "UPDATE tbl_withdraw SET Qtysum = $sum WHERE WithId = $WithId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
@@ -155,7 +160,7 @@
                             }
                         }
                         }
-                    }// unset($_SESSION['test']);
+                    }unset($_SESSION['test']);
             }
         
 
