@@ -53,7 +53,7 @@
 
                 $medname = $med["MedName"];
             
-                $sMessage = $medname ." near the point of purchase !";
+                $sMessage = $medname ." was reached reorder point !";
                 $chOne = curl_init(); 
                 curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
                 curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 

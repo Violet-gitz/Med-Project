@@ -105,7 +105,6 @@ body{margin-top:20px;
     margin: 1rem 0 0 0;
     padding: 1rem;
     line-height: 180%;
-    background: #f5f6fa;
 }
 .invoice-container .invoice-details .invoice-num {
     text-align: right;

@@ -112,7 +112,7 @@
                             }
 
                     }
-                }
+                }unset($_SESSION['usercart']);
   
         }
             if(!empty($_SESSION['test']))
@@ -146,8 +146,9 @@
                             echo "Error updating record: " . $conn->error;
                             }
                             $sum = $sum + $value[3];
+                            $sumReserve = $Reserve + $Qty;
 
-                            $sql = "UPDATE tbl_lot SET Reserve = $Qty WHERE LotId = $idlot"; 
+                            $sql = "UPDATE tbl_lot SET Reserve = $sumReserve WHERE LotId = $idlot"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                             echo "Error updating record: " . $conn->error;

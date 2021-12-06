@@ -85,9 +85,11 @@
                         {
                             $lotqty = $lot["Qty"];
                             $withqty = $withde["Qty"];
+                            $Reserve = $lot["Reserve"];
+                            $sum = $Reserve - $withqty;
                             $qtysum = $lotqty - $withqty;
 
-                            $sql = "UPDATE tbl_lot SET Qty = $qtysum WHERE LotId = $lotid"; 
+                            $sql = "UPDATE tbl_lot SET Qty = $qtysum , Reserve = $sum WHERE LotId = $lotid"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                             echo "Error updating record: " . $conn->error;
