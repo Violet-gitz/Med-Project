@@ -17,8 +17,7 @@
         header('location: login.php');
     }
 
-
-     if (isset($_GET['logout'])) {
+    if (isset($_GET['logout'])) {
             session_destroy();
             unset($_SESSION['StaffUsername']);
             header('location: login.php');
@@ -131,7 +130,10 @@
         <tbody>
             <?php 
                     $search = $_REQUEST['search'];
-                    $sql = "SELECT * FROM tbl_lot WHERE LotId  LIKE '%{$search}%' || MedId  LIKE '%{$search}%' ";
+                    $sql = "SELECT tbl_lot.LotId,tbl_lot.MedId,tbl_lot.RecClaimid,tbl_lot.Qty,tbl_lot.Reserve,tbl_lot.Mfd,tbl_lot.Exd,tbl_lot.LotStatus,tbl_med.MedId,tbl_med.MedName,tbl_med.MedPath
+                    FROM tbl_lot
+                    INNER JOIN tbl_med ON tbl_lot.MedId = tbl_med.MedId
+                    WHERE MedName LIKE '%{$search}%' OR LotStatus LIKE '%{$search}%' OR LotId LIKE '%{$search}%'";
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
@@ -144,6 +146,7 @@
                         $LotStatus = $lot["LotStatus"];
                         $status = "Not Available";
                         $Reserve = $lot["Reserve"];
+                        $checkclaim = $lot["RecClaimid"];
                         $checkreserve = $checkqty - $Reserve;
                         if ($checkreserve == '0') 
                         {
@@ -162,16 +165,7 @@
                             }
                         }
 
-                    $MedId = $lot["MedId"];
-                    $sql = "SELECT* FROM tbl_med WHERE MedId = $MedId";
-                    $result = $conn->query($sql);
-                    $data = array();
-                        while($row = $result->fetch_assoc()) 
-                        {
-                            $data[] = $row;  
-                        }
-                        foreach($data as $key => $Med){
-
+                    
                             $MfdDate = $lot["Mfd"];
                             $ExpDate = $lot["Exd"];
                             $datemfd=date_create($MfdDate);
@@ -195,8 +189,8 @@
 
                 <tr>
                     <td><?php echo $lot["LotId"]; ?></td>
-                    <td><?php echo $Med["MedName"]; ?></td>
-                    <td><?php echo '<img style = "width:100px;height:100px"  src="upload/'. $Med["MedPath"]; ?>"></td>
+                    <td><?php echo $lot["MedName"]; ?></td>
+                    <td><?php echo '<img style = "width:100px;height:100px"  src="upload/'. $lot["MedPath"]; ?>"></td>
                     <td><?php echo $lot["Qty"]; ?></td>
                     <td><?php echo $lot["Reserve"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
@@ -238,8 +232,13 @@
                                 </form>
 
                                 <form method="POST" action="Claim.php">
+                                    <?php
+                                        if(is_null($checkclaim) && $Reserve == '0')
+                                        {
+                                    ?>
                                     <a class="dropdown-item" href="Claim.php?Claim=<?php echo $lot["LotId"]; ?>">Claim</a>
                                     <input type ="hidden" name ='Claim' value ="<?php echo $lot["LotId"]; ?>">
+                                    <?php } ?>
                                 </form>
                             </div>
                         </div>
@@ -248,7 +247,7 @@
 
                 </tr>
 
-                <?php } } ?>
+                <?php  } ?>
             
             
         </tbody>

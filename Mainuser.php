@@ -94,7 +94,7 @@
     ?>
 
    
-    <div class="container">
+        <div class="container">
             <div class="row">
                     <div class="col-md-4 ms-auto">
                         <form action="" method="post">
@@ -104,8 +104,6 @@
                     </div>
             </div>
         </div><br>
-
-        
 
     <div class="container-sm">
     
@@ -149,9 +147,6 @@
                     </tr>
 
                     <?php } ?>
-
-                    
-
                 
             </tbody>
         </table>

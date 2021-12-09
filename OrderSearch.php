@@ -130,15 +130,16 @@
 
             <tbody>
                 <?php 
-                            $sql = "SELECT * FROM tbl_order WHERE OrderId  LIKE '%{$search}%' || OrderDate  LIKE '%{$search}%' ";
+                            $sql = "SELECT tbl_order.OrderId,tbl_order.OrderDate,tbl_order.OrderStatus,tbl_order.OrderPrice,tbl_order.OrderPrice,tbl_order.OrderTotal,tbl_order.StaffName,tbl_dealer.DealerName,tbl_dealer.DealerAddress
+                            FROM tbl_order
+                            INNER JOIN tbl_dealer ON tbl_order.DealerId = tbl_dealer.DealerId
+                            WHERE OrderId  LIKE '%{$search}%' OR OrderDate  LIKE '%{$search}%' OR OrderStatus LIKE '%{$search}%'";
                             $result = $conn->query($sql);
                             $data = array();
                             while($row = $result->fetch_assoc()) {
                                 $data[] = $row;   
                             }
                             foreach($data as $key => $order){
-
-                                    
                                 $OrderStatus = $order["OrderStatus"];   
                                      
                 ?>

@@ -15,6 +15,58 @@
         header('location: login.php');
     }
 
+    if (isset($_REQUEST['Cancelclaim'])) 
+    {
+        $cliamid = $_REQUEST['Cancelclaim'];
+
+        $sql = "UPDATE tbl_claim SET ClaimStatus  = 'Cancel' WHERE ClaimId = $cliamid";
+        if ($conn->query($sql) === TRUE) {     
+        } else {
+        echo "Error updating record: " . $conn->error;
+        }
+    
+        $sql = "SELECT * FROM tbl_claim WHERE ClaimId = '$cliamid'";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $claim)
+            {   
+                $lotid = $claim["LotId"];    
+                $claimqty = $claim["Qty"];
+
+                 
+                $sql = "UPDATE tbl_lot SET LotStatus = 'Available' , Qty = $claimqty WHERE LotId = $lotid";
+                if ($conn->query($sql) === TRUE) {     
+                } else {
+                echo "Error updating record: " . $conn->error;
+                }
+
+                $medid = $claim["MedId"];
+                $sql = "SELECT * FROM tbl_med WHERE MedId = '$medid'";
+                $result = $conn->query($sql);
+                $data = array();
+                    while($row = $result->fetch_assoc()) 
+                    {
+                        $data[] = $row;  
+                    }
+                    foreach($data as $key => $med)
+                    {
+                        $medqty = $med["MedTotal"];
+                        $claimqty = $claim["Qty"];
+                        $sum = $medqty + $claimqty;
+                       
+                        $sql = "UPDATE tbl_med SET MedTotal = '$sum' WHERE MedId = $medid";
+                        if ($conn->query($sql) === TRUE) {     
+                        } else {
+                        echo "Error updating record: " . $conn->error;
+                }
+                    }
+            }
+    }
+
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
     $result = $conn->query($sql);
@@ -107,13 +159,19 @@
                 <th>Dealer</th>
                 <th>Dealer Address</th>
                 <th>Received</th>
+                <th>Cancel</th>
                 <th>Report</th>
             </tr>
         
 
         <tbody>
             <?php 
-                    $sql = "SELECT * FROM tbl_claim";
+                    $sql = "SELECT tbl_claim.ClaimId,tbl_claim.LotId,tbl_claim.StaffId,tbl_claim.DealerId,tbl_claim.MedId,tbl_claim.Qty,tbl_claim.Reason,tbl_claim.ClaimDate,tbl_claim.ClaimStatus,tbl_dealer.DealerName,tbl_dealer.DealerAddress,tbl_staff.StaffName
+                    FROM tbl_claim
+                    INNER JOIN tbl_dealer ON tbl_dealer.DealerId = tbl_claim.DealerId
+                    INNER JOIN tbl_lot ON tbl_lot.LotId = tbl_claim.LotId
+                    INNER JOIN tbl_med ON tbl_med.MedId = tbl_claim.MedId
+                    INNER JOIN tbl_staff ON tbl_staff.StaffId = tbl_claim.StaffId";
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
@@ -121,23 +179,7 @@
                     }
                     foreach($data as $key => $claim){
 
-                        $dealerid = $claim["DealerId"];
-                        $sql ="SELECT * FROM tbl_dealer WHERE DealerId = $dealerid";
-                        $result = $conn->query($sql);
-                        $data = array();
-                            while($row = $result->fetch_assoc()) {
-                                $data[] = $row;   
-                            }
-                            foreach($data as $key => $deal){
-                                
-                        $staffid = $claim["StaffId"];
-                        $sql ="SELECT * FROM tbl_staff WHERE StaffId = $staffid";
-                        $result = $conn->query($sql);
-                        $data = array();
-                            while($row = $result->fetch_assoc()) {
-                                $data[] = $row;   
-                            }
-                            foreach($data as $key => $staff){
+                     
                                 $ClaimStatus = $claim["ClaimStatus"];
                         
             ?>
@@ -148,13 +190,18 @@
                     <td><?php echo $claim["ClaimStatus"]; ?></td>
                     <td><?php echo $claim["LotId"]; ?></td>
                     <td><?php echo $claim["Qty"]; ?></td>
-                    <td><?php echo $deal["DealerName"]; ?></td>
-                    <td><?php echo $deal["DealerAddress"]; ?></td>
+                    <td><?php echo $claim["DealerName"]; ?></td>
+                    <td><?php echo $claim["DealerAddress"]; ?></td>
                     <td>
                         <form method = "POST" action = "ReceivdClaim.php">
                             <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Claim_id" class = "btn btn-primary"
                                 <?php
                                     if($ClaimStatus == "Received")
+                                    {
+                                        $buttonStatus = "Disabled";
+                                        echo $buttonStatus;
+                                    }
+                                    else if($ClaimStatus == "Cancel")
                                     {
                                         $buttonStatus = "Disabled";
                                         echo $buttonStatus;
@@ -166,6 +213,31 @@
                     </td>
 
                     <td>
+                            <form method = "POST" action = "CheckClaim.php">
+                                <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Cancelclaim" class="btn btn-danger"
+                                    <?php
+                                        if($ClaimStatus == "Available")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if($ClaimStatus == "Received")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if($ClaimStatus == "Cancel")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                    ?>
+                                    >Cancel
+                                </button>
+                            </form>
+                        </td>
+
+                    <td>
                         <form method = "POST" action = "Reportclaim.php">
                             <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
                             <input type ="hidden" name = "valueid" value = "<?php echo $claim["ClaimId"];?>">
@@ -175,7 +247,7 @@
                 </tr>
 
                 <?php 
-            }}}?>
+            }?>
 
                 
 

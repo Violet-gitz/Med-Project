@@ -132,7 +132,13 @@
             <tbody>
                 <?php 
 
-                    $sql = "SELECT * FROM tbl_claim WHERE ClaimId  LIKE '%{$search}%' || ClaimDate  LIKE '%{$search}%' ";
+                    $sql = "SELECT tbl_claim.ClaimId,tbl_claim.LotId,tbl_claim.StaffId,tbl_claim.DealerId,tbl_claim.MedId,tbl_claim.Qty,tbl_claim.Reason,tbl_claim.ClaimDate,tbl_claim.ClaimStatus,tbl_dealer.DealerName,tbl_dealer.DealerAddress,tbl_staff.StaffName
+                    FROM tbl_claim
+                    INNER JOIN tbl_dealer ON tbl_dealer.DealerId = tbl_claim.DealerId
+                    INNER JOIN tbl_lot ON tbl_lot.LotId = tbl_claim.LotId
+                    INNER JOIN tbl_med ON tbl_med.MedId = tbl_claim.MedId
+                    INNER JOIN tbl_staff ON tbl_staff.StaffId = tbl_claim.StaffId
+                    WHERE ClaimId LIKE '%{$search}%' OR ClaimDate LIKE '%{$search}%' OR ClaimStatus LIKE '%{$search}%'";
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
@@ -140,24 +146,7 @@
                     }
                     foreach($data as $key => $claim){
 
-                        $dealerid = $claim["DealerId"];
-                        $sql ="SELECT * FROM tbl_dealer WHERE DealerId = $dealerid";
-                        $result = $conn->query($sql);
-                        $data = array();
-                            while($row = $result->fetch_assoc()) {
-                                $data[] = $row;   
-                            }
-                            foreach($data as $key => $deal){
-                                
-                        $staffid = $claim["StaffId"];
-                        $sql ="SELECT * FROM tbl_staff WHERE StaffId = $staffid";
-                        $result = $conn->query($sql);
-                        $data = array();
-                            while($row = $result->fetch_assoc()) {
-                                $data[] = $row;   
-                            }
-                            foreach($data as $key => $staff){
-                                $ClaimStatus = $claim["ClaimStatus"];
+                    $ClaimStatus = $claim["ClaimStatus"];
                         
             ?>
 
@@ -167,8 +156,8 @@
                     <td><?php echo $claim["ClaimStatus"]; ?></td>
                     <td><?php echo $claim["LotId"]; ?></td>
                     <td><?php echo $claim["Qty"]; ?></td>
-                    <td><?php echo $deal["DealerName"]; ?></td>
-                    <td><?php echo $deal["DealerAddress"]; ?></td>
+                    <td><?php echo $claim["DealerName"]; ?></td>
+                    <td><?php echo $claim["DealerAddress"]; ?></td>
                     <td>
                         <form method = "POST" action = "ReceivdClaim.php">
                             <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Claim_id" class = "btn btn-primary"
@@ -187,7 +176,7 @@
                 </tr>
 
                 <?php 
-            }}}?>
+            }?>
             </tbody>
         </table>
     </div>

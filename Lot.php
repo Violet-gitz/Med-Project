@@ -193,6 +193,7 @@
     <table class="table table-bordered">
         <thead>
             <tr>
+                <th>Order Id</th>
                 <th>Lot Id</th>
                 <th>Medicine</th>
                 <th>Pictures</th>
@@ -206,14 +207,15 @@
 
         <tbody>
             <?php 
-                    $sql = "SELECT *FROM tbl_lot";
+                    $sql = "SELECT tbl_lot.LotId,tbl_lot.MedId,tbl_lot.RecClaimid,tbl_lot.Qty,tbl_lot.Reserve,tbl_lot.Mfd,tbl_lot.Exd,tbl_lot.LotStatus,tbl_med.MedId,tbl_med.MedName,tbl_med.MedPath
+                    FROM tbl_lot
+                    INNER JOIN tbl_med ON tbl_lot.MedId = tbl_med.MedId";
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
                         $data[] = $row;   
                     }
                     foreach($data as $key => $lot){
-                       
                         $checkqty = $lot["Qty"];
                         $LotId = $lot["LotId"];
                         $LotStatus = $lot["LotStatus"];
@@ -237,65 +239,24 @@
                                 echo "Error updating record: " . $conn->error;
                             }
                         }
-
-                    $MedId = $lot["MedId"];
-                    $sql = "SELECT* FROM tbl_med WHERE MedId = $MedId";
-                    $result = $conn->query($sql);
-                    $data = array();
-                        while($row = $result->fetch_assoc()) 
-                        {
-                            $data[] = $row;  
-                        }
-                        foreach($data as $key => $Med){
-
                             $MfdDate = $lot["Mfd"];
                             $ExpDate = $lot["Exd"];
                             $datemfd=date_create($MfdDate);
                             $dateexp=date_create($ExpDate);
                             $diff=date_diff($datemfd,$dateexp);
-                            // if($diff->format('%R%a')<=150)
-                            //     {
-                            //         echo "test";
-                            //     }
-                            // echo $diff->format('%R%a');
-                            // $_SESSION['swal'][$LotId] = $lot["LotId"];
+                           
                            
             ?>
 
                 <tr>
                     <td><?php echo $lot["LotId"]; ?></td>
-                    <td><?php echo $Med["MedName"]; ?></td>
-                    <td><?php echo '<img style = "width:100px;height:100px"  src="upload/'. $Med["MedPath"]; ?>"></td>
+                    <td><?php echo $lot["MedName"]; ?></td>
+                    <td><?php echo '<img style = "width:100px;height:100px"  src="upload/'. $lot["MedPath"]; ?>"></td>
                     <td><?php echo $lot["Qty"]; ?></td>
                     <td><?php echo $lot["Reserve"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
-                    <td><?php echo $diff->format('%R%a');
-                    //  if($diff->format('%R%a')<=150)
-                    //  {
-                    //     echo " test";  
-                    //     $_SESSION['swal'][$LotId] = $lot["LotId"];
-                    //  } 
-                    ?></td>
-                    <!-- <td>
-                        <form method = "POST" action ="Claim.php">
-                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "Claim" class="btn btn-danger"
-                                    <?php
-                                        if(is_null($checkclaim))
-                                        {
-                                            $buttonStatus = "Disabled";
-                                            echo $buttonStatus;
-                                        }
-                                        else if ($checkclaim == "Claim")
-                                        {
-                                            $buttonStatus = "Disabled";
-                                            echo $buttonStatus; 
-                                        }
-                                    ?>
-                                    >Claim
-                            </button>
-                        </form>
+                    <td><?php echo $diff->format('%R%a');?></td>
                     
-                    </td>  -->
                     <td><div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             <?php 
@@ -332,13 +293,12 @@
 
                                 <form method="POST" action="Claim.php">
                                     <?php
-                                        if(is_null($checkclaim))
+                                        if(is_null($checkclaim) && $Reserve == '0')
                                         {
                                     ?>
                                     <a class="dropdown-item" href="Claim.php?Claim=<?php echo $lot["LotId"]; ?>">Claim</a>
                                     <input type ="hidden" name ='Claim' value ="<?php echo $lot["LotId"]; ?>">
-                                    <?php }
-                                    ?>
+                                    <?php } ?>
                                 </form>
  
                             </div>
@@ -348,7 +308,7 @@
                     
                 </tr>
 
-                <?php } }?>
+                <?php  }?>
             
             
         </tbody>

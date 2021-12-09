@@ -356,7 +356,7 @@
                         <div class="col-sm-1">
                             <select name="selstaff">       
                                 <?php 
-                                    $sql = 'SELECT * FROM tbl_staff';
+                                    $sql = 'SELECT * FROM tbl_staff WHERE DepartId = 1';
                                     $result = $conn->query($sql);
                                     $data = array();
                                     while($row = $result->fetch_assoc()) 

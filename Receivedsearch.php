@@ -141,7 +141,7 @@
                     FROM tbl_received
                     INNER JOIN tbl_order ON tbl_received.OrderId = tbl_order.OrderId
                     INNER JOIN tbl_staff ON tbl_received.StaffId = tbl_staff.StaffId 
-                    WHERE RecId  LIKE '%{$search}%' || RecDate  LIKE '%{$search}%' ";
+                    WHERE RecId LIKE '%{$search}%' OR RecDate LIKE '%{$search}%' OR OrderStatus LIKE '%{$search}%'";
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
@@ -150,8 +150,6 @@
                     foreach($data as $key => $rec){
 
                         // $OrderStatus = $order["OrderStatus"];
-                       
-                        
             ?>
 
                 <tr>

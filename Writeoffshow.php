@@ -55,12 +55,6 @@
                 }
                     }
             }
-
-            $sql = "DELETE FROM tbl_writeoff where WriteId = '".$write."'";
-            if ($conn->query($sql) === TRUE) {     
-            } else {
-            echo "Error updating record: " . $conn->error;
-            }
     }
 
     // if (isset($_REQUEST['Report'])) 

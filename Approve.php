@@ -23,6 +23,62 @@
             header('location: login.php');
         }
 
+    if (isset($_REQUEST['Cancel_id'])) 
+        {
+            $withid = $_REQUEST['Cancel_id'];
+    
+            $sql = "UPDATE tbl_withdraw SET WithStatus = 'Cancel' , Qtysum = '0' WHERE WithId = $withid";
+            if ($conn->query($sql) === TRUE) {     
+            } else {
+              echo "Error updating record: " . $conn->error;
+            }
+            
+            $sql = "SELECT * FROM tbl_withdraw WHERE WithId = '$withid'";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $withdraw)
+                {      
+
+                    $withdrawId = $withdraw["WithId"];
+                    $sql = "SELECT * FROM tbl_withdrawdetail WHERE WithId = '$withid'";
+                    $result = $conn->query($sql);
+                    $data = array();
+                        while($row = $result->fetch_assoc()) 
+                        {
+                            $data[] = $row;  
+                        }
+                        foreach($data as $key => $withdrawdetail)
+                        {   
+                            $lotid = $withdrawdetail["LotId"];
+                            $sql = "SELECT * FROM tbl_lot WHERE LotId = '$lotid'";
+                            $result = $conn->query($sql);
+                            $data = array();
+                                while($row = $result->fetch_assoc()) 
+                                {
+                                    $data[] = $row;  
+                                }
+                                foreach($data as $key => $lot)
+                                {
+                                    $withqty = $withdrawdetail["Qty"];
+                                    $Reserve = $lot["Reserve"];
+                                    $sum = $Reserve - $withqty;
+
+                                    $sql = "UPDATE tbl_lot SET Reserve = '$sum' WHERE LotId = $lotid";
+                                    if ($conn->query($sql) === TRUE) {     
+                                    } else {
+                                      echo "Error updating record: " . $conn->error;
+                                    }
+
+                                }
+
+                        }
+                }
+        }
+
         $staff =  $_SESSION['StaffName'];
         $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
         $result = $conn->query($sql);
@@ -34,13 +90,6 @@
             foreach($data as $key => $staff){      
 
             }
-
-    // if (isset($_GET['print'])) {
-    //     require_once __DIR__ . '/vendor/autoload.php';
-    //     $mpdf = new \mpdf\mpdf();
-    //     $mpdf->WriteHTML('<h1>Hello world!</h1>');
-    //     $mpdf->Output();
-    // }
 
     
 ?>
@@ -121,6 +170,7 @@
                 <th>Status</th>
                 <th>WithDate</th>
                 <th>Action</th>
+                <th>Cancel</th>
                 <th>Report</th>
             </tr>
 
@@ -161,12 +211,37 @@
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
                                         }
+                                        else if($withstatus == "Cancel")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
                                        
                                     ?>
                                     >Approve
                                 </button>
                             </form>
                     </td>
+
+                    <td>
+                            <form method = "POST" action = "Approve.php">
+                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Cancel_id" class="btn btn-danger"
+                                    <?php
+                                        if($withstatus == "Approved")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if($withstatus == "Cancel")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                    ?>
+                                    >Cancel
+                                </button>
+                            </form>
+                        </td>
                     
                     <td>
                         <form method = "POST" action = "Reportwithdraw.php">

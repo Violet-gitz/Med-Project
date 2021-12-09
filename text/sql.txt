@@ -3,6 +3,11 @@ FROM tbl_order
 INNER JOIN tbl_staff ON tbl_order.StaffId = tbl_staff.StaffId
 INNER JOIN tbl_dealer ON tbl_order.DealerId = tbl_dealer.DealerId;
 
+SELECT tbl_lot.LotId,tbl_lot.MedId,tbl_lot.RecClaimid,tbl_lot.Qty,tbl_lot.Reserve,tbl_lot.Mfd,tbl_lot.Exd,tbl_lot.LotStatus,tbl_med.MedId,tbl_med.MedName,tbl_med.MedPath
+FROM tbl_lot
+INNER JOIN tbl_med ON tbl_lot.MedId = tbl_med.MedId
+INNER JOIN tbl_recclaim ON tbl_lot.RecClaimid = tbl_recclaim.RecClaimid
+WHERE LotId  LIKE '%{$search}%' AND MedId  LIKE '%{$search}%' AND MedName LIKE '%{$search}%'
 
 
 SELECT tbl_orderdetail.OrderId,tbl_orderdetail.MedId,tbl_orderdetail.QTY,tbl_orderdetail.Orderprice,tbl_order.OrderDate,tbl_order.OrderStatus,tbl_order.DealerId,tbl_order.StaffId,tbl_med.MedName
@@ -21,6 +26,13 @@ INNER JOIN tbl_staff ON tbl_writeoff.StaffId = tbl_staff.StaffId
 INNER JOIN tbl_lot ON tbl_writeoff.LotId = tbl_lot.LotId
 INNER JOIN tbl_med ON tbl_writeoff.MedId = tbl_med.MedId;
 
+SELECT tbl_claim.ClaimId,tbl_claim.LotId,tbl_claim.StaffId,tbl_claim.DealerId,tbl_claim.MedId,tbl_claim.Qty,tbl_claim.Reason,tbl_claim.ClaimDate,tbl_claim.ClaimStatus,tbl_dealer.DealerName,tbl_dealer.DealerAddress,tbl_staff.StaffName
+FROM tbl_claim
+INNER JOIN tbl_dealer ON tbl_dealer.DealerId = tbl_claim.DealerId
+INNER JOIN tbl_lot ON tbl_lot.LotId = tbl_claim.LotId
+INNER JOIN tbl_med ON tbl_med.MedId = tbl_claim.MedId
+INNER JOIN tbl_staff ON tbl_staff.StaffId = tbl_claim.StaffId
+
 <input type="number" id="quantity" name="qtyPack" min="1" max="999" value="0">QTY/Pack 
 
 <label class="col-sm-3 control-label" for="start">Date Order</label>  
@@ -34,6 +46,11 @@ SELECT tbl_order.OrderId,tbl_order.OrderDate,tbl_order.OrderVat,tbl_order.OrderP
 FROM tbl_order
 INNER JOIN tbl_staff ON tbl_order.StaffId = tbl_staff.StaffId
 INNER JOIN tbl_dealer ON tbl_order.DealerId = tbl_dealer.DealerId;
+
+SELECT tbl_lot.LotId,tbl_lot.MedId,tbl_lot.RecClaimid,tbl_lot.Qty,tbl_lot.Reserve,tbl_lot.Mfd,tbl_lot.Exd,tbl_lot.LotStatus,tbl_med.MedId,tbl_med.MedName,tbl_med.MedPath,tbl_receiveddetail.LotId,tbl_receiveddetail.Qty
+FROM tbl_lot
+INNER JOIN tbl_med ON tbl_lot.MedId = tbl_med.MedId
+INNER JOIN tbl_receiveddetail ON tbl_lot.LotId = tbl_receiveddetail.LotId
 
 
 

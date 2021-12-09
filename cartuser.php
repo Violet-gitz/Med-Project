@@ -112,9 +112,9 @@
                             }
 
                     }
-                }unset($_SESSION['usercart']);
-  
+                }unset($_SESSION['usercart']);header("refresh:1;Mainuser.php"); 
         }
+
             if(!empty($_SESSION['test']))
             {   
                 $sum = 0;
@@ -163,9 +163,7 @@
                         }
                     }unset($_SESSION['test']);
             }
-        
 
-       
 ?>
      
      <!DOCTYPE html>
@@ -177,7 +175,7 @@
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <a href="main.php" class="navbar-brand">Home Page</a>
+                <a href="Mainuser.php" class="navbar-brand">Home Page</a>
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -282,26 +280,12 @@
     <td><a href="Mainuser.php">Medicine</a></td>
     </tr>
     </table>
-                    <div class="container">
-                        <label class="col-sm-3 control-label">Dealer</label>
-                            <select name="selDealer">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_dealer';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) {
-                                        $data[] = $row;        
-                                    }
-                                    foreach($data as $key => $dealer){                  
-                                ?>
-                                    <option value ="<?php echo $dealer["DealerId"];?>"><?php echo $dealer["DealerName"];?></option>
-                                <?php } ?>      
-                            </select>
+                        <div class="container">
                             <div class="col-sm-9">
                                 <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order">
                             </div>
-                        
-                    </div>           
+                        </div>
+                  
     </form>
 
     <script src="js/slim.js"></script>

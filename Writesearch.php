@@ -167,7 +167,8 @@
                     INNER JOIN tbl_staff ON tbl_writeoff.StaffId = tbl_staff.StaffId
                     INNER JOIN tbl_lot ON tbl_writeoff.LotId = tbl_lot.LotId
                     INNER JOIN tbl_med ON tbl_writeoff.MedId = tbl_med.MedId
-                    WHERE WriteId  LIKE '%{$search}%' || WriteDate  LIKE '%{$search}%' ";
+                    WHERE WriteId LIKE '%{$search}%' OR WriteDate LIKE '%{$search}%' OR MedName LIKE '%{$search}%'";
+                    echo $sql;
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
