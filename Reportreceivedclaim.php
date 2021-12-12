@@ -294,8 +294,7 @@ body{margin-top:20px;
                                                           $data = array();
                                                           while($row = $result->fetch_assoc()) {
                                                           $data[] = $row;   
-                                                          }
-                                                          
+                                                          }                                                         
                                                           foreach($data as $key => $lot){
                                                             $medid = $lot["MedId"];
                                                             $sqli ="SELECT * FROM tbl_med WHERE $medid = MedId";
