@@ -54,7 +54,6 @@
     if (isset($_REQUEST['btn_approve'])) {
 
         $WithId = $_REQUEST['txt_WithId'];
-        
 
         $sql = "SELECT* FROM tbl_withdraw WHERE WithId=$WithId";
         $result = $conn->query($sql);

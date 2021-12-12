@@ -193,7 +193,6 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Order Id</th>
                 <th>Lot Id</th>
                 <th>Medicine</th>
                 <th>Pictures</th>
@@ -201,6 +200,7 @@
                 <th>Reserve</th>
                 <th>Status</th>
                 <th>Expire</th>
+                <th>Detail</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -223,17 +223,18 @@
                         $checkclaim = $lot["RecClaimid"];
                         $Reserve = $lot["Reserve"];
                         $checkreserve = $checkqty - $Reserve;
-                        if ($checkreserve == '0') 
+                        
+                        if($checkqty == '0' and $LotStatus != 'Claim')
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'Not Available' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;
                             }
                         }
-                        if($checkqty == '0' and $LotStatus != 'Claim')
+                        else if ($checkreserve == '0' and $LotStatus != 'Claim') 
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = 'Not Available' WHERE LotId = $LotId"; 
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;
@@ -244,8 +245,6 @@
                             $datemfd=date_create($MfdDate);
                             $dateexp=date_create($ExpDate);
                             $diff=date_diff($datemfd,$dateexp);
-                           
-                           
             ?>
 
                 <tr>
@@ -256,7 +255,12 @@
                     <td><?php echo $lot["Reserve"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
                     <td><?php echo $diff->format('%R%a');?></td>
-                    
+                    <td>            
+                        <form method="POSt" action="lotdetail.php">
+                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-danger">Detail</button>
+                            <input type="hidden" name ='Detail' value ="<?php echo $lot["LotId"]; ?>">
+                        </from>
+                    </td>
                     <td><div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             <?php 
@@ -281,6 +285,7 @@
                                 >Action
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
                                 <form method="POSt" action="Withdraw.php">
                                     <a class="dropdown-item" href="Withdraw.php?withdraw=<?php echo $lot["LotId"]; ?>">Wtihdraw</a>
                                     <input type="hidden" name ='withdraw' value ="<?php echo $lot["LotId"]; ?>">
@@ -308,7 +313,7 @@
                     
                 </tr>
 
-                <?php  }?>
+                <?php }?>
             
             
         </tbody>

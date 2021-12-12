@@ -125,6 +125,7 @@
                     <th>Staff</th>
                     <th>Received</th>
                     <th>Cancel</th>
+                    <th>Report</th>
                 </tr>
             </thead>
 
@@ -187,6 +188,13 @@
                                     ?>
                                     >Cancel
                                 </button>
+                            </form>
+                        </td>
+
+                        <td>
+                            <form method = "POST" action = "Reportorder.php">
+                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
+                                <input type ="hidden" name = "valueid" value = "<?php echo $order["OrderId"];?>">
                             </form>
                         </td>
                     </tr>

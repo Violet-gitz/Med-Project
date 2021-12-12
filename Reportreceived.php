@@ -82,14 +82,13 @@ body{margin-top:20px;
 }
 .invoice-container .invoice-header address {
     font-size: 1.3rem;
-    color: #9fa8b9;
     margin: 0;
 }
 .invoice-container .invoice-details {
     margin: 1rem 0 0 0;
     padding: 1rem;
     line-height: 180%;
-    background: #f5f6fa;
+
 }
 .invoice-container .invoice-details .invoice-num {
     text-align: right;
@@ -118,7 +117,7 @@ body{margin-top:20px;
 }
 .invoice-status h5.status-title {
     margin: 0 0 0.8rem 0;
-    color: #9fa8b9;
+
 }
 .invoice-status p.status-type {
     margin: 0.5rem 0 0 0;
@@ -234,7 +233,7 @@ body{margin-top:20px;
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
 										M38 Petchkasem Rd, Bang Wa <br>
-										SPhasi Charoen, Bangkok 10160.<br>
+										Phasi Charoen, Bangkok 10160.<br>
 										02 867 8088
 									</address>
 								</div>

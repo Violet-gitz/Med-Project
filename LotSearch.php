@@ -123,6 +123,7 @@
                 <th>Reserve</th>
                 <th>Status</th>
                 <th>Expire</th>
+                <th>Detail</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -148,17 +149,17 @@
                         $Reserve = $lot["Reserve"];
                         $checkclaim = $lot["RecClaimid"];
                         $checkreserve = $checkqty - $Reserve;
-                        if ($checkreserve == '0') 
+                        if($checkqty == '0' and $LotStatus != 'Claim')
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'Not Available' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;
                             }
                         }
-                        if($checkqty == '0' and $LotStatus != 'Claim')
+                        else if ($checkreserve == '0' and $LotStatus != 'Claim') 
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = 'Not Available' WHERE LotId = $LotId"; 
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;
@@ -195,6 +196,12 @@
                     <td><?php echo $lot["Reserve"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
                     <td><?php echo $diff->format('%R%a'); ?>
+                    <td>            
+                        <form method="POSt" action="lotdetail.php">
+                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-danger">Detail</button>
+                            <input type="hidden" name ='Detail' value ="<?php echo $lot["LotId"]; ?>">
+                        </from>
+                    </td>
                        
                     <td>
                         <div class="dropdown">

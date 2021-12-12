@@ -27,7 +27,7 @@
         {
             $withid = $_REQUEST['Cancel_id'];
     
-            $sql = "UPDATE tbl_withdraw SET WithStatus = 'Cancel' , Qtysum = '0' WHERE WithId = $withid";
+            $sql = "UPDATE tbl_withdraw SET WithStatus = 'Cancel' WHERE WithId = $withid";
             if ($conn->query($sql) === TRUE) {     
             } else {
               echo "Error updating record: " . $conn->error;
