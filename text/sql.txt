@@ -9,6 +9,11 @@ INNER JOIN tbl_med ON tbl_lot.MedId = tbl_med.MedId
 INNER JOIN tbl_recclaim ON tbl_lot.RecClaimid = tbl_recclaim.RecClaimid
 WHERE LotId  LIKE '%{$search}%' AND MedId  LIKE '%{$search}%' AND MedName LIKE '%{$search}%'
 
+SELECT tbl_claim.ClaimId,tbl_claim.Qty,tbl_claim.Reason,tbl_claim.ClaimStatus,tbl_claim.LotId,tbl_claim.StaffId,tbl_claim.DealerId,tbl_claim.MedId,tbl_staff.StaffName,tbl_recclaim.RecClaimid,tbl_recclaim.ClaimId,tbl_recclaim.RecClaimName,tbl_recclaim.RecClaimdate
+FROM tbl_recclaim
+INNER JOIN tbl_claim ON tbl_recclaim.ClaimId = tbl_claim.ClaimId
+INNER JOIN tbl_staff ON tbl_recclaim.StaffId = tbl_staff.StaffId
+
 
 SELECT tbl_orderdetail.OrderId,tbl_orderdetail.MedId,tbl_orderdetail.QTY,tbl_orderdetail.Orderprice,tbl_order.OrderDate,tbl_order.OrderStatus,tbl_order.DealerId,tbl_order.StaffId,tbl_med.MedName
 FROM tbl_orderdetail

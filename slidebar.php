@@ -74,8 +74,10 @@ body {
           <a href="CheckReceived.php">Received</a>
           <a href="Lot.php">Lot</a>
           <a href="Approve.php">Approve</a>
-          <a href="CheckClaim.php">List order claim</a>
+          <a href="CheckClaim.php">List order Claim</a>
+          <a href="ClaimReceived.php">Received Claim</a>
           <a href="Writeoffshow.php">Writoff List</a>
+          
           
           
         </div>

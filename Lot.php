@@ -298,12 +298,23 @@
 
                                 <form method="POST" action="Claim.php">
                                     <?php
-                                        if(is_null($checkclaim) && $Reserve == '0')
-                                        {
+                                        $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId = '$LotId'";
+                                        $result = $conn->query($sql);
+                                        $data = array();
+                                            while($row = $result->fetch_assoc()) 
+                                            {
+                                                $data[] = $row;  
+                                            }
+                                            foreach($data as $key => $receiv)
+                                            {       
+                                                $recqty = $receiv["Qty"];  
+                                                if(is_null($checkclaim) && $recqty == $checkqty && $Reserve == '0')
+                                                {
+                                                    echo '<a class="dropdown-item" href="Claim.php?Claim='.$lot["LotId"].'">Claim</a>';
+                                                    echo '<input type ="hidden" name ="Claim" value ="'.$lot["LotId"].'">';
+                                                }
+                                            }
                                     ?>
-                                    <a class="dropdown-item" href="Claim.php?Claim=<?php echo $lot["LotId"]; ?>">Claim</a>
-                                    <input type ="hidden" name ='Claim' value ="<?php echo $lot["LotId"]; ?>">
-                                    <?php } ?>
                                 </form>
  
                             </div>
