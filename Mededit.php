@@ -213,17 +213,6 @@
                 <tr>
                     <div class="form-group text-center">
                         <div class="row">
-                            <td><label for="Medicinelow" class="col-sm-3 control-label">Medicine Type</label></td>
-                            <div class="col-sm-7">
-                                <td><input type="text" name="txt_Medtype" class="form-control" value="<?php echo $med["MedType"]?>"></td>
-                            </div>
-                        </div>
-                    </div>
-                </tr>
-
-                <tr>
-                    <div class="form-group text-center">
-                        <div class="row">
                             <td><label for="Medicineprcie" class="col-sm-3 control-label">Price per Pack</label></td>
                             <div class="col-sm-7">
                                 <td><input type="text" name="txt_MedPrice" class="form-control" value="<?php echo $med["MedPrice"]?>"></td>
@@ -279,6 +268,21 @@
                 <tr>
                     <div class="form-group text-center">
                         <div class="row">
+                            <td><label for="Category" class="col-sm-3 control-label">Medicine Type</label></td>
+                            <div class="col-sm-1">
+                                <td><select name = "txt_Medtype">
+                                    <option value="<?php echo $med["MedType"];?>"><?php echo $med["MedType"];?></option> 
+                                    <option value="Internal medicine">Internal medicine</option>
+                                    <option value="External medicine">External medicine</option>
+                                </select><br><br></td>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+
+                <tr>
+                    <div class="form-group text-center">
+                        <div class="row">
                             <td><label for="Category" class="col-sm-3 control-label">Category</label></td>
                             <div class="col-sm-1">
                                 <td><select name = "dropdownlist-MedCate">
@@ -293,21 +297,33 @@
                     </div>
                 </tr>
 
-                
-                
                 <tr>
                     <div class="form-group text-center">
                         <div class="row">
                             <td><label for="Volumn" class="col-sm-3 control-label">Volumn per unit</label></td>
                             <div class="col-sm-1">
                                 <td><select name = "dropdownlist-MedVolumn">
-                                    <option value="<?php echo $med["MedVolumn"]; ?>"><?php echo $med["MedVolumn"]; ?></option> 
+                                    <option value="<?php echo $med["MedVolumn"];?>"><?php echo $med["MedVolumn"];?></option> 
+                                    <option value="50 Ml MG">50 ML</option>
                                     <option value="100 CC">100 CC</option>
                                     <option value="500 CC">500 CC</option>
                                     <option value="1000 CC">1000 CC</option>
+                                    <option value="1 MG">1 MG</option>
+                                    <option value="4 MG">4 MG</option>
+                                    <option value="5 MG">5 MG</option>
+                                    <option value="8 MG">8 MG</option>
+                                    <option value="10 MG">10 MG</option>
+                                    <option value="12.5 MG">12.5 MG</option>
+                                    <option value="24 MG">24 MG</option>
+                                    <option value="25 MG">25 MG</option>
+                                    <option value="30 MG">30 MG</option>
+                                    <option value="40 MG">40 MG</option>
+                                    <option value="100 MG">100 MG</option>
                                     <option value="250 MG">250 MG</option>
                                     <option value="300 MG">300 MG</option>
+                                    <option value="400 MG">400 MG</option>
                                     <option value="500 MG">500 MG</option>
+                                    <option value="600 MG">600 MG</option>
                                     <option value="1000 MG">1000 MG</option>
                                 </select><br><br></td>
                             </div>
@@ -321,10 +337,13 @@
                             <td><label for="Unit" class="col-sm-3 control-label">Unit</label></td>
                             <div class="col-sm-1">
                                 <td><select name = "dropdownlist-MedUnit">
-                                    <option value="<?php echo $med["MedUnit"]; ?>"><?php echo $med["MedUnit"]; ?></option> 
-                                    <option value="Capsule">Pill</option>
+                                    <option value="<?php echo $med["MedUnit"];?>"><?php echo $med["MedUnit"];?></option> 
+                                    <option value="Pill">Pill</option>
                                     <option value="Tablet">Tablet</option>
                                     <option value="Capsule">Capsule</option>  
+                                    <option value="Powder">Powder</option> 
+                                    <option value="Solution">Solution</option>
+                                    <option value="Suppository">Suppository</option>
                                 </select><br><br></td>
                             </div>
                         </div>

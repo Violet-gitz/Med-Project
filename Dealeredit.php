@@ -30,7 +30,8 @@
         }
     }
 
-    if (isset($_REQUEST['btn_update'])) {
+    if (isset($_REQUEST['btn_update'])) 
+    {
         $DealerName = $_REQUEST['txt_DealerName'];
         $DealerAddress = $_REQUEST['txt_DealerAddress'];
         $DealerPhone = $_REQUEST['txt_DealerPhone'];
@@ -49,26 +50,22 @@
         } else if (empty($ContractEnd)) {
             $errorMsg = "please Enter Dealer Contract End";
         } else {
-            try {
-                if (!isset($errorMsg)) {
-                    $update_stmt = $db->prepare("UPDATE tbl_dealer SET DealerName = :1name, DealerAddress = :2name, DealerPhone = :3name, ContractStart = :4name, ContractEnd = :5name WHERE DealerId = :DealerId");
-                    $update_stmt->bindParam(':1name', $DealerName);
-                    $update_stmt->bindParam(':2name', $DealerAddress);
-                    $insert_stmt->bindParam(':3name', $DealerPhone);
-                    $insert_stmt->bindParam(':4name', $ContractStart);
-                    $insert_stmt->bindParam(':5name', $ContractEnd);
-                    $update_stmt->bindParam(':DealerId', $id);
 
-                    if ($update_stmt->execute()) {
-                        $updateMsg = "Record update successfully...";
-                        header("refresh:1;Dealershow.php");
+                if (!isset($errorMsg)) 
+                    {
+                        $sql = "UPDATE tbl_dealer SET DealerName = '$DealerName', DealerAddress = '$DealerAddress', DealerPhone = '$DealerPhone', ContractStart = '$ContractStart', ContractEnd = '$ContractEnd' WHERE DealerId = '$id'";
+                        if ($conn->query($sql) === TRUE)
+                            {
+                                $insertMsg = "Insert Successfully...";
+                                header("refresh:1;Dealershow.php");
+                            }
+                            else {echo "Error updating record: " . $conn->error;}
                     }
+
                 }
-            } catch(PDOException $e) {
-                echo $e->getMessage();
-            }
-        }
     }
+        
+    
 
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -160,7 +157,7 @@
                 <div class="row">
                     <label for="DealerName" class="col-sm-3 control-label">Dealer Name</label>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_DealerName" class="form-control" placeholder="<?php echo $dealer["DealerName"]; ?>">
+                        <input type="text" name="txt_DealerName" class="form-control" value="<?php echo $dealer["DealerName"]; ?>">
                     </div>
                 </div>
             </div>
@@ -169,7 +166,7 @@
                 <div class="row">
                     <label for="DealerAddress" class="col-sm-3 control-label">Dealer Address</label>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_DealerAddress" class="form-control" placeholder="<?php echo $dealer["DealerAddress"]; ?>">
+                        <input type="text" name="txt_DealerAddress" class="form-control" value="<?php echo $dealer["DealerAddress"]; ?>">
                     </div>
                 </div>
             </div>
@@ -178,25 +175,29 @@
                 <div class="row">
                     <label for="DealerAddress" class="col-sm-3 control-label">Dealer Phone</label>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_DealerPhone" class="form-control" placeholder="<?php echo $dealer["DealerPhone"]; ?>">
+                        <input type="text" name="txt_DealerPhone" class="form-control" value="<?php echo $dealer["DealerPhone"]; ?>">
                     </div>
                 </div>
             </div>
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="DealerAddress" class="col-sm-3 control-label">Contract Start</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="ContractStart" class="form-control" placeholder="<?php echo $dealer["ContractStart"]; ?>">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract Start</label>
+                    <div class="col-sm-1">
+                    <input type="date"  name="ContractStart"
+                                        value="<?php echo date('Y-m-j'); ?>" required 
+                                        min="2021-3-22" max="2030-12-31">
                     </div>
                 </div>
             </div>
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="DealerAddress" class="col-sm-3 control-label">Contract End</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="ContractEnd" class="form-control" placeholder="<?php echo $dealer["ContractEnd"]; ?>">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract End</label>
+                    <div class="col-sm-1">
+                    <input type="date"  name="ContractEnd"
+                                        value="<?php echo date('Y-m-j'); ?>" required 
+                                        min="2021-3-22" max="2030-12-31">
                     </div>
                 </div>
             </div>

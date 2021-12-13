@@ -39,26 +39,37 @@
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <a href="Mainuser.php" class="navbar-brand">Home Page</a>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
+                <!-- <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
                     <span class="navbar-toggler-icon"></span>
-                </button>
+                </button> -->
                 <div id="navbar1" class="collapse navbar-collapse">
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                        ><?php echo $_SESSION['StaffName'] ?>
-                        </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                <form method="POSt" action="useredit.php">
-                                    <a class="dropdown-item" href="useredit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
-                                    <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
-                                </from>
+                        <div id="navbar1" class="collapse navbar-collapse">
+                            <ul class="navbar-nav ms-auto">
 
-                                <form method="POST" action="index.php">
-                                    <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
-                                    <input type ="hidden" name ='logout' value ="1">
-                                </form>
-                            </div>
+                                <li class="nav-item">
+                                    <td><a href="cartuser.php" class ="btn btn-info">Cart</a></td>
+                                </li>
+
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                ><?php echo $_SESSION['StaffName'] ?>
+                                </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                        <form method="POSt" action="Staffedit.php">
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
+                                        </from>
+
+                                        <form method="POST" action="index.php">
+                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <input type ="hidden" name ='logout' value ="1">
+                                        </form>
+
+                                    </div>                               
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,18 +103,6 @@
     <?php
             include('slidebaruser.php');   
     ?>
-
-   
-        <div class="container">
-            <div class="row">
-                    <div class="col-md-4 ms-auto">
-                        <form action="" method="post">
-                            <input type="text" name="textsearch" placeholder = "Search">
-                            <input type="submit" name="submit" value="Search">
-                        </form>
-                    </div>
-            </div>
-        </div><br>
 
     <div class="container-sm">
     

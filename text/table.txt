@@ -196,5 +196,12 @@ create table tbl_recclaim
 ALTER TABLE tbl_lot
 ADD FOREIGN KEY (RecClaimid) REFERENCES tbl_recclaim(RecClaimid);
 
+
+https://www.ihasco.co.uk/blog/entry/2255/what-are-the-categories-of-medication
+
+General Sales List
+Pharmacy Medicines
+Prescription Only Medicines
+Controlled Drugs
  
 

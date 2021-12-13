@@ -65,6 +65,8 @@ body {
         <div id="mySidenav" class="sidenav">
           <a href="javascript:void(0)" class="navbar-brand" onclick="closeNav()">&times;</a>
           <a href="Mainuser.php">Home</a>
+          <a href="Approveuser.php">Approve</a>
+          
          
           
         </div>
