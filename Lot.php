@@ -128,21 +128,24 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/sweetalert2@11.2.0/dist/sweetalert2.min.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-   
-  
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <a href="main.php" class="navbar-brand">Home Page</a>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div id="navbar1" class="collapse navbar-collapse">
+                <div style='margin-right: 15px'>
+                    <?php
+                    include('slidebar.php');   
+                    ?>
+                </div>
+                <div> 
+                  <a href="main.php" class="navbar-brand">Home Page</a>
+                </div>
+
+                <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
                     <div class="dropdown">
 
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
-
-                                <li class="nav-item">
+                                
+                             <li class="nav-item">
                                     <td><a href="Withdrawcart.php" class ="btn btn-info">Cart</a></td>
                                 </li>
 
@@ -151,7 +154,7 @@
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                        <form method="POSt" action="Staffedit.php">
+                                        <form method="POST" action="Staffedit.php">
                                             <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
@@ -168,30 +171,29 @@
                 </div>
             </div>
         </nav> 
+
 </head>
 
 
 <body>
-    <?php
-            include('slidebar.php');           
-    ?>
-
 
 <div class="container">
-  <div class="row">
-        <div class="col-md-4 ms-auto">
-            <form action="LotSearch.php" method="post">
-                <input type="text" name="search" placeholder = "search">
-                <input type="submit" name="submit" value="Search">
-            </form>
-        </div>
-  </div>
-</div><br>
 
 <div class="container-sm">
-    
-    <table class="table table-bordered">
-        <thead>
+    <div class="row mb-5">
+            <div class="col-md-4 ms-auto " style="text-align: end;">
+                <form action="LotSearch.php" method="post">
+                    <input type="text" name="textsearch" placeholder = "search">
+                    <input type="submit" name="submit" value="Search">
+                </form>
+            </div>
+    </div>
+ 
+    <table class="table table-striped">
+         <div style='margin-bottom: 15px;'>
+            List Approve
+           </div>
+            <thead >
             <tr>
                 <th>Lot Id</th>
                 <th>Medicine</th>

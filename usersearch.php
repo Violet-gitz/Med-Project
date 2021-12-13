@@ -64,11 +64,19 @@
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <a href="Mainuser.php" class="navbar-brand">Home Page</a>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
+                <div style='margin-right: 15px'>
+                    <?php
+                    include('slidebaruser.php');   
+                    ?>
+                </div>
+                <div> 
+                  <a href="Mainuser.php" class="navbar-brand">Home Page</a>
+                </div>
+
+                <!-- <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
                     <span class="navbar-toggler-icon"></span>
-                </button>
-                <div id="navbar1" class="collapse navbar-collapse">
+                </button> -->
+                <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
                     <div class="dropdown">
 
                         <div id="navbar1" class="collapse navbar-collapse">
@@ -79,8 +87,8 @@
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                        <form method="POSt" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                        <form method="POST" action="edituser.php">
+                                            <a class="dropdown-item" href="edituser.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
@@ -100,10 +108,6 @@
 </head>
 <body>
 
-        <?php
-            include('slidebaruser.php');
-        ?>
-
         <div class="container">
             <div class="row">
                     <div class="col-md-4 ms-auto">
@@ -117,17 +121,18 @@
 
         <div class="container-sm">
     
-    <table class="table table-bordered">
-        <thead>
+        <table class="table table-striped">
+         <div style='margin-bottom: 15px;'>
             List Approve
-        </thead>
+           
+            <thead >
             <tr>
                 <th>WithId</th>
                 <th>StaffId</th>
                 <th>Quantity</th>
                 <th>Status</th>
                 <th>WithDate</th>
-
+                <th>Report</th>
             </tr>
         <tbody>
             <?php 
@@ -159,7 +164,17 @@
                         <td><?php echo $with["Qtysum"]; ?></td>
                         <td><?php echo $with["WithStatus"]; ?></td>
                         <td><?php echo $with["WithDate"]; ?></td>
-                  
+                        <?php
+                        if ($withstatus == "Approved")
+                        {
+                            echo '<td>
+                                    <form method = "POST" action = "userreport.php">
+                                        <button type = "submit" value = "'.$with["WithId"].'" name = "Report" class="btn btn-danger">Report</button>
+                                        <input type ="hidden" name = "valueid" value = '.$with["WithId"].'">
+                                    </form>
+                                </td>';
+                        }
+                    ?>
                     
                   
                 </tr>

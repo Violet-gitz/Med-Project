@@ -102,17 +102,22 @@
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <a href="main.php" class="navbar-brand">Home Page</a>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div id="navbar1" class="collapse navbar-collapse">
+                <div style='margin-right: 15px'>
+                    <?php
+                    include('slidebar.php');   
+                    ?>
+                </div>
+                <div> 
+                  <a href="main.php" class="navbar-brand">Home Page</a>
+                </div>
+
+                <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
                     <div class="dropdown">
 
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
-
-                                <li class="nav-item">
+                                
+                            <li class="nav-item">
                                     <td><a href="Shipping.php" class ="btn btn-info">Cart</a></td>
                                 </li>
 
@@ -121,7 +126,7 @@
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                        <form method="POSt" action="Staffedit.php">
+                                        <form method="POST" action="Staffedit.php">
                                             <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
@@ -130,6 +135,7 @@
                                             <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
+
                                     </div>                               
                             </ul>
                         </div>
@@ -186,7 +192,7 @@
                             <div>
                                 <h5><?php echo "Name  " . $Med["MedName"]; ?></h5> 
                                 <!-- <h5><?php echo "Description  " . $Med["MedDes"]; ?></h5>  -->
-                                <h5><div class = "Product-title"><?php echo "Description : "?><textarea id="w3review" name="txt_MedIndi" rows="6" cols="28"><?php echo $Med["MedDes"]?></textarea></div></h5>
+                                <!-- <h5><div class = "Product-title"><?php echo "Description : "?><textarea id="w3review" name="txt_MedIndi" rows="6" cols="28"><?php echo $Med["MedDes"]?></textarea></div></h5> -->
                                 <h5><?php echo "Category  " . $Med["MedCate"]; ?></h5> 
                                 <h5><?php echo "Volumn  " . $Med["MedVolumn"]; ?></h5> 
                                 <h5><?php echo "Unit  " . $Med["MedUnit"]; ?></h5> 

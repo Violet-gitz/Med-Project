@@ -1,11 +1,7 @@
 <heaed>
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
   <link rel="stylesheet" href="bootstrap/bootstrap.css">
-
-
-  
-
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <style>
@@ -20,7 +16,7 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #111;
+  background-color: #343a40;
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
@@ -30,7 +26,7 @@ body {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
-  color: #818181;
+  color: #ffffff;
   display: block;
   transition: 0.3s;
 }
@@ -63,7 +59,6 @@ body {
 </style>
        
         <div id="mySidenav" class="sidenav">
-          <a href="javascript:void(0)" class="navbar-brand" onclick="closeNav()">&times;</a>
           <a href="main.php">Home</a>
           <a href="Staffshow.php">Staff</a>
           <a href="Departmentshow.php">Department</a>
@@ -81,18 +76,19 @@ body {
           
           
         </div>
-        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
-
-        <script>
-          function openNav() 
-          {
-            document.getElementById("mySidenav").style.width = "250px";
-          }
-
-          function closeNav() 
-          {
-            document.getElementById("mySidenav").style.width = "0";
-          }
-        </script>
+        <span style="font-size:30px;cursor:pointer;color: white;" onclick="openNav()">&#9776;</span>
+  <script>
+    var openSlidBar = false
+    function openNav() 
+    {
+      if(openSlidBar == false){
+        openSlidBar = true
+        document.getElementById("mySidenav").style.width = "250px";
+      }else{
+        openSlidBar = false
+        document.getElementById("mySidenav").style.width = "0";
+      }
+    }
+    </script>
 </body>
         

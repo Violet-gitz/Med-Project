@@ -25,7 +25,17 @@
             header('location: login.php');
         }
  
-       
+        $staff =  $_SESSION['StaffName'];
+        $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $staff){      
+
+            }
                     
 ?>
 <!DOCTYPE html>
@@ -34,21 +44,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
+    
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <a href="Mainuser.php" class="navbar-brand">Home Page</a>
+                <div style='margin-right: 15px'>
+                    <?php
+                    include('slidebaruser.php');   
+                    ?>
+                </div>
+                <div> 
+                  <a href="Mainuser.php" class="navbar-brand">Home Page</a>
+                </div>
+
                 <!-- <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
                     <span class="navbar-toggler-icon"></span>
                 </button> -->
-                <div id="navbar1" class="collapse navbar-collapse">
+                <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
                     <div class="dropdown">
 
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
 
-                                <li class="nav-item">
+                                <li class="nav-item" style='margin-right: 15px;'>
                                     <td><a href="cartuser.php" class ="btn btn-info">Cart</a></td>
                                 </li>
 
@@ -57,8 +75,8 @@
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                        <form method="POSt" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                        <form method="POST" action="edituser.php">
+                                            <a class="dropdown-item" href="edituser.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
@@ -75,38 +93,16 @@
             </div>
         </nav> 
 
-        <!-- <script>
-            function showResult(str) {
-            if (str == "") {
-                document.getElementById("livesearch").innerHTML = "";
-                return;
-            } else {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("livesearch").innerHTML = this.responseText;
-                }
-                };
-                xmlhttp.open("GET","main.php?q="+str,true);
-                xmlhttp.send();
-            }
-            }
-        </script> -->
-
-
-    
 </head>
 
 
 <body>
 
-    <?php
-            include('slidebaruser.php');   
-    ?>
+    
 
     <div class="container-sm">
     
-        <table class="table table-bordered">
+        <table class="table table-striped" style='margin-top:4rem;'>
             <thead>
                 <tr>
                     <th>Picture</th>

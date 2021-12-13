@@ -104,36 +104,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-        <script>
-            function showResult(str) {
-            if (str == "") {
-                document.getElementById("livesearch").innerHTML = "";
-                return;
-            } else {
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("livesearch").innerHTML = this.responseText;
-                }
-                };
-                xmlhttp.open("GET","main.php?q="+str,true);
-                xmlhttp.send();
-            }
-            }
-        </script>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <a href="main.php" class="navbar-brand">Home Page</a>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div id="navbar1" class="collapse navbar-collapse">
+                <div style='margin-right: 15px'>
+                    <?php
+                    include('slidebar.php');   
+                    ?>
+                </div>
+                <div> 
+                  <a href="main.php" class="navbar-brand">Home Page</a>
+                </div>
+
+                <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
                     <div class="dropdown">
 
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
-
-                                <li class="nav-item">
+                                
+                            <li class="nav-item">
                                     <td><a href="Medadd.php" class ="btn btn-info">Add</a></td>
                                 </li>
 
@@ -142,7 +130,7 @@
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                        <form method="POSt" action="Staffedit.php">
+                                        <form method="POST" action="Staffedit.php">
                                             <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
@@ -162,11 +150,6 @@
 
 </head>
 <body>
-
-        <?php
-            include('slidebar.php');
-        ?>
-
         <div class="container">
             <div class="row">
                     <div class="col-md-4 ms-auto">

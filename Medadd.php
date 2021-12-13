@@ -99,14 +99,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
-                <a href="main.php" class="navbar-brand">Home Page</a>
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div id="navbar1" class="collapse navbar-collapse">
+                <div style='margin-right: 15px'>
+                    <?php
+                    include('slidebar.php');   
+                    ?>
+                </div>
+                <div> 
+                  <a href="main.php" class="navbar-brand">Home Page</a>
+                </div>
+
+                <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
                     <div class="dropdown">
 
                         <div id="navbar1" class="collapse navbar-collapse">
@@ -117,7 +121,7 @@
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-                                        <form method="POSt" action="Staffedit.php">
+                                        <form method="POST" action="Staffedit.php">
                                             <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
@@ -137,11 +141,6 @@
  
 </head>
 <body>
-
-        <?php
-            include('slidebar.php');
-        ?>
-
     <?php 
          if (isset($errorMsg)) {
     ?>
@@ -261,10 +260,23 @@
                             <div class="col-sm-1">
                                 <td><select name = "dropdownlist-MedCate">
                                     <option value="">Select</option> 
-                                    <option value="Vitamins">Vitamins</option>
-                                    <option value="Antipyretics">Antipyretics</option>
-                                    <option value="Antibiotics">Antibiotics</option>
-                                    <option value="Mood stabilizers">Mood stabilizers</option>
+                                    <option value="Nucleoside Reverse Transcriptase Inhibitors">ยาต้านไวรัสในกลุ่มเอ็นอาร์ทีไอ/ Nucleoside Reverse Transcriptase Inhibitors: NRTI</option>
+                                    <option value="Mucolytic">ยาละลายเสมหะ/ Mucolytic</option>
+                                    <option value="Retinoids">ยาเรตินอยด์/ Retinoids</option>
+                                    <option value="Vermifuge">ยาถ่ายพยาธิ/ Vermifuge</option>
+                                    <option value="Intravenous & Other Sterile Solutions">ยาฉีดเข้าหลอดเลือดดำ และสารละลาย Intravenous & Other Sterile Solutions</option>
+                                    <option value="Household Remedy">ยาสามัญ/ Household Remedy</option>
+                                    <option value="Antiviral Drug">ยาต้านไวรัส/ Antiviral Drug</option>
+                                    <option value="Calcium Channel Blocker">ยาแคลเซียมแชนแนลบล็อกเกอร์/ Calcium Channel Blocker</option>
+                                    <option value="Penicillin">ยาปฏิชีวนะกลุ่มเพนิซิลลิน/ Penicillin</option>
+                                    <option value="Supplementary Food">อาหารเสริม / Supplementary Food</option>
+                                    <option value="Erectile Dysfunction Drug">ยารักษาภาวะหย่อนสมรรถภาพทางเพศ/ Erectile Dysfunction Drug</option>
+                                    <option value="Angiotensin Receptor Blockers">ยาต้านตัวรับแองจิโอเทนซิน Angiotensin Receptor Blockers: ARB</option>
+
+                                    <option value="Muscle Relaxants">ยาคลายกล้ามเนื้อ / Muscle Relaxants</option>
+                                    <option value="Cinnarizine">ยารักษาอาการวิงเวียนศีรษะ/ Cinnarizine</option>
+                                    <option value="Laxative">ยาระบาย/ Laxative</option>
+                                    <option value="Beta Blockers">ยาเบต้าบล็อกเกอร์/ Beta Blockers</option>
                                 </select><br><br></td>
                             </div>
                         </div>

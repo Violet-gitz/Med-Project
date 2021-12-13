@@ -29,8 +29,8 @@ create table tbl_dealer
 	DealerName varchar(255),
 	DealerAddress varchar(255),
 	DealerPhone varchar(255),
-	ContractStart varchar(255),
-	ContractEnd varchar(255),
+	ContractStart date,
+	ContractEnd date,
 	Primary key (DealerId)
 )
 
