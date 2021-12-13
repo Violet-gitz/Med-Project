@@ -272,11 +272,16 @@
                                     <option value="Supplementary Food">อาหารเสริม / Supplementary Food</option>
                                     <option value="Erectile Dysfunction Drug">ยารักษาภาวะหย่อนสมรรถภาพทางเพศ/ Erectile Dysfunction Drug</option>
                                     <option value="Angiotensin Receptor Blockers">ยาต้านตัวรับแองจิโอเทนซิน Angiotensin Receptor Blockers: ARB</option>
-
                                     <option value="Muscle Relaxants">ยาคลายกล้ามเนื้อ / Muscle Relaxants</option>
                                     <option value="Cinnarizine">ยารักษาอาการวิงเวียนศีรษะ/ Cinnarizine</option>
                                     <option value="Laxative">ยาระบาย/ Laxative</option>
                                     <option value="Beta Blockers">ยาเบต้าบล็อกเกอร์/ Beta Blockers</option>
+                                    <option value="Cephalosporin">ยาปฏิชีวนะกลุ่มเซฟาโลสปอริน/ Cephalosporin</option>
+                                    <option value="NSAIDs">ยาแก้อักเสบที่ไม่ใช่สเตียรอยด์ NSAIDs</option>
+                                    <option value="Antihistamine">ยาต้านการทำงานของฮีสตามีน Antihistamine</option>
+                                    <option value="Antiplatelet">ยาต้านเกล็ดเลือด ยาขยายหลอดเลือด/ Antiplatelet</option>
+                                    <option value="Allopurinol">ยาสำหรับรักษาภาวะกรดยูริคในเลือดสูงและโรคเก๊าท์/ Allopurinol</option>
+                                    <option value="H2 Blockers">ยาปิดกั้นตัวรับฮิสตามีนชนิดที่ 2 H2 Blockers</option>
                                 </select><br><br></td>
                             </div>
                         </div>
