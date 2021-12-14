@@ -120,7 +120,7 @@
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -209,7 +209,7 @@
                         {
                             echo '<td>
                                     <form method = "POST" action = "userreport.php">
-                                        <button type = "submit" value = "'.$with["WithId"].'" name = "Report" class="btn btn-danger">Report</button>
+                                        <button type = "submit" value = "'.$with["WithId"].'" name = "Report" class="btn btn-primary">Report</button>
                                         <input type ="hidden" name = "valueid" value = '.$with["WithId"].'">
                                     </form>
                                 </td>';

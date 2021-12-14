@@ -133,7 +133,7 @@
             <option value="11">November</option>
             <option value="12">December</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
     </form>
  
     <table class="table table-striped">
@@ -150,8 +150,9 @@
                 <th>Dealer</th>
                 <th>Dealer Address</th>
                 <th>Received</th>
-                <th>Cancel</th>
                 <th>Report</th>
+                <th>Cancel</th>
+                
             </tr>
         </thead>
 
@@ -186,7 +187,7 @@
                     <td><?php echo $claim["DealerAddress"]; ?></td>
                     <td>
                         <form method = "POST" action = "ReceivdClaim.php">
-                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Claim_id" class = "btn btn-primary"
+                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Claim_id" class = "btn btn-success"
                                 <?php
                                     if($ClaimStatus == "Received")
                                     {
@@ -198,14 +199,52 @@
                             </button>
                         </form>
                     </td>
+
+                    <td>
+                        <form method = "POST" action = "Reportclaim.php">
+                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-primary">Report</button>
+                            <input type ="hidden" name = "valueid" value = "<?php echo $claim["ClaimId"];?>">
+                        </form>
+                    </td>
+
+                    <td>
+                            <form method = "POST" action = "CheckClaim.php">
+                                <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Cancelclaim" class="btn btn-danger"
+                                    <?php
+                                        if($ClaimStatus == "Available")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if($ClaimStatus == "Received")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if($ClaimStatus == "Cancel")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                    ?>
+                                    >Cancel
+                                </button>
+                            </form>
+                        </td>
+
+                   
                     
                 </tr>
 
                 <?php 
             }?>
-            </tbody>
-        </table>
-    </div>
+
+                
+
+            
+        </tbody>
+    </table>
+</div>
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>

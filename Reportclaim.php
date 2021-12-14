@@ -310,12 +310,7 @@ body{margin-top:20px;
                                                             }
                                                     ?>
 											
-												<tr>
-													<td colspan="3"></td>			
-													<td></td>
-                                                    <td></td>
-                                                    <td></td>
-												</tr>
+											
 											</tbody>
 										</table>
 
@@ -345,4 +340,10 @@ body{margin-top:20px;
     $mpdf->Output("report/Claimreport.pdf");
     ob_end_flush();
 ?>
+
+            <div class="form-group text-center">
+                <div class="col-md-12 mt-3">
+                    <a href="CheckClaim.php" class="btn btn-danger">Back</a>
+                </div>
+            </div>
 </html>

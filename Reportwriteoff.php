@@ -260,9 +260,9 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th width = "220">Writeoff</th>
-                                                    <th with = "80">Lot ID</th>
-													<th width = "100">Product ID</th>
+													<th width = "80">Writeoff</th>
+                                                    <th with = "30">Lot ID</th>
+													<th width = "30">Product ID</th>
 													<th width = "80">Quantity</th>
 												</tr>
 											<!-- </thead> -->
@@ -279,9 +279,9 @@ body{margin-top:20px;
                                                         foreach($data as $key => $med){
                                                 ?>
 												<tr>
-													<td width = "220"><?php echo $med["MedName"];?></td>
-                                                    <td width = "100"><?php echo "#".$write["LotId"];?></td>
-													<td width = "100"><?php echo "#".$med["MedId"];?></td>
+													<td width = "80"><?php echo $med["MedName"];?></td>
+                                                    <td width = "30"><?php echo "#".$write["LotId"];?></td>
+													<td width = "30"><?php echo "#".$med["MedId"];?></td>
 													<td width = "80"><?php echo $write["Qty"];?></td>
 													
 												</tr>
@@ -289,12 +289,6 @@ body{margin-top:20px;
                                                             }
                                                     ?>
 											
-												<tr>
-													<td colspan="3"></td>			
-													<td></td>
-                                                    <td></td>
-                                                    <td></td>
-												</tr>
 											</tbody>
 										</table>
 
@@ -324,4 +318,10 @@ body{margin-top:20px;
     $mpdf->Output("report/Writeoffreport.pdf");
     ob_end_flush();
 ?>
+
+            <div class="form-group text-center">
+                <div class="col-md-12 mt-3">
+                    <a href="Writeoffshow.php" class="btn btn-danger">Back</a>
+                </div>
+            </div>
 </html>

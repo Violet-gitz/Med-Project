@@ -130,7 +130,7 @@
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
                                 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -285,7 +285,7 @@
                             <td><label for="Category" class="col-sm-3 control-label">Category</label></td>
                             <div class="col-sm-1">
                                 <td><select name = "dropdownlist-MedCate">
-                                    <option value="">Select</option> 
+                                    <option value="<?php echo $med["MedCate"];?>"><?php echo $med["MedCate"];?></option> 
                                     <option value="Nucleoside Reverse Transcriptase Inhibitors">ยาต้านไวรัสในกลุ่มเอ็นอาร์ทีไอ/ Nucleoside Reverse Transcriptase Inhibitors: NRTI</option>
                                     <option value="Mucolytic">ยาละลายเสมหะ/ Mucolytic</option>
                                     <option value="Retinoids">ยาเรตินอยด์/ Retinoids</option>

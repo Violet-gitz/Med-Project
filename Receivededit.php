@@ -178,7 +178,7 @@
                         $diff=date_diff($datemfd,$dateexp);
                         // echo $diff->format('%R%a');
                         
-                        if($diff->format('%R%a')<=30)
+                        if($diff->format('%R%a')<=730)
                         {
                             $errorMsg ="Error,Please enter a new expiration date. ";
                         }else
@@ -271,7 +271,7 @@
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
                                 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

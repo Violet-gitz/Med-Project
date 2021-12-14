@@ -380,4 +380,10 @@ body{margin-top:20px;
     $mpdf->Output("report/Export-Received.pdf");
     ob_end_flush();
 ?>
+
+            <div class="form-group text-center">
+                <div class="col-md-12 mt-3">
+                    <a href="CheckReceived.php" class="btn btn-danger">Back</a>
+                </div>
+            </div>
 </html>

@@ -84,7 +84,7 @@
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
  
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -140,7 +140,7 @@
             <option value="11">November</option>
             <option value="12">December</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
     </form>
  
     <table class="table table-striped">
@@ -156,8 +156,9 @@
                     <th>Dealer</th>
                     <th>Staff</th>
                     <th>Received</th>
-                    <th>Cancel</th>
                     <th>Report</th>
+                    <th>Cancel</th>
+                   
                     
                 </tr>
             
@@ -186,7 +187,7 @@
                         <td><?php echo $order["StaffName"]; ?></td>
                         <td>
                             <form method = "POST" action = "Receiveddata.php">
-                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Received_id" class = "btn btn-primary"
+                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Received_id" class = "btn btn-success"
                                     <?php
                                         if($OrderStatus == "Received")
                                         {
@@ -201,6 +202,13 @@
                                     ?>
                                     >Received
                                 </button>
+                            </form>
+                        </td>
+
+                        <td>
+                            <form method = "POST" action = "Reportorder.php">
+                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Report" class="btn btn-primary">Report</button>
+                                <input type ="hidden" name = "valueid" value = "<?php echo $order["OrderId"];?>">
                             </form>
                         </td>
 
@@ -224,12 +232,6 @@
                             </form>
                         </td>
 
-                        <td>
-                            <form method = "POST" action = "Reportorder.php">
-                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
-                                <input type ="hidden" name = "valueid" value = "<?php echo $order["OrderId"];?>">
-                            </form>
-                        </td>
                         
                     </tr>
 

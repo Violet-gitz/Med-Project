@@ -342,4 +342,10 @@ body{margin-top:20px;
     $mpdf->Output("report/Export-Writeoff.pdf");
     ob_end_flush();
 ?>
+
+            <div class="form-group text-center">
+                <div class="col-md-12 mt-3">
+                    <a href="Writeoffshow.php" class="btn btn-danger">Back</a>
+                </div>
+            </div>
 </html>

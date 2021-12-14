@@ -81,7 +81,7 @@
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
                                 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -152,12 +152,12 @@
                             foreach($data as $key => $Med){                  
                 ?>
                          
-                            
-                    <div class="col-md-4">
                     <form action = "Withdrawcart.php" method="post">
+                        <div class="form-group text-center">
                             <div>
                                 <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $Med["MedPath"]; ?>"> </div> 
                             </div>
+                        </div>
                             <div>
                                 <?php  
                                     $withqty = 0 ;
@@ -171,7 +171,7 @@
                                     }
                                     foreach($data as $key => $Lot)           
                                 ?>
-                                <div class="form-group text-center">
+                            <div class="form-group text-center">
                 <div class="row">
                     <label for="Tel" class="col-sm-3 control-label">Lot</label>
                         <div class="col-sm-7">
@@ -235,28 +235,34 @@
                 </div>
             </div>
 
-                                <input type="number" name="quantity" min="1" max="<?php echo $Lot["Qty"]; ?>" value= "1"></p>
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
+                    <div class="col-sm-7">
+                    <input type="number" name="quantity" min="1" max="<?php echo $Lot["Qty"]; ?>" value= "1"></p>
+                    </div>
+                </div>
+            </div>
+
+                            <div class="form-group text-center">
                                 <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">
                                 <input type ="hidden" name = "act" value = "add">
                                 <input type="submit" class = "btn btn-info" value = "Add to cart"> 
                                 <input type ="hidden" name = "valueid" value = "<?php echo $rec["LotId"];?>">
+                                <a href="Lot.php" class="btn btn-danger">Back</a>
                             </div>
                             </form>  
                     </div>
                    
                                
                     <?php }} ?>
+
+        
+
+            </div>
             </div>
         </div>
-
-
-        <div class="form-group text-center">
-                <div class="col-md-12 mt-3">
-                   
-                    <a href="Lot.php" class="btn btn-danger">Back</a>
-                </div>
-            </div>
-                                
+                     
             </form>  
             <script src="js/slim.js"></script>
             <script src="js/popper.js"></script>

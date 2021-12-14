@@ -70,7 +70,7 @@
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
                                 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -128,7 +128,7 @@
             <option value="11">November</option>
             <option value="12">December</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
     </form>
  
     <table class="table table-striped">
@@ -184,7 +184,7 @@
                         <td><?php echo $claim["RecClaimdate"]; ?></td>
                         <td>
                             <form method = "POST" action = "Receivededitclaim.php">
-                                <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Edit" class = "btn btn-primary"
+                                <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Edit" class = "btn btn-warning"
                                     <?php
                                         // if($OrderStatus == "Received")
                                         // {
@@ -224,7 +224,7 @@
 
                     <td>
                         <form method = "POST" action = "Reportreceivedclaim.php">
-                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
+                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-primary">Report</button>
                             <input type ="hidden" name = "valueid" value = "<?php echo $claim["ClaimId"]; ?>">
                         </form>
                     </td>

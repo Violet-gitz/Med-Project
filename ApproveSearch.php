@@ -15,29 +15,66 @@
         header('location: login.php');
     }
 
-    if (isset($_GET['delete_id'])) {
-        $id = $_GET['delete_id'];
+    if (isset($_REQUEST['Cancel_id'])) 
+    {
+        $withid = $_REQUEST['Cancel_id'];
 
-
-        //Delete an original record from db
-        //$sql = 'DELETE FROM tbl_Med WHERE MedId' =.$id);
-        $sql = "DELETE FROM tbl_med where MedId = '".$id."'";
-        if($conn->query($sql) == TRUE){
-          echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
-        }else{
-          echo "<script type='text/javascript'>alert('ลบข้อมูลไม่สำเร็จ');</script>";
+        $sql = "UPDATE tbl_withdraw SET WithStatus = 'Cancel' WHERE WithId = $withid";
+        if ($conn->query($sql) === TRUE) {     
+        } else {
+          echo "Error updating record: " . $conn->error;
         }
-      
+        
+        $sql = "SELECT * FROM tbl_withdraw WHERE WithId = '$withid'";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $withdraw)
+            {      
+
+                $withdrawId = $withdraw["WithId"];
+                $sql = "SELECT * FROM tbl_withdrawdetail WHERE WithId = '$withid'";
+                $result = $conn->query($sql);
+                $data = array();
+                    while($row = $result->fetch_assoc()) 
+                    {
+                        $data[] = $row;  
+                    }
+                    foreach($data as $key => $withdrawdetail)
+                    {   
+                        $lotid = $withdrawdetail["LotId"];
+                        $sql = "SELECT * FROM tbl_lot WHERE LotId = '$lotid'";
+                        $result = $conn->query($sql);
+                        $data = array();
+                            while($row = $result->fetch_assoc()) 
+                            {
+                                $data[] = $row;  
+                            }
+                            foreach($data as $key => $lot)
+                            {
+                                $withqty = $withdrawdetail["Qty"];
+                                $Reserve = $lot["Reserve"];
+                                $sum = $Reserve - $withqty;
+
+                                $sql = "UPDATE tbl_lot SET Reserve = '$sum' WHERE LotId = $lotid";
+                                if ($conn->query($sql) === TRUE) {     
+                                } else {
+                                  echo "Error updating record: " . $conn->error;
+                                }
+
+                            }
+
+                    }
+            }
     }
 
-    if (isset($_REQUEST['submit'])) {
-        $search = $_REQUEST['textsearch'];
-
-       
+    if (isset($_REQUEST['submit'])) 
+    {
+        $search = $_REQUEST['textsearch'];      
     }
-
-    
-
 
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -77,7 +114,7 @@
                     <div id="navbar1" class="collapse navbar-collapse">
                         <ul class="navbar-nav ms-auto">
 
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             ><?php echo $_SESSION['StaffName'] ?>
                             </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -136,7 +173,7 @@
             <option value="11">November</option>
             <option value="12">December</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
     </form>
  
     <table class="table table-striped">
@@ -151,7 +188,8 @@
                 <th>Status</th>
                 <th>WithDate</th>
                 <th>Action</th>
-                <th>Report<th>
+                <th>Report</th>
+                <th>Cancel</th> 
             </tr>
         <tbody>
             <?php 
@@ -185,9 +223,14 @@
                         <td><?php echo $with["WithDate"]; ?></td>
                     <td>
                             <form method = "POST" action = "Approvedetaill.php?">
-                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Approve" class = "btn btn-primary"
+                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Approve" class = "btn btn-success"
                                     <?php
                                         if($withstatus == "Approved")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if($withstatus == "Cancel")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
@@ -201,10 +244,30 @@
                     
                     <td>
                         <form method = "POST" action = "Reportwithdraw.php">
-                            <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
+                            <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary">Report</button>
                             <input type ="hidden" name = "valueid" value = "<?php echo $with["WithId"]; ?>">
                         </form>
                     </td>
+
+                    <td>
+                            <form method = "POST" action = "Approve.php">
+                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Cancel_id" class="btn btn-danger"
+                                    <?php
+                                        if($withstatus == "Approved")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                        else if($withstatus == "Cancel")
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                    ?>
+                                    >Cancel
+                                </button>
+                            </form>
+                        </td>
                     
                   
                 </tr>

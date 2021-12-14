@@ -280,11 +280,11 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-                                                    <th width = "120">Medicine Name</th>
-                                                    <th width = "30">Lot ID</th>
-													<th width = "30">Product ID</th>
-													<th width = "30">Quantity</th>
-													<th width = "200">Reason</th>
+                                                    <th>Medicine Name</th>
+                                                    <th>Lot ID</th>
+													<th>Product ID</th>
+													<th>Reason</th>
+                                                    <th>Quantity</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -311,20 +311,19 @@ body{margin-top:20px;
                                                         foreach($data as $key => $med){
                                                 ?>
 												<tr>
-													<td width = "120"><?php echo $med["MedName"];?></td>
-                                                    <td width = "30"><?php echo "#".$claim["LotId"];?></td>
-													<td width = "30"><?php echo "#".$med["MedId"];?></td>
-													<td width = "30"><?php echo $claim["Qty"];?></td>
-													<td width = "200"><?php echo $claim["Reason"];?></td>
+													<td><?php echo $med["MedName"];?></td>
+                                                    <td><?php echo "#".$claim["LotId"];?></td>
+													<td><?php echo "#".$med["MedId"];?></td>
+                                                    <td width = "100"><?php echo $claim["Reason"];?></td>
+													<td><?php echo $claim["Qty"];?></td>				
 												</tr>
                                                     <?php
                                                             }}
                                                     ?>
 											
 												<tr>
-                                                    <td colspan="3"><h5 class="text-success"><strong>Grand Total</strong></h5></td>
+                                                    <td colspan="4"><h5 class="text-success"><strong>Grand Total</strong></h5></td>
                                                     <td><h5 class="text-success"><strong><?php echo $qty. "<br>";?></strong></h5></td>	
-													<td></td>
 												</tr>
 											</tbody>
 										</table>
@@ -355,4 +354,10 @@ body{margin-top:20px;
     $mpdf->Output("report/Export-Claim.pdf");
     ob_end_flush();
 ?>
+
+            <div class="form-group text-center">
+                <div class="col-md-12 mt-3">
+                    <a href="CheckClaim.php" class="btn btn-danger">Back</a>
+                </div>
+            </div>
 </html>

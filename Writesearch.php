@@ -103,7 +103,7 @@
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -162,7 +162,7 @@
             <option value="11">November</option>
             <option value="12">December</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
     </form>
  
     <table class="table table-striped">
@@ -176,10 +176,9 @@
                     <th>Medname</th>
                     <th>Quantity</th>
                     <th>Date</th> 
-                    <th>Staff</th>   
-                    <th>Cancel</th>
-                    <th>Report</th>
-                    
+                    <th>Staff</th>
+                    <th>Report</th>   
+                    <th>Cancel</th>                   
                 </tr>
     </thead>
         
@@ -210,6 +209,21 @@
                     <td><?php echo $write["WriteDate"]; ?></td>
                     <td><?php echo $write["StaffName"]; ?></td>
                     <td>
+                        <form method = "POST" action = "Reportwriteoff.php">
+                            <button type = "submit" value = "<?php echo $write["WriteId"]; ?>" name = "Report" class="btn btn-primary"
+                            <?php
+                                if($Status == "Available")
+                                {
+                                    $buttonStatus = "Disabled";
+                                    echo $buttonStatus;
+                                }
+                            ?>
+                                >Report</button>
+                            <input type ="hidden" name = "valueid" value = "<?php echo $write["WriteId"];?>">
+                        </form>
+                    </td>
+
+                    <td>
                         <form method = "POST" action = "Writeoffshow.php">
                             <button type = "submit" value = "<?php echo $write["WriteId"]; ?>" name = "Cancelwriteoff" class="btn btn-danger"
                                 <?php
@@ -224,20 +238,7 @@
                         </form>
                     </td>
 
-                    <td>
-                        <form method = "POST" action = "Reportwriteoff.php">
-                            <button type = "submit" value = "<?php echo $write["WriteId"]; ?>" name = "Report" class="btn btn-danger"
-                            <?php
-                                if($Status == "Available")
-                                {
-                                    $buttonStatus = "Disabled";
-                                    echo $buttonStatus;
-                                }
-                            ?>
-                                >Report</button>
-                            <input type ="hidden" name = "valueid" value = "<?php echo $write["WriteId"];?>">
-                        </form>
-                    </td>
+                 
                     
                 </tr>
 

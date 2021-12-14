@@ -66,10 +66,10 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Departmentadd.php" class ="btn btn-info">Add</a></td>
+                                    <td><a href="Departmentadd.php" class ="btn btn-success">Add</a></td>
                                 </li>
 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

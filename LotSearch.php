@@ -6,26 +6,91 @@
 
     
     
-    if (!isset($_SESSION['StaffName'])) {
+    if (!isset($_SESSION['StaffName']))
+    {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
     }
 
-    if (isset($_GET['logout'])) {
+    if (isset($_GET['logout']))
+    {
         session_destroy();
         unset($_SESSION['StaffName']);
         header('location: login.php');
     }
 
-    if (isset($_GET['logout'])) {
+    if (isset($_GET['logout']))
+    {
             session_destroy();
             unset($_SESSION['StaffUsername']);
             header('location: login.php');
-        }
+    }
 
     if (isset($_REQUEST['submit'])) 
     {
         $search = $_REQUEST['textsearch'];        
+    }
+
+    
+    $sql = "SELECT *FROM tbl_lot";
+    $result = $conn->query($sql);
+    $data = array();
+    while($row = $result->fetch_assoc()) 
+    {
+    $data[] = $row;   
+    }
+    foreach($data as $key => $lot)
+    {
+        $MedId = $lot["MedId"];
+        $sql = "SELECT* FROM tbl_med WHERE MedId = $MedId";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $Med)
+            {
+                $MfdDate = $lot["Mfd"];
+                $ExpDate = $lot["Exd"];
+                $datemfd=date_create($MfdDate);
+                $dateexp=date_create($ExpDate);
+                $diff=date_diff($datemfd,$dateexp);
+                if($diff->format('%R%a')<=365)
+                {
+                    ini_set('display_errors', 1);
+                    ini_set('display_startup_errors', 1);
+                    error_reporting(E_ALL);
+                    date_default_timezone_set("Asia/Bangkok");
+                    $sToken = "5QZMmRQRyNbvtvPsg0utZxUal4y02ag6Ec1Eqhrz1ch";
+            
+                    $lot = $lot["LotId"];
+                    $medname = $Med["MedName"];
+                
+                    $sMessage = $medname ." Lot #". $lot." Expiry tracking alert "."in ".$diff->format('%R%a'). " day ! " . "link http://localhost/project/Lot.php";
+                    $chOne = curl_init(); 
+                    curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
+                    curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
+                    curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
+                    curl_setopt( $chOne, CURLOPT_POST, 1); 
+                    curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
+                    $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
+                    curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
+                    curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1);
+                    $result = curl_exec( $chOne ); 
+                    //Result error 
+                        if(curl_error($chOne)) 
+                        { 
+                            echo 'error:' . curl_error($chOne);
+                        } 
+                        else 
+                        { 
+                            $result_ = json_decode($result, true); 
+                                // echo "status : ".$result_['status']; echo "message : ". $result_['message'];
+                        } 
+                            curl_close( $chOne );
+                }
+            }
     }
 
     $staff =  $_SESSION['StaffName'];
@@ -73,10 +138,10 @@
                             <ul class="navbar-nav ms-auto">
                                 
                              <li class="nav-item">
-                                    <td><a href="Withdrawcart.php" class ="btn btn-info">Cart</a></td>
+                                    <td><a href="Withdrawcart.php" class ="btn btn-success">Cart</a></td>
                                 </li>
 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -169,8 +234,6 @@
                                 echo "Error updating record: " . $conn->error;
                             }
                         }
-
-                    
                             $MfdDate = $lot["Mfd"];
                             $ExpDate = $lot["Exd"];
                             $datemfd=date_create($MfdDate);
@@ -202,14 +265,14 @@
                     <td><?php echo $diff->format('%R%a'); ?>
                     <td>            
                         <form method="POSt" action="lotdetail.php">
-                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-danger">Detail</button>
+                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-info">Detail</button>
                             <input type="hidden" name ='Detail' value ="<?php echo $lot["LotId"]; ?>">
                         </from>
                     </td>
                        
                     <td>
                         <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             <?php 
                                     $Qty = $lot["Qty"];
                                     if ($Qty<=0)
@@ -244,12 +307,23 @@
 
                                 <form method="POST" action="Claim.php">
                                     <?php
-                                        if(is_null($checkclaim) && $Reserve == '0')
-                                        {
+                                        $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId = '$LotId'";
+                                        $result = $conn->query($sql);
+                                        $data = array();
+                                            while($row = $result->fetch_assoc()) 
+                                            {
+                                                $data[] = $row;  
+                                            }
+                                            foreach($data as $key => $receiv)
+                                            {       
+                                                $recqty = $receiv["Qty"];  
+                                                if(is_null($checkclaim) && $recqty == $checkqty && $Reserve == '0')
+                                                {
+                                                    echo '<a class="dropdown-item" href="Claim.php?Claim='.$lot["LotId"].'">Claim</a>';
+                                                    echo '<input type ="hidden" name ="Claim" value ="'.$lot["LotId"].'">';
+                                                }
+                                            }
                                     ?>
-                                    <a class="dropdown-item" href="Claim.php?Claim=<?php echo $lot["LotId"]; ?>">Claim</a>
-                                    <input type ="hidden" name ='Claim' value ="<?php echo $lot["LotId"]; ?>">
-                                    <?php } ?>
                                 </form>
                             </div>
                         </div>

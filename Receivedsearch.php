@@ -137,7 +137,7 @@
             <option value="11">November</option>
             <option value="12">December</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
     </form>
  
     <table class="table table-striped">
@@ -186,7 +186,7 @@
                     <td><?php echo $rec["RecDeli"]; ?></td>
                     <td>
                         <form method = "POST" action = "Receivededit.php">
-                            <button type = "submit" value = "<?php echo $rec["RecId"]; ?>" name = "Edit" class = "btn btn-primary"
+                            <button type = "submit" value = "<?php echo $rec["RecId"]; ?>" name = "Edit" class = "btn btn-warning"
                                 <?php
                                     // if($OrderStatus == "Received")
                                     // {
@@ -204,30 +204,10 @@
                         </form>
                     </td>
 
-                    <!-- <td>
-                        <form method = "POST" action = "CheckOrder.php">
-                            <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Cancel_id" class="btn btn-danger"
-                                <?php
-                                    if($OrderStatus == "Received")
-                                    {
-                                        $buttonStatus = "Disabled";
-                                        echo $buttonStatus;
-                                    }
-                                    else if($OrderStatus == "Cancel")
-                                    {
-                                        $buttonStatus = "Disabled";
-                                        echo $buttonStatus;
-                                    }
-                                ?>
-                                >Cancel
-                            </button>
-                        </form>
-                    </td> -->
-
                     <td>
                         <form method = "POST" action = "Reportreceived.php">
-                            <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Report" class="btn btn-danger">Report</button>
-                            <input type ="hidden" name = "valueid" value = "<?php echo $order["OrderId"];?>">
+                            <button type = "submit" value = "<?php echo $rec["RecId"]; ?>" name = "Report" class="btn btn-primary">Report</button>
+                            <input type ="hidden" name = "valueid" value = "<?php echo $rec["RecId"];?>">
                         </form>
                     </td>
                     

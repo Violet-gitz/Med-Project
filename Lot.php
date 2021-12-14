@@ -63,7 +63,7 @@
                 $datemfd=date_create($MfdDate);
                 $dateexp=date_create($ExpDate);
                 $diff=date_diff($datemfd,$dateexp);
-                if($diff->format('%R%a')<=150)
+                if($diff->format('%R%a')<=365)
                 {
                     ini_set('display_errors', 1);
                     ini_set('display_startup_errors', 1);
@@ -146,10 +146,10 @@
                             <ul class="navbar-nav ms-auto">
                                 
                              <li class="nav-item">
-                                    <td><a href="Withdrawcart.php" class ="btn btn-info">Cart</a></td>
+                                    <td><a href="Withdrawcart.php" class ="btn btn-success">Cart</a></td>
                                 </li>
 
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -259,12 +259,12 @@
                     <td><?php echo $diff->format('%R%a');?></td>
                     <td>            
                         <form method="POSt" action="lotdetail.php">
-                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-danger">Detail</button>
+                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-info">Detail</button>
                             <input type="hidden" name ='Detail' value ="<?php echo $lot["LotId"]; ?>">
                         </from>
                     </td>
                     <td><div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             <?php 
                                     $Qty = $lot["Qty"];
                                     if ($Qty<=0)
