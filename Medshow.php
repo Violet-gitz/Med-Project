@@ -15,13 +15,12 @@
         header('location: login.php');
     }
 
-    if (isset($_GET['delete_id'])) {
-        $id = $_GET['delete_id'];
-
-
+    if (isset($_REQUEST['Delete'])) 
+    {
+        $id = $_REQUEST['Delete'];
         //Delete an original record from db
         //$sql = 'DELETE FROM tbl_Med WHERE MedId' =.$id);
-        $sql = "DELETE FROM tbl_med where MedId = '".$id."'";
+        $sql = "DELETE FROM tbl_med WHERE MedId = '".$id."'";
         if($conn->query($sql) == TRUE){
           echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
         }else{
@@ -173,9 +172,8 @@
                     <th>Description</th>
                     <th>Total</th>
                     <th>Details</th>
-                    <th>Edit</th>
-                    <th>Check Lot</th>
-                   
+                    <th>Edit</th>    
+                    <th>Delete</td>            
                 </tr>
             </thead>
 
@@ -188,7 +186,8 @@
                         while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
-                        foreach($data as $key => $Med){               
+                        foreach($data as $key => $Med){
+                            $medtotal = $Med["MedTotal"];               
                 ?>
 
                     <tr>
@@ -197,8 +196,23 @@
                         <td><?php echo $Med["MedDes"]; ?></td>
                         <td><?php echo $Med["MedTotal"]; ?></td>
                         <td><a href="Meddetail.php?detail_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Details</a></td>
-                        <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Edit</a></td>
-                        <td><a href="Checklot.php?checklot=<?php echo $Med["MedId"];?>" class="btn btn-info">Check</a></td>
+                        <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-warning">Edit</a></td>
+                        <td>
+                            <form method = "POST" action = "Medshow.php">
+                                <button type = "submit" value = "<?php echo $Med["MedId"]; ?>" name = "Delete" class="btn btn-danger"
+                                
+                                    <?php
+                                        if($medtotal != 0)
+                                        {
+                                            $buttonStatus = "Disabled";
+                                            echo $buttonStatus;
+                                        }
+                                    ?>
+                                    >Delete
+                                </button>
+                                <input type ="hidden" name ="Delete" value ="<?php echo $Med["MedId"]; ?>">
+                            </form>
+                        </td>
                     </tr>
 
                     <?php } ?>

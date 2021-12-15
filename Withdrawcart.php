@@ -253,7 +253,7 @@ $data = array();
             echo "</tr>";
     ?>
     <tr>
-   
+        <td><a href="Lot.php" class="btn btn-success">Medicine</a></td>
     </tr>
     </table>
                     <div class="container">
@@ -278,12 +278,6 @@ $data = array();
                         
                     </div>           
     </form>
-
-
-    <form action = "Lot.php" method="post">
-        <input type="submit" name="btn_lotcallback" class="btn btn-success" value="listorder">
-        
-    </from>
     
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>

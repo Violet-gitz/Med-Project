@@ -215,7 +215,7 @@
             echo "</tr>";
     ?>
     <tr>
-    <td><a href="Orders.php">Medicine</a></td>
+    <td><a href="Orders.php" class="btn btn-success">Medicine</a></td>
     </tr>
     </table>
                     <div class="container">
