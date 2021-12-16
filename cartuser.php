@@ -282,11 +282,11 @@
             echo "</tr>";
     ?>
     <tr>
-    <td><a href="Mainuser.php">Medicine</a></td>
+    <td><a href="Mainuser.php" class="btn btn-success">Medicine</a></td>
     </tr>
     </table>
-                        <div class="container">
-                            <div class="col-sm-9">
+                        <div class="form-group text-center">
+                                <div class="col-md-12 mt-3">
                                 <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order">
                             </div>
                         </div>

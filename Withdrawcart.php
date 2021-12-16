@@ -36,6 +36,20 @@
 
         // print_r($_SESSION['withdraw']);
         // echo '<pre>';
+
+        $staff =  $_SESSION['StaffName'];
+        $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+        $result = $conn->query($sql);
+        $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+                $data[] = $row;  
+            }
+            foreach($data as $key => $staff)
+            {      
+                $StaffId = $staff["StaffId"];
+            }
+        
       
     if (isset($_REQUEST['btn_withdraw'])) {
         $i = 0;   
@@ -60,7 +74,7 @@
         
 
             }
-        $StaffId = $_REQUEST['selstaff'];
+        
         date_default_timezone_set("Asia/Bangkok");
         $WithDate = date("Y-m-d h:i:sa");
         $WithStatus = "Pending approval";
@@ -126,17 +140,6 @@
             header("refresh:1;main.php");   
 }
 
-$staff =  $_SESSION['StaffName'];
-$sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
-$result = $conn->query($sql);
-$data = array();
-    while($row = $result->fetch_assoc()) 
-    {
-        $data[] = $row;  
-    }
-    foreach($data as $key => $staff){      
-
-    }
 
 ?>
      
@@ -256,27 +259,16 @@ $data = array();
         <td><a href="Lot.php" class="btn btn-success">Medicine</a></td>
     </tr>
     </table>
-                    <div class="container">
-                        <label class="col-sm-3 control-label">Staff</label>
-                            <select name="selstaff">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_staff';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) {
-                                        $data[] = $row;        
-                                    }
-                                    foreach($data as $key => $dealer){                  
-                                ?>
-                                    <option value ="<?php echo $dealer["StaffId"];?>"><?php echo $dealer["StaffName"];?></option>
-                                <?php } ?>      
-                            </select>
-                            <div class="col-sm-9">
-                                <input type="submit" name = "btn_withdraw"class = "btn btn-info" value = "Withdraw">
-                                <input type ="hidden" name = "LotId" value = "<?php echo $LotId;?>">
+                   
+                            <div class="form-group text-center">
+                                <div class="col-md-12 mt-3">
+                                    <input type="submit" name = "btn_withdraw"class = "btn btn-info" value = "Withdraw">
+                                    <input type ="hidden" name = "LotId" value = "<?php echo $LotId;?>">
+                                </div>
                             </div>
                         
                     </div>           
+                    
     </form>
     
     <script src="js/slim.js"></script>

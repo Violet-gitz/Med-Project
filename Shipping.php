@@ -233,9 +233,12 @@
                                     <option value ="<?php echo $dealer["DealerId"];?>"><?php echo $dealer["DealerName"];?></option>
                                 <?php } ?>      
                             </select>
-                            <div class="col-sm-9">
+
+                        <div class="form-group text-center">
+                            <div class="col-md-12 mt-3">
                                 <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order">
                             </div>
+                        </div>
                         
                     </div>           
     </form>
