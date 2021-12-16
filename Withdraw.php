@@ -169,7 +169,10 @@
                                     {
                                         $data[] = $row;   
                                     }
-                                    foreach($data as $key => $Lot)           
+                                    foreach($data as $key => $Lot)
+                                    $lotReserve = $Lot["Reserve"];
+                                    $lotqty = $Lot["Qty"];                                   
+                                    $sum = $lotqty - $lotReserve;           
                                 ?>
                             <div class="form-group text-center">
                 <div class="row">
@@ -230,7 +233,7 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">Total/Pack</label>
                     <div class="col-sm-7">
-                        <input type="text" name="txt_Total" class="form-control" value="<?php echo $Lot["Qty"]; ?>" readonly>
+                        <input type="text" name="txt_Total" class="form-control" value="<?php echo $sum; ?>" readonly>
                     </div>
                 </div>
             </div>
@@ -239,7 +242,7 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
                     <div class="col-sm-7">
-                    <input type="number" name="quantity" min="1" max="<?php echo $Lot["Qty"]; ?>" value= "1"></p>
+                    <input type="number" name="quantity" min="1" max="<?php echo $sum; ?>" value= "1"></p>
                     </div>
                 </div>
             </div>
@@ -253,11 +256,8 @@
                             </div>
                             </form>  
                     </div>
-                   
-                               
+                                                  
                     <?php }} ?>
-
-        
 
             </div>
             </div>

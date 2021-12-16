@@ -36,6 +36,8 @@
             foreach($data as $key => $staff){      
 
             }
+
+          
                     
 ?>
 <!DOCTYPE html>
@@ -117,15 +119,30 @@
             </thead>
 
             <tbody>
-                <?php 
-                    
+                <?php                    
                         $sql = 'SELECT * FROM tbl_med';
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
-                        foreach($data as $key => $Med){               
+                        foreach($data as $key => $Med){
+                            $sumReserve = 0;
+                            $medtotal = $Med["MedTotal"];
+                            $medid = $Med["MedId"];
+
+                            $sql = "SELECT * FROM tbl_lot WHERE MedId = '$medid'";
+                            $result = $conn->query($sql);
+                            $data = array();
+                            while($row = $result->fetch_assoc()) {
+                                $data[] = $row;   
+                            }
+                            foreach($data as $key => $lot)
+                            {
+                                $lotReserve = $lot["Reserve"];
+                                $sumReserve = $sumReserve + $lotReserve;
+                                $sum = $medtotal - $sumReserve;
+                            }
                 ?>
 
                     <tr>
@@ -133,8 +150,8 @@
                         <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                         <td><?php echo $Med["MedName"]; ?></td>
                         <td><?php echo $Med["MedDes"]; ?></td>
-                        <td><?php echo $Med["MedTotal"]; ?></td>
-                        <td><input type="number" name="quantity" min="1" max="<?php echo $Med["MedTotal"]; ?>" value= "1"></td>
+                        <td><?php echo $sum; ?></td>
+                        <td><input type="number" name="quantity" min="1" max="<?php echo $sum; ?>" value= "1"></td>
                         <td><input type="submit" class = "btn btn-info" value = "Add to cart"></td>
                         <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">
                         <input type ="hidden" name = "act" value = "add">
