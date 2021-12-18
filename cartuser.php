@@ -1,6 +1,7 @@
 
 <?php
         include('connect.php');
+        error_reporting(0);
         session_start();
         // echo '<pre>';
         // print_r($_SESSION);
