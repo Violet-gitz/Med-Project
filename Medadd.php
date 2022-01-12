@@ -60,7 +60,6 @@
         }else if (empty($MedType)) {
             $errorMsg = "Please Enter Medicine Type";
         }else {
-
             $query = "SELECT * FROM tbl_med WHERE MedName = '$MedName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
@@ -73,7 +72,6 @@
             $insertMsg = "Insert Successfully...";
             header("refresh:1;Medshow.php");
         }
-
             else {echo "Error updating record: " . $conn->error;}
         }
     

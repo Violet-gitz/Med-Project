@@ -32,25 +32,24 @@
         } else if (empty($StaffEmail)) {
             $errorMsg = "please Enter Mail";
         } else {
-            try {
-                if (!isset($errorMsg)) {
-                    
-                    $insert_stmt = $db->prepare("INSERT INTO tbl_staff(StaffName, StaffPassword, StaffTel, StaffEmail, DepartId) VALUES (:1name, :2name, :3name, :4name, :5name)");
-                    $insert_stmt->bindParam(':1name', $StaffName);
-                    $insert_stmt->bindParam(':2name', $StaffPassword);
-                    $insert_stmt->bindParam(':3name', $StaffTel);
-                    $insert_stmt->bindParam(':4name', $StaffEmail);
-                    $insert_stmt->bindParam(':5name', $DepartId);
-                    if ($insert_stmt->execute()) {
-                        $insertMsg = "Insert Successfully...";
-                        header("refresh:1;Staffshow.php");
-                    }
-                }
-            } catch (PDOException $e) {
-                echo $e->getMessage();
+            $query = "SELECT * FROM tbl_staff WHERE StaffName = '$StaffName'  LIMIT 1";
+            $result = mysqli_query($conn, $query); 
+            $row = mysqli_fetch_array($result);
+            if($row["StaffName"] === $StaffName) {
+                $errorMsg =  "Staffname already exists";
+            }
+            else {
+            $sql = "INSERT INTO tbl_staff(StaffName, StaffPassword, StaffTel, StaffEmail, DepartId) VALUES ('$StaffName', '$StaffPassword', '$StaffTel', '$StaffEmail', '$DepartId')";
+            if ($conn->query($sql) === TRUE){
+                $insertMsg = "Insert Successfully...";
+                header("refresh:1;Staffshow.php");
+            }
+                else {echo "Error updating record: " . $conn->error;}
+            }
+        
             }
         }
-    }
+    
 
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";

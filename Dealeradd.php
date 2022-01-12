@@ -22,9 +22,6 @@
         $ContractStart = $_REQUEST['ContractStart'];
         $ContractEnd = $_REQUEST['ContractEnd'];
 
-        
-        
-
         if (empty($DealerName)) {
             $errorMsg = "Please enter Desler Name";
         } else if (empty($DealerAddress)) {
@@ -36,24 +33,19 @@
         } else if (empty($ContractEnd)) {
             $errorMsg = "please Enter Dealer Contract End";
         } else {
-            try {
-                if (!isset($errorMsg)) {
-                    
-                    $insert_stmt = $db->prepare("INSERT INTO tbl_dealer(DealerName,DealerAddress,DealerPhone,ContractStart,ContractEnd) VALUES (:1name,:2name,:3name,:4name,:5name)");
-                    $insert_stmt->bindParam(':1name', $DealerName);
-                    $insert_stmt->bindParam(':2name', $DealerAddress);
-                    $insert_stmt->bindParam(':3name', $DealerPhone);
-                    $insert_stmt->bindParam(':4name', $ContractStart);
-                    $insert_stmt->bindParam(':5name', $ContractEnd);
-                    
-
-                    if ($insert_stmt->execute()) {
-                        $insertMsg = "Insert Successfully...";
-                        header("refresh:1;Dealershow.php");
-                    }
-                }
-            } catch (PDOException $e) {
-                echo $e->getMessage();
+            $query = "SELECT * FROM tbl_dealer WHERE DealerName = '$DealerName'  LIMIT 1";
+            $result = mysqli_query($conn, $query); 
+            $row = mysqli_fetch_array($result);
+            if($row["DealerName"] === $DealerName) {
+                $errorMsg =  "DealerName already exists";
+            }
+            else {
+            $sql = "INSERT INTO tbl_dealer(DealerName,DealerAddress,DealerPhone,ContractStart,ContractEnd) VALUES ('$DealerName', '$DealerAddress', '$DealerPhone', '$ContractStart', '$ContractEnd')";
+            if ($conn->query($sql) === TRUE){
+                $insertMsg = "Insert Successfully...";
+                header("refresh:1;Dealershow.php");
+            }
+                else {echo "Error updating record: " . $conn->error;}
             }
         }
     }

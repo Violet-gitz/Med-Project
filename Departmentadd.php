@@ -22,21 +22,19 @@
         if (empty($DepartName)) {
             $errorMsg = "Please enter Departmentname ";
         }  else {
-            try {
-                if (!isset($errorMsg)) {
-                    
-                    $insert_stmt = $db->prepare("INSERT INTO tbl_department(DepartName) VALUES (:1name)");
-                    $insert_stmt->bindParam(':1name', $DepartName);
-                    
-                    
-
-                    if ($insert_stmt->execute()) {
-                        $insertMsg = "Insert Successfully...";
-                        header("refresh:1;Departmentshow.php");
-                    }
-                }
-            } catch (PDOException $e) {
-                echo $e->getMessage();
+            $query = "SELECT * FROM tbl_department WHERE DepartName = '$DepartName'  LIMIT 1";
+            $result = mysqli_query($conn, $query); 
+            $row = mysqli_fetch_array($result);
+            if($row["DepartName"] === $DepartName) {
+                $errorMsg =  "DepartName already exists";
+            }
+            else {
+            $sql = "INSERT INTO tbl_department(DepartName) VALUES ('$DepartName')";
+            if ($conn->query($sql) === TRUE){
+                $insertMsg = "Insert Successfully...";
+                header("refresh:1;Departmentshow.php");
+            }
+                else {echo "Error updating record: " . $conn->error;}
             }
         }
     }
