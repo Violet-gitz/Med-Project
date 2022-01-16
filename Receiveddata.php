@@ -168,6 +168,8 @@
                         $row = mysqli_fetch_array($result);
                         $RecId = $row["RecId"];
 
+                        $Medexp = $med["MedExp"];
+
                         $MedQty = $orderdetailid["Qty"];
                         $MedTotal = $med["MedTotal"];
                         $MedSum = $MedQty + $MedTotal;
@@ -179,7 +181,7 @@
                         $diff=date_diff($datemfd,$dateexp);
                         // echo $diff->format('%R%a');
                         
-                        if($diff->format('%R%a')<=730)
+                        if($diff->format('%R%a')<=$Medexp)
                         {
                             $errorMsg ="Error,Please enter a new expiration date. ";
 
@@ -192,7 +194,7 @@
                             } else {
                                 echo "Error updating record: " . $conn->error;
                             }
-                            header("refresh:1;CheckOrder.php");
+                            // header("refresh:1;CheckOrder.php");
                         }else
                             if(!isset($errorMsg)) 
                             {
@@ -220,11 +222,12 @@
                                 } else {
                                   echo "Error updating record: " . $conn->error;
                                 }
-                                header("refresh:1;main.php");
+                                
                             }
                         }
                     }
-                    
+                    $insertMsg = "Insert Successfully...";
+                    header("refresh:1;main.php");
                 }
                 
         } //catch (PDOException $e) {

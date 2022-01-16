@@ -170,6 +170,7 @@
                         $data[] = $row;   
                         }
                         foreach($data as $key => $med){
+                        $Medexp = $med["MedExp"];
 
                         $MfdDate = $_REQUEST["mfd".$i];
                         $ExpDate = $_REQUEST["exd".$i];
@@ -178,7 +179,7 @@
                         $diff=date_diff($datemfd,$dateexp);
                         // echo $diff->format('%R%a');
                         
-                        if($diff->format('%R%a')<=730)
+                        if($diff->format('%R%a')<=$Medexp)
                         {
                             $errorMsg ="Error,Please enter a new expiration date. ";
                         }else

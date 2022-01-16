@@ -63,6 +63,10 @@ body {
           <a href="Staffshow.php">Staff</a>
           <a href="Departmentshow.php">Department</a>
           <a href="Dealershow.php">Dealer</a>
+          <a href="Typeshow.php">Type</a>
+          <a href="Cateshow.php">Category</a>
+          <a href="Volumnshow.php">Volumn</a>
+          <a href="Unitshow.php">Unit</a>
           <a href="Medshow.php">Medicine</a>
           <a href="Orders.php">Order</a>
           <a href="CheckOrder.php">List order buy</a>

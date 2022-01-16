@@ -1,8 +1,10 @@
 <?php 
-     include('Connect.php'); 
-     session_start();
+    include('connect.php');
+    session_start();
+    
 
-     if (!isset($_SESSION['StaffName'])) {
+   
+    if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
     }
@@ -13,16 +15,29 @@
         header('location: login.php');
     }
 
-    if (isset($_GET['delete_id'])) {
-        $id = $_GET['delete_id'];
-     
-        $sql = "DELETE FROM tbl_department where DepartId = '".$id."'";
-        if($conn->query($sql) == TRUE){
-          echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
-        }else{
-          echo "<script type='text/javascript'>alert('ลบข้อมูลไม่สำเร็จ');</script>";
+
+    if (isset($_REQUEST['btn_insert'])) {
+        $CateName = $_REQUEST['Category'];
+        
+        
+        if (empty($CateName)) {
+            $errorMsg = "Please enter Category ";
+        }  else {
+            $query = "SELECT * FROM tbl_cate WHERE CateName = '$CateName'  LIMIT 1";
+            $result = mysqli_query($conn, $query); 
+            $row = mysqli_fetch_array($result);
+            if($row["CateName"] === $CateName) {
+                $errorMsg =  "Category already exists";
+            }
+            else {
+            $sql = "INSERT INTO tbl_cate(CateName) VALUES ('$CateName')";
+            if ($conn->query($sql) === TRUE){
+                $insertMsg = "Insert Successfully...";
+                header("refresh:1;Cateshow.php");
+            }
+                else {echo "Error updating record: " . $conn->error;}
+            }
         }
-      
     }
 
     $staff =  $_SESSION['StaffName'];
@@ -44,7 +59,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
+
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <div style='margin-right: 15px'>
@@ -61,11 +76,7 @@
 
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
-                                
-                            <li class="nav-item">
-                                    <td><a href="Departmentadd.php" class ="btn btn-success">Add</a></td>
-                                </li>
-
+                            
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
@@ -93,51 +104,46 @@
 </head>
 <body>
 
-    <div class="container-sm">
+
+    <?php 
+         if (isset($errorMsg)) {
+    ?>
+        <div class="alert alert-danger">
+            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+        </div>
+    <?php } ?>
     
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>DepartmentId</th>
-                    <th>DepartmentName</th>
-                    <th>Edit </th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
 
-            <tbody>
-                <?php 
-                    //$select_stmt = ;
-                    // $result = mysqli_query($conn, "SELECT * FROM tbl_staff");
-                    
+    <?php 
+         if (isset($insertMsg)) {
+    ?>
+        <div class="alert alert-success">
+            <strong>Success! <?php echo $insertMsg; ?></strong>
+        </div>
+    <?php } ?>
 
-                    // $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                        // echo $row;
-                        $sql = 'SELECT * FROM tbl_department';
-                        $result = $conn->query($sql);
-                        $data = array();
-                        while($row = $result->fetch_assoc()) {
-                            $data[] = $row;   
-                        }
-                        foreach($data as $key => $depart){               
-                ?>
 
-                    <tr>
-                        <td><?php echo $depart["DepartId"]; ?></td>
-                        <td><?php echo $depart["DepartName"]; ?></td>
-                        <td><a href="Departmentedit.php?update_id=<?php echo $depart["DepartId"];?>" class="btn btn-warning">Edit</a></td>
-                        <td><a href="?delete_id=<?php echo $depart["DepartId"]; ?>" class="btn btn-danger">Delete</a></td>
-                    </tr>
 
-                    <?php } ?>
-
-                    
-
+        <form method="post" class="form-horizontal mt-5">
+            <div class="container">
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="DealerName" class="col-sm-3 control-label">Category</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="Category" class="form-control" placeholder="Enter Category...">
+                        </div>
+                    </div>
+                </div>
                 
-            </tbody>
-        </table>
-    </div>
-    
+                <div class="form-group text-center">
+                    <div class="col-md-12 mt-3">
+                        <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
+                        <a href="Cateshow.php" class="btn btn-danger">Back</a>
+                    </div>
+                </div>
+            </div>
+       </form>
+
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>

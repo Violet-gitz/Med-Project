@@ -334,7 +334,6 @@ body{margin-top:20px;
                                                    
                                                 <tr>
                                                 <?php
-                                                    $qty = 0;
                                                     $orderid = $order['OrderId'];
                                                     $sql = "SELECT * FROM tbl_orderdetail WHERE OrderId = $orderid";
                                                     $result = $conn->query($sql);

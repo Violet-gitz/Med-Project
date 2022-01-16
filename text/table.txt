@@ -34,23 +34,57 @@ create table tbl_dealer
 	Primary key (DealerId)
 )
 
+create table tbl_type
+(
+	TypeId int not null AUTO_INCREMENT,
+	TypeName varchar(255),
+	Primary key (TypeId)
+)
+
+
+create table tbl_cate
+(
+	CateId int not null AUTO_INCREMENT,
+	CateName varchar(255),
+	Primary key (CateId)
+)
+
+create table tbl_volumn
+(
+	VolumnId int not null AUTO_INCREMENT,
+	VolumnName varchar(255),
+	Primary key (VolumnId)	
+)
+
+create table tbl_unit
+(
+	UnitId int not null AUTO_INCREMENT,
+	UnitName varchar(255),
+	Primary key (UnitId)
+)
+
 create table tbl_med
 (
 	MedId int not null AUTO_INCREMENT,
+	TypeId int,
+	CateId int,
+	VolumnId int,
+	UnitId int,
 	MedName varchar(255),
-	MedCate varchar(255),
-	MedVolumn varchar(255),
-	MedUnit varchar(255),
 	MedPack varchar(255),
 	MedPrice varchar(255),
-	MedLow int,
 	MedDes varchar(255),
 	MedIndi varchar(255),
-	MedType varchar(255),
+	MedExp varcahar (255),
+	MedLow int,
 	MedTotal int,
 	MedPoint int,
 	MedPath varchar(255),
-	Primary key (MedId)
+	Primary key (MedId),
+	Foreign key (TypeId) REFERENCES tbl_type(TypeId),
+	Foreign key (CateId) REFERENCES tbl_cate(CateId),
+	Foreign key (VolumnId) REFERENCES tbl_volumn(VolumnId),
+	Foreign key (UnitId) REFERENCES tbl_unit(UnitId)
 	
 )
 

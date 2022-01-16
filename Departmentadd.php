@@ -1,6 +1,7 @@
 <?php 
     include('connect.php');
     session_start();
+    
 
    
     if (!isset($_SESSION['StaffName'])) {
@@ -124,24 +125,23 @@
 
 
         <form method="post" class="form-horizontal mt-5">
-            
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="DealerName" class="col-sm-3 control-label">Department Name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="Departmentname" class="form-control" placeholder="Enter Dealer Name...">
+            <div class="container">
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="DealerName" class="col-sm-3 control-label">Department Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="Departmentname" class="form-control" placeholder="Enter Dealer Name...">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group text-center">
+                    <div class="col-md-12 mt-3">
+                        <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
+                        <a href="Departmentshow.php" class="btn btn-danger">Back</a>
                     </div>
                 </div>
             </div>
-            
-            <div class="form-group text-center">
-                <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
-                    <a href="Departmentshow.php" class="btn btn-danger">Back</a>
-                </div>
-            </div>
-
-
         </form>
 
     <script src="js/slim.js"></script>

@@ -135,88 +135,77 @@
     <?php } ?>
 
 
-    <center><table class="table table-sm" style ="width: 80%">
+    
         <form method="post" class="form-horizontal mt-5">
-        <thead>
-            Infomation
-        </thead>
-        <tr>
-            <div class="form-group text-center">
-                <div class="row">
-                    <td style="width: 20%;"><label for="Name" class="col-sm-3 control-label">Name</label></td>
-                    <div class="col-sm-7">
-                    <td style="width: 70%;"><input type="text" name="txt_Name" class="form-control" placeholder="Enter Name..."></td>
-                    </div>
-                </div>
-            </div>
-         </tr>
-
-         <tr>
-            <div class="form-group text-center">
-                <div class="row">
-                    <td><label for="Password" class="col-sm-3 control-label">Password</label></td>
-                    <div class="col-sm-7">
-                        <td><input type="Password" name="txt_Password" class="form-control" placeholder="Enter Password..."></td>
-                    </div>
-                </div>
-            </div>
-        </tr>
-
-        <tr>
-            <div class="form-group text-center">
-                <div class="row">
-                    <td><label for="Tel" class="col-sm-3 control-label">Telephone</label></td>
-                    <div class="col-sm-7">
-                        <td><input type="text" name="txt_Tel" class="form-control" placeholder="Enter Telephone..."></td>
-                    </div>
-                </div>
-            </div>
-        </tr>
-
-        <tr>
-            <div class="form-group text-center">
-                <div class="row">
-                    <td><label for="Mail" class="col-sm-3 control-label">Mail</label></td>
-                    <div class="col-sm-7">
-                        <td><input type="text" name="txt_Mail" class="form-control" placeholder="Enter Mail..."></td>
-                    </div>
-                </div>
-            </div>
-        </tr>
-            
-        <tr>
-            <div class="form-group text-center">
-                <div class="row">
-                    <td><label class="col-sm-3 control-label">Department Name</label></td>
-                        <div class="col-sm-1">
-                            <td><select name="Seldepart">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_department';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) 
-                                        {
-                                            $data[] = $row;   
-                                        }
-                                        foreach($data as $key => $depart){                  
-                                ?>
-                                    <option value ="<?php echo $depart["DepartId"];?>"><?php echo $depart["DepartName"];?></option>
-                                <?php } ?>      
-                            </select><br></td>
+            <div class="container">
+                <div class="form-group text-center">
+                    <div class="row">
+                        <td style="width: 20%;"><label for="Name" class="col-sm-3 control-label">Name</label></td>
+                        <div class="col-sm-7">
+                        <td style="width: 70%;"><input type="text" name="txt_Name" class="form-control" placeholder="Enter Name..."></td>
                         </div>
+                    </div>
+                </div>
+            
+                <div class="form-group text-center">
+                    <div class="row">
+                        <td><label for="Password" class="col-sm-3 control-label">Password</label></td>
+                        <div class="col-sm-7">
+                            <td><input type="Password" name="txt_Password" class="form-control" placeholder="Enter Password..."></td>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="form-group text-center">
+                    <div class="row">
+                        <td><label for="Tel" class="col-sm-3 control-label">Telephone</label></td>
+                        <div class="col-sm-7">
+                            <td><input type="text" name="txt_Tel" class="form-control" placeholder="Enter Telephone..."></td>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+
+            <tr>
+                <div class="form-group text-center">
+                    <div class="row">
+                        <td><label for="Mail" class="col-sm-3 control-label">Mail</label></td>
+                        <div class="col-sm-7">
+                            <td><input type="text" name="txt_Mail" class="form-control" placeholder="Enter Mail..."></td>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="form-group text-center">
+                    <div class="row">
+                        <td><label class="col-sm-3 control-label">Department Name</label></td>
+                            <div class="col-sm-1">
+                                <td><select name="Seldepart">       
+                                    <?php 
+                                        $sql = 'SELECT * FROM tbl_department';
+                                        $result = $conn->query($sql);
+                                        $data = array();
+                                        while($row = $result->fetch_assoc()) 
+                                            {
+                                                $data[] = $row;   
+                                            }
+                                            foreach($data as $key => $depart){                  
+                                    ?>
+                                        <option value ="<?php echo $depart["DepartId"];?>"><?php echo $depart["DepartName"];?></option>
+                                    <?php } ?>      
+                                </select><br></td>
+                            </div>
+                    </div>
+                </div>
+            
+                <div class="form-group text-center">
+                    <div class="col-md-12 mt-3">
+                        <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
+                        <a href="Staffshow.php" class="btn btn-danger">Back</a>
+                    </div>
                 </div>
             </div>
-        </tr>
-
-        </table>
-            <div class="form-group text-center">
-                <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
-                    <a href="Staffshow.php" class="btn btn-danger">Back</a>
-                </div>
-            </div>
-
-        </form></center>
+        </form>
     
 
     <script src="js/slim.js"></script>

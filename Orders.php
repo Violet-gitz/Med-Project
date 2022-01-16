@@ -173,7 +173,12 @@
             <div class="row">
                 <?php 
                     
-                        $sql ="SELECT * FROM tbl_med";
+                        $sql ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+                        FROM tbl_med
+                        INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
+                        INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
+                        INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
+                        INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId";
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) {
@@ -193,9 +198,9 @@
                                 <h5><?php echo "Name  " . $Med["MedName"]; ?></h5> 
                                 <!-- <h5><?php echo "Description  " . $Med["MedDes"]; ?></h5>  -->
                                 <!-- <h5><div class = "Product-title"><?php echo "Description : "?><textarea id="w3review" name="txt_MedIndi" rows="6" cols="28"><?php echo $Med["MedDes"]?></textarea></div></h5> -->
-                                <h5><?php echo "Category  " . $Med["MedCate"]; ?></h5> 
-                                <h5><?php echo "Volumn  " . $Med["MedVolumn"]; ?></h5> 
-                                <h5><?php echo "Unit  " . $Med["MedUnit"]; ?></h5> 
+                                <h5><?php echo "Category  " . $Med["CateName"]; ?></h5> 
+                                <h5><?php echo "Volumn  " . $Med["VolumnName"]; ?></h5> 
+                                <h5><?php echo "Unit  " . $Med["UnitName"]; ?></h5> 
                                 <h5><?php echo "Unit Per Pack  " . $Med["MedPack"] . " Unit"; ?></h5> 
                                 <h5><?php echo "Price Per Pack  " . $Med["MedPrice"] . " Bath"; ?></h5> 
                                 <input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p>

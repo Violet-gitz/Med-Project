@@ -138,24 +138,23 @@
 
     
         <form method="post" class="form-horizontal mt-5">
-            
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="DealerName" class="col-sm-3 control-label">Department Name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="DepartName" class="form-control" placeholder="<?php echo $depart["DepartName"]; ?>">
+            <div class="container">
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="DealerName" class="col-sm-3 control-label">Department Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="DepartName" class="form-control" value="<?php echo $depart["DepartName"]; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="col-md-12 mt-3">
+                        <input type="submit" name="btn_update" class="btn btn-success" value="Update">
+                        <a href="Departmentshow.php" class="btn btn-danger">Back</a>
                     </div>
                 </div>
             </div>
-
-            <div class="form-group text-center">
-                <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_update" class="btn btn-success" value="Update">
-                    <a href="Departmentshow.php" class="btn btn-danger">Back</a>
-                </div>
-            </div>
-
-
         </form>
 
     <script src="js/slim.js"></script>

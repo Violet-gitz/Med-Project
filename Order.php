@@ -81,6 +81,8 @@
                             header("refresh:1;main.php");
                     }
         }
+
+        
         $staff =  $_SESSION['StaffName'];
         $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
         $result = $conn->query($sql);
@@ -229,7 +231,8 @@
                                 <?php } ?>      
                             </select>
                             <div class="col-sm-9">
-                                <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order">
+                                <!-- <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order"> -->
+                                <input type="submit" name = "Order"class = "btn btn-info" value = "Order">
                             </div>
                         
                     </div>           

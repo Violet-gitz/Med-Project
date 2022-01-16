@@ -150,66 +150,65 @@
 
     
         <form method="post" class="form-horizontal mt-5">
-            
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="DealerName" class="col-sm-3 control-label">Dealer Name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_DealerName" class="form-control" value="<?php echo $dealer["DealerName"]; ?>">
+            <div class="container">
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="DealerName" class="col-sm-3 control-label">Dealer Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_DealerName" class="form-control" value="<?php echo $dealer["DealerName"]; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="DealerAddress" class="col-sm-3 control-label">Dealer Address</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_DealerAddress" class="form-control" value="<?php echo $dealer["DealerAddress"]; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="DealerAddress" class="col-sm-3 control-label">Dealer Phone</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_DealerPhone" class="form-control" value="<?php echo $dealer["DealerPhone"]; ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract Start</label>
+                        <div class="col-sm-1">
+                        <input type="date"  name="ContractStart"
+                                            value="<?php echo date('Y-m-j'); ?>" required 
+                                            min="2021-3-22" max="2030-12-31">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract End</label>
+                        <div class="col-sm-1">
+                        <input type="date"  name="ContractEnd"
+                                            value="<?php echo date('Y-m-j'); ?>" required 
+                                            min="2021-3-22" max="2030-12-31">
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group text-center">
+                    <div class="col-md-12 mt-3">
+                        <input type="submit" name="btn_update" class="btn btn-success" value="Update">
+                        <a href="Dealershow.php" class="btn btn-danger">Back</a>
                     </div>
                 </div>
             </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="DealerAddress" class="col-sm-3 control-label">Dealer Address</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_DealerAddress" class="form-control" value="<?php echo $dealer["DealerAddress"]; ?>">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="DealerAddress" class="col-sm-3 control-label">Dealer Phone</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_DealerPhone" class="form-control" value="<?php echo $dealer["DealerPhone"]; ?>">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract Start</label>
-                    <div class="col-sm-1">
-                    <input type="date"  name="ContractStart"
-                                        value="<?php echo date('Y-m-j'); ?>" required 
-                                        min="2021-3-22" max="2030-12-31">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract End</label>
-                    <div class="col-sm-1">
-                    <input type="date"  name="ContractEnd"
-                                        value="<?php echo date('Y-m-j'); ?>" required 
-                                        min="2021-3-22" max="2030-12-31">
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="form-group text-center">
-                <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_update" class="btn btn-success" value="Update">
-                    <a href="Dealershow.php" class="btn btn-danger">Back</a>
-                </div>
-            </div>
-
-
         </form>
 
     <script src="js/slim.js"></script>
