@@ -15,9 +15,9 @@
         header('location: login.php');
     }
 
-    if (isset($_REQUEST['Cancel_id'])) 
+    if (isset($_GET['Cancel_id'])) 
     {
-        $orderid = $_REQUEST['Cancel_id'];
+        $orderid = $_GET['Cancel_id'];
 
         $sql = "UPDATE tbl_order SET OrderStatus = 'Cancel' WHERE OrderId = $orderid";
         if ($conn->query($sql) === TRUE) {     
@@ -27,21 +27,6 @@
         
     }
 
-    // if (isset($_REQUEST['Report'])) 
-    // {
-    //     require_once __DIR__ . '/vendor/autoload.php';
-    //     $mpdf = new \Mpdf\Mpdf();
-
-    //     $orderid = $_REQUEST["valueid"];
-       
-    //     $mpdf->WriteHTML
-    //     (
-    //        "Test" . $orderid
-
-    //             );
-    //     // Output a PDF file directly to the browser
-    //     $mpdf->Output();
-    // }
 
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT * FROM tbl_staff WHERE StaffName = '$staff'";
@@ -64,7 +49,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <title>Document</title>
+
+    <script>
+      function CancelFunction(id) {
+      event.preventDefault(); // prevent form submit
+      var form = document.forms["myForm"]; // storing the form
+      swal({
+             title: "Are you sure?",
+             text: "คุณต้องการยกเลิกข้อมูลนี้ใช่ไหม",
+             icon: "warning",
+             buttons: true,
+             dangerMode: true,
+           })
+          .then((isConfirm) => {
+
+        if (isConfirm) {
+            window.location.href="CheckOrder.php?Cancel_id="+id;
+
+        } else {
+            swal("ยกเลิกสำเร็จ");
+        }
+    });
+
+    }
+    </script>
 
     
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -214,7 +228,7 @@
 
                         <td>
                             <form method = "POST" action = "CheckOrder.php">
-                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Cancel_id" class="btn btn-danger"
+                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Cancel_id" class="btn btn-danger" onclick ="CancelFunction(`<?php echo $order['OrderId']; ?>`)"
                                     <?php
                                         if($OrderStatus == "Received")
                                         {

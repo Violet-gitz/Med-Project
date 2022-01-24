@@ -1,46 +1,14 @@
 <?php
         include('connect.php');
-        error_reporting(0);
         session_start();
-        // mainecho '<pre>';
-        // print_r($_SESSION);
-        // echo '<pre>';
-        $MedId = $_REQUEST['MedId'];
-        $act = $_REQUEST['act'];
-        $Quantity = $_REQUEST['quantity'];
-    
-        if($act=='add' && !empty($MedId))
-        {
-            if(isset($_SESSION['cart'][$MedId]))
-            {
-                $_SESSION['cart'][$MedId]+=(int)$Quantity;    
-            }
-            else
-            {
-                $_SESSION['cart'][$MedId]=(int)$Quantity;  
-            }
-        }
-     
-        else if($act=='remove' && !empty($MedId))
-        {
-            unset($_SESSION['cart'][$MedId]);
-        }
-     
-        /*if($act=='update')
-        {
-            $price_array = $_POST['MedPrice'];
-            foreach($price_array as $MedId=>$MedPrice)
-            {
-                $_SESSION['cart'][$MedId]=$MedPrice;
-            }
-        }*/
+
         
         if (isset($_REQUEST['btn-Order'])) 
         {
             date_default_timezone_set("Asia/Bangkok");
             $OrderDate = date("Y-m-d h:i:sa");
             $OrderStatus = "Ordering";
-            $OrderPrice = $_REQUEST["total"];
+            $OrderPrice = $_REQUEST['total'];
             $OrderTotal = ($OrderPrice * 0.07)+$OrderPrice;
             $DealerId = $_REQUEST['selDealer'];
             $StaffName = $_SESSION['StaffName'];
@@ -81,7 +49,13 @@
                             header("refresh:1;main.php");
                     }
         }
-     
+
+        if (isset($_REQUEST['submit'])) {
+            $search = $_REQUEST['textsearch'];
+    
+           
+        }
+    
         $staff =  $_SESSION['StaffName'];
         $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
         $result = $conn->query($sql);
@@ -118,8 +92,12 @@
 
                         <div id="navbar1" class="collapse navbar-collapse">
                             <ul class="navbar-nav ms-auto">
- 
-                                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                
+                            <li class="nav-item">
+                                    <td><a href="Shipping.php" class ="btn btn-success">Cart</a></td>
+                                </li>
+
+                                <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 ><?php echo $_SESSION['StaffName'] ?>
                                 </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -141,10 +119,26 @@
                 </div>
             </div>
         </nav> 
+
 </head>
 
 <body>
- 
+
+<div class="container-sm">
+    <div class="row mb-5">
+            <div class="col-md-4 ms-auto " style="text-align: end;">
+                <form action="CatagorySearch.php" method="post">
+                    <input type="text" name="textsearch" placeholder = "Search">
+                    <input type="submit" name="submit" value="Search">
+                </form>
+            </div>
+    </div>
+
+
+        <?php
+            include('slidebar.php');
+        ?>
+    
     <?php 
          if (isset($errorMsg)) {
     ?>
@@ -161,81 +155,53 @@
         </div>
     <?php } ?>
 
-  
-    <form name="frmcart" method="post" action = "testreport.php">
-      <table width="600" border="0" align="center" class="square">
-        <tr>
-          <td colspan="5" bgcolor="#CCCCCC">
-          <b>Cart</span></td>
-        </tr>
-        <tr>
-          <td bgcolor="#EAEAEA">Order</td>
-          <td align="center" bgcolor="#EAEAEA">Price</td>
-          <td align="center" bgcolor="#EAEAEA">Quantity</td>
-          <td align="center" bgcolor="#EAEAEA">Total Price</td>
-          <td align="center" bgcolor="#EAEAEA">Remove</td>
-        </tr>
-    <?php
-    $total=0;
-    if(!empty($_SESSION['cart']))
-    {
-        foreach($_SESSION['cart'] as $MedId=>$Quantity)
-        {
-            $sql = "SELECT* FROM tbl_Med WHERE MedId=$MedId";
-		    $result = $conn->query($sql);
-            $data = array();
-            while($row = $result->fetch_assoc()) {
-            $data[] = $row;  
-            }
-            foreach($data as $key => $Med){
-		    $sum = $Med['MedPrice'] * $Quantity;
-		    $total += $sum;
-            echo "<tr>";
-            echo "<td width='334'>" . $Med["MedName"] . "</td>";
-            echo "<td width='46' align='right'>" .number_format($Med["MedPrice"],2) . "</td>";
-            echo "<td width='57' align='right'>";  
-            echo "<input type='text' name= $Med[MedId]; value='$Quantity' disabled size='2'/></td>";
-            echo "<td width='93' align='right'>".number_format($sum,2)."</td>";
-            
-            echo "<td width='46' align='center'><a href='Order.php?MedId=$MedId&act=remove&quantity=0'>Remove</a></td>";
-            echo "</tr>";
-            }
-            echo "<tr>";
-            //echo "<td colspan='3' bgcolor='#CEE7FF' align='center'><b>ราคารวม</b></td>";
-          
-            //echo "<td align='left' bgcolor='#CEE7FF'></td>";
-        }
-    }
-            echo "<td align = 'right'>Total Price <input type = 'text' name ='total' readonly value = '$total'  ></td>";
-            //echo "<td align='right' bgcolor='#CEE7FF'>"."<b>".number_format($total,2)."</b>"."</td>";
-            echo "</tr>";
-    ?>
-    <tr>
-    <td><a href="Orders.php">Medicine</a></td>
-    </tr>
-    </table>
-                    <div class="container">
-                        <label class="col-sm-3 control-label">Dealer</label>
-                            <select name="selDealer">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_dealer';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) {
-                                        $data[] = $row;        
-                                    }
-                                    foreach($data as $key => $dealer){                  
-                                ?>
-                                    <option value ="<?php echo $dealer["DealerId"];?>"><?php echo $dealer["DealerName"];?></option>
-                                <?php } ?>      
-                            </select>
-                            <div class="col-sm-9">
-                                <!-- <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order"> -->
-                                <input type="submit" name = "Order"class = "btn btn-info" value = "Order">
-                                <input type ="hidden" name = "StaffId" value = "<?php echo $staff["StaffId"];?>">
-                            </div>
+        <div class="container mt-5">
+            <div class="row">
+                <?php 
+                    
+                        $sql ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+                        FROM tbl_med
+                        INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
+                        INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
+                        INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
+                        INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId
+                        WHERE MedName LIKE '%{$search}%' OR TypeName LIKE '%{$search}%' OR CateName LIKE '%{$search}%' OR VolumnName LIKE '%{$search}%' OR UnitName LIKE '%{$search}%'";
+                        $result = $conn->query($sql);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) {
+                            $data[] = $row;   
+                        }
+                        foreach($data as $key => $Med)
                         
-                    </div>           
+                        {         
+                                  
+                ?>
+                    <div class="col-md-4">
+                    <form action = "Order.php" method="post">
+                            <div>
+                                <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $Med["MedPath"]; ?>"> </div> 
+                            </div>
+                            <div>
+                                <h5><?php echo "Name  " . $Med["MedName"]; ?></h5> 
+                                <!-- <h5><?php echo "Description  " . $Med["MedDes"]; ?></h5>  -->
+                                <!-- <h5><div class = "Product-title"><?php echo "Description : "?><textarea id="w3review" name="txt_MedIndi" rows="6" cols="28"><?php echo $Med["MedDes"]?></textarea></div></h5> -->
+                                <h5><?php echo "Category  " . $Med["CateName"]; ?></h5> 
+                                <h5><?php echo "Volumn  " . $Med["VolumnName"]; ?></h5> 
+                                <h5><?php echo "Unit  " . $Med["UnitName"]; ?></h5> 
+                                <h5><?php echo "Unit Per Pack  " . $Med["MedPack"] . " Unit"; ?></h5> 
+                                <h5><?php echo "Price Per Pack  " . $Med["MedPrice"] . " Bath"; ?></h5> 
+                                <input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p>
+                                <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
+                                <input type ="hidden" name = "act" value = "add">
+                                <input type="submit" class = "btn btn-info" value = "Add to cart"> 
+                            </div>
+                    </form>
+                    </div>
+                
+            
+                    <?php } ?>
+            </div>
+        </div>
     </form>
 
     <script src="js/slim.js"></script>

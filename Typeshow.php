@@ -13,12 +13,12 @@
         header('location: login.php');
     }
 
-    if (isset($_GET['delete_id'])) {
-        $id = $_GET['delete_id'];
+    if (isset($_GET['delete'])) {
+        $id = $_GET['delete'];
      
         $sql = "DELETE FROM tbl_type where TypeId = '".$id."'";
         if($conn->query($sql) == TRUE){
-          echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
+         echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
         }else{
           echo "<script type='text/javascript'>alert('ลบข้อมูลไม่สำเร็จ');</script>";
         }
@@ -43,8 +43,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+
     <title>Document</title>
-    
+
+    <script>
+      function deleteFunction(id) {
+      event.preventDefault(); // prevent form submit
+      var form = document.forms["myForm"]; // storing the form
+      swal({
+             title: "Are you sure?",
+             text: "คุณต้องการลบข้อมูลนี้ใช่ไหม",
+             icon: "warning",
+             buttons: true,
+             dangerMode: true,
+           })
+          .then((isConfirm) => {
+
+        if (isConfirm) {
+            window.location.href="Typeshow.php?delete="+id;
+
+        } else {
+            swal("ยกเลิกสำเร็จ");
+        }
+    });
+
+    }
+    </script>
+
+
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <div style='margin-right: 15px'>
@@ -107,12 +138,7 @@
 
             <tbody>
                 <?php 
-                    //$select_stmt = ;
-                    // $result = mysqli_query($conn, "SELECT * FROM tbl_staff");
-                    
 
-                    // $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-                        // echo $row;
                         $sql = 'SELECT * FROM tbl_type';
                         $result = $conn->query($sql);
                         $data = array();
@@ -126,7 +152,10 @@
                         <td><?php echo $type["TypeId"]; ?></td>
                         <td><?php echo $type["TypeName"]; ?></td>
                         <td><a href="Typeedit.php?update_id=<?php echo $type["TypeId"];?>" class="btn btn-warning">Edit</a></td>
-                        <td><a href="?delete_id=<?php echo $type["TypeId"]; ?>" class="btn btn-danger">Delete</a></td>
+                        <form action = "Typeshow.php" method = "POST">
+                            <input type ="hidden" name = "delete_id" value = "<?php echo $type["TypeId"]; ?>">
+                            <td><button class ="btn btn-danger" type = "submit" name = "delete" onclick ="deleteFunction(`<?php echo $type['TypeId']; ?>`)">Delete</button></td>
+                        </form>
                     </tr>
 
                     <?php } ?>

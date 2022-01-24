@@ -15,11 +15,10 @@
         header('location: login.php');
     }
 
-    if (isset($_REQUEST['Delete'])) 
+    if (isset($_GET['delete'])) 
     {
-        $id = $_REQUEST['Delete'];
-        //Delete an original record from db
-        //$sql = 'DELETE FROM tbl_Med WHERE MedId' =.$id);
+        $id = $_GET['delete'];
+
         $sql = "DELETE FROM tbl_med WHERE MedId = '".$id."'";
         if($conn->query($sql) == TRUE){
           echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
@@ -101,7 +100,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <title>Document</title>
+
+    <script>
+      function deleteFunction(id) {
+      event.preventDefault(); // prevent form submit
+      var form = document.forms["myForm"]; // storing the form
+      swal({
+             title: "Are you sure?",
+             text: "คุณต้องการลบข้อมูลนี้ใช่ไหม",
+             icon: "warning",
+             buttons: true,
+             dangerMode: true,
+           })
+          .then((isConfirm) => {
+
+        if (isConfirm) {
+            window.location.href="Medshow.php?delete="+id;
+
+        } else {
+            swal("ยกเลิกสำเร็จ");
+        }
+    });
+
+    }
+    </script>
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
@@ -197,9 +225,10 @@
                         <td><?php echo $Med["MedTotal"]; ?></td>
                         <td><a href="Meddetail.php?detail_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Details</a></td>
                         <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-warning">Edit</a></td>
+                       
                         <td>
                             <form method = "POST" action = "Medshow.php">
-                                <button type = "submit" value = "<?php echo $Med["MedId"]; ?>" name = "Delete" class="btn btn-danger"
+                                <button type = "submit" value = "<?php echo $Med["MedId"]; ?>" name = "delete" class="btn btn-danger" onclick ="deleteFunction(`<?php echo $Med['MedId']; ?>`)"
                                 
                                     <?php
                                         if($medtotal != 0)

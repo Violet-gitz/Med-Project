@@ -23,9 +23,9 @@
             header('location: login.php');
         }
 
-    if (isset($_REQUEST['Cancel_id'])) 
+    if (isset($_GET['Cancel_id'])) 
         {
-            $withid = $_REQUEST['Cancel_id'];
+            $withid = $_GET['Cancel_id'];
     
             $sql = "UPDATE tbl_withdraw SET WithStatus = 'Cancel' WHERE WithId = $withid";
             if ($conn->query($sql) === TRUE) {     
@@ -98,7 +98,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
     <title>Document</title>
+
+    <script>
+      function CancelFunction(id) {
+      event.preventDefault(); // prevent form submit
+      var form = document.forms["myForm"]; // storing the form
+      swal({
+             title: "Are you sure?",
+             text: "คุณต้องการยกเลิกข้อมูลนี้ใช่ไหม",
+             icon: "warning",
+             buttons: true,
+             dangerMode: true,
+           })
+          .then((isConfirm) => {
+
+        if (isConfirm) {
+            window.location.href="Approve.php?Cancel_id="+id;
+
+        } else {
+            swal("ยกเลิกสำเร็จ");
+        }
+    });
+
+    }
+    </script>
     
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         
@@ -223,24 +252,23 @@
                     <td><?php echo $with["WithStatus"]; ?></td>
                     <td><?php echo $with["WithDate"]; ?></td>
                     <td>
-                            <form method = "POST" action = "Approvedetaill.php?">
-                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Approve" class = "btn btn-success"
-                                    <?php
-                                        if($withstatus == "Approved")
-                                        {
-                                            $buttonStatus = "Disabled";
-                                            echo $buttonStatus;
-                                        }
-                                        else if($withstatus == "Cancel")
-                                        {
-                                            $buttonStatus = "Disabled";
-                                            echo $buttonStatus;
-                                        }
-                                       
-                                    ?>
-                                    >Approve
-                                </button>
-                            </form>
+                        <form method = "POST" action = "Approvedetaill.php?">
+                            <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Approve" class = "btn btn-success"
+                                <?php
+                                    if($withstatus == "Approved")
+                                    {
+                                        $buttonStatus = "Disabled";
+                                        echo $buttonStatus;
+                                    }
+                                    else if($withstatus == "Cancel")
+                                    {
+                                        $buttonStatus = "Disabled";
+                                        echo $buttonStatus;
+                                    }                                       
+                                ?>
+                                >Approve
+                            </button>
+                        </form>
                     </td>
 
                     <td>
@@ -252,7 +280,7 @@
 
                     <td>
                             <form method = "POST" action = "Approve.php">
-                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Cancel_id" class="btn btn-danger"
+                                <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Cancel_id" class="btn btn-danger" onclick ="CancelFunction(`<?php echo $with['WithId']; ?>`)"
                                     <?php
                                         if($withstatus == "Approved")
                                         {

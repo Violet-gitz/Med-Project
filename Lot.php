@@ -242,11 +242,28 @@
                                 echo "Error updating record: " . $conn->error;
                             }
                         }
+
+                        else if (is_null($checkclaim))
+                        {  
+                            $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId = '$LotId'";
+                            $result = $conn->query($sql);
+                            $data = array();
+                            while($row = $result->fetch_assoc()) 
+                            {
+                                $data[] = $row;  
+                            }
+                                foreach($data as $key => $receiv)
+                            {       
+                            $recqty = $receiv["Qty"];
+                            }
+                        }
+
                             $MfdDate = $lot["Mfd"];
                             $ExpDate = $lot["Exd"];
                             $datemfd=date_create($MfdDate);
                             $dateexp=date_create($ExpDate);
                             $diff=date_diff($datemfd,$dateexp);
+
             ?>
 
                 <tr>
@@ -299,23 +316,21 @@
                                 </form>
 
                                 <form method="POST" action="Claim.php">
+                                    <!-- <a class="dropdown-item" href="Claim.php?Write=<?php echo $lot["LotId"]; ?>">Claim</a>
+                                    <input type ="hidden" name ='Claim' value ="<?php echo $lot["LotId"]; ?>"> -->
                                     <?php
-                                        $sql = "SELECT* FROM tbl_receiveddetail WHERE LotId = '$LotId'";
-                                        $result = $conn->query($sql);
-                                        $data = array();
-                                            while($row = $result->fetch_assoc()) 
-                                            {
-                                                $data[] = $row;  
-                                            }
-                                            foreach($data as $key => $receiv)
-                                            {       
-                                                $recqty = $receiv["Qty"];  
-                                                if(is_null($checkclaim) && $recqty == $checkqty && $Reserve == '0')
+                                        
+                                                if($Reserve == '0' && $recqty == $checkqty)
                                                 {
                                                     echo '<a class="dropdown-item" href="Claim.php?Claim='.$lot["LotId"].'">Claim</a>';
                                                     echo '<input type ="hidden" name ="Claim" value ="'.$lot["LotId"].'">';
                                                 }
-                                            }
+                                                // if(is_null($checkclaim))
+                                                // {
+                                                //     echo '<a class="dropdown-item" href="Claim.php?Claim='.$lot["LotId"].'">Claim</a>';
+                                                //     echo '<input type ="hidden" name ="Claim" value ="'.$lot["LotId"].'">';
+                                                // }
+    
                                     ?>
                                 </form>
  

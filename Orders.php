@@ -148,6 +148,16 @@
 
 <body>
 
+<div class="container-sm">
+    <div class="row mb-5">
+            <div class="col-md-4 ms-auto " style="text-align: end;">
+                <form action="CatagorySearch.php" method="post">
+                    <input type="text" name="textsearch" placeholder = "Search">
+                    <input type="submit" name="submit" value="Search">
+                </form>
+            </div>
+    </div>
+
 
         <?php
             include('slidebar.php');
