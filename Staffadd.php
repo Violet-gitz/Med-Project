@@ -79,7 +79,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -94,12 +94,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -140,27 +140,27 @@
             <div class="container">
                 <div class="form-group text-center">
                     <div class="row">
-                        <td style="width: 20%;"><label for="Name" class="col-sm-3 control-label">Name</label></td>
+                        <td style="width: 20%;"><label for="Name" class="col-sm-3 control-label">ชื่อ</label></td>
                         <div class="col-sm-7">
-                        <td style="width: 70%;"><input type="text" name="txt_Name" class="form-control" placeholder="Enter Name..."></td>
+                        <td style="width: 70%;"><input type="text" name="txt_Name" class="form-control" placeholder="กรุณาใส่ชื่อของคุณ..."></td>
                         </div>
                     </div>
                 </div>
             
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Password" class="col-sm-3 control-label">Password</label></td>
+                        <td><label for="Password" class="col-sm-3 control-label">รหัสผ่าน</label></td>
                         <div class="col-sm-7">
-                            <td><input type="Password" name="txt_Password" class="form-control" placeholder="Enter Password..."></td>
+                            <td><input type="Password" name="txt_Password" class="form-control" placeholder="กรุณาใส่รหัสผ่านของคุณ..."></td>
                         </div>
                     </div>
                 </div>
         
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Tel" class="col-sm-3 control-label">Telephone</label></td>
+                        <td><label for="Tel" class="col-sm-3 control-label">เบอร์โทร</label></td>
                         <div class="col-sm-7">
-                            <td><input type="text" name="txt_Tel" class="form-control" placeholder="Enter Telephone..."></td>
+                            <td><input type="text" name="txt_Tel" class="form-control" placeholder="กรุณาใส่เบอร์โทรศัพท์ของคุณ..."></td>
                         </div>
                     </div>
                 </div>
@@ -169,16 +169,16 @@
             <tr>
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Mail" class="col-sm-3 control-label">Mail</label></td>
+                        <td><label for="Mail" class="col-sm-3 control-label">อีเมล</label></td>
                         <div class="col-sm-7">
-                            <td><input type="text" name="txt_Mail" class="form-control" placeholder="Enter Mail..."></td>
+                            <td><input type="text" name="txt_Mail" class="form-control" placeholder="กรุณาใส่อีเมลของคุณ..."></td>
                         </div>
                     </div>
                 </div>
             
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label class="col-sm-3 control-label">Department Name</label></td>
+                        <td><label class="col-sm-3 control-label">ชื่อแผนก</label></td>
                             <div class="col-sm-1">
                                 <td><select name="Seldepart">       
                                     <?php 
@@ -200,8 +200,8 @@
             
                 <div class="form-group text-center">
                     <div class="col-md-12 mt-3">
-                        <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
-                        <a href="Staffshow.php" class="btn btn-danger">Back</a>
+                        <input type="submit" name="btn_insert" class="btn btn-success" value="เพิ่มข้อมูล">
+                        <a href="Staffshow.php" class="btn btn-danger">กลับ</a>
                     </div>
                 </div>
             </div>

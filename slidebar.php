@@ -59,6 +59,31 @@ body {
 </style>
        
         <div id="mySidenav" class="sidenav">
+          <!-- <a href="main.php">หน้าหลัก</a>
+
+          <a href="StaffHome.php">จัดการข้อมูลพนักงาน</a> 
+            <a href="Departmentshow.php">Department</a>
+          
+          <a href="MedHome.php">จัดการข้อมูลยา</a>
+            <a href="Typeshow.php">Type</a>
+            <a href="Cateshow.php">Category</a>
+            <a href="Volumnshow.php">Volumn</a>
+            <a href="Unitshow.php">Unit</a>
+            <a href="Medshow.php">Medicine</a>
+
+          <a href="Orders.php">จัดซื้อ</a>
+
+          <a href="Received.php">การรับยา</a>
+            <a href="CheckOrder.php">รับยา</a>
+            <a href="CheckClaim.php">รับยาเคลม</a>
+
+          <a href="Lot.php">ล็อตยา</a>
+
+          <a href="Approve.php">รายการเบิกยา</a>
+
+          <a href="Writeoffshow.php">การตัดจำหน่าย</a>
+          <a href="Dealershow.php">ตัวแทนจำหน่าย</a> -->
+
           <a href="main.php">Home</a>
           <a href="Staffshow.php">Staff</a>
           <a href="Departmentshow.php">Department</a>
@@ -78,7 +103,6 @@ body {
           <a href="Writeoffshow.php">Writoff List</a>
           
           
-          
         </div>
         <span style="font-size:30px;cursor:pointer;color: white;" onclick="openNav()">&#9776;</span>
   <script>
@@ -87,7 +111,7 @@ body {
     {
       if(openSlidBar == false){
         openSlidBar = true
-        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("mySidenav").style.width = "280px";
       }else{
         openSlidBar = false
         document.getElementById("mySidenav").style.width = "0";

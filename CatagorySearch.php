@@ -155,89 +155,56 @@
         </div>
     <?php } ?>
 
-        <div class="container mt-6">
-            <div class="row">
-                <?php 
-                    
-                        $sql ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
-                        FROM tbl_med
-                        INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
-                        INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
-                        INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
-                        INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId
-                        WHERE MedName LIKE '%{$search}%' OR TypeName LIKE '%{$search}%' OR CateName LIKE '%{$search}%' OR VolumnName LIKE '%{$search}%' OR UnitName LIKE '%{$search}%'";
-                        $result = $conn->query($sql);
-                        $data = array();
-                        while($row = $result->fetch_assoc()) {
-                            $data[] = $row;   
-                        }
-                        foreach($data as $key => $Med)
-                        
-                        {         
-                                  
-                ?>
-                    <div class="col-md-4">
+       
+    <div class="container-sm">
+    
+    <table class="table table-striped" style='margin-top:4rem;'>
+        <thead>
+            <tr>
+                <th>Picture</th>
+                <th style="width:20%">Name</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>ซื้อสินค้า</th>              
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php       
+                    $sumReserve = 0; 
+                               
+                    $sql = "SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+                    FROM tbl_med
+                    INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
+                    INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
+                    INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
+                    INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId
+                    WHERE MedName LIKE '%{$search}%' OR TypeName LIKE '%{$search}%' OR CateName LIKE '%{$search}%' OR VolumnName LIKE '%{$search}%' OR UnitName LIKE '%{$search}%'";
+                    $result = $conn->query($sql);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
+                    }
+                    foreach($data as $key => $Med){
+            ?>
+                <tr>
                     <form action = "Order.php" method="post">
-                    <table>
-                            <div>
-                                <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $Med["MedPath"]; ?>"> </div> 
-                            </div>
-
-                            <tr>
-                                <th>Name</th>
-                                <th><?php echo $Med["MedName"]; ?></th>
-                            </tr>
-
-                            <tr>
-                                <td>Description</td>
-                                <td><textarea id="w3review" name="txt_MedIndi" rows="6" cols="22"><?php echo $Med["MedDes"]?></textarea></td>
-                            </tr>
-
-                            <tr>
-                                <td>Category</td>
-                                <td><?php echo $Med["CateName"]; ?></td>
-                            </tr>
-
-                            <tr>
-                                <td>Volumn</td>
-                                <td><?php echo $Med["VolumnName"]; ?></td>
-                            </tr>
-
-                            <tr>
-                                <td>Unit</td>
-                                <td><?php echo $Med["UnitName"]; ?></td>
-                            </tr>
-
-                            <tr>
-                                <td>Pack</td>
-                                <td><?php echo $Med["MedPack"]; ?></td>
-                            </tr>
-
-                            <tr>
-                                <td>Price</td>
-                                <td><?php echo $Med["MedPrice"]; ?></td>
-                            </tr>
-
-                            <tr>
-                                <td>Quantity</td>
-                                <td><input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p></td>
+                    <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
+                    <td><?php echo $Med["MedName"]; ?></td>
+                    <td><?php echo $Med["MedDes"]; ?></td>
+                    <td><input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p></td>
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
-                            </tr>
 
-                            <tr>
                                 <td><input type="submit" class = "btn btn-info" value = "Add to cart"> </td>
-                            </tr>
-                              
-                            </div>
-                        
                     </form>
-                    </table>
-                    </div>
-                    <?php } ?>
-            </div>
-        </div>
-    </form>
+                </tr>
+
+                <?php } ?>
+            
+        </tbody>
+    </table>
+</div>
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>

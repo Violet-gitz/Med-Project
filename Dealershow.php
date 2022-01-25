@@ -134,7 +134,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -144,7 +144,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Dealeradd.php" class ="btn btn-success">Add</a></td>
+                                    <td><a href="Dealeradd.php" class ="btn btn-success">เพิ่มตัวแทนจำหน่าย</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -153,12 +153,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -175,18 +175,18 @@
 <body>
 
     <div class="container-sm">
-    
+    <h2>ตารางข้อมูลตัวแทนจำหน่าย</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>DealerId</th>
-                    <th>DealerName</th>
-                    <th>DealerAddress</th>
-                    <th>DealerPhone</th>
-                    <th>ContractStart</th>
-                    <th>ContractEnd</th>
-                    <th>Edit </th>
-                    <th>Delete</th>
+                    <th>รหัสตัวแทนจำหน่าย</th>
+                    <th>ชื่อตัวแทนจำหน่าย</th>
+                    <th style="width:15%">ที่อยู่ตัวแทนจำหน่าย</th>
+                    <th>เบอร์โทรศัพท์ตัวแทนจำหน่าย</th>
+                    <th style="width:13%">วันเริ่มต้นสัญญา</th>
+                    <th style="width:13%">วันสิ้นสุดสัญญา</th>
+                    <th style="width:15%">แก้ไขข้อมูล</th>
+                    <th style="width:10%">ลบข้อมูล</th>
                 </tr>
             </thead>
 
@@ -214,10 +214,10 @@
                         <td><?php echo $dealer["DealerPhone"]; ?></td> 
                         <td><?php echo $dealer["ContractStart"]; ?></td> 
                         <td><?php echo $dealer["ContractEnd"]; ?></td> 
-                        <td><a href="Dealeredit.php?update_id=<?php echo $dealer["DealerId"];?>" class="btn btn-warning">Edit</a></td>
+                        <td><a href="Dealeredit.php?update_id=<?php echo $dealer["DealerId"];?>" class="btn btn-warning">แก้ไขข้อมูล</a></td>
                         <form action = "Dealershow.php" method = "POST">
                             <input type ="hidden" name = "delete" value = "<?php echo $dealer["DealerId"]; ?>">
-                            <td><button class ="btn btn-danger" type = "submit" name = "delete" onclick ="deleteFunction(`<?php echo $dealer['DealerId']; ?>`)">Delete</button></td>
+                            <td><button class ="btn btn-danger" type = "submit" name = "delete" onclick ="deleteFunction(`<?php echo $dealer['DealerId']; ?>`)">ลบ</button></td>
                         </form>
                     </tr>
 

@@ -84,7 +84,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -94,7 +94,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Staffadd.php" class ="btn btn-success">Add</a></td>
+                                    <td><a href="Staffadd.php" class ="btn btn-success">เพิ่มพนักงาน</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -103,12 +103,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -126,17 +126,17 @@
 <body>
  
     <div class="container-sm">
-        
+    <h2>ตารางข้อมูลพนักงาน</h2>
         <table class="table table-bordered">
             
                 <tr>
-                    <th>StaffID</th>
-                    <th>Name</th>
-                    <th>Telephone</th>
-                    <th>Email</th> 
-                    <th>Department</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>รหัสพนักงาน</th>
+                    <th>ชื่อ</th>
+                    <th>เบอร์โทร</th>
+                    <th>อีเมล</th> 
+                    <th>แผนก</th>
+                    <th>แก้ไขข้อมูล</th>
+                    <th>ลบข้อมูล</th>
                 </tr>
             
 
@@ -174,10 +174,10 @@
                         <td><?php echo $staff["StaffTel"]; ?></td>
                         <td><?php echo $staff["StaffEmail"]; ?></td>
                         <td><?php echo $de["DepartName"]; ?></td>
-                        <td><a href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>" class="btn btn-warning">Edit</a></td>
+                        <td><a href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>" class="btn btn-warning">แก้ไขข้อมูล</a></td>
                         <form action = "Staffshow.php" method = "POST">
                             <input type ="hidden" name = "delete" value = "<?php echo $staff['StaffId']; ?>">
-                            <td><button class ="btn btn-danger" type = "submit" name = "delete" onclick ="deleteFunction(`<?php echo $staff['StaffId']; ?>`)">Delete</button></td>
+                            <td><button class ="btn btn-danger" type = "submit" name = "delete" onclick ="deleteFunction(`<?php echo $staff['StaffId']; ?>`)">ลบ</button></td>
                         </form>
                     </tr>
 

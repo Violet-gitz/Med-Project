@@ -58,7 +58,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -73,12 +73,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -120,25 +120,101 @@
                 ?>
             
                     <tr>    
-                    <div class="product-item">
-                        <form action="Order.php" method="post">
-                            <div class="product-image"><?php echo '<img src="upload/'. $Med['MedPath']; ?>"></div>
-                            <div class="product-tile-footer">
-                            <div class = "Product-title"><?php echo "Name : " . $Med["MedName"]; ?></div>
-                            <div class = "Product-title"><?php echo "Description : "?></div>
-                            <textarea id="w3review" name="txt_MedIndi" rows="5" cols="100" readonly><?php echo $Med["MedDes"]?></textarea>
-                            <div class = "Product-title"><?php echo "Indication : "?></div>
-                            <textarea id="w3review" name="txt_MedIndi" rows="5" cols="100" readonly><?php echo $Med["MedIndi"]?></textarea>
-                            <div class = "Product-title"><?php echo "Type : " . $Med["TypeName"]; ?></div>
-                            <div class = "Product-title"><?php echo "Category : " . $Med["CateName"]; ?></div>
-                            <div class = "Product-title"><?php echo "Volumn : " . $Med["VolumnName"]; ?></div>
-                            <div class = "Product-title"><?php echo "Unit : " . $Med["UnitName"]; ?></div>
-                            <div class = "Product-title"><?php echo "Unit Per Pack : " . $Med["MedPack"] . " Unit"; ?></div>
-                            <div class = "Product-price"><?php echo "Price Per Pack : " . $Med["MedPrice"] . " Bath"; ?></div>
-                            <a href = "Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class = "btn btn-info">Edit</a>
-                            <a href="Medshow.php" class="btn btn-secondary">Back</a>   
-                        </form>
+    <div class="product-item">
+        <form action="Order.php" method="post">
+            <div class="container">
+
+                <div class="form-group text-center">
+                    <div>
+                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $Med["MedPath"]; ?>"> </div> 
                     </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Tel" class="col-sm-3 control-label">รหัสยา</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="txt_MedName" class="form-control" value="<?php echo $Med["MedId"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Tel" class="col-sm-3 control-label">ชื่อยา</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="txt_MedName" class="form-control" value="<?php echo $Med["MedName"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Category" class="col-sm-3 control-label">รายละเอียดยา</label>
+                        <div class="col-sm-7">
+                            <textarea rows="4" cols="63" readonly><?php echo $Med["MedDes"]; ?></textarea>
+                           
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Category" class="col-sm-3 control-label">ข้อบ่งชี้</label>
+                        <div class="col-sm-7">
+                            <textarea rows="4" cols="63" readonly><?php echo $Med["MedIndi"]; ?></textarea>
+                           
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Category" class="col-sm-3 control-label">หมวดหมู่ยา</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedCate" class="form-control" value="<?php echo $Med["CateName"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Volumn" class="col-sm-3 control-label">ปริมาณ</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedVolumn" class="form-control" value="<?php echo $Med["VolumnName"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Unit" class="col-sm-3 control-label">หน่วย</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedUnit" class="form-control" value="<?php echo $Med["UnitName"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine pack" class="col-sm-3 control-label">จำนวนต่อหีบห่อ</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $Med["MedPack"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="col-md-12 mt-3">
+                        <a href = "Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class = "btn btn-info">แก้ไขข้อมูล</a>
+                        <a href="Medshow.php" class="btn btn-danger">กลับ</a> 
+                    </div>
+                </div>
+            </div>
+                            
+            </div>                  
+        </form>
+    </div>
                     </tr>
                     <?php }} ?>
 

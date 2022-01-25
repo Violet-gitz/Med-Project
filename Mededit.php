@@ -125,7 +125,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -140,12 +140,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -182,7 +182,7 @@
             <div class="container">
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicinename" class="col-sm-3 control-label">Medicine Name</label></td>
+                        <td><label for="Medicinename" class="col-sm-3 control-label">ชื่อยา</label></td>
                             <div class="col-sm-7">
                                 <td><input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]?>"></td>
                             </div>
@@ -191,7 +191,7 @@
               
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicinedes" class="col-sm-3 control-label">Description</label></td>
+                        <td><label for="Medicinedes" class="col-sm-3 control-label">รายละเอียด</label></td>
                             <div class="col-sm-7">
                                 <td><textarea id="w3review" name="txt_MedDes" rows="4" cols="50"><?php echo $med["MedDes"]?></textarea></td>
                             </div>
@@ -200,7 +200,7 @@
               
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicinedes" class="col-sm-3 control-label">Indication</label></td>
+                        <td><label for="Medicinedes" class="col-sm-3 control-label">ข้อบ่งชี้</label></td>
                             <div class="col-sm-7">
                                 <td><textarea id="w3review" name="txt_MedIndi" rows="4" cols="50"><?php echo $med["MedIndi"]?></textarea></td>
                             </div>
@@ -209,7 +209,7 @@
               
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicineprcie" class="col-sm-3 control-label">Price per Pack</label></td>
+                        <td><label for="Medicineprcie" class="col-sm-3 control-label">ราคาต่อหีบห่อ</label></td>
                             <div class="col-sm-7">
                                 <td><input type="text" name="txt_MedPrice" class="form-control" value="<?php echo $med["MedPrice"]?>"></td>
                             </div>
@@ -218,7 +218,7 @@
               
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicinepack" class="col-sm-3 control-label">Unit per Pack</label></td>
+                        <td><label for="Medicinepack" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label></td>
                             <div class="col-sm-7">
                                 <td><input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]?>"></td>
                             </div>
@@ -227,7 +227,7 @@
                
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicinelow" class="col-sm-3 control-label">Minimum purchase</label></td>
+                        <td><label for="Medicinelow" class="col-sm-3 control-label">ขั้นต่ำในการซื้อ</label></td>
                             <div class="col-sm-7">
                                 <td><input type="text" name="txt_Medlow" class="form-control" value="<?php echo $med["MedLow"]?>"></td>
                             </div>
@@ -245,7 +245,7 @@
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicineprcie" class="col-sm-3 control-label">Medicine Exp</label></td>
+                        <td><label for="Medicineprcie" class="col-sm-3 control-label">จำนวนวันหมดอายุ</label></td>
                             <div class="col-sm-7">
                                 <td><input type="number" name="txt_MedExp" class="form-control" value="<?php echo $med["MedExp"]; ?>"></td>
                             </div>
@@ -254,7 +254,7 @@
               
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="MedTotal" class="col-sm-3 control-label">Medicine Total</label></td>
+                        <td><label for="MedTotal" class="col-sm-3 control-label">จำนวนยาคงเหลือ</label></td>
                             <div class="col-sm-7">
                                 <td><input type="number" name="txt_MedTotal" class="form-control" value="<?php echo $med["MedTotal"]; ?>"></td>
                             </div>
@@ -263,7 +263,7 @@
 
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label class="col-sm-3 control-label">Medicine Type</label></td>
+                                <td><label class="col-sm-3 control-label">ประเภท</label></td>
                                     <div class="col-sm-1">
                                         <td><select name="txt_Medtype">       
                                             <?php 
@@ -285,7 +285,7 @@
                     
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label class="col-sm-3 control-label">Category</label></td>
+                                <td><label class="col-sm-3 control-label">หมวดหมู่</label></td>
                                     <div class="col-sm-1">
                                         <td><select name="dropdownlist-MedCate">       
                                             <?php 
@@ -307,7 +307,7 @@
                     
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label class="col-sm-3 control-label">Volumn</label></td>
+                                <td><label class="col-sm-3 control-label">จำนวนปริมาณ</label></td>
                                     <div class="col-sm-1">
                                         <td><select name="dropdownlist-MedVolumn">       
                                             <?php 
@@ -329,7 +329,7 @@
                   
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label class="col-sm-3 control-label">Unit</label></td>
+                                <td><label class="col-sm-3 control-label">หน่วย</label></td>
                                     <div class="col-sm-1">
                                         <td><select name="dropdownlist-MedUnit">       
                                             <?php 
@@ -353,8 +353,8 @@
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_update" class="btn btn-success" value="Update">
-                    <a href="Medshow.php" class="btn btn-danger">Back</a>
+                    <input type="submit" name="btn_update" class="btn btn-success" value="อัปเดต">
+                    <a href="Medshow.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
 

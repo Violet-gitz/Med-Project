@@ -82,7 +82,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -92,7 +92,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Volumnadd.php" class ="btn btn-success">Add</a></td>
+                                    <td><a href="Volumnadd.php" class ="btn btn-success">เพิ่มปริมาณ</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -101,12 +101,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -123,14 +123,14 @@
 <body>
 
     <div class="container-sm">
-    
+    <h2>ตารางข้อมูลปริมาณ</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>VolumnId</th>
-                    <th>VolumnName</th>
-                    <th>Edit </th>
-                    <th>Delete</th>
+                    <th>รหัสปริมาณ</th>
+                    <th>จำนวนปริมาณ</th>
+                    <th>แก้ไขข้อมูล</th>
+                    <th>ลบ</th>
                 </tr>
             </thead>
 
@@ -148,10 +148,10 @@
                     <tr>
                         <td><?php echo $vol["VolumnId"]; ?></td>
                         <td><?php echo $vol["VolumnName"]; ?></td>
-                        <td><a href="Volumnedit.php?update_id=<?php echo $vol["VolumnId"];?>" class="btn btn-warning">Edit</a></td>
+                        <td><a href="Volumnedit.php?update_id=<?php echo $vol["VolumnId"];?>" class="btn btn-warning">แก้ไขข้อมูล</a></td>
                         <form action = "Volumnshow.php" method = "POST">
                             <input type ="hidden" name = "delete" value = "<?php echo $vol["VolumnId"]; ?>">
-                            <td><button class ="btn btn-danger" type = "submit" name = "delete" onclick ="deleteFunction(`<?php echo $vol['VolumnId']; ?>`)">Delete</button></td>
+                            <td><button class ="btn btn-danger" type = "submit" name = "delete" onclick ="deleteFunction(`<?php echo $vol['VolumnId']; ?>`)">ลบ</button></td>
                         </form>
                     </tr>
 

@@ -78,7 +78,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -93,12 +93,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -136,34 +136,34 @@
             <div class="container">
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="DealerName" class="col-sm-3 control-label">Dealer Name</label>
+                        <label for="DealerName" class="col-sm-3 control-label">ชื่อตัวแทนจำหน่าย</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_DealerName" class="form-control" placeholder="Enter Dealer Name...">
+                            <input type="text" name="txt_DealerName" class="form-control" placeholder="กรุณาใส่ชื่อตัวแทนจำหน่าย...">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="DealerAddress" class="col-sm-3 control-label">Dealer Address</label>
+                        <label for="DealerAddress" class="col-sm-3 control-label">ที่อยู่ตัวแทนจำหน่าย</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_DealerAddress" class="form-control" placeholder="Enter Dealer Address...">
+                            <input type="text" name="txt_DealerAddress" class="form-control" placeholder="กรุณาใส่ที่อยู่ตัวแทนจำหน่าย...">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="DealerAddress" class="col-sm-3 control-label">Dealer Phone</label>
+                        <label for="DealerAddress" class="col-sm-3 control-label">เบอร์โทรศัพท์ตัวแทนจำหน่าย</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_DealerPhone" class="form-control" placeholder="Enter Dealer Phone...">
+                            <input type="text" name="txt_DealerPhone" class="form-control" placeholder="กรุณาใส่เบอร์โทรศัพท์ตัวแทนจำหน่าย...">
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract Start</label>
+                        <label for="Medicine Price" class="col-sm-3 control-label">วันเริ่มต้นสัญญา</label>
                         <div class="col-sm-1">
                         <input type="date"  name="ContractStart"
                                             value="<?php echo date('Y-m-j'); ?>" required 
@@ -174,7 +174,7 @@
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="Medicine Price" class="col-sm-3 control-label">Dealer Contract End</label>
+                        <label for="Medicine Price" class="col-sm-3 control-label">วันสิ้นสุดสัญญา</label>
                         <div class="col-sm-1">
                         <input type="date"  name="ContractEnd"
                                             value="<?php echo date('Y-m-j'); ?>" required 
@@ -187,8 +187,8 @@
 
                 <div class="form-group text-center">
                     <div class="col-md-12 mt-3">
-                        <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
-                        <a href="Dealershow.php" class="btn btn-danger">Back</a>
+                        <input type="submit" name="btn_insert" class="btn btn-success" value="เพิ่มข้อมูล">
+                        <a href="Dealershow.php" class="btn btn-danger">กลับ</a>
                     </div>
                 </div>
             </div>

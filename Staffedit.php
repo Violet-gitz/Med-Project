@@ -92,7 +92,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -107,12 +107,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -153,7 +153,7 @@
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="Name" class="col-sm-3 control-label">Name</label>
+                        <label for="Name" class="col-sm-3 control-label">ชื่อ</label>
                         <div class="col-sm-7">
                             <input type="text" name="txt_Name" class="form-control" value="<?php echo $staff["StaffName"]; ?>">
                         </div>
@@ -163,7 +163,7 @@
                 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="Telephone" class="col-sm-3 control-label">Telephone</label>
+                        <label for="Telephone" class="col-sm-3 control-label">เบอร์โทร</label>
                         <div class="col-sm-7">
                             <input type="text" name="txt_Telephone" class="form-control" value="<?php echo $staff["StaffTel"]; ?>">
                         </div>
@@ -172,7 +172,7 @@
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="Email" class="col-sm-3 control-label">Email</label>
+                        <label for="Email" class="col-sm-3 control-label">อีเมล</label>
                         <div class="col-sm-7">
                             <input type="text" name="txt_Email" class="form-control" value="<?php echo $staff["StaffEmail"]; ?>">
                         </div>
@@ -181,7 +181,7 @@
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label class="col-sm-3 control-label">Department Name</label>
+                        <label class="col-sm-3 control-label">ชื่อแผนก</label>
                             <div class="col-sm-1">
                                 <select name="Seldepart">       
                                     <?php 
@@ -203,8 +203,8 @@
 
                 <div class="form-group text-center">
                     <div class="col-md-12 mt-3">
-                        <input type="submit" name="btn_update" class="btn btn-success" value="Update">
-                        <a href="Staffshow.php" class="btn btn-danger">Back</a>
+                        <input type="submit" name="btn_update" class="btn btn-success" value="อัปเดต">
+                        <a href="Staffshow.php" class="btn btn-danger">กลับ</a>
                     </div>
                 </div>
             </div>

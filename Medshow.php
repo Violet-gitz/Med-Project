@@ -139,7 +139,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -149,7 +149,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Medadd.php" class ="btn btn-success">Add</a></td>
+                                    <td><a href="Medadd.php" class ="btn btn-success">เพิ่มข้อมูลยา</a></td>
                                 </li>
 
                                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -158,12 +158,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -191,17 +191,17 @@
         
 
     <div class="container-sm">
-    
+    <h2>ตารางข้อมูลยา</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Picture</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Total</th>
-                    <th>Details</th>
-                    <th>Edit</th>    
-                    <th>Delete</td>            
+                    <th>รูปยา</th>
+                    <th>ชื่อยา</th>
+                    <th>รายละเอียด</th>
+                    <th>จำนวนคงเหลือ</th>
+                    <th>รายละเอียด</th>
+                    <th>แก้ไขข้อมูล</th>    
+                    <th>ลบ</td>            
                 </tr>
             </thead>
 
@@ -223,8 +223,8 @@
                         <td><?php echo $Med["MedName"]; ?></td>
                         <td><?php echo $Med["MedDes"]; ?></td>
                         <td><?php echo $Med["MedTotal"]; ?></td>
-                        <td><a href="Meddetail.php?detail_id=<?php echo $Med["MedId"];?>" class="btn btn-info">Details</a></td>
-                        <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-warning">Edit</a></td>
+                        <td><a href="Meddetail.php?detail_id=<?php echo $Med["MedId"];?>" class="btn btn-info">รายละเอียด</a></td>
+                        <td><a href="Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class="btn btn-warning">แก้ไขข้อมูล</a></td>
                        
                         <td>
                             <form method = "POST" action = "Medshow.php">
@@ -237,7 +237,7 @@
                                             echo $buttonStatus;
                                         }
                                     ?>
-                                    >Delete
+                                    >ลบ
                                 </button>
                                 <input type ="hidden" name ="Delete" value ="<?php echo $Med["MedId"]; ?>">
                             </form>
@@ -253,33 +253,7 @@
         </table>
     </div>
     
-        <?php
-
-            // $q = intval($_GET['q']);
-
-            // $sql="SELECT * FROM tbl_lot WHERE MedId = '".$q."'";
-            // $result = $conn->query($sql);
-            // $data = array();
-            // while($row = $result->fetch_assoc()) {
-            // $data[] = $row;   
-            // }
-            // foreach($data as $key => $Lot){
-            //     $medid = $Lot["MedId"];
-            //     $sql="SELECT * FROM tbl_med WHERE MedId = '".$q."'";
-            //     $result = $conn->query($sql);
-            //     $data = array();
-            //     while($row = $result->fetch_assoc()) {
-            //     $data[] = $row;   
-            //     }
-            //     foreach($data as $key => $Med){
-            // echo "<table>";
-            // echo "<tr>";
-            // echo "<td>" . $Med['MedName'] . "</td>";
-
-            // echo "</tr>";
-            // }}
-            // echo "</table>";           
-        ?>
+      
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
