@@ -15,6 +15,17 @@
         header('location: login.php');
     }
 
+    $staff =  $_SESSION['StaffName'];
+    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+    $result = $conn->query($sql);
+    $data = array();
+        while($row = $result->fetch_assoc()) 
+        {
+            $data[] = $row;  
+        }
+        foreach($data as $key => $staff){      
+            $StaffId = $staff["StaffId"];
+        }
 
     if (isset($_REQUEST['Received_id'])) {
         
@@ -106,7 +117,6 @@
     }
 
         $OrderId = $_REQUEST['txt_OrderId'];
-        $staff = $_REQUEST['RecName'];
         date_default_timezone_set("Asia/Bangkok");
         $RecTime = date("Y-m-d h:i:sa");
         $RecDeli = $_REQUEST['txt_delivery'];
@@ -123,7 +133,7 @@
 
                 if (!isset($errorMsg)) {
 
-                    $sql = "INSERT INTO tbl_received(OrderId,StaffId,RecDate,RecDeli) VALUES ('$OrderId',  '$staff', '$RecTime', '$RecDeli')";
+                    $sql = "INSERT INTO tbl_received(OrderId,StaffId,RecDate,RecDeli) VALUES ('$OrderId',  '$StaffId', '$RecTime', '$RecDeli')";
                     if ($conn->query($sql) === TRUE) {   
                     } else {
                         echo "Error updating record: " . $conn->error;
@@ -234,17 +244,6 @@
              //echo $e->getMessage();
                     
             
-             $staff =  $_SESSION['StaffName'];
-             $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
-             $result = $conn->query($sql);
-             $data = array();
-                 while($row = $result->fetch_assoc()) 
-                 {
-                     $data[] = $row;  
-                 }
-                 foreach($data as $key => $staff){      
-     
-                 }
 
 ?>
 <!DOCTYPE html>
@@ -320,6 +319,7 @@
 
         <form method="post" class="form-horizontal mt-5" name="myform">
 
+        <div class="container">
             <div class="form-group text-center">
                 <div class="row">
                     <label for="Tel" class="col-sm-3 control-label">Order </label>
@@ -355,40 +355,8 @@
                     </div>
                 </div>
             </div>
-        
-            
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label class="col-sm-3 control-label">Received Name</label>
-                        <div class="col-sm-1">
-                            <select name="RecName">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_staff';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) 
-                                        {
-                                            $data[] = $row;   
-                                        }
-                                        foreach($data as $key => $staff){                  
-                                ?>
-                                    <option value ="<?php echo $staff["StaffId"];?>"><?php echo $staff["StaffName"];?></option>
-                                <?php } ?>      
-                            </select><br>
-                        </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
-                    </div>
-                </div>
-            </div>
-
+          
             <?php
                 $i = 0;
                 $orderid = $Orderde['OrderId'];
@@ -469,6 +437,16 @@
 
             <div class="form-group text-center">
                 <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group text-center">
+                <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">MFD Date</label>
                     <div class="col-sm-1">
                     <input type="date"  name="mfd<?php echo $i;?>"
@@ -500,7 +478,7 @@
                     <a href="CheckOrder.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
-
+        </div>
             
         </form>
 

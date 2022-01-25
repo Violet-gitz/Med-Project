@@ -17,6 +17,18 @@
         header('location: login.php');
     }
 
+    $staff =  $_SESSION['StaffName'];
+    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+    $result = $conn->query($sql);
+    $data = array();
+        while($row = $result->fetch_assoc()) 
+        {
+            $data[] = $row;  
+        }
+        foreach($data as $key => $staff){      
+            $StaffId = $staff["StaffId"];
+        }
+
     if (isset($_REQUEST['Write'])) {
         
             $id = $_REQUEST['Write'];
@@ -80,7 +92,6 @@
         
         date_default_timezone_set("Asia/Bangkok");
         $WriteDate = date("Y-m-d h:i:sa");
-        $StaffId = $_REQUEST['selstaff'];
         $Qty = $_REQUEST['txt_Total'];
         
         $Total = $med["MedTotal"];
@@ -139,17 +150,7 @@
             }
         }
     }
-    $staff =  $_SESSION['StaffName'];
-    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
-    $result = $conn->query($sql);
-    $data = array();
-        while($row = $result->fetch_assoc()) 
-        {
-            $data[] = $row;  
-        }
-        foreach($data as $key => $staff){      
-
-        }
+   
    
 
 ?>
@@ -225,107 +226,84 @@
     
     
         <form method="post" class="form-horizontal mt-5" name="myform">
-
-            <div class="form-group text-center">
-                <div>
-                    <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Lot</label>
-                        <div class="col-sm-7">
-                            <input type="text" name="txt_Lot" class="form-control" value="<?php echo $Lot["LotId"]; ?>" readonly>
+            <div class="container">
+                <div class="form-group text-center">
+                    <div>
+                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
                     </div>
                 </div>
-            </div>
-        
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Medicine</label>
-                        <div class="col-sm-7">
-                            <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-            
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Category" class="col-sm-3 control-label">Category</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedCate" class="form-control" value="<?php echo $med["CateName"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Volumn" class="col-sm-3 control-label">Volumn</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedVolumn" class="form-control" value="<?php echo $med["VolumnName"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Unit" class="col-sm-3 control-label">Unit</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedUnit" class="form-control" value="<?php echo $med["UnitName"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine pack" class="col-sm-3 control-label">Unit/Pack</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Total/Pack</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_Total" class="form-control" value="<?php echo $Lot["Qty"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group text-center">
-                        <div class="row">
-                            <label class="col-sm-3 control-label">Staff</label>
-                                <div class="col-sm-1">
-                                    <select name="selstaff">       
-                                        <?php 
-                                            $sql = 'SELECT * FROM tbl_staff';
-                                            $result = $conn->query($sql);
-                                            $data = array();
-                                            while($row = $result->fetch_assoc()) 
-                                            {
-                                                $data[] = $row;   
-                                            }
-                                            foreach($data as $key => $staff){                  
-                                        ?>
-                                            <option value ="<?php echo $staff["StaffId"];?>"><?php echo $staff["StaffName"];?></option>
-                                        <?php } ?>      
-                                    </select><br>
-                                </div>
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Tel" class="col-sm-3 control-label">Lot</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="txt_Lot" class="form-control" value="<?php echo $Lot["LotId"]; ?>" readonly>
                         </div>
                     </div>
+                </div>
+            
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Tel" class="col-sm-3 control-label">Medicine</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+                
 
-            <div class="form-group text-center">
-                <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_write" class="btn btn-success" value="Writeoff">
-                    <a href="Lot.php" class="btn btn-danger">Back</a>
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Category" class="col-sm-3 control-label">Category</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedCate" class="form-control" value="<?php echo $med["CateName"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Volumn" class="col-sm-3 control-label">Volumn</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedVolumn" class="form-control" value="<?php echo $med["VolumnName"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Unit" class="col-sm-3 control-label">Unit</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedUnit" class="form-control" value="<?php echo $med["UnitName"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine pack" class="col-sm-3 control-label">Unit/Pack</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Price" class="col-sm-3 control-label">Total/Pack</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_Total" class="form-control" value="<?php echo $Lot["Qty"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="col-md-12 mt-3">
+                        <input type="submit" name="btn_write" class="btn btn-success" value="Writeoff">
+                        <a href="Lot.php" class="btn btn-danger">Back</a>
+                    </div>
                 </div>
             </div>
-
             
 
         </form>

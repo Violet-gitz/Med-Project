@@ -15,6 +15,18 @@
         header('location: login.php');
     }
 
+    $staff =  $_SESSION['StaffName'];
+    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+    $result = $conn->query($sql);
+    $data = array();
+        while($row = $result->fetch_assoc()) 
+        {
+            $data[] = $row;  
+        }
+        foreach($data as $key => $staff){      
+            $staffid = $staff["StaffId"];
+        }
+
 
     if (isset($_REQUEST['Edit'])) {
         
@@ -115,7 +127,6 @@
     }
 
         $OrderId = $_REQUEST['txt_OrderId'];
-        $staff = $_REQUEST['RecName'];
         date_default_timezone_set("Asia/Bangkok");
         $RecTime = date("Y-m-d h:i:sa");
         $RecDeli = $_REQUEST['txt_delivery'];
@@ -124,7 +135,7 @@
 
          if (empty($OrderId)) {
             $errorMsg = "Please Enter Lot Id";
-        } else if (empty($staff)) {
+        } else if (empty($staffid)) {
             $errorMsg = "Please Enter Received Name";
         }  else if (empty($RecDeli)) {
             $errorMsg = "Please Enter Received Delivery";
@@ -132,7 +143,7 @@
 
                 if (!isset($errorMsg)) {
 
-                    $sql = "UPDATE tbl_received SET StaffId = '$staff' , RecDate = '$RecTime' , RecDeli = '$RecDeli'WHERE OrderId = $OrderId";
+                    $sql = "UPDATE tbl_received SET StaffId = '$staffid' , RecDate = '$RecTime' , RecDeli = '$RecDeli'WHERE OrderId = $OrderId";
                     if ($conn->query($sql) === TRUE) {   
                     } else {
                         echo "Error updating record: " . $conn->error;
@@ -234,17 +245,7 @@
        //echo $e->getMessage();
                     
             
-             $staff =  $_SESSION['StaffName'];
-             $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
-             $result = $conn->query($sql);
-             $data = array();
-                 while($row = $result->fetch_assoc()) 
-                 {
-                     $data[] = $row;  
-                 }
-                 foreach($data as $key => $staff){      
-     
-                 }
+          
 
 ?>
 <!DOCTYPE html>
@@ -320,6 +321,39 @@
 
         <form method="post" class="form-horizontal mt-5" name="myform">
 
+        <?php
+                $i = 0;
+                $orderid = $Order['OrderId'];
+                $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) {
+                $data[] = $row;  
+                }
+                foreach($data as $key => $orderdetailid){
+
+                    $MedId = $orderdetailid["MedId"];
+                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                    $result = $conn->query($sqli);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;   
+                    }
+                    
+                    foreach($data as $key => $med){
+                        
+                   
+            ?>
+             <div class="container">
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Name" class="col-sm-3 control-label"></label>
+                        <div class="col-sm-7">
+                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group text-center">
                 <div class="row">
                     <label for="Tel" class="col-sm-3 control-label">Order </label>
@@ -355,74 +389,8 @@
                     </div>
                 </div>
             </div>
+
         
-            
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label class="col-sm-3 control-label">Received Name</label>
-                        <div class="col-sm-1">
-                            <select name="RecName">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_staff';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) 
-                                        {
-                                            $data[] = $row;   
-                                        }
-                                        foreach($data as $key => $staff){                  
-                                ?>
-                                    <option value ="<?php echo $staff["StaffId"];?>"><?php echo $staff["StaffName"];?></option>
-                                <?php } ?>      
-                            </select><br>
-                        </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_delivery" class="form-control" value="<?php echo $rec["RecDeli"]; ?>">
-                    </div>
-                </div>
-            </div>
-
-            <?php
-                $i = 0;
-                $orderid = $Order['OrderId'];
-                $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
-                $result = $conn->query($sql);
-                $data = array();
-                while($row = $result->fetch_assoc()) {
-                $data[] = $row;  
-                }
-                foreach($data as $key => $orderdetailid){
-
-                    $MedId = $orderdetailid["MedId"];
-                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                    $result = $conn->query($sqli);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                    $data[] = $row;   
-                    }
-                    
-                    foreach($data as $key => $med){
-                        
-                   
-            ?>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Name" class="col-sm-3 control-label">Pictures</label>
-                        <div class="col-sm-7">
-                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
-                    </div>
-                </div>
-            </div>
-
-
             <div class="form-group text-center">
                 <div class="row">
                     <label for="Medicine Name" class="col-sm-3 control-label">Medicine</label>
@@ -470,6 +438,16 @@
 
             <div class="form-group text-center">
                 <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_delivery" class="form-control" value="<?php echo $rec["RecDeli"]; ?>">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group text-center">
+                <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">MFD Date</label>
                     <div class="col-sm-1">
                     <input type="date"  name="mfd<?php echo $i;?>"
@@ -501,7 +479,7 @@
                     <a href="CheckReceived.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
-
+            </div>
             
         </form>
 

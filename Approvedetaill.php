@@ -210,6 +210,44 @@ $data = array();
 
 <form method="post" class="form-horizontal mt-5" name="myform">
 
+    <?php
+        $i = 0;
+        $sql = "SELECT * FROM tbl_withdrawdetail WHERE WithId = $withid";
+        $result = $conn->query($sql);
+        $data = array();
+        while($row = $result->fetch_assoc()) {
+        $data[] = $row;  
+        }
+        foreach($data as $key => $withdetailid){
+
+            $MedId = $withdetailid["MedId"];
+            $sqli ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+            FROM tbl_med
+            INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
+            INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
+            INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
+            INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId
+            WHERE tbl_med.MedId = $MedId";
+            $result = $conn->query($sqli);
+            $data = array();
+            while($row = $result->fetch_assoc()) {
+            $data[] = $row;   
+            }
+            
+            foreach($data as $key => $med){
+                
+        
+    ?>
+    <div class="container">
+        <div class="form-group text-center">
+            <div class="row">
+                <label for="Medicine Name" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-7">
+                    <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
+                </div>
+            </div>
+        </div>
+
     <div class="form-group text-center">
         <div class="row">
             <label for="Tel" class="col-sm-3 control-label">Withdraw Id</label>
@@ -257,66 +295,6 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label class="col-sm-3 control-label">Approval Name</label>
-                <div class="col-sm-1">
-                    <select name="AppName">       
-                        <?php 
-                            $sql = 'SELECT * FROM tbl_staff WHERE DepartId = 1';
-                            $result = $conn->query($sql);
-                            $data = array();
-                            while($row = $result->fetch_assoc()) 
-                                {
-                                    $data[] = $row;   
-                                }
-                                foreach($data as $key => $staff){                  
-                        ?>
-                            <option value ="<?php echo $staff["StaffId"];?>"><?php echo $staff["StaffName"];?></option>
-                        <?php } ?>      
-                    </select><br>
-                </div>
-        </div>
-    </div>
-
-    <?php
-        $i = 0;
-        $sql = "SELECT * FROM tbl_withdrawdetail WHERE WithId = $withid";
-        $result = $conn->query($sql);
-        $data = array();
-        while($row = $result->fetch_assoc()) {
-        $data[] = $row;  
-        }
-        foreach($data as $key => $withdetailid){
-
-            $MedId = $withdetailid["MedId"];
-            $sqli ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
-            FROM tbl_med
-            INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
-            INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
-            INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
-            INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId
-            WHERE tbl_med.MedId = $MedId";
-            $result = $conn->query($sqli);
-            $data = array();
-            while($row = $result->fetch_assoc()) {
-            $data[] = $row;   
-            }
-            
-            foreach($data as $key => $med){
-                
-        
-    ?>
-
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine Name" class="col-sm-3 control-label"></label>
-                <div class="col-sm-7">
-                <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group text-center">
-        <div class="row">
             <label for="Medicine Name" class="col-sm-3 control-label">Lot Id</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedName" class="form-control" value="<?php echo $withdetailid["LotId"]; ?>" readonly>
@@ -336,8 +314,8 @@ $data = array();
     <div class="form-group text-center">
         <div class="row">
             <label for="Medicine pack" class="col-sm-3 control-label">Description</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedDes"]; ?>" readonly>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedDes"]; ?>" readonly>
             </div>
         </div>
     </div>
@@ -345,8 +323,8 @@ $data = array();
     <div class="form-group text-center">
         <div class="row">
             <label for="Medicine pack" class="col-sm-3 control-label">Type</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["TypeName"]; ?>" readonly>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["TypeName"]; ?>" readonly>
             </div>
         </div>
     </div>
@@ -354,8 +332,8 @@ $data = array();
     <div class="form-group text-center">
         <div class="row">
             <label for="Medicine pack" class="col-sm-3 control-label">Category</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["CateName"]; ?>" readonly>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["CateName"]; ?>" readonly>
             </div>
         </div>
     </div>
@@ -363,17 +341,17 @@ $data = array();
     <div class="form-group text-center">
         <div class="row">
             <label for="Medicine pack" class="col-sm-3 control-label">Volumn</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["VolumnName"]; ?>" readonly>
-            </div>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["VolumnName"]; ?>" readonly>
+             </div>
         </div>
     </div>
 
     <div class="form-group text-center">
         <div class="row">
             <label for="Medicine pack" class="col-sm-3 control-label">Unit</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["UnitName"]; ?>" readonly>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["UnitName"]; ?>" readonly>
             </div>
         </div>
     </div>
@@ -381,8 +359,8 @@ $data = array();
     <div class="form-group text-center">
         <div class="row">
             <label for="Medicine pack" class="col-sm-3 control-label">Unit/Pack</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
             </div>
         </div>
     </div>
@@ -391,17 +369,17 @@ $data = array();
     <div class="form-group text-center">
         <div class="row">
             <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Qty"]; ?>" readonly>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Qty"]; ?>" readonly>
             </div>
         </div>
     </div>
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine Price" class="col-sm-3 control-label">Manufactured Date</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Mfd"]; ?>" readonly>
+             <label for="Medicine Price" class="col-sm-3 control-label">Manufactured Date</label>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Mfd"]; ?>" readonly>
             </div>
         </div>
     </div>
@@ -409,19 +387,22 @@ $data = array();
     <div class="form-group text-center">
         <div class="row">
             <label for="Medicine Price" class="col-sm-3 control-label">Expiration Date</label>
-            <div class="col-sm-7">
-                <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Exd"]; ?>" readonly>
+                <div class="col-sm-7">
+                    <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Exd"]; ?>" readonly>
             </div>
         </div>
     </div>
 
-    <?php }}?>
+        <?php }}?>
 
-     <div class="form-group text-center">
-        <div class="col-md-12 mt-3">
-            <input type="submit" name="btn_approve" class="btn btn-success" value="Approve">
-            <a href="Approve.php" class="btn btn-danger">Back</a>
+        <div class="form-group text-center">
+            <div class="col-md-12 mt-3">
+                <input type="submit" name="btn_approve" class="btn btn-success" value="Approve">
+                <a href="Approve.php" class="btn btn-danger">Back</a>
+            </div>
         </div>
+    </div>
+
     </div>
                 
 </form>

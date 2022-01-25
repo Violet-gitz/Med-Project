@@ -16,7 +16,7 @@
 
 
     if (isset($_REQUEST['update_id'])) {
-        try {
+ 
             $id = $_REQUEST['update_id'];
             $sql ="SELECT * FROM tbl_staff WHERE $id = StaffId";
             $result = $conn->query($sql);
@@ -24,10 +24,17 @@
             while($row = $result->fetch_assoc()) {
                 $data[] = $row;   
             }
-            foreach($data as $key => $staff){}
-        } catch(PDOException $e) {
-            $e->getMessage();
-        }
+            foreach($data as $key => $staff)
+            {
+                $id = $staff['DepartId'];
+                $sql ="SELECT * FROM tbl_department WHERE $id = DepartId";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) {
+                    $data[] = $row;   
+                }
+                foreach($data as $key => $departname){}
+            }
     }
 
     if (isset($_REQUEST['btn_update'])) {
@@ -66,17 +73,6 @@
         }
     }
 
-    $staff =  $_SESSION['StaffName'];
-    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
-    $result = $conn->query($sql);
-    $data = array();
-        while($row = $result->fetch_assoc()) 
-        {
-            $data[] = $row;  
-        }
-        foreach($data as $key => $staff){      
-
-        }
 
 
 ?>

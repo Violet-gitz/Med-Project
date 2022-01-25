@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2021 at 10:07 AM
+-- Generation Time: Jan 25, 2022 at 08:12 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 8.0.6
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `med`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_cate`
+--
+
+CREATE TABLE `tbl_cate` (
+  `CateId` int(11) NOT NULL,
+  `CateName` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_cate`
+--
+
+INSERT INTO `tbl_cate` (`CateId`, `CateName`) VALUES
+(1, 'ยาต้านไวรัสในกลุ่มเอ็นอาร์ทีไอ/ Nucleoside Reverse Transcriptase Inhibitors: NRTI'),
+(2, 'ยาละลายเสมหะ/ Mucolytic'),
+(3, 'ยาเรตินอยด์/ Retinoids'),
+(4, 'ยาถ่ายพยาธิ/ Vermifuge'),
+(5, 'ยาฉีดเข้าหลอดเลือดดำ และสารละลาย (Intravenous & Other Sterile Solutions)'),
+(6, 'ยาสามัญ/ Household Remedy');
 
 -- --------------------------------------------------------
 
@@ -59,7 +82,7 @@ CREATE TABLE `tbl_dealer` (
 --
 
 INSERT INTO `tbl_dealer` (`DealerId`, `DealerName`, `DealerAddress`, `DealerPhone`, `ContractStart`, `ContractEnd`) VALUES
-(1, 'Weerapat', '63/1 Moo 2, Sri Surat, Damnoen Saduak, Raichaburi 77777', '0867526248', '2021-12-13', '2025-12-31');
+(1, 'Weerapat', '63/1 Moo 2, Sri Surat, Damnoen Saduak, Raichaburi 70130', '0867526248', '2022-01-25', '2023-01-25');
 
 -- --------------------------------------------------------
 
@@ -78,8 +101,7 @@ CREATE TABLE `tbl_department` (
 
 INSERT INTO `tbl_department` (`DepartId`, `DepartName`) VALUES
 (1, 'Admin'),
-(2, 'Nuser'),
-(5, 'Docter');
+(2, 'Docter');
 
 -- --------------------------------------------------------
 
@@ -106,16 +128,17 @@ CREATE TABLE `tbl_lot` (
 
 CREATE TABLE `tbl_med` (
   `MedId` int(11) NOT NULL,
+  `TypeId` int(11) DEFAULT NULL,
+  `CateId` int(11) DEFAULT NULL,
+  `VolumnId` int(11) DEFAULT NULL,
+  `UnitId` int(11) DEFAULT NULL,
   `MedName` varchar(255) DEFAULT NULL,
-  `MedCate` varchar(255) DEFAULT NULL,
-  `MedVolumn` varchar(255) DEFAULT NULL,
-  `MedUnit` varchar(255) DEFAULT NULL,
   `MedPack` varchar(255) DEFAULT NULL,
   `MedPrice` varchar(255) DEFAULT NULL,
-  `MedLow` int(11) DEFAULT NULL,
   `MedDes` varchar(255) DEFAULT NULL,
   `MedIndi` varchar(255) DEFAULT NULL,
-  `MedType` varchar(255) DEFAULT NULL,
+  `MedExp` varchar(255) DEFAULT NULL,
+  `MedLow` int(11) DEFAULT NULL,
   `MedTotal` int(11) DEFAULT NULL,
   `MedPoint` int(11) DEFAULT NULL,
   `MedPath` varchar(255) DEFAULT NULL
@@ -125,10 +148,11 @@ CREATE TABLE `tbl_med` (
 -- Dumping data for table `tbl_med`
 --
 
-INSERT INTO `tbl_med` (`MedId`, `MedName`, `MedCate`, `MedVolumn`, `MedUnit`, `MedPack`, `MedPrice`, `MedLow`, `MedDes`, `MedIndi`, `MedType`, `MedTotal`, `MedPoint`, `MedPath`) VALUES
-(1, 'Abacavir (อะบาคาเวียร์)', 'Vitamins', '100 MG', 'Tablet', '50', '100', 50, 'เป็นยาต้านไวรัสในกลุ่มเอ็นอาร์ทีไอ (Nucleoside Reverse Transcriptase Inhibitors: NRTI) ที่แพทย์นำมาใช้ร่วมกับยารักษาการติดเชื้อเอชไอวีชนิดอื่น ออกฤทธิ์ลดจำนวนเชื้อเอชไอวีในร่างกายของผู้ป่วยที่ติดเชื้อ', 'ปริมาณการใช้ยา Abacavir\r\nผู้ใหญ่\r\nรับประทานยาปริมาณ 300 มิลลิกรัม 2 ครั้ง/วัน หรือ 600 มิลลิกรัม 1 ครั้ง/วัน ร่วมกับยาต้านรีโทรไวรัสชนิดอื่น\r\nเด็ก\r\nเด็กอายุ 3 เดือนขึ้นไปที่มีน้ำหนักตัว 14-20 กิโลกรัม รับประทานยาปริมาณ 150 มิลลิกรัม 2 ครั้ง/วัน หรือ 300 ม', 'Internal medicine', 0, 50, '1.Abacavir.jpg'),
-(2, 'Acetylcysteine (อะเซทิลซิสเทอีน)', 'Antipyretics', '500 MG', 'Tablet', '20', '200', 10, 'ยาขับเสมหะ หรือยาละลายเสมหะ ใช้รักษาอาการป่วยจากการรับประทานยาพาราเซตามอลเกินขนาด เพื่อป้องกันการเกิดความเสียหายที่ตับ', '1.	ผู้ใหญ่ และเด็กอายุมากกว่า 14 ปี รับประทานครั้งละ 1 แคปซูล=150 มิลลิกรัม 2-3 ครั้ง/วัน\r\n2.	เด็กอายุมากกว่า 6 ปี รับประทานยาหลังมื้ออาหารครั้งละ 1 แคปซูล=150 มิลลิกรัม 2 ครั้ง/วัน\r\n', 'ยารับประทาน', 0, 50, '2.Acetylcysteine.jpg'),
-(3, 'Acitretin (อาซิเทรติน)', 'Antibiotics', '300 MG', 'Tablet', '20', '200', 20, 'เป็นยาในกลุ่มเรตินอยด์ ใช้รักษาโรคผิวหนังแดริเออร์ โรคผิวหนังแห้งลอกแต่กำเนิด (Congenital Ichthyosis) โรคไลเคน พลานัส (Lichen Planus)', 'โรคแดริเออร์\r\nผู้ใหญ่ รับประทานยาปริมาณเริ่มต้น 10 มิลลิกรัม/วัน เป็นระยะเวลา 2-4 สัปดาห์\r\nผู้ใหญ่ รับประทานยาปริมาณเริ่มต้น 25 หรือ 30 มิลลิกรัม/วัน เป็นระยะเวลา 2-4 สัปดาห์\r\n', 'ยารับประทาน', 0, 50, '3.Acitretin.jpg');
+INSERT INTO `tbl_med` (`MedId`, `TypeId`, `CateId`, `VolumnId`, `UnitId`, `MedName`, `MedPack`, `MedPrice`, `MedDes`, `MedIndi`, `MedExp`, `MedLow`, `MedTotal`, `MedPoint`, `MedPath`) VALUES
+(1, 1, 1, 1, 1, 'Abacavir (อะบาคาเวียร์)', '12', '150', 'เป็นยาต้านไวรัสในกลุ่มเอ็นอาร์ทีไอ (Nucleoside Reverse Transcriptase Inhibitors: NRTI) ที่แพทย์นำมาใช้ร่วมกับยารักษาการติดเชื้อเอชไอวีชนิดอื่น ออกฤทธิ์ลดจำนวนเชื้อเอชไอวีในร่างกายของผู้ป่วยที่ติดเชื้อ', 'ปริมาณการใช้ยา Abacavir\r\nผู้ใหญ่\r\nรับประทานยาปริมาณ 300 มิลลิกรัม 2 ครั้ง/วัน หรือ 600 มิลลิกรัม 1 ครั้ง/วัน ร่วมกับยาต้านรีโทรไวรัสชนิดอื่น\r\nเด็ก\r\nเด็กอายุ 3 เดือนขึ้นไปที่มีน้ำหนักตัว 14-20 กิโลกรัม รับประทานยาปริมาณ 150 มิลลิกรัม 2 ครั้ง/วัน หรือ 300 ม', '365', 50, 0, 10, '1.Abacavir.jpg'),
+(2, 1, 1, 1, 1, 'Acetylcysteine (อะเซทิลซิสเทอีน)', '24', '100', 'ยาขับเสมหะ หรือยาละลายเสมหะ ใช้รักษาอาการป่วยจากการรับประทานยาพาราเซตามอลเกินขนาด เพื่อป้องกันการเกิดความเสียหายที่ตับ', 'ปริมาณการใช้ยา Acetylcysteine\r\n	แคปซูล\r\n	ผู้ใหญ่ และเด็กอายุมากกว่า 14 ปี รับประทานครั้งละ 1 แคปซูล=150 มิลลิกรัม 2-3 ครั้ง/วัน\r\n	เด็กอายุมากกว่า 6 ปี รับประทานยาหลังมื้ออาหารครั้งละ 1 แคปซูล=150 มิลลิกรัม 2 ครั้ง/วัน\r\n', '365', 10, 0, 50, '2.Acetylcysteine.jpg'),
+(4, 1, 4, 4, 1, 'Albendazole (อัลเบนดาโซล)', '6', '100', ' เป็นยารักษาการติดเชื้อที่เกิดจากพยาธิตัวกลมทุกชนิด เช่น พยาธิตัวตืด พยาธิไส้เดือน โดยยาจะออกฤทธิ์ด้วยการทำให้พยาธิไม่สามารถดูดซึมน้ำตาลในร่างกายไปใช้ จนพยาธิไม่มีพลังงานและตายลงในที่สุด', 'ปริมาณการใช้ยา Albendazole\r\nรักษาโรคพยาธิไส้เดือน เด็กและผู้ใหญ่รับประทาน 400 มิลลิกรัม เพียง 1 ครั้ง\r\nรักษาโรคจากไข่พยาธิตัวตืด เด็กและผู้ใหญ่ที่มีน้ำหนักน้อยกว่า 60 กิโลกรัม รับประทาน 15 มิลลิกรัม/น้ำหนักตัว 1 กิโลกรัม/วัน\r\n', '365', 10, 0, 50, '4.Albendazole.jpg'),
+(5, 1, 1, 1, 1, 'Acitretin (อาซิเทรติน)', '12', '50', 'เป็นยาในกลุ่มเรตินอยด์ ใช้รักษาโรคผิวหนังแดริเออร์ (Darier\'s Disease) โรคผิวหนังแห้งลอกแต่กำเนิด (Congenital Ichthyosis) โรคไลเคน พลานัส (Lichen Planus)', 'โรคแดริเออร์ ผู้ใหญ่ รับประทานยาปริมาณเริ่มต้น 10 มิลลิกรัม/วัน เป็นระยะเวลา 2-4 สัปดาห์ โรคผิวหนังแห้งลอกแต่กำเนิด โรคไลเคน พลานัส  ผู้ใหญ่ รับประทานยาปริมาณเริ่มต้น 25 หรือ 30 มิลลิกรัม/วัน เป็นระยะเวลา 2-4 สัปดาห์', '720', 30, 0, 50, '3.Acitretin.jpg');
 
 -- --------------------------------------------------------
 
@@ -224,9 +248,69 @@ CREATE TABLE `tbl_staff` (
 --
 
 INSERT INTO `tbl_staff` (`StaffId`, `StaffName`, `StaffPassword`, `StaffTel`, `StaffEmail`, `DepartId`) VALUES
-(4, 'admin', 'admin', '0867526248', 'tao_2349@hotmail.com', 1),
-(8, 'staff1', 'staff', '0123456789', '1111', 2),
-(9, 'Staff2', 'staff', '6686752624', 'test@gmail.com', 1);
+(1, 'admin', 'admin', '0867526248', 'wSinbunyama.gmail.com', 1),
+(2, 'staff', 'staff', '0867526248', 'wSinbunyama.gmail.com', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_type`
+--
+
+CREATE TABLE `tbl_type` (
+  `TypeId` int(11) NOT NULL,
+  `TypeName` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_type`
+--
+
+INSERT INTO `tbl_type` (`TypeId`, `TypeName`) VALUES
+(1, 'Internal medicine'),
+(2, 'External medicine');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_unit`
+--
+
+CREATE TABLE `tbl_unit` (
+  `UnitId` int(11) NOT NULL,
+  `UnitName` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_unit`
+--
+
+INSERT INTO `tbl_unit` (`UnitId`, `UnitName`) VALUES
+(1, 'Capsule'),
+(2, 'Pill');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_volumn`
+--
+
+CREATE TABLE `tbl_volumn` (
+  `VolumnId` int(11) NOT NULL,
+  `VolumnName` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_volumn`
+--
+
+INSERT INTO `tbl_volumn` (`VolumnId`, `VolumnName`) VALUES
+(1, '300 mg'),
+(2, '600 mg'),
+(3, '25 mg'),
+(4, '400 mg'),
+(5, '50 ml'),
+(6, '100 mg');
 
 -- --------------------------------------------------------
 
@@ -278,6 +362,12 @@ CREATE TABLE `tbl_writeoff` (
 --
 
 --
+-- Indexes for table `tbl_cate`
+--
+ALTER TABLE `tbl_cate`
+  ADD PRIMARY KEY (`CateId`);
+
+--
 -- Indexes for table `tbl_claim`
 --
 ALTER TABLE `tbl_claim`
@@ -311,7 +401,11 @@ ALTER TABLE `tbl_lot`
 -- Indexes for table `tbl_med`
 --
 ALTER TABLE `tbl_med`
-  ADD PRIMARY KEY (`MedId`);
+  ADD PRIMARY KEY (`MedId`),
+  ADD KEY `TypeId` (`TypeId`),
+  ADD KEY `VolumnId` (`VolumnId`),
+  ADD KEY `UnitId` (`UnitId`),
+  ADD KEY `CateId` (`CateId`);
 
 --
 -- Indexes for table `tbl_order`
@@ -361,6 +455,24 @@ ALTER TABLE `tbl_staff`
   ADD KEY `DepartId` (`DepartId`);
 
 --
+-- Indexes for table `tbl_type`
+--
+ALTER TABLE `tbl_type`
+  ADD PRIMARY KEY (`TypeId`);
+
+--
+-- Indexes for table `tbl_unit`
+--
+ALTER TABLE `tbl_unit`
+  ADD PRIMARY KEY (`UnitId`);
+
+--
+-- Indexes for table `tbl_volumn`
+--
+ALTER TABLE `tbl_volumn`
+  ADD PRIMARY KEY (`VolumnId`);
+
+--
 -- Indexes for table `tbl_withdraw`
 --
 ALTER TABLE `tbl_withdraw`
@@ -390,6 +502,12 @@ ALTER TABLE `tbl_writeoff`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_cate`
+--
+ALTER TABLE `tbl_cate`
+  MODIFY `CateId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `tbl_claim`
 --
 ALTER TABLE `tbl_claim`
@@ -405,7 +523,7 @@ ALTER TABLE `tbl_dealer`
 -- AUTO_INCREMENT for table `tbl_department`
 --
 ALTER TABLE `tbl_department`
-  MODIFY `DepartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `DepartId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_lot`
@@ -417,7 +535,7 @@ ALTER TABLE `tbl_lot`
 -- AUTO_INCREMENT for table `tbl_med`
 --
 ALTER TABLE `tbl_med`
-  MODIFY `MedId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `MedId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_order`
@@ -453,7 +571,25 @@ ALTER TABLE `tbl_receiveddetail`
 -- AUTO_INCREMENT for table `tbl_staff`
 --
 ALTER TABLE `tbl_staff`
-  MODIFY `StaffId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `StaffId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_type`
+--
+ALTER TABLE `tbl_type`
+  MODIFY `TypeId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_unit`
+--
+ALTER TABLE `tbl_unit`
+  MODIFY `UnitId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbl_volumn`
+--
+ALTER TABLE `tbl_volumn`
+  MODIFY `VolumnId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_withdraw`
@@ -492,6 +628,15 @@ ALTER TABLE `tbl_claim`
 ALTER TABLE `tbl_lot`
   ADD CONSTRAINT `tbl_lot_ibfk_1` FOREIGN KEY (`MedId`) REFERENCES `tbl_med` (`MedId`),
   ADD CONSTRAINT `tbl_lot_ibfk_2` FOREIGN KEY (`RecClaimid`) REFERENCES `tbl_recclaim` (`RecClaimid`);
+
+--
+-- Constraints for table `tbl_med`
+--
+ALTER TABLE `tbl_med`
+  ADD CONSTRAINT `tbl_med_ibfk_1` FOREIGN KEY (`TypeId`) REFERENCES `tbl_type` (`TypeId`),
+  ADD CONSTRAINT `tbl_med_ibfk_3` FOREIGN KEY (`VolumnId`) REFERENCES `tbl_volumn` (`VolumnId`),
+  ADD CONSTRAINT `tbl_med_ibfk_4` FOREIGN KEY (`UnitId`) REFERENCES `tbl_unit` (`UnitId`),
+  ADD CONSTRAINT `tbl_med_ibfk_5` FOREIGN KEY (`CateId`) REFERENCES `tbl_cate` (`CateId`);
 
 --
 -- Constraints for table `tbl_order`

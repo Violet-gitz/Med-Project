@@ -4,6 +4,13 @@ go to path Project
 run composer require mpdf/mpdf
 
 
+create table tbl_department
+(
+	DepartId int not null AUTO_INCREMENT,
+	DepartName varchar(255),
+	Primary key (DepartId)
+)
+
 create table tbl_staff
 (
 	StaffId int not null AUTO_INCREMENT,
@@ -16,12 +23,7 @@ create table tbl_staff
 	Foreign key (DepartId) REFERENCES tbl_department(DepartId)
 )
 
-create table tbl_department
-(
-	DepartId int not null AUTO_INCREMENT,
-	DepartName varchar(255),
-	Primary key (DepartId)
-)
+
 
 create table tbl_dealer
 (
@@ -75,7 +77,7 @@ create table tbl_med
 	MedPrice varchar(255),
 	MedDes varchar(255),
 	MedIndi varchar(255),
-	MedExp varcahar (255),
+	MedExp varchar (255),
 	MedLow int,
 	MedTotal int,
 	MedPoint int,
@@ -231,11 +233,4 @@ ALTER TABLE tbl_lot
 ADD FOREIGN KEY (RecClaimid) REFERENCES tbl_recclaim(RecClaimid);
 
 
-https://www.ihasco.co.uk/blog/entry/2255/what-are-the-categories-of-medication
-
-General Sales List
-Pharmacy Medicines
-Prescription Only Medicines
-Controlled Drugs
- 
 

@@ -191,7 +191,6 @@
  
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-            List Approve
            </div>
             <thead >
             <tr>

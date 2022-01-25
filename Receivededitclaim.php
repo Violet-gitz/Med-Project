@@ -15,11 +15,24 @@
         header('location: login.php');
     }
 
+      
+    $staff =  $_SESSION['StaffName'];
+    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+    $result = $conn->query($sql);
+    $data = array();
+        while($row = $result->fetch_assoc()) 
+        {
+            $data[] = $row;  
+        }
+        foreach($data as $key => $staff){      
+
+        }
+
 
     if (isset($_REQUEST['Edit'])) {
         
             $id = $_REQUEST['Edit'];
-            $sql ="SELECT * FROM tbl_recclaim WHERE RecClaimid = $id";
+            $sql ="SELECT * FROM tbl_recclaim WHERE ClaimId = $id";
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) {
@@ -61,8 +74,6 @@
             }
         }
 
-        
-
 
     if (isset($_REQUEST['btn_received'])) {
         $i = 0;
@@ -98,7 +109,7 @@
     }
 
         $claim = $_REQUEST['txt_OrderId'];
-        $staff = $_REQUEST['RecName'];
+
         date_default_timezone_set("Asia/Bangkok");
         $RecTime = date("Y-m-d h:i:sa");
         $RecDeli = $_REQUEST['txt_delivery'];
@@ -107,8 +118,6 @@
 
         if (empty($claim)) {
             $errorMsg = "Please Enter Lot Id";
-        } else if (empty($staff)) {
-            $errorMsg = "Please Enter Received Name";
         } else if (empty($RecDeli)) {
             $errorMsg = "Please Enter Received Delivery";
         } else 
@@ -170,18 +179,7 @@
     } //catch (PDOException $e) {
        //echo $e->getMessage();
                     
-            
-             $staff =  $_SESSION['StaffName'];
-             $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
-             $result = $conn->query($sql);
-             $data = array();
-                 while($row = $result->fetch_assoc()) 
-                 {
-                     $data[] = $row;  
-                 }
-                 foreach($data as $key => $staff){      
-     
-                 }
+          
 
 ?>
 <!DOCTYPE html>
@@ -256,6 +254,27 @@
     
 
         <form method="post" class="form-horizontal mt-5" name="myform">
+            
+        <?php
+            $MedId = $claim["MedId"];
+            $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+            $result = $conn->query($sqli);
+            $data = array();
+            while($row = $result->fetch_assoc()) {
+            $data[] = $row;   
+            }             
+            foreach($data as $key => $med){         
+        ?>
+
+        <div class="container">
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Name" class="col-sm-3 control-label"></label>
+                        <div class="col-sm-7">
+                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group text-center">
                 <div class="row">
@@ -292,61 +311,6 @@
                     </div>
                 </div>
             </div>
-        
-            <div class="form-group text-center">
-                <div class="row">
-                    <label class="col-sm-3 control-label">Received Name</label>
-                        <div class="col-sm-1">
-                            <select name="RecName">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_staff';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) 
-                                        {
-                                            $data[] = $row;   
-                                        }
-                                        foreach($data as $key => $staff){                  
-                                ?>
-                                    <option value ="<?php echo $staff["StaffId"];?>"><?php echo $staff["StaffName"];?></option>
-                                <?php } ?>      
-                            </select><br>
-                        </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_delivery" class="form-control" value="<?php echo $reclaim["RecClaimdate"]; ?>">
-                    </div>
-                </div>
-            </div>
-
-            <?php
-                    $MedId = $claim["MedId"];
-                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                    $result = $conn->query($sqli);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                    $data[] = $row;   
-                    }
-                    
-                    foreach($data as $key => $med){
-                        
-                   
-            ?>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Name" class="col-sm-3 control-label">Pictures</label>
-                        <div class="col-sm-7">
-                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
-                    </div>
-                </div>
-            </div>
-
 
             <div class="form-group text-center">
                 <div class="row">
@@ -395,6 +359,15 @@
 
             <div class="form-group text-center">
                 <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_delivery" class="form-control" value="<?php echo $reclaim["RecClaimdate"]; ?>">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">MFD Date</label>
                     <div class="col-sm-1">
                     <input type="date"  name="mfd"
@@ -426,8 +399,7 @@
                     <a href="ClaimReceived.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
-
-            
+        </div>      
         </form>
 
     <script src="js/slim.js"></script>

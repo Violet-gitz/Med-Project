@@ -15,6 +15,17 @@
         header('location: login.php');
     }
 
+    $staff =  $_SESSION['StaffName'];
+    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+    $result = $conn->query($sql);
+    $data = array();
+        while($row = $result->fetch_assoc()) 
+        {
+            $data[] = $row;  
+        }
+        foreach($data as $key => $staff){      
+            $staffid = $staff["StaffId"];
+        }
 
     if (isset($_REQUEST['Claim_id'])) {
         
@@ -86,7 +97,6 @@
     }
 
         $Claimid = $_REQUEST['txt_ClaimId'];
-        $staff = $_REQUEST['RecName'];
         date_default_timezone_set("Asia/Bangkok");
         $RecTime = date("Y-m-d h:i:sa");
         $RecDeli = $_REQUEST['txt_delivery'];
@@ -95,29 +105,19 @@
 
          if (empty($Claimid)) {
             $errorMsg = "Please Enter Lot Id";
-        } else if (empty($staff)) {
-            $errorMsg = "Please Enter Received Name";
-        }  else if (empty($RecDeli)) {
+        }else if (empty($RecDeli)) {
             $errorMsg = "Please Enter Received Delivery";
-        }  else 
+        }else 
 
                 if (!isset($errorMsg)) {
 
-                    $sql = "INSERT INTO tbl_recclaim(ClaimId,StaffId,RecClaimName,RecClaimdate) VALUES ('$Claimid',  '$staff', '$RecTime', '$RecDeli')";
+                    $sql = "INSERT INTO tbl_recclaim(ClaimId,StaffId,RecClaimName,RecClaimdate) VALUES ('$Claimid',  '$staffid', '$RecTime', '$RecDeli')";
                     if ($conn->query($sql) === TRUE) {   
                     } else {
                         echo "Error updating record: " . $conn->error;
                     }
 
-                    // $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
-                    // $result = $conn->query($sql);
-                    // $data = array();
-                    // while($row = $result->fetch_assoc()) {
-                    // $data[] = $row;  
-                    // }
-                    // foreach($data as $key => $orderdetailid){
-                    
-                    // }
+            
                   
                     $sql = "UPDATE tbl_claim SET ClaimStatus = 'Received' WHERE ClaimId = $Claimid";
                     if ($conn->query($sql) === TRUE) {
@@ -130,6 +130,7 @@
                     $row = mysqli_fetch_array($result);
                     $RecClaimid = $row["RecClaimid"];
 
+                        $Reserve = '0';
                         $LotId = $Claim["LotId"];
                         $MedQty = $Claim["Qty"];
                         $MedTotal = $med["MedTotal"];
@@ -147,34 +148,11 @@
                         }else
                             if(!isset($errorMsg)) 
                             {
-                                $sql = "INSERT INTO tbl_lot(Qty, MedId,LotStatus,RecClaimid,Mfd,Exd) VALUES ('$MedQty', '$MedId','$LotStatus','$RecClaimid','$MfdDate','$ExpDate')";
+                                $sql = "INSERT INTO tbl_lot(Qty, MedId,LotStatus,RecClaimid,Mfd,Exd,Reserve) VALUES ('$MedQty','$MedId','$LotStatus','$RecClaimid','$MfdDate','$ExpDate','$Reserve')";
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {
                                     echo "Error updating record: " . $conn->error;
                                 }
-
-                                // $sql = "UPDATE tbl_lot SET LotStatus = 'Avialable',RecClaimid = $RecClaimid  WHERE LotId = $LotId";
-                                // if ($conn->query($sql) === TRUE) { 
-                                // } else {
-                                //     echo "Error updating record: " . $conn->error;
-                                // }
-
-                                // $sql = "UPDATE tbl_receiveddetail SET Mfd = $MfdDate,Exd = $ExpDate  WHERE LotId = $LotId and MedId = $MedId";
-                                // if ($conn->query($sql) === TRUE) { 
-                                // } else {
-                                //     echo "Error updating record: " . $conn->error;
-                                // }
-                                // $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
-                                // $result = mysqli_query($conn, $query); 
-                                // $row = mysqli_fetch_array($result);
-                                // $LotId = $row["LotId"];
-        
-                                // $Qty = $orderdetailid["Qty"];
-                                // $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$Qty', '$MfdDate', '$ExpDate')";
-                                // if ($conn->query($sql) === TRUE) { 
-                                // } else {
-                                //     echo "Error updating record: " . $conn->error;
-                                // }
 
                                 $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
                                 if ($conn->query($sql) === TRUE) {
@@ -189,17 +167,7 @@
                     header("refresh:1;main.php");
                 }
 
-                $staff =  $_SESSION['StaffName'];
-                $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
-                $result = $conn->query($sql);
-                $data = array();
-                    while($row = $result->fetch_assoc()) 
-                    {
-                        $data[] = $row;  
-                    }
-                    foreach($data as $key => $staff){      
-        
-                    }
+
 
 ?>
 <!DOCTYPE html>
@@ -274,6 +242,31 @@
     
 
         <form method="post" class="form-horizontal mt-5" name="myform">
+       
+        <?php
+                    $MedId = $Claim["MedId"];
+                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                    $result = $conn->query($sqli);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;   
+                    }
+                    
+                    foreach($data as $key => $med){
+                        
+                   
+            ?>
+
+        <div class="container">    
+            
+            <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine Name" class="col-sm-3 control-label"></label>
+                            <div class="col-sm-7">
+                            <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group text-center">
                 <div class="row">
@@ -310,62 +303,8 @@
                     </div>
                 </div>
             </div>
+
         
-            
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label class="col-sm-3 control-label">Received Name</label>
-                        <div class="col-sm-1">
-                            <select name="RecName">       
-                                <?php 
-                                    $sql = 'SELECT * FROM tbl_staff';
-                                    $result = $conn->query($sql);
-                                    $data = array();
-                                    while($row = $result->fetch_assoc()) 
-                                        {
-                                            $data[] = $row;   
-                                        }
-                                        foreach($data as $key => $staff){                  
-                                ?>
-                                    <option value ="<?php echo $staff["StaffId"];?>"><?php echo $staff["StaffName"];?></option>
-                                <?php } ?>      
-                            </select><br>
-                        </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
-                    </div>
-                </div>
-            </div>
-
-            <?php
-                    $MedId = $Claim["MedId"];
-                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                    $result = $conn->query($sqli);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                    $data[] = $row;   
-                    }
-                    
-                    foreach($data as $key => $med){
-                        
-                   
-            ?>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Name" class="col-sm-3 control-label">Pictures</label>
-                        <div class="col-sm-7">
-                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
-                    </div>
-                </div>
-            </div>
 
 
             <div class="form-group text-center">
@@ -404,6 +343,15 @@
                 </div>
             </div>
 
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
+                    </div>
+                </div>
+            </div>
+
 
             <div class="form-group text-center">
                 <div class="row">
@@ -438,7 +386,7 @@
                     <a href="CheckClaim.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
-
+        </div>
             
         </form>
 

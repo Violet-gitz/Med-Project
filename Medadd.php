@@ -19,7 +19,7 @@
         
         $MedName = $_REQUEST['txt_MedName'];
         $MedDes = $_REQUEST['txt_MedDes'];
-        $MedIndi = $_REQUEST['txt_MedIndi'];
+        $MedIndi = $_REQUEST["txt_MedIndi"];
         $MedCate = $_REQUEST['dropdownlist-MedCate'];
         $MedVolumn = $_REQUEST['dropdownlist-MedVolumn'];
         $MedUnit = $_REQUEST['dropdownlist-MedUnit'];
@@ -40,8 +40,6 @@
         
         if (empty($MedName)) {
             $errorMsg = "Please enter Medicine Name";
-        }else if (empty($MedDes)) {
-            $errorMsg = "Please Enter Medicine Description";
         }else if (empty($MedCate)) {
             $errorMsg = "Please Enter Medicine Catetory";
         }else if (empty($MedVolumn)) {
@@ -54,8 +52,6 @@
             $errorMsg = "Please Enter Medicine Price";
         }else if (empty($MedLow)) {
             $errorMsg = "Please Enter Medicine Minimum purchase";
-        }else if (empty($MedIndi)) {
-            $errorMsg = "Please Enter Medicine Indication";
         }else if (empty($MedPoint)) {
             $errorMsg = "Please Enter Point of Order";
         }else if (empty($MedType)) {
@@ -70,7 +66,7 @@
             $errorMsg =  "Medicine already exists";
         }
         else {
-        $sql = "INSERT INTO tbl_med(MedName , CateId , VolumnId , UnitId , MedPack , MedPrice , MedLow , MedDes , MedPoint , MedTotal , MedPath , MedIndi , TypeId , MedExp) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedPoint', '$MedTotal', '$MedPath' , '$MedIndi' , '$MedType' , '$MedExp')";
+        $sql = "INSERT INTO tbl_med(MedName,CateId,VolumnId,UnitId,MedPack,MedPrice,MedLow,MedDes,MedPoint,MedTotal,MedPath,MedIndi,TypeId,MedExp) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedPoint', '$MedTotal', '$MedPath' , '$MedIndi' , '$MedType' , '$MedExp')";
         if ($conn->query($sql) === TRUE){
             $insertMsg = "Insert Successfully...";
             header("refresh:1;Medshow.php");
