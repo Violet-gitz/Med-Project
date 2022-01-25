@@ -47,7 +47,7 @@
                     while($row = $result->fetch_assoc()) {
                         $data[] = $row;   
                     }
-                    foreach($data as $key => $staff){}
+                    foreach($data as $key => $Staff){}
         }
     }
 
@@ -123,8 +123,8 @@
                     if ($conn->query($sql) === TRUE) { 
                     } else {
                      echo "Error updating record: " . $conn->error;
-    }$updateMsg = "Record update successfully...";
-    header("refresh:1;main.php");
+    }
+    header("refresh:1;Approve.php");
     }
 }
 
@@ -270,7 +270,7 @@ $data = array();
         <div class="row">
             <label for="Tel" class="col-sm-3 control-label">Withdraw Name</label>
                 <div class="col-sm-7">
-                    <input type="text" name="txt_StaffName" class="form-control" value="<?php echo $staff["StaffName"]; ?>" readonly>
+                    <input type="text" name="txt_StaffName" class="form-control" value="<?php echo $Staff["StaffName"]; ?>" readonly>
             </div>
         </div>
     </div>

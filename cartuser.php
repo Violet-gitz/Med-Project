@@ -238,7 +238,7 @@
     <?php } ?>
 
   
-    <form name="frmcart" method="post" >
+    <form name="frmcart" method="post" action = "usertest.php">
       <table width="600" border="0" align="center" class="square">
         <tr>
           <td colspan="5" bgcolor="#CCCCCC">
@@ -283,12 +283,15 @@
             echo "</tr>";
     ?>
     <tr>
-    <td><a href="Mainuser.php" class="btn btn-success">Medicine</a></td>
-    </tr>
+    
     </table>
+   
+
                         <div class="form-group text-center">
-                                <div class="col-md-12 mt-3">
-                                <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order">
+                            <div class="col-md-12 mt-3">
+                                <input type="submit" name = "Order"class = "btn btn-info" value = "Order">
+                                <input type ="hidden" name = "StaffId" value = "<?php echo $staff["StaffId"];?>">
+                                <a href="Mainuser.php" class="btn btn-danger">Back</a>
                             </div>
                         </div>
                   

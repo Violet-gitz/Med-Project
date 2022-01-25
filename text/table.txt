@@ -232,5 +232,9 @@ create table tbl_recclaim
 ALTER TABLE tbl_lot
 ADD FOREIGN KEY (RecClaimid) REFERENCES tbl_recclaim(RecClaimid);
 
+ALTER TABLE tbl_med
+ADD Foreign key (CateId) REFERENCES tbl_cate(CateId);
+
+
 
 

@@ -192,7 +192,8 @@
                         
                         if($diff->format('%R%a')<=$Medexp)
                         {
-                            $errorMsg ="Error,Please enter a new expiration date. ";
+                            $errorMsg ="Error,Please enter a new expiration date. ". $Medexp;
+                            header("refresh:2;CheckReceived.php");
                         }else
                             if(!isset($errorMsg)) 
                             {
@@ -216,6 +217,8 @@
                                     $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  LotId = $LotId";
                                     $i++;
                                     if ($conn->query($sql) === TRUE) { 
+                                        $insertMsg = "Insert Successfully...";
+                                        header("refresh:1;lot.php");
                                     } else {
                                         echo "Error updating record: " . $conn->error;
                                     }
@@ -235,8 +238,8 @@
                                 // }
                             }
                         }
-                    }$updateMsg = "Record update successfully...";
-                    header("refresh:1;main.php");
+                    }
+                    
             }
             
         } 

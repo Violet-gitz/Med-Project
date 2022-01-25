@@ -193,7 +193,7 @@
                         
                         if($diff->format('%R%a')<=$Medexp)
                         {
-                            $errorMsg ="Error,Please enter a new expiration date. ";
+                            $errorMsg ="Error,Please enter a new expiration date. ". $Medexp ;
 
                             $sql = "DELETE FROM tbl_received where RecId = '".$RecId."'";
                             if($conn->query($sql) == TRUE){}
@@ -204,7 +204,7 @@
                             } else {
                                 echo "Error updating record: " . $conn->error;
                             }
-                            // header("refresh:1;CheckOrder.php");
+                            header("refresh:2;CheckOrder.php");
                         }else
                             if(!isset($errorMsg)) 
                             {
@@ -228,7 +228,8 @@
 
                                 $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
                                 if ($conn->query($sql) === TRUE) {
-                                    
+                                    $insertMsg = "Insert Successfully...";
+                                    header("refresh:1;lot.php");
                                 } else {
                                   echo "Error updating record: " . $conn->error;
                                 }
@@ -236,8 +237,7 @@
                             }
                         }
                     }
-                    $insertMsg = "Insert Successfully...";
-                    header("refresh:1;main.php");
+                    
                 }
                 
         } //catch (PDOException $e) {
@@ -355,6 +355,15 @@
                     </div>
                 </div>
             </div>
+         
+            <div class="form-group text-center">
+                <div class="row">
+                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
+                    </div>
+                </div>
+            </div>
 
           
             <?php
@@ -434,16 +443,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Delivery name</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_delivery" class="form-control"  placeholder="Please enter delivery name..">
-                    </div>
-                </div>
-            </div>
-
 
             <div class="form-group text-center">
                 <div class="row">

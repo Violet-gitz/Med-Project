@@ -129,7 +129,7 @@
                 }
             }      
             $insertMsg = "Insert Successfully...";
-            header("refresh:1;main.php");
+            header("refresh:1;lot.php");
         }
     }
 
@@ -233,7 +233,7 @@
                 }
             }      
             $insertMsg = "Insert Successfully...";
-            header("refresh:1;main.php");
+            header("refresh:1;lot.php");
         }
 
     }
@@ -403,6 +403,7 @@
             echo                '<input type="text" name="txt_Lot" class="form-control" value="'.$lot["LotId"].'" readonly>';
             echo            '</div>';
             echo    '</div>';
+            echo '</div>';
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
@@ -562,6 +563,7 @@
             echo '<input type="hidden" name="txt_derler1" value="'.$Dealer["DealerId"].'">';
             
             echo '<div class="container">';
+
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
             echo        '<label for="Tel" class="col-sm-3 control-label"></label>';
@@ -569,8 +571,8 @@
             echo '<div><img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"].'"</div>';
             echo            '</div>';
             echo    '</div>';
+            echo '</div>';
 
-            echo '<div class="container">';
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
             echo        '<label for="Tel" class="col-sm-3 control-label">Lot</label>';
@@ -578,6 +580,7 @@
             echo                '<input type="text" name="txt_Lot" class="form-control" value="'.$lot["LotId"].'" readonly>';
             echo            '</div>';
             echo    '</div>';
+            echo '</div>';
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';

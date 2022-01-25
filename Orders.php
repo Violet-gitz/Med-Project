@@ -179,7 +179,7 @@
         </div>
     <?php } ?>
 
-        <div class="container mt-5">
+        <div class="container mt-6">
             <div class="row">
                 <?php 
                     
@@ -201,24 +201,62 @@
                 ?>
                     <div class="col-md-4">
                     <form action = "Order.php" method="post">
+                        <table>
                             <div>
                                 <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $Med["MedPath"]; ?>"> </div> 
                             </div>
-                            <div>
-                                <h5><?php echo "Name  " . $Med["MedName"]; ?></h5> 
-                                <!-- <h5><?php echo "Description  " . $Med["MedDes"]; ?></h5>  -->
-                                <!-- <h5><div class = "Product-title"><?php echo "Description : "?><textarea id="w3review" name="txt_MedIndi" rows="6" cols="28"><?php echo $Med["MedDes"]?></textarea></div></h5> -->
-                                <h5><?php echo "Category  " . $Med["CateName"]; ?></h5> 
-                                <h5><?php echo "Volumn  " . $Med["VolumnName"]; ?></h5> 
-                                <h5><?php echo "Unit  " . $Med["UnitName"]; ?></h5> 
-                                <h5><?php echo "Unit Per Pack  " . $Med["MedPack"] . " Unit"; ?></h5> 
-                                <h5><?php echo "Price Per Pack  " . $Med["MedPrice"] . " Bath"; ?></h5> 
-                                <input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p>
+                            
+
+                            <tr>
+                                <th>Name</th>
+                                <th><?php echo $Med["MedName"]; ?></th>
+                            </tr>
+
+                            <tr>
+                                <td>Description</td>
+                                <td><textarea id="w3review" name="txt_MedIndi" rows="6" cols="22"><?php echo $Med["MedDes"]?></textarea></td>
+                            </tr>
+
+                            <tr>
+                                <td>Category</td>
+                                <td><?php echo $Med["CateName"]; ?></td>
+                            </tr>
+
+                            <tr>
+                                <td>Volumn</td>
+                                <td><?php echo $Med["VolumnName"]; ?></td>
+                            </tr>
+
+                            <tr>
+                                <td>Unit</td>
+                                <td><?php echo $Med["UnitName"]; ?></td>
+                            </tr>
+
+                            <tr>
+                                <td>Pack</td>
+                                <td><?php echo $Med["MedPack"]; ?></td>
+                            </tr>
+
+                            <tr>
+                                <td>Price</td>
+                                <td><?php echo $Med["MedPrice"]; ?></td>
+                            </tr>
+
+                            <tr>
+                                <td>Quantity</td>
+                                <td><input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p></td>
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
-                                <input type="submit" class = "btn btn-info" value = "Add to cart"> 
+                            </tr>
+
+                            <tr>
+                                <td><input type="submit" class = "btn btn-info" value = "Add to cart"> </td>
+                            </tr>
+                              
                             </div>
+                        
                     </form>
+                    </table>
                     </div>
                 
             

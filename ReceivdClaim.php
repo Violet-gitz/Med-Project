@@ -115,9 +115,7 @@
                     if ($conn->query($sql) === TRUE) {   
                     } else {
                         echo "Error updating record: " . $conn->error;
-                    }
-
-            
+                    }          
                   
                     $sql = "UPDATE tbl_claim SET ClaimStatus = 'Received' WHERE ClaimId = $Claimid";
                     if ($conn->query($sql) === TRUE) {
@@ -130,6 +128,7 @@
                     $row = mysqli_fetch_array($result);
                     $RecClaimid = $row["RecClaimid"];
 
+                        $Medexp = $med["MedExp"];
                         $Reserve = '0';
                         $LotId = $Claim["LotId"];
                         $MedQty = $Claim["Qty"];
@@ -142,9 +141,20 @@
                         $diff=date_diff($datemfd,$dateexp);
                         // echo $diff->format('%R%a');
                         
-                        if($diff->format('%R%a')<=30)
+                        if($diff->format('%R%a')<=$Medexp)
                         {
-                            $errorMsg ="Error,Please enter a new expiration date. ";
+                            $errorMsg ="Error,Please enter a new expiration date. ". $Medexp;
+
+                            $sql = "DELETE FROM tbl_recclaim where RecClaimid = '".$RecClaimid."'";
+                            if($conn->query($sql) == TRUE){}
+                            else{}
+
+                            $sql = "UPDATE tbl_claim SET ClaimStatus = 'Claim' WHERE $Claimid=Claimid";
+                            if ($conn->query($sql) === TRUE) {
+                            } else {
+                                echo "Error updating record: " . $conn->error;
+                            }
+                            header("refresh:2;CheckClaim.php");
                         }else
                             if(!isset($errorMsg)) 
                             {
@@ -156,15 +166,15 @@
 
                                 $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
                                 if ($conn->query($sql) === TRUE) {
-                                    
+                                    $insertMsg = "Insert Successfully...";
+                                    header("refresh:1;lot.php");
                                 } else {
                                   echo "Error updating record: " . $conn->error;
                                 }
                             }
                     
                     }
-                    $updateMsg = "Record update successfully...";
-                    header("refresh:1;main.php");
+                  
                 }
 
 

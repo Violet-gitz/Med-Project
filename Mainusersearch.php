@@ -24,6 +24,12 @@
             unset($_SESSION['StaffUsername']);
             header('location: login.php');
         }
+
+
+        if (isset($_REQUEST['submit'])) {
+            $search = $_REQUEST['textsearch'];
+           
+        }
  
         $staff =  $_SESSION['StaffName'];
         $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -37,7 +43,52 @@
 
             }
 
-            
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        ini_set('display_errors', 1);
+                        ini_set('display_startup_errors', 1);
+                        error_reporting(E_ALL);
+                        date_default_timezone_set("Asia/Bangkok");
+                        $sToken = "5QZMmRQRyNbvtvPsg0utZxUal4y02ag6Ec1Eqhrz1ch";
+        
+                        $medname = $med["MedName"];
+                    
+                        $sMessage = $medname ." was reached reorder point !";
+                        $chOne = curl_init(); 
+                        curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
+                        curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
+                        curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
+                        curl_setopt( $chOne, CURLOPT_POST, 1); 
+                        curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
+                        $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
+                        curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
+                        curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1);
+                        $result = curl_exec( $chOne ); 
+                        //Result error 
+                            if(curl_error($chOne)) 
+                            { 
+                                echo 'error:' . curl_error($chOne);
+                            } 
+                            else 
+                            { 
+                                $result_ = json_decode($result, true); 
+                                    // echo "status : ".$result_['status']; echo "message : ". $result_['message'];
+                            } 
+                                curl_close( $chOne );
+                    }
+                }
+
           
                     
 ?>
@@ -129,16 +180,21 @@
 
             <tbody>
                 <?php       
-                        $sumReserve = 0; 
-                                   
-                        $sql = 'SELECT * FROM tbl_med';
+                        $sumReserve = 0;             
+                        $sql = "SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+                        FROM tbl_med
+                        INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
+                        INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
+                        INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
+                        INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId
+                        WHERE MedName LIKE '%{$search}%' OR TypeName LIKE '%{$search}%' OR CateName LIKE '%{$search}%' OR VolumnName LIKE '%{$search}%' OR UnitName LIKE '%{$search}%'";
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
                         foreach($data as $key => $Med){
-                            $sum = 0; 
+                            
                             $medtotal = $Med["MedTotal"];
                             $medid = $Med["MedId"];
 
@@ -161,7 +217,7 @@
                         <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                         <td><?php echo $Med["MedName"]; ?></td>
                         <td><?php echo $Med["MedDes"]; ?></td>
-                        <td><?php echo $sum; ?></td>
+                        <td><?php echo $medtotal - $sumReserve; ?></td>
                         <td><input type="number" name="quantity" min="1" max="<?php echo $medtotal - $sumReserve; ?>" value= "1"></td>
                         <td><input type="submit" class = "btn btn-info" value = "Add to cart"></td>
                         <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">

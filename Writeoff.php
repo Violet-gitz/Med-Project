@@ -141,8 +141,8 @@
 
                     
                     if ($insert_stmt->execute()) {
-                        $insertMsg = "Insert Successfully...";
-                        header("refresh:1;main.php");
+                        
+                        header("refresh:1;Writeoffshow.php");
                     }
                 }
             } catch (PDOException $e) {

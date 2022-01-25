@@ -132,7 +132,8 @@
                     }
                     foreach($data as $key => $reclaim)
                     {
-                        $sql = "SELECT* FROM tbl_claim WHERE ClaimId = $claim";
+                        $idclaim = $reclaim["ClaimId"];
+                        $sql = "SELECT* FROM tbl_claim WHERE ClaimId = $idclaim";
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) {
@@ -150,6 +151,7 @@
                             }
                             foreach($data as $key => $med){
 
+                            $Medexp = $med["MedExp"];
                             $MfdDate = $_REQUEST["mfd"];
                             $ExpDate = $_REQUEST["exd"];
                             $datemfd=date_create($MfdDate);
@@ -157,21 +159,24 @@
                             $diff=date_diff($datemfd,$dateexp);
                             // echo $diff->format('%R%a');
                             
-                            if($diff->format('%R%a')<=30)
+                            if($diff->format('%R%a')<= $Medexp)
                             {
-                                $errorMsg ="Error,Please enter a new expiration date. ";
+                                $errorMsg ="Error,Please enter a new expiration date. " . $Medexp;
+                                header("refresh:2;ClaimReceived.php");
                             }else
                                 if(!isset($errorMsg)) 
                                 {
                                     $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  RecClaimid = $recClaimid";
                                     if ($conn->query($sql) === TRUE) { 
+                                        $insertMsg = "Insert Successfully...";
+                                        header("refresh:1;lot.php");
                                     } else {
                                         echo "Error updating record: " . $conn->error;
                                     }
                                 }
                             
-                        }$updateMsg = "Record update successfully...";
-                        header("refresh:1;main.php");
+                        }
+                        
                         }
                 }
         } 

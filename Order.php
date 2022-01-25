@@ -35,52 +35,7 @@
             }
         }*/
         
-        if (isset($_REQUEST['btn-Order'])) 
-        {
-            date_default_timezone_set("Asia/Bangkok");
-            $OrderDate = date("Y-m-d h:i:sa");
-            $OrderStatus = "Ordering";
-            $OrderPrice = $_REQUEST["total"];
-            $OrderTotal = ($OrderPrice * 0.07)+$OrderPrice;
-            $DealerId = $_REQUEST['selDealer'];
-            $StaffName = $_SESSION['StaffName'];
-            
-                if (empty($_SESSION['cart']))
-                {
-                $errorMsg = "Please Select Medicine";
-                header("refresh:1;Medshow.php");
-                }else 
-                    if (!isset($errorMsg)) 
-                    {
-                        $sql = "INSERT INTO tbl_order(OrderDate, OrderStatus, OrderPrice, OrderTotal, DealerId, StaffName ) VALUES ('$OrderDate', '$OrderStatus', '$OrderPrice','$OrderTotal', '$DealerId', '$StaffName')";
-                        if ($conn->query($sql) === TRUE) {} 
-                        else {echo "Error updating record: " . $conn->error;}
-
-                        foreach($_SESSION['cart'] as $MedId=>$Quantity)
-                            {
-                                $query = "SELECT OrderId FROM tbl_order ORDER BY OrderId DESC LIMIT 1";
-                                $result = mysqli_query($conn, $query); 
-                                $row = mysqli_fetch_array($result);
-                                $OrderId = $row["OrderId"];
-
-                                $sql ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                                $result = $conn->query($sql);
-                                $data = array();
-                                while($row = $result->fetch_assoc()) 
-                                {
-                                    $data[] = $row;       
-                                }
-                                foreach($data as $key => $Med)
-                                {
-                                    $Medsum = $Quantity*$Med["MedPrice"];
-                                    $sql = "INSERT INTO tbl_orderdetail(OrderId, MedId, Qty, Price) VALUES ('$OrderId', '$MedId', '$Quantity','$Medsum')";
-                                    if ($conn->query($sql) === TRUE) {unset($_SESSION['cart']);} 
-                                    else {echo "Error updating record: " . $conn->error;}
-                                }
-                            }
-                            header("refresh:1;main.php");
-                    }
-        }
+       
      
         $staff =  $_SESSION['StaffName'];
         $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -210,10 +165,9 @@
             //echo "<td align='right' bgcolor='#CEE7FF'>"."<b>".number_format($total,2)."</b>"."</td>";
             echo "</tr>";
     ?>
-    <tr>
-    <td><a href="Orders.php">Medicine</a></td>
-    </tr>
+
     </table>
+    <br><br><br><br><br>
                     <div class="container">
                         <label class="col-sm-3 control-label">Dealer</label>
                             <select name="selDealer">       
@@ -229,13 +183,21 @@
                                     <option value ="<?php echo $dealer["DealerId"];?>"><?php echo $dealer["DealerName"];?></option>
                                 <?php } ?>      
                             </select>
-                            <div class="col-sm-9">
-                                <!-- <input type="submit" name = "btn-Order"class = "btn btn-info" value = "Order"> -->
+                    </div>   
+
+
+                            <div class="form-group text-center">
+                                <div class="col-md-12 mt-3">
                                 <input type="submit" name = "Order"class = "btn btn-info" value = "Order">
                                 <input type ="hidden" name = "StaffId" value = "<?php echo $staff["StaffId"];?>">
+                                <a href="Orders.php" class="btn btn-danger">Back</a>
+                                </div>
                             </div>
+                        </div>
+
+                          
                         
-                    </div>           
+                            
     </form>
 
     <script src="js/slim.js"></script>

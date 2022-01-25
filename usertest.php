@@ -1,7 +1,6 @@
 <?php
     include('Connect.php'); 
     session_start();
-    error_reporting(0);
     if (isset($_REQUEST['Order'])) 
     {
         require_once __DIR__ . '/vendor/autoload.php';
@@ -25,94 +24,153 @@
             ],
             'default_font' => 'TH Krub'
         ]);
-        ob_start(); 
-        // $stylesheet = file_get_contents('/data/mpdf.css');
+        ob_start();      
+    }
 
-     
-        
-
-        $DealerId = $_REQUEST['selDealer'];
-        $sql = "SELECT * FROM tbl_dealer WHERE DealerId = '$DealerId'";
-        $result = $conn->query($sql);
-        $data = array();
+    $staff =  $_SESSION['StaffName'];
+    $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
+    $result = $conn->query($sql);
+    $data = array();
         while($row = $result->fetch_assoc()) 
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $dealer){} 
-
-        $StaffId = $_REQUEST['StaffId'];
-        $sql = "SELECT * FROM tbl_staff WHERE StaffId = '$StaffId'";
+        foreach($data as $key => $staff)
+            $staffId = $staff["StaffId"];
+        {      
+            $DepartId = $staff['DepartId'];
+            $sql = "SELECT * FROM tbl_department WHERE DepartId = '$DepartId'";
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) 
             {
                 $data[] = $row;  
             }
-            foreach($data as $key => $staff){}    
-        
-        foreach($_SESSION['cart'] as $MedId=>$Quantity)
-        {
-            $sql ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-            $result = $conn->query($sql);
-            $data = array();
-            while($row = $result->fetch_assoc()) 
-            {
-                $data[] = $row;       
-            }
-            foreach($data as $key => $Med)
-            {
-
-            }
+            foreach($data as $key => $depart){} 
         }
-    }
 
     if (isset($_REQUEST['btn-Order'])) 
-        {
-            date_default_timezone_set("Asia/Bangkok");
-            $OrderDate = date("Y-m-d h:i:sa");
-            $OrderStatus = "Ordering";
-            $OrderPrice = $_REQUEST["total"];
-            $OrderTotal = ($OrderPrice * 0.07)+$OrderPrice;
-            $DealerId = $_REQUEST['selDealer'];
-            $StaffName = $_SESSION['StaffName'];
-            
-                if (empty($_SESSION['cart']))
-                {
-                $errorMsg = "Please Select Medicine";
-                header("refresh:1;Medshow.php");
-                }else 
-                    if (!isset($errorMsg)) 
-                    {
-                        $sql = "INSERT INTO tbl_order(OrderDate, OrderStatus, OrderPrice, OrderTotal, DealerId, StaffName ) VALUES ('$OrderDate', '$OrderStatus', '$OrderPrice','$OrderTotal', '$DealerId', '$StaffName')";
-                        if ($conn->query($sql) === TRUE) {} 
-                        else {echo "Error updating record: " . $conn->error;}
+    {   
 
-                        foreach($_SESSION['cart'] as $MedId=>$Quantity)
-                            {
-                                $query = "SELECT OrderId FROM tbl_order ORDER BY OrderId DESC LIMIT 1";
-                                $result = mysqli_query($conn, $query); 
-                                $row = mysqli_fetch_array($result);
-                                $OrderId = $row["OrderId"];
+        $WithStatus = "Pending approval";
+        date_default_timezone_set("Asia/Bangkok");
+        $WithDate = date("Y-m-d h:i:sa");
 
-                                $sql ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                                $result = $conn->query($sql);
-                                $data = array();
-                                while($row = $result->fetch_assoc()) 
-                                {
-                                    $data[] = $row;       
-                                }
-                                foreach($data as $key => $Med)
-                                {
-                                    $Medsum = $Quantity*$Med["MedPrice"];
-                                    $sql = "INSERT INTO tbl_orderdetail(OrderId, MedId, Qty, Price) VALUES ('$OrderId', '$MedId', '$Quantity','$Medsum')";
-                                    if ($conn->query($sql) === TRUE) {unset($_SESSION['cart']);} 
-                                    else {echo "Error updating record: " . $conn->error;}
-                                }
-                            }
-                            header("refresh:1;CheckOrder.php");
-                    }
+        $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate, WithStatus) VALUES ('$staffId', '$WithDate', '$WithStatus')";
+        if ($conn->query($sql) === TRUE) { 
+        } else {
+        echo "Error updating record: " . $conn->error;
         }
+
+        if(!empty($_SESSION['usercart']))
+            {
+                // unset($_SESSION['test']);
+                foreach($_SESSION['usercart'] as $MedId=>$Quantity)
+                {
+                    $test = 0;
+                    // echo $Quantity. "<br>";
+                    $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId' AND LotStatus != 'Claim' AND LotStatus != 'Writeoff' AND LotStatus != 'Not Available' AND LotStatus != 'Reserve'";
+                    $result = $conn->query($sql);
+                    $data = array();
+                            
+                    while($row = $result->fetch_assoc()) 
+                    {
+                        $data[] = $row;  
+                    }
+                        foreach($data as $key => $lot)
+                        {      
+                            $MfdDate = $lot["Mfd"];
+                            $ExpDate = $lot["Exd"];
+                            $datemfd=date_create($MfdDate);
+                            $dateexp=date_create($ExpDate);
+                            $diff=date_diff($datemfd,$dateexp);
+                                
+                            // echo $lot["LotId"] . $diff->format('%R%a') . "qty ".$lot["Qty"]. "<br>";
+                        
+                            $lotid = $lot["LotId"];
+                            $qtylot = $lot["Qty"];
+                            $Reserve = $lot["Reserve"];
+                            $qty = $qtylot - $Reserve;
+                            if($test < $Quantity)
+                            {
+                                if($qty > ($Quantity-$test))
+                                {
+                                    $_SESSION['test'][$lotid][0]=$lotid;   
+                                    $_SESSION['test'][$lotid][1]=(int)$qty;   //จำนวนทั้งหมดของ lot
+                                    $_SESSION['test'][$lotid][2]=(int)$qty - ($Quantity - $test); //จำนวนคงเหลือ 
+                                    $_SESSION['test'][$lotid][3]=(int)$Quantity - $test; //จำนวนที่ตัด ****
+                                    $test += ($Quantity - $test);
+                                }
+                                else if($qty <= ($Quantity-$test))
+                                {
+                                    $_SESSION['test'][$lotid][0]=$lotid;   
+                                    $_SESSION['test'][$lotid][1]=(int)$qty;   
+                                    $_SESSION['test'][$lotid][2]=(int)$qty; 
+                                    $_SESSION['test'][$lotid][3]=(int)$qty; 
+                                    $test += $qty;
+                                }
+                            }  
+
+                        }
+
+                }
+            }unset($_SESSION['usercart']);
+            
+    
+
+        if(!empty($_SESSION['test']))
+        {   
+            $sum = 0;
+            foreach($_SESSION['test'] as $value)
+                {
+                    $idlot = $value[0]; 
+                    $Qty = $value[3];
+                    $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$idlot.'';
+                    $result = $conn->query($sql);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) 
+                    {
+                        $data[] = $row;  
+                    }
+                    foreach($data as $key => $lot)
+                    {
+                    $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId DESC LIMIT 1";
+                    $result = $conn->query($query); 
+                    $row = mysqli_fetch_array($result);
+                    $WithId  = $row["WithId"];
+
+                    $MfdDate = $lot["Mfd"];
+                    $ExpDate = $lot["Exd"];
+                    {
+                        $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$idlot', '$Qty', '$MfdDate', '$ExpDate')";
+                        // echo $sql;
+                        if ($conn->query($sql) === TRUE) { 
+                        } else {
+                        echo "Error updating record: " . $conn->error;
+                        }
+                        $sum = $sum + $value[3];
+                        $sumReserve = $Reserve + $Qty;
+
+                        $sql = "UPDATE tbl_lot SET Reserve = $sumReserve WHERE LotId = $idlot"; 
+                        if ($conn->query($sql) === TRUE) { 
+                        } else {
+                        echo "Error updating record: " . $conn->error;
+                        }
+
+                        $sql = "UPDATE tbl_withdraw SET Qtysum = $sum WHERE WithId = $WithId"; 
+                        if ($conn->query($sql) === TRUE) { 
+                        } else {
+                        echo "Error updating record: " . $conn->error;
+                        }
+                    }
+                    }
+                }unset($_SESSION['test']);
+                header("refresh:1;Mainuser.php"); 
+        }
+
+    }
+
+ 
 
     
 ?>
@@ -158,6 +216,7 @@ body{margin-top:20px;
     margin: 1rem 0 0 0;
     padding: 1rem;
     line-height: 180%;
+
 }
 .invoice-container .invoice-details .invoice-num {
     text-align: right;
@@ -186,6 +245,7 @@ body{margin-top:20px;
 }
 .invoice-status h5.status-title {
     margin: 0 0 0.8rem 0;
+
 }
 .invoice-status p.status-type {
     margin: 0.5rem 0 0 0;
@@ -294,7 +354,7 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Purchase order </h3><br>".$dealer["DealerName"]."<br>";
+                                            echo "<h3>Wtihdraw </h3><br>";
                                         ?><br>
 
 								</div>
@@ -312,14 +372,11 @@ body{margin-top:20px;
 								<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<address>
-										<?php 
-                                            echo "Address : " .$dealer["DealerAddress"] . "<br>";
-                                            echo "Contract : ". $dealer["DealerPhone"] . "<br>";
-                                        ?>
+									
 										</address>
 									</div>
 								</div>
-								<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                                <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<div class="invoice-num">
                                             <?php 
@@ -329,7 +386,8 @@ body{margin-top:20px;
 										</div>
 									</div>													
 								</div>
-							</div>
+                            </div>
+							
 							<!-- Row end -->
 						</div>
 						<div class="invoice-body">
@@ -343,55 +401,45 @@ body{margin-top:20px;
 													<th>Order Summary</th>
 													<th>Product ID</th>
 													<th>Quantity</th>
-													<th>Sub Total</th>
+													
 												</tr>
 											<!-- </thead> -->
 											<tbody>
                                                 <?php
                                                     $sum = 0;
-                                                    $sumvax = 0;
-                                                    foreach($_SESSION['cart'] as $MedId=>$Quantity)
+                                                    if(!empty($_SESSION['usercart']))
+                                                    {
+                                                        foreach($_SESSION['usercart'] as $MedId=>$Quantity)
                                                         {
-                                                            $sql ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                                                            $sql = "SELECT* FROM tbl_Med WHERE MedId=$MedId";
                                                             $result = $conn->query($sql);
                                                             $data = array();
-                                                            while($row = $result->fetch_assoc()) 
-                                                            {
-                                                                $data[] = $row;       
+                                                            while($row = $result->fetch_assoc()) {
+                                                            $data[] = $row;  
                                                             }
-                                                            foreach($data as $key => $Med)
-                                                            {
-                                                                $Medsum = $Quantity*$Med["MedPrice"];
-                                                                $vax = $Medsum * 0.07;
-                                                                $sum += $Medsum;
-                                                                $sumvax += $vax;
+                                                            foreach($data as $key => $Med){
+                                                                $sum = $sum + $Quantity;
                                                 ?>
 												<tr>
 													<td><?php echo $Med["MedName"];?></td>
 													<td><?php echo "#".$Med["MedId"];?></td>
 													<td><?php echo $Quantity;?></td>
-													<td><?php echo "฿ ".$Medsum;?></td>
+													
 												</tr>
                                                     <?php
-                                                            }}
+                                                            }}}
                                                     ?>
 										
 												<tr>
-													<td colspan="3">
+													<td colspan="2">
 														<p>
-															Subtotal<br>
-															Tax (7%)<br>
+															<!-- Subtotal<br>
+															Tax (7%)<br> -->
+                                                            <h5 class="text-success"><strong>Grand Total</strong></h5>
 														</p>
-														<h5 class="text-success"><strong>Grand Total</strong></h5>
+														
 													</td>			
-													<td>
-														<p>
-                                                            <?php echo "฿ ".$sum. "<br>";?>
-															<?php echo "฿ ".$sumvax. "<br>";?>
-															
-														</p>
-														<h5 class="text-success"><strong><?php $sumall = $sum + $sumvax; echo "฿ ".$sumall; "<br>";?></strong></h5>
-													</td>
+                                                    <td><h5 class="text-success"><strong><?php echo $sum;?></strong></h5></td>
 												</tr>
 											</tbody>
 										</table>
@@ -403,6 +451,7 @@ body{margin-top:20px;
 
                         <div class="row">
                             <div class="col-md-12 text-right identity">
+                                <p><?php echo "Department : ".$depart["DepartName"];?><br></p>
                                 <p><?php echo $staff["StaffName"];?><br><strong>..........................</strong></p>
                             </div>
 						</div>
@@ -416,21 +465,17 @@ body{margin-top:20px;
 </body>
 <?php
     $html=ob_get_contents();
-    // $mpdf->WriteHTML($html);
- 
     $mpdf->WriteHTML($html);
- 
-
-    $mpdf->Output('report/รายงานการซื้้อ.pdf');
+    $mpdf->Output("report/รายงานการเบิก.pdf");
     ob_end_flush();
 ?>
-        <form name="frmcart" method="post">
+            <form name="frmcart" method="post">
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
                     <input type ="submit" name = "btn-Order" class = "btn btn-info" value = "Order">
                     <input type ="hidden" name = "total" value = "<?php echo $sum;?>">
                     <input type ="hidden" name = "selDealer" value = "<?php echo $DealerId;?>">
-                    <a href="Order.php" class="btn btn-danger">Back</a>
+                    <a href="cartuser.php" class="btn btn-danger">Back</a>
                 </div>
             </div>
         </form>

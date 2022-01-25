@@ -58,12 +58,13 @@
             }
             foreach($data as $key => $Med)
             {
+                $Medexp = $Med["MedExp"];
                 $MfdDate = $lot["Mfd"];
                 $ExpDate = $lot["Exd"];
                 $datemfd=date_create($MfdDate);
                 $dateexp=date_create($ExpDate);
                 $diff=date_diff($datemfd,$dateexp);
-                if($diff->format('%R%a')<=365)
+                if($diff->format('%R%a')<= $Medexp)
                 {
                     ini_set('display_errors', 1);
                     ini_set('display_startup_errors', 1);

@@ -179,7 +179,8 @@
                                     $lotqty = $Lot["Qty"];                                   
                                     $sum = $lotqty - $lotReserve;           
                                 ?>
-                            <div class="form-group text-center">
+                                
+            <div class="form-group text-center">
                 <div class="row">
                     <label for="Tel" class="col-sm-3 control-label">Lot</label>
                         <div class="col-sm-7">
