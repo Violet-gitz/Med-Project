@@ -21,13 +21,13 @@
         
         
         if (empty($Volumn)) {
-            $errorMsg = "Please enter Volumn ";
+            $errorMsg = "กรุณาใส่จำนวนปริมาณ";
         }  else {
             $query = "SELECT * FROM tbl_volumn WHERE VolumnName = '$Volumn'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
             if($row["VolumnName"] === $Volumn) {
-                $errorMsg =  "Category already exists";
+                $errorMsg =  "จำนวนปริมาณซ้ำ กรุณาใส่ใหม่";
             }
             else {
             $sql = "INSERT INTO tbl_volumn(VolumnName) VALUES ('$Volumn')";

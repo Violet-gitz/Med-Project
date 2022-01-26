@@ -57,7 +57,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="Mainuser.php" class="navbar-brand">Home Page</a>
+                  <a href="Mainuser.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <!-- <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
@@ -70,7 +70,7 @@
                             <ul class="navbar-nav ms-auto">
 
                                 <li class="nav-item" style='margin-right: 15px;'>
-                                    <td><a href="cartuser.php" class ="btn btn-success">Cart</a></td>
+                                    <td><a href="cartuser.php" class ="btn btn-success">ตะกร้าสินค้า</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -79,12 +79,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="edituser.php">
-                                            <a class="dropdown-item" href="edituser.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="edituser.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -105,8 +105,8 @@
     <div class="row mb-5">
             <div class="col-md-4 ms-auto " style="text-align: end;">
                 <form action="Mainusersearch.php" method="post">
-                    <input type="text" name="textsearch" placeholder = "Search">
-                    <input type="submit" name="submit" value="Search">
+                    <input type="text" name="textsearch" placeholder = "ค้นหา">
+                    <input type="submit" name="submit" value="ค้นหา">
                 </form>
             </div>
     </div>
@@ -116,12 +116,12 @@
         <table class="table table-striped" style='margin-top:4rem;'>
             <thead>
                 <tr>
-                    <th>Picture</th>
-                    <th style="width:20%">Name</th>
-                    <th>Description</th>
-                    <th>Total</th>
-                    <th>Quantity</th>
-                    <th>Withdraw</th>
+                    <th>รูป</th>
+                    <th style="width:20%">ชื่อยา</th>
+                    <th>รายละเอียด</th>
+                    <th>จำนวนคงเหลือ</th>
+                    <th>จำนวน</th>
+                    <th>เบิก</th>
 
                    
                 </tr>
@@ -163,7 +163,7 @@
                         <td><?php echo $Med["MedDes"]; ?></td>
                         <td><?php echo $sum; ?></td>
                         <td><input type="number" name="quantity" min="1" max="<?php echo $medtotal - $sumReserve; ?>" value= "1"></td>
-                        <td><input type="submit" class = "btn btn-info" value = "Add to cart"></td>
+                        <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าลงตะกร้า"></td>
                         <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">
                         <input type ="hidden" name = "act" value = "add">
                         </form>

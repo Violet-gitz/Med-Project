@@ -181,8 +181,8 @@
             <div class="row">
                     <div class="col-md-4 ms-auto">
                         <form action="Medsearch.php" method="post">
-                            <input type="text" name="textsearch" placeholder = "Search">
-                            <input type="submit" name="submit" value="Search">
+                            <input type="text" name="textsearch" placeholder = "ค้นหา">
+                            <input type="submit" name="submit" value="ค้นหา">
                         </form>
                     </div>
             </div>

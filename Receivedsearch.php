@@ -110,8 +110,8 @@
     <div class="row mb-5">
             <div class="col-md-4 ms-auto " style="text-align: end;">
                 <form action="Receivedsearch.php" method="post">
-                    <input type="text" name="textsearch" placeholder = "search">
-                    <input type="submit" name="submit" value="Search">
+                    <input type="text" name="textsearch" placeholder = "ค้นหา">
+                    <input type="submit" name="submit" value="ค้นหา">
                 </form>
             </div>
     </div>
@@ -124,37 +124,37 @@
             <option value="2025-">2025</option>
         </select> 
         <select name="Month" class='mr-2' >
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
+            <option value="01">มกราคม</option>
+            <option value="02">กุมภาพันธ์</option>
+            <option value="03">มีนาคม</option>
+            <option value="04">เมษายน</option>
+            <option value="05">พฤษภาคม</option>
+            <option value="06">มิถุนายน</option>
+            <option value="07">กรกฎาคม</option>
+            <option value="08">สิงหาคม</option>
+            <option value="09">กันยายน</option>
+            <option value="10">ตุลาคม</option>
+            <option value="11">พฤศจิกายน</option>
+            <option value="12">ธันวาคม</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">รายงาน</button>
     </form>
  
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-            List order received
+         <h2>รายการรับ</h2>
             </div>
         <thead>
             <tr>
-                <th>Received ID</th>
-                <th>Order Id</th>
-                <th>Price</th>
-                <th>Order status</th>
-                <th>Date</th>
-                <th>Staff</th>
-                <th>Delivery Name</th>
-                <th>Edit</th>
-                <th>Report</th>
+                    <th>รหัสการรับ</th>
+                    <th>รายการสั่งซื้อ</th>
+                    <th>ราคา</th>
+                    <th>สถานะการสั่งซื้อ</th>
+                    <th>วันที่</th>
+                    <th>ชื่อพนักงาน</th>
+                    <th>ชื่อคนส่งของ</th>
+                    <th>แก้ไข</th>
+                    <th>รายงาน</th>
                 
             </tr>
         </thead>
@@ -199,14 +199,14 @@
                                     //     echo $buttonStatus;
                                     // }
                                 ?>
-                                >Edit
+                                >แก้ไข
                             </button>
                         </form>
                     </td>
 
                     <td>
                         <form method = "POST" action = "Reportreceived.php">
-                            <button type = "submit" value = "<?php echo $rec["RecId"]; ?>" name = "Report" class="btn btn-primary">Report</button>
+                            <button type = "submit" value = "<?php echo $rec["RecId"]; ?>" name = "Report" class="btn btn-primary">รายงาน</button>
                             <input type ="hidden" name = "valueid" value = "<?php echo $rec["RecId"];?>">
                         </form>
                     </td>

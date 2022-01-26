@@ -76,7 +76,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -86,7 +86,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Shipping.php" class ="btn btn-success">Cart</a></td>
+                                    <td><a href="Shipping.php" class ="btn btn-success">ตะกร้า</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -95,12 +95,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -120,8 +120,8 @@
     <div class="row mb-5">
             <div class="col-md-4 ms-auto " style="text-align: end;">
                 <form action="CatagorySearch.php" method="post">
-                    <input type="text" name="textsearch" placeholder = "Search">
-                    <input type="submit" name="submit" value="Search">
+                    <input type="text" name="textsearch" placeholder = "ค้นหา">
+                    <input type="submit" name="submit" value="ค้นหา">
                 </form>
             </div>
     </div>
@@ -147,16 +147,16 @@
         </div>
     <?php } ?>
 
-    
+    <h2>หน้ารายการสั่งซื้อ</h2>
     <div class="container-sm">
     
     <table class="table table-striped" style='margin-top:4rem;'>
         <thead>
             <tr>
-                <th>Picture</th>
-                <th style="width:20%">Name</th>
-                <th>Description</th>
-                <th>Quantity</th>
+                <th>รูปภาพ</th>
+                <th style="width:20%">ชื่อยา</th>
+                <th>รายละเอียดยา</th>
+                <th>จำนวน</th>
                 <th>ซื้อสินค้า</th>              
             </tr>
         </thead>
@@ -182,7 +182,7 @@
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
 
-                                <td><input type="submit" class = "btn btn-info" value = "Add to cart"> </td>
+                                <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าในตะกร้า"> </td>
                     </form>
                 </tr>
 

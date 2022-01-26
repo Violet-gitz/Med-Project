@@ -94,7 +94,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -109,12 +109,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -135,8 +135,8 @@
     <div class="row mb-5">
             <div class="col-md-4 ms-auto " style="text-align: end;">
                 <form action="Writesearch.php" method="post">
-                    <input type="text" name="textsearch" placeholder = "search">
-                    <input type="submit" name="submit" value="Search">
+                    <input type="text" name="textsearch" placeholder = "ค้นหา">
+                    <input type="submit" name="submit" value="ค้นหา">
                 </form>
             </div>
     </div>
@@ -149,36 +149,36 @@
             <option value="2025-">2025</option>
         </select> 
         <select name="Month" class='mr-2' >
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
+        <option value="01">มกราคม</option>
+            <option value="02">กุมภาพันธ์</option>
+            <option value="03">มีนาคม</option>
+            <option value="04">เมษายน</option>
+            <option value="05">พฤษภาคม</option>
+            <option value="06">มิถุนายน</option>
+            <option value="07">กรกฎาคม</option>
+            <option value="08">สิงหาคม</option>
+            <option value="09">กันยายน</option>
+            <option value="10">ตุลาคม</option>
+            <option value="11">พฤศจิกายน</option>
+            <option value="12">ธันวาคม</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">รายงาน</button>
     </form>
  
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-                List Writeoff
+         <h2>รายการตัดจำหน่าย<h2>
                 </div>
             <thead>
             <tr>
-                    <th>Write ID</th>
-                    <th>Lot ID</th>
-                    <th>Medname</th>
-                    <th>Quantity</th>
-                    <th>Date</th> 
-                    <th>Staff</th>
-                    <th>Report</th>   
-                    <th>Cancel</th>                   
+                    <th>รายการตัดจำหน่าย</th>
+                    <th>ล็อต</th>
+                    <th>ชื่อยา</th>
+                    <th>จำนวน</th>
+                    <th>วันที่</th> 
+                    <th>ชื่อพนักงาน</th>
+                    <th>รายงาน</th>   
+                    <th>ยกเลิก</th>
                 </tr>
     </thead>
         
@@ -218,7 +218,7 @@
                                     echo $buttonStatus;
                                 }
                             ?>
-                                >Report</button>
+                                >รายงาน</button>
                             <input type ="hidden" name = "valueid" value = "<?php echo $write["WriteId"];?>">
                         </form>
                     </td>
@@ -233,7 +233,7 @@
                                         echo $buttonStatus;
                                     }
                                 ?>
-                                >Cancel
+                                >ยกเลิก
                             </button>
                         </form>
                     </td>

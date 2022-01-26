@@ -126,7 +126,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -141,12 +141,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -167,8 +167,8 @@
     <div class="row mb-5">
             <div class="col-md-4 ms-auto " style="text-align: end;">
                 <form action="ClaimSearch.php" method="post">
-                    <input type="text" name="textsearch" placeholder = "search">
-                    <input type="submit" name="submit" value="Search">
+                    <input type="text" name="textsearch" placeholder = "ค้นหา">
+                    <input type="submit" name="submit" value="ค้นหา">
                 </form>
             </div>
     </div>
@@ -181,38 +181,38 @@
             <option value="2025-">2025</option>
         </select> 
         <select name="Month" class='mr-2' >
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
+            <option value="01">มกราคม</option>
+            <option value="02">กุมภาพันธ์</option>
+            <option value="03">มีนาคม</option>
+            <option value="04">เมษายน</option>
+            <option value="05">พฤษภาคม</option>
+            <option value="06">มิถุนายน</option>
+            <option value="07">กรกฎาคม</option>
+            <option value="08">สิงหาคม</option>
+            <option value="09">กันยายน</option>
+            <option value="10">ตุลาคม</option>
+            <option value="11">พฤศจิกายน</option>
+            <option value="12">ธันวาคม</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">รายงาน</button>
     </form>
  
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-            List order claim
+            <h2>ตารางการส่งเคลม</h2>
             </div>
             <thead>
             <tr>
-                <th>ClaimId</th>
-                <th>Date Claim</th>
-                <th>Status</th>
-                <th>LotId</th> 
-                <th>Qty</th>
-                <th>Dealer</th>
-                <th>Dealer Address</th>
-                <th>Received</th>
-                <th>Report</th>
-                <th>Cancel</th>
+                <th>รหัสการเคลม</th>
+                <th>วันที่เคลม</th>
+                <th>สถานะ</th>
+                <th>ล็อตที่</th> 
+                <th>จำนวน</th>
+                <th>ชื่อตัวแทนจำหน่าย</th>
+                <th>ที่อยู่ตัวแทนจำหน่าย</th>
+                <th>รับ</th>
+                <th>รายงาน</th>
+                <th>ยกเลิก</th>
                 
             </tr>
         </thead>
@@ -261,14 +261,14 @@
                                         echo $buttonStatus;
                                     }
                                 ?>
-                                >Received
+                                >รับ
                             </button>
                         </form>
                     </td>
 
                     <td>
                         <form method = "POST" action = "Reportclaim.php">
-                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-primary">Report</button>
+                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-primary">รายงาน</button>
                             <input type ="hidden" name = "valueid" value = "<?php echo $claim["ClaimId"];?>">
                         </form>
                     </td>
@@ -293,7 +293,7 @@
                                             echo $buttonStatus;
                                         }
                                     ?>
-                                    >Cancel
+                                    >ยกเลิก
                                 </button>
                             </form>
                         </td>

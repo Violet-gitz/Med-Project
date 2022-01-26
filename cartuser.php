@@ -183,7 +183,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="Mainuser.php" class="navbar-brand">Home Page</a>
+                  <a href="Mainuser.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <!-- <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
@@ -201,12 +201,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="edituser.php">
-                                            <a class="dropdown-item" href="edituser.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="edituser.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -245,9 +245,9 @@
           <b>Cart</span></td>
         </tr>
         <tr>
-          <td bgcolor="#EAEAEA">Order</td>
-          <td align="center" bgcolor="#EAEAEA">Quantity</td>
-          <td align="center" bgcolor="#EAEAEA">Remove</td>
+          <td bgcolor="#EAEAEA">รายการ</td>
+          <td align="center" bgcolor="#EAEAEA">จำนวน</td>
+          <td align="center" bgcolor="#EAEAEA">ลบ</td>
         </tr>
     <?php
     $total=0;
@@ -269,7 +269,7 @@
             echo "<input type='text' name= $Med[MedId]; value='$Quantity' disabled size='5'/></td>";
  
             
-            echo "<td width='46' align='center'><a href='cartuser.php?testMedId=$MedId&act=remove&quantity=0'>Remove</a></td>";
+            echo "<td width='46' align='center'><a href='cartuser.php?testMedId=$MedId&act=remove&quantity=0'>ลบ</a></td>";
             echo "</tr>";
             }
             echo "<tr>";
@@ -289,9 +289,9 @@
 
                         <div class="form-group text-center">
                             <div class="col-md-12 mt-3">
-                                <input type="submit" name = "Order"class = "btn btn-info" value = "Order">
+                                <input type="submit" name = "Order"class = "btn btn-info" value = "สั่งซื้อ">
                                 <input type ="hidden" name = "StaffId" value = "<?php echo $staff["StaffId"];?>">
-                                <a href="Mainuser.php" class="btn btn-danger">Back</a>
+                                <a href="Mainuser.php" class="btn btn-danger">กลับ</a>
                             </div>
                         </div>
                   

@@ -19,13 +19,13 @@
         
         
         if (empty($CateName)) {
-            $errorMsg = "Please enter Category ";
+            $errorMsg = "กรุณาใส่ชื่อหมวดหมู่ยา";
         }  else {
             $query = "SELECT * FROM tbl_cate WHERE CateName = '$CateName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
             if($row["CateName"] === $CateName) {
-                $errorMsg =  "Category already exists";
+                $errorMsg =  "ชื่อหมวดหมู่ยาซ้ำ กรุณาใส่ใหม่";
             }
             else {
             $sql = "INSERT INTO tbl_cate(CateName) VALUES ('$CateName')";

@@ -155,7 +155,7 @@ $data = array();
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -170,12 +170,12 @@ $data = array();
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -250,7 +250,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">Withdraw Id</label>
+            <label for="Tel" class="col-sm-3 control-label">รหัสการเบิกที่</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_WithId" class="form-control" value="<?php echo $With["WithId"]; ?>" readonly>
             </div>
@@ -259,7 +259,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">Withdraw Date</label>
+            <label for="Tel" class="col-sm-3 control-label">วันที่เบิก</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_WithDate" class="form-control" value="<?php echo $With["WithDate"]; ?>" readonly>
             </div>
@@ -268,7 +268,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">Withdraw Name</label>
+            <label for="Tel" class="col-sm-3 control-label">ชื่อคนขอเบิก</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_StaffName" class="form-control" value="<?php echo $Staff["StaffName"]; ?>" readonly>
             </div>
@@ -277,7 +277,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">Quantity</label>
+            <label for="Tel" class="col-sm-3 control-label">จำนวน</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_Qty" class="form-control" value="<?php echo $With["Qtysum"]; ?>" readonly>
             </div>
@@ -286,7 +286,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">Status</label>
+            <label for="Tel" class="col-sm-3 control-label">สถานะ</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_Status" class="form-control" value="<?php echo $With["WithStatus"]; ?>" readonly>
             </div>
@@ -295,7 +295,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine Name" class="col-sm-3 control-label">Lot Id</label>
+            <label for="Medicine Name" class="col-sm-3 control-label">ล็อตที่</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedName" class="form-control" value="<?php echo $withdetailid["LotId"]; ?>" readonly>
             </div>
@@ -304,7 +304,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine Name" class="col-sm-3 control-label">Medicine</label>
+            <label for="Medicine Name" class="col-sm-3 control-label">ชื่อยา</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>" readonly>
             </div>
@@ -313,7 +313,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">Description</label>
+            <label for="Medicine pack" class="col-sm-3 control-label">รายละเอียด</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedDes"]; ?>" readonly>
             </div>
@@ -322,7 +322,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">Type</label>
+            <label for="Medicine pack" class="col-sm-3 control-label">ประเภท</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["TypeName"]; ?>" readonly>
             </div>
@@ -331,7 +331,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">Category</label>
+            <label for="Medicine pack" class="col-sm-3 control-label">หมวดหมู่</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["CateName"]; ?>" readonly>
             </div>
@@ -340,7 +340,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">Volumn</label>
+            <label for="Medicine pack" class="col-sm-3 control-label">ปริมาณ</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["VolumnName"]; ?>" readonly>
              </div>
@@ -349,7 +349,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">Unit</label>
+            <label for="Medicine pack" class="col-sm-3 control-label">หน่วยนับ</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["UnitName"]; ?>" readonly>
             </div>
@@ -358,7 +358,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">Unit/Pack</label>
+            <label for="Medicine pack" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
             </div>
@@ -368,7 +368,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
+            <label for="Medicine Price" class="col-sm-3 control-label">จำนวน</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Qty"]; ?>" readonly>
             </div>
@@ -377,7 +377,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-             <label for="Medicine Price" class="col-sm-3 control-label">Manufactured Date</label>
+             <label for="Medicine Price" class="col-sm-3 control-label">วันที่ผลิต</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Mfd"]; ?>" readonly>
             </div>
@@ -386,7 +386,7 @@ $data = array();
 
     <div class="form-group text-center">
         <div class="row">
-            <label for="Medicine Price" class="col-sm-3 control-label">Expiration Date</label>
+            <label for="Medicine Price" class="col-sm-3 control-label">วันที่หมดอายุ</label>
                 <div class="col-sm-7">
                     <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Exd"]; ?>" readonly>
             </div>
@@ -397,8 +397,8 @@ $data = array();
 
         <div class="form-group text-center">
             <div class="col-md-12 mt-3">
-                <input type="submit" name="btn_approve" class="btn btn-success" value="Approve">
-                <a href="Approve.php" class="btn btn-danger">Back</a>
+                <input type="submit" name="btn_approve" class="btn btn-success" value="อนุมัติ">
+                <a href="Approve.php" class="btn btn-danger">กลับ</a>
             </div>
         </div>
     </div>

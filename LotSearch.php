@@ -128,7 +128,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -138,7 +138,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                              <li class="nav-item">
-                                    <td><a href="Withdrawcart.php" class ="btn btn-success">Cart</a></td>
+                                    <td><a href="Withdrawcart.php" class ="btn btn-success">เพิ่มสินค้าในตะกร้า</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -147,12 +147,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -174,26 +174,26 @@
     <div class="row mb-5">
             <div class="col-md-4 ms-auto " style="text-align: end;">
                 <form action="LotSearch.php" method="post">
-                    <input type="text" name="textsearch" placeholder = "search">
-                    <input type="submit" name="submit" value="Search">
+                    <input type="text" name="textsearch" placeholder = "ค้นหา">
+                    <input type="submit" name="submit" value="ค้นหา">
                 </form>
             </div>
     </div>
  
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-            List Approve
+         <h2>หน้าล็อตยา</h2>
            </div>
             <thead>
             <tr>
-                <th>Lot Id</th>
-                <th>Medicine</th>
-                <th>Pictures</th>
-                <th>Quantity</th>
-                <th>Reserve</th>
-                <th>Status</th>
-                <th>Expire</th>
-                <th>Detail</th>
+                <th>รหัสล็อตยา</th>
+                <th>ชื่อยา</th>
+                <th>รูป</th>
+                <th>จำนวน</th>
+                <th>จำนวนที่ถูกจอง</th>
+                <th>สถานะ</th>
+                <th>วันหมดอายุ</th>
+                <th>รายละเอียด</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -265,7 +265,7 @@
                     <td><?php echo $diff->format('%R%a'); ?>
                     <td>            
                         <form method="POSt" action="lotdetail.php">
-                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-info">Detail</button>
+                            <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-info">รายละเอียด</button>
                             <input type="hidden" name ='Detail' value ="<?php echo $lot["LotId"]; ?>">
                         </from>
                     </td>
@@ -296,12 +296,12 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <form method="POSt" action="Withdraw.php">
-                                    <a class="dropdown-item" href="Withdraw.php?withdraw=<?php echo $lot["LotId"]; ?>">Wtihdraw</a>
+                                    <a class="dropdown-item" href="Withdraw.php?withdraw=<?php echo $lot["LotId"]; ?>">เบิก</a>
                                     <input type="hidden" name ='withdraw' value ="<?php echo $lot["LotId"]; ?>">
                                 </from>
 
                                 <form method="POST" action="Writeoff.php">
-                                    <a class="dropdown-item" href="Writeoff.php?Write=<?php echo $lot["LotId"]; ?>">Writeoff</a>
+                                    <a class="dropdown-item" href="Writeoff.php?Write=<?php echo $lot["LotId"]; ?>">ตัดจำหน่าย</a>
                                     <input type ="hidden" name ='Write' value ="<?php echo $lot["LotId"]; ?>">
                                 </form>
 
@@ -319,7 +319,7 @@
                                                 $recqty = $receiv["Qty"];  
                                                 if(is_null($checkclaim) && $recqty == $checkqty && $Reserve == '0')
                                                 {
-                                                    echo '<a class="dropdown-item" href="Claim.php?Claim='.$lot["LotId"].'">Claim</a>';
+                                                    echo '<a class="dropdown-item" href="Claim.php?Claim='.$lot["LotId"].'">เคลม</a>';
                                                     echo '<input type ="hidden" name ="Claim" value ="'.$lot["LotId"].'">';
                                                 }
                                             }

@@ -236,7 +236,7 @@
              
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicineprcie" class="col-sm-3 control-label">Reorder Point</label></td>
+                        <td><label for="Medicineprcie" class="col-sm-3 control-label">จุดสั่งซื้อ</label></td>
                             <div class="col-sm-7">
                                 <td><input type="text" name="txt_MedPoint" class="form-control" value="<?php echo $med["MedPoint"]?>"></td>
                             </div>

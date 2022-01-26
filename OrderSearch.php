@@ -104,8 +104,8 @@
     <div class="row mb-5">
             <div class="col-md-4 ms-auto " style="text-align: end;">
                 <form action="OrderSearch.php" method="post">
-                    <input type="text" name="textsearch" placeholder = "search">
-                    <input type="submit" name="submit" value="Search">
+                    <input type="text" name="textsearch" placeholder = "ค้นหา">
+                    <input type="submit" name="submit" value="ค้นหา">
                 </form>
             </div>
     </div>
@@ -118,36 +118,37 @@
             <option value="2025-">2025</option>
         </select> 
         <select name="Month" class='mr-2' >
-            <option value="01">January</option>
-            <option value="02">February</option>
-            <option value="03">March</option>
-            <option value="04">April</option>
-            <option value="05">May</option>
-            <option value="06">June</option>
-            <option value="07">July</option>
-            <option value="08">August</option>
-            <option value="09">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
+            <option value="01">มกราคม</option>
+            <option value="02">กุมภาพันธ์</option>
+            <option value="03">มีนาคม</option>
+            <option value="04">เมษายน</option>
+            <option value="05">พฤษภาคม</option>
+            <option value="06">มิถุนายน</option>
+            <option value="07">กรกฎาคม</option>
+            <option value="08">สิงหาคม</option>
+            <option value="09">กันยายน</option>
+            <option value="10">ตุลาคม</option>
+            <option value="11">พฤศจิกายน</option>
+            <option value="12">ธันวาคม</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">Report</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">รายงาน</button>
     </form>
  
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-                List order buy
+         <h2>ตารางการสั่งซื้อ<h2>
         </div>
             <thead>
                 <tr>
-                    <th>Order</th>
-                    <th>Date order</th>
-                    <th>Status</th>
-                    <th>Price</th>   
-                    <th>Staff</th>
-                    <th>Received</th>
-                    <th>Report</th>
-                    <th>Cancel</th>
+                    <th>รายการ</th>
+                    <th>วันที่สั่ง</th>
+                    <th>สถานะ</th>
+                    <th>ราคา</th>   
+                    <th>ตัวแทนจำหน่าย</th>
+                    <th>พนักงาน</th>
+                    <th>รับ</th>
+                    <th>รายงาน</th>
+                    <th>ยกเลิก</th>
                     
                 </tr>
             </thead>
@@ -190,14 +191,14 @@
                                             echo $buttonStatus;
                                         }
                                     ?>
-                                    >Received
+                                    >รับ
                                 </button>
                             </form>
                         </td>
 
                         <td>
                             <form method = "POST" action = "Reportorder.php">
-                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Report" class="btn btn-primary">Report</button>
+                                <button type = "submit" value = "<?php echo $order["OrderId"]; ?>" name = "Report" class="btn btn-primary">รายงาน</button>
                                 <input type ="hidden" name = "valueid" value = "<?php echo $order["OrderId"];?>">
                             </form>
                         </td>
@@ -217,7 +218,7 @@
                                             echo $buttonStatus;
                                         }
                                     ?>
-                                    >Cancel
+                                    >ยกเลิก
                                 </button>
                             </form>
                         </td>

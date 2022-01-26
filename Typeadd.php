@@ -21,13 +21,13 @@
         
         
         if (empty($TypeName)) {
-            $errorMsg = "Please enter Typename ";
+            $errorMsg = "กรุณาใส่ชื่อประเภทยา";
         }  else {
             $query = "SELECT * FROM tbl_type WHERE TypeName = '$TypeName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
             if($row["TypeName"] === $TypeName) {
-                $errorMsg =  "Typename already exists";
+                $errorMsg =  "ชื่อประเภทซ้ำ กรุณาใส่ใหม่";
             }
             else {
             $sql = "INSERT INTO tbl_type(TypeName) VALUES ('$TypeName')";

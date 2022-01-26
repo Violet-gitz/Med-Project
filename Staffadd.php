@@ -24,19 +24,19 @@
 
 
         if (empty($StaffName)) {
-            $errorMsg = "Please enter Name";
+            $errorMsg = "กรุณาใส่ชื่อของคุณ";
         } else if (empty($StaffPassword)) {
-            $errorMsg = "please Enter Password";
+            $errorMsg = "กรุณาใส่รหัสผ่านของคุณ";
         } else if (empty($StaffTel)) {
-            $errorMsg = "please Enter Telephone";
+            $errorMsg = "กรุณาใส่เบอร์โทรศัพท์ของคุณ";
         } else if (empty($StaffEmail)) {
-            $errorMsg = "please Enter Mail";
+            $errorMsg = "กรุณาใส่อีเมลของคุณ";
         } else {
             $query = "SELECT * FROM tbl_staff WHERE StaffName = '$StaffName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
             if($row["StaffName"] === $StaffName) {
-                $errorMsg =  "Staffname already exists";
+                $errorMsg =  "ชื่อพนักงานซ้ำ กรุณาใส่ใหม่";
             }
             else {
             $sql = "INSERT INTO tbl_staff(StaffName, StaffPassword, StaffTel, StaffEmail, DepartId) VALUES ('$StaffName', '$StaffPassword', '$StaffTel', '$StaffEmail', '$DepartId')";

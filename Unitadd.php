@@ -21,13 +21,13 @@
         
         
         if (empty($Unit)) {
-            $errorMsg = "Please enter Category ";
+            $errorMsg = "กรุณาใส่ชื่อหน่วยนับ";
         }  else {
             $query = "SELECT * FROM tbl_unit WHERE UnitName = '$Unit'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
             if($row["UnitName"] === $Unit) {
-                $errorMsg =  "UnitName already exists";
+                $errorMsg =  "ชื่อหน่วยนับซ้ำ กรุณาใส่ใหม่";
             }
             else {
             $sql = "INSERT INTO tbl_unit(UnitName) VALUES ('$Unit')";

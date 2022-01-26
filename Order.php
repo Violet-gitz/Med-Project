@@ -65,7 +65,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -80,12 +80,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -121,14 +121,14 @@
       <table width="600" border="0" align="center" class="square">
         <tr>
           <td colspan="5" bgcolor="#CCCCCC">
-          <b>Cart</span></td>
+          <b>ตะกร้า</span></td>
         </tr>
         <tr>
-          <td bgcolor="#EAEAEA">Order</td>
-          <td align="center" bgcolor="#EAEAEA">Price</td>
-          <td align="center" bgcolor="#EAEAEA">Quantity</td>
-          <td align="center" bgcolor="#EAEAEA">Total Price</td>
-          <td align="center" bgcolor="#EAEAEA">Remove</td>
+          <td bgcolor="#EAEAEA">รายการ</td>
+          <td align="center" bgcolor="#EAEAEA">รูปภาพ</td>
+          <td align="center" bgcolor="#EAEAEA">จำนวน</td>
+          <td align="center" bgcolor="#EAEAEA">ราคารวม</td>
+          <td align="center" bgcolor="#EAEAEA">ลบ</td>
         </tr>
     <?php
     $total=0;
@@ -152,7 +152,7 @@
             echo "<input type='text' name= $Med[MedId]; value='$Quantity' disabled size='2'/></td>";
             echo "<td width='93' align='right'>".number_format($sum,2)."</td>";
             
-            echo "<td width='46' align='center'><a href='Order.php?MedId=$MedId&act=remove&quantity=0'>Remove</a></td>";
+            echo "<td width='46' align='center'><a href='Order.php?MedId=$MedId&act=remove&quantity=0'>ลบ</a></td>";
             echo "</tr>";
             }
             echo "<tr>";
@@ -161,7 +161,7 @@
             //echo "<td align='left' bgcolor='#CEE7FF'></td>";
         }
     }
-            echo "<td align = 'right'>Total Price <input type = 'text' name ='total' readonly value = '$total'  ></td>";
+            echo "<td align = 'right'>ราคารวม <input type = 'text' name ='total' readonly value = '$total'  ></td>";
             //echo "<td align='right' bgcolor='#CEE7FF'>"."<b>".number_format($total,2)."</b>"."</td>";
             echo "</tr>";
     ?>
@@ -169,7 +169,7 @@
     </table>
     <br><br><br><br><br>
                     <div class="container">
-                        <label class="col-sm-3 control-label">Dealer</label>
+                        <label class="col-sm-3 control-label">ตัวแทนจำหน่าย</label>
                             <select name="selDealer">       
                                 <?php 
                                     $sql = 'SELECT * FROM tbl_dealer';
@@ -188,9 +188,9 @@
 
                             <div class="form-group text-center">
                                 <div class="col-md-12 mt-3">
-                                <input type="submit" name = "Order"class = "btn btn-info" value = "Order">
+                                <input type="submit" name = "Order"class = "btn btn-info" value = "สั่งซื้อ">
                                 <input type ="hidden" name = "StaffId" value = "<?php echo $staff["StaffId"];?>">
-                                <a href="Orders.php" class="btn btn-danger">Back</a>
+                                <a href="Orders.php" class="btn btn-danger">กลับ</a>
                                 </div>
                             </div>
                         </div>

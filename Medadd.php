@@ -39,31 +39,21 @@
         $MedPath = basename($_FILES["file"]["name"]);
         
         if (empty($MedName)) {
-            $errorMsg = "Please enter Medicine Name";
-        }else if (empty($MedCate)) {
-            $errorMsg = "Please Enter Medicine Catetory";
-        }else if (empty($MedVolumn)) {
-            $errorMsg = "Please Enter Medicine Volumn";
-        }else if (empty($MedUnit)) {
-            $errorMsg = "Please Enter Medicine Unit";
-        }else if (empty($MedPack)) {
-            $errorMsg = "Please Enter Medicine Pack";
+            $errorMsg = "กรุณาใส่ชื่อยา";
         }else if (empty($MedPrice)) {
-            $errorMsg = "Please Enter Medicine Price";
+            $errorMsg = "กรุณาใส่ราคาต่อหีบห่อ";
         }else if (empty($MedLow)) {
-            $errorMsg = "Please Enter Medicine Minimum purchase";
+            $errorMsg = "กรุณาใส่ขั้นต่ำในการซื้อ";
         }else if (empty($MedPoint)) {
-            $errorMsg = "Please Enter Point of Order";
-        }else if (empty($MedType)) {
-            $errorMsg = "Please Enter Medicine Type";
+            $errorMsg = "กรุณาใส่จุดสั่งซื้อ";
         }else if (empty($MedExp)) {
-            $errorMsg = "Please Enter Medicine Exp";
+            $errorMsg = "กรุณาใส่จำนวนวันหมดอายุ";
         }else {
             $query = "SELECT * FROM tbl_med WHERE MedName = '$MedName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
         if($row["MedName"] === $MedName) {
-            $errorMsg =  "Medicine already exists";
+            $errorMsg =  "ชื่อยาซ้ำ กรุณาใส่ใหม่";
         }
         else {
         $sql = "INSERT INTO tbl_med(MedName,CateId,VolumnId,UnitId,MedPack,MedPrice,MedLow,MedDes,MedPoint,MedTotal,MedPath,MedIndi,TypeId,MedExp) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedPoint', '$MedTotal', '$MedPath' , '$MedIndi' , '$MedType' , '$MedExp')";
@@ -105,7 +95,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -120,12 +110,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -156,85 +146,86 @@
         </div>
     <?php } ?>
 
-
+    
         <form method="post" class="form-horizontal mt-5" enctype="multipart/form-data">
+            
                 <div class="container">
-                    
+                
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label for="Medicinename" class="col-sm-3 control-label">Medicine Name</label></td>
+                                <td><label for="Medicinename" class="col-sm-3 control-label">ชื่อยา</label></td>
                                 <div class="col-sm-7">
-                                    <td><input type="text" name="txt_MedName" class="form-control" placeholder="Enter Medicine Name..."></td>
+                                    <td><input type="text" name="txt_MedName" class="form-control" placeholder="กรุณาใส่ชื่อยา..."></td>
                                 </div>
                             </div>
                         </div>
                     
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label for="Medicinedes" class="col-sm-3 control-label">Description</label></td>
+                                <td><label for="Medicinedes" class="col-sm-3 control-label">รายละเอียดยา</label></td>
                                 <div class="col-sm-7">
-                                <td><textarea id="w3review" name="txt_MedDes" rows="4" cols="50" placeholder="Enter Medicine Description..."></textarea></td>
+                                <td><textarea id="w3review" name="txt_MedDes" rows="4" cols="50" placeholder="กรุณาใส่รายละเอียดยา"></textarea></td>
                                 </div>
                             </div>
                         </div>
                     
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label for="Medicinedes" class="col-sm-3 control-label">Indication</label></td>
+                                <td><label for="Medicinedes" class="col-sm-3 control-label">ข้อบ่งชี้</label></td>
                                 <div class="col-sm-7">
-                                <td><textarea id="w3review" name="txt_MedIndi" rows="4" cols="50" placeholder="Enter Medicine Indication..."></textarea></td>
+                                <td><textarea id="w3review" name="txt_MedIndi" rows="4" cols="50" placeholder="กรุณาใส่ข้อบ่งชี้..."></textarea></td>
                                 </div>
                             </div>
                         </div>
                     
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label for="Medicineprcie" class="col-sm-3 control-label">Price per Pack</label></td>
+                                <td><label for="Medicineprcie" class="col-sm-3 control-label">ราคาต่อหีบห่อ</label></td>
                                 <div class="col-sm-7">
-                                    <td><input type="number" name="txt_MedPrice" class="form-control" placeholder="Enter Medicine Price..."></td>
+                                    <td><input type="number" name="txt_MedPrice" class="form-control" placeholder="กรุณาใส่ราคาต่อหีบห่อ..."></td>
                                 </div>
                             </div>
                         </div>
                     
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label for="Medicinepack" class="col-sm-3 control-label">Unit per Pack</label></td>
+                                <td><label for="Medicinepack" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label></td>
                                 <div class="col-sm-7">
-                                    <td><input type="number" name="txt_MedPack" class="form-control" placeholder="Enter Medicine Pack..."></td>
+                                    <td><input type="number" name="txt_MedPack" class="form-control" placeholder="กรุณาใส่จำนวนต่อหนึ่งหีบห่อ..."></td>
                                 </div>
                             </div>
                         </div>
                    
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label for="Medicinelow" class="col-sm-3 control-label">Minimum purchase</label></td>
+                                <td><label for="Medicinelow" class="col-sm-3 control-label">ขั้นต่ำในการซื้อ</label></td>
                                 <div class="col-sm-7">
-                                    <td><input type="number" name="txt_Medlow" class="form-control" placeholder="Enter Medicine Minimum purchase..."></td>
+                                    <td><input type="number" name="txt_Medlow" class="form-control" placeholder="กรุณาใส่ขั้นต่ำในการซื้อ..."></td>
                                 </div>
                             </div>
                         </div>
                    
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label for="Medicineprcie" class="col-sm-3 control-label">Reorder Point</label></td>
+                                <td><label for="Medicineprcie" class="col-sm-3 control-label">จุดสั่งซื้อ</label></td>
                                 <div class="col-sm-7">
-                                    <td><input type="number" name="txt_MedPoint" class="form-control" placeholder="Enter Medicine Point"></td>
+                                    <td><input type="number" name="txt_MedPoint" class="form-control" placeholder="กรุณาใส่จุดสั่งซื้อ..."></td>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label for="Medicineprcie" class="col-sm-3 control-label">Medicine Exp</label></td>
+                                <td><label for="Medicineprcie" class="col-sm-3 control-label">จำนวนวันหมดอายุ</label></td>
                                 <div class="col-sm-7">
-                                    <td><input type="number" name="txt_MedExp" class="form-control" placeholder="Enter Medicine Exp"></td>
+                                    <td><input type="number" name="txt_MedExp" class="form-control" placeholder="กรุณาใส่จำนวนวันหมดอายุ..."></td>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label class="col-sm-3 control-label">Medicine Type</label></td>
+                                <td><label class="col-sm-3 control-label">ประเภท</label></td>
                                     <div class="col-sm-1">
                                         <td><select name="txt_Medtype">       
                                             <?php 
@@ -256,7 +247,7 @@
                     
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label class="col-sm-3 control-label">Category</label></td>
+                                <td><label class="col-sm-3 control-label">หมวดหมู่</label></td>
                                     <div class="col-sm-1">
                                         <td><select name="dropdownlist-MedCate">       
                                             <?php 
@@ -278,7 +269,7 @@
                     
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label class="col-sm-3 control-label">Volumn</label></td>
+                                <td><label class="col-sm-3 control-label">จำนวนปริมาณ</label></td>
                                     <div class="col-sm-1">
                                         <td><select name="dropdownlist-MedVolumn">       
                                             <?php 
@@ -300,7 +291,7 @@
                   
                         <div class="form-group text-center">
                             <div class="row">
-                                <td><label class="col-sm-3 control-label">Unit</label></td>
+                                <td><label class="col-sm-3 control-label">หน่วย</label></td>
                                     <div class="col-sm-1">
                                         <td><select name="dropdownlist-MedUnit">       
                                             <?php 
@@ -324,7 +315,7 @@
                             <div class="row">
                             
                                 <td><div class="col-sm-3 control-label">
-                                    Select image to upload<br></td>
+                                    กรุณาเลือกรูปภาพที่จะอัพโหลด<br></td>
                                     
                                     <td><input type="file" name="file"></td>
                                     
@@ -335,8 +326,8 @@
                 
                     <div class="form-group text-center">
                         <div class="col-md-12 mt-3">
-                            <input type="submit" name="btn_insert" class="btn btn-success" value="Insert">
-                            <a href="Medshow.php" class="btn btn-danger">Back</a>
+                            <input type="submit" name="btn_insert" class="btn btn-success" value="เพิ่มข้อมูล">
+                            <a href="Medshow.php" class="btn btn-danger">กลับ</a>
                         </div>
                     </div>
         </form>

@@ -294,7 +294,7 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Purchase order </h3><br>".$dealer["DealerName"]."<br>";
+                                            echo "<h3>รายการสั่งซื้อ </h3><br>".$dealer["DealerName"]."<br>";
                                         ?><br>
 
 								</div>
@@ -340,10 +340,10 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th>Order Summary</th>
-													<th>Product ID</th>
-													<th>Quantity</th>
-													<th>Sub Total</th>
+													<th>รายการสั่งซื้อ</th>
+													<th>รหัสสินค้า</th>
+													<th>จำนวน</th>
+													<th>ราคา</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -379,10 +379,10 @@ body{margin-top:20px;
 												<tr>
 													<td colspan="3">
 														<p>
-															Subtotal<br>
-															Tax (7%)<br>
+															ราคารวม<br>
+															ภาษี (7%)<br>
 														</p>
-														<h5 class="text-success"><strong>Grand Total</strong></h5>
+														<h5 class="text-success"><strong>ราคารวมภาษี</strong></h5>
 													</td>			
 													<td>
 														<p>
@@ -427,10 +427,10 @@ body{margin-top:20px;
         <form name="frmcart" method="post">
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type ="submit" name = "btn-Order" class = "btn btn-info" value = "Order">
+                    <input type ="submit" name = "btn-Order" class = "btn btn-info" value = "สั่งซื้อ">
                     <input type ="hidden" name = "total" value = "<?php echo $sum;?>">
                     <input type ="hidden" name = "selDealer" value = "<?php echo $DealerId;?>">
-                    <a href="Order.php" class="btn btn-danger">Back</a>
+                    <a href="Order.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
         </form>

@@ -205,6 +205,15 @@
                 </div>
 
                 <div class="form-group text-center">
+                    <div class="row">
+                        <label for="Medicine pack" class="col-sm-3 control-label">ราคาต่อหีบห่อ</label>
+                        <div class="col-sm-7">
+                            <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $Med["MedPrice"]; ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
                     <div class="col-md-12 mt-3">
                         <a href = "Mededit.php?edit_id=<?php echo $Med["MedId"];?>" class = "btn btn-info">แก้ไขข้อมูล</a>
                         <a href="Medshow.php" class="btn btn-danger">กลับ</a> 

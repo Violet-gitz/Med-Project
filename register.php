@@ -9,14 +9,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Page</title>
+    <title>หน้าสมัครสมาชิก</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
     <div class="header">
-        <h2>Register</h2>
+        <h2>สมัคร</h2>
     </div>
 
     <form action="register_db.php" method="POST">
@@ -32,28 +32,28 @@
             </div>
         <?php endif ?>
         <div class="input-group">
-            <label for="Name">Name</label>
+            <label for="Name">ชื่อผู้ใช้</label>
             <input type="text" name="StaffName">
         </div>
 
         <div class="input-group">
-            <label for="password_1">Password</label>
+            <label for="password_1">รหัสผ่าน</label>
             <input type="password" name="StaffPassword">
         </div>
         
         <div class="input-group">
-            <label for="Telephone">Telephone</label>
+            <label for="Telephone">เบอร์โทรศัพท์</label>
             <input type="text" name="StaffTel">
         </div>
 
         <div class="input-group">
-            <label for="email">Email</label>
+            <label for="email">อีเมล</label>
             <input type="email" name="StaffEmail">
         </div>
 
         <div class="form-group text-center">
                 <div class="row">
-                    <label class="col-sm-3 control-label">Department Name</label>
+                    <label class="col-sm-3 control-label">ชื่อแผนก</label>
                         <div class="col-sm-1">
                             <select name="Seldepart">       
                                 <?php 
@@ -79,7 +79,7 @@
         
 
         <div class="input-group">
-            <button type="submit" name="reg_user" class="btn">Register</button>
+            <button type="submit" name="reg_user" class="btn">สมัครสมาชิก</button>
         </div>
         <p>Already a member? <a href="login.php">Sign in</a></p>
     </form>

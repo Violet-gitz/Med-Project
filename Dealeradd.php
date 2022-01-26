@@ -23,21 +23,17 @@
         $ContractEnd = $_REQUEST['ContractEnd'];
 
         if (empty($DealerName)) {
-            $errorMsg = "Please enter Desler Name";
+            $errorMsg = "กรุณาใส่ชื่อตัวแทนจำหน่าย";
         } else if (empty($DealerAddress)) {
-            $errorMsg = "please Enter Dealer Address";
+            $errorMsg = "กรุณาใส่ที่อยู่ตัวแทนจำหน่าย";
         } else if (empty($DealerPhone)) {
-            $errorMsg = "please Enter Dealer Phone";
-        } else if (empty($ContractStart)) {
-            $errorMsg = "please Enter Dealer Contract Start";
-        } else if (empty($ContractEnd)) {
-            $errorMsg = "please Enter Dealer Contract End";
+            $errorMsg = "กรุณาใส่เบอร์โทรศัพท์ตัวแทนจำหน่าย";
         } else {
             $query = "SELECT * FROM tbl_dealer WHERE DealerName = '$DealerName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
             if($row["DealerName"] === $DealerName) {
-                $errorMsg =  "DealerName already exists";
+                $errorMsg =  "ชื่อตัวแทนจำหน่ายซ้ำ กรุณาใส่ใหม่";
             }
             else {
             $sql = "INSERT INTO tbl_dealer(DealerName,DealerAddress,DealerPhone,ContractStart,ContractEnd) VALUES ('$DealerName', '$DealerAddress', '$DealerPhone', '$ContractStart', '$ContractEnd')";

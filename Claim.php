@@ -259,7 +259,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -274,12 +274,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -398,7 +398,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Lot</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ล็อตที่</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_Lot" class="form-control" value="'.$lot["LotId"].'" readonly>';
             echo            '</div>';
@@ -407,7 +407,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Medicine</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ชื่อยา</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_MedName" class="form-control" value="'.$med["MedName"].'" readonly>';
             echo            '</div>';
@@ -416,7 +416,7 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Type</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ประเภท</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_Type" class="form-control" value="'.$med["TypeName"].'" readonly>';
             echo            '</div>';
@@ -425,7 +425,7 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Catagory</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">หมวดหมู่</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_Cate" class="form-control" value="'.$med["CateName"].'" readonly>';
             echo            '</div>';
@@ -434,7 +434,7 @@
              
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Volumn</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ปริมาณ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_vol" class="form-control" value="'.$med["VolumnName"].'" readonly>';
             echo            '</div>';
@@ -443,7 +443,7 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Unit</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">หน่วยนับ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_unit" class="form-control" value="'.$med["UnitName"].'" readonly>';
             echo            '</div>';
@@ -452,7 +452,7 @@
  
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Unit/Pack</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_unit" class="form-control" value="'.$med["MedPack"].'" readonly>';
             echo            '</div>';
@@ -461,7 +461,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Quantity</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">จำนวน</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_qty" class="form-control" value="'.$lot["Qty"].'" readonly>';
             echo            '</div>';
@@ -470,7 +470,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Dealer Name </label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ชื่อตัวแทนจำหน่าย</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_OrderId" class="form-control" value="'.$Dealer["DealerName"].'" readonly>';
             echo            '</div>';
@@ -479,7 +479,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Dealer Address</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ที่อยู่ตัวแทนจำหน่าย</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_OrderId" class="form-control" value="'.$Dealer["DealerAddress"].'" readonly>';
             echo            '</div>';
@@ -488,7 +488,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Dealer Phone</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">เบอร์โทรศัพท์ตัวแทนจำหน่าย</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_OrderId" class="form-control" value="'.$Dealer["DealerPhone"].'" readonly>';
             echo            '</div>';
@@ -497,7 +497,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Delivery name</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ชื่อคนส่งของ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_OrderId" class="form-control" value="'.$rec["RecDeli"].'" readonly>';
             echo            '</div>';
@@ -506,7 +506,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Reason</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">สาเหตุ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_reason" class="form-control" value="">';
             echo            '</div>';
@@ -515,8 +515,8 @@
 
             echo '<div class="form-group text-center">';
             echo    '<div class="col-md-12 mt-3">';
-            echo        '<input type="submit" name="btn-Claim" class="btn btn-success" value="Claim">';    
-            echo            '<a href="Lot.php" class="btn btn-danger">Back</a>';
+            echo        '<input type="submit" name="btn-Claim" class="btn btn-success" value="เคลม">';    
+            echo            '<a href="Lot.php" class="btn btn-danger">กลับ</a>';
             echo    '</div>';
             echo '</div>';
 
@@ -575,7 +575,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Lot</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ล็อต</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_Lot" class="form-control" value="'.$lot["LotId"].'" readonly>';
             echo            '</div>';
@@ -584,7 +584,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Medicine</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ชื่อยา</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_Med" class="form-control" value="'.$med["MedName"].'" readonly>';
             echo            '</div>';
@@ -593,7 +593,7 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Type</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ประเภท</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_Type" class="form-control" value="'.$med["TypeName"].'" readonly>';
             echo            '</div>';
@@ -602,7 +602,7 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Catagory</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">หมวดหมู่</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_Cate" class="form-control" value="'.$med["CateName"].'" readonly>';
             echo            '</div>';
@@ -611,7 +611,7 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Volumn</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ปริมาณ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_vol" class="form-control" value="'.$med["VolumnName"].'" readonly>';
             echo            '</div>';
@@ -620,7 +620,7 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Unit</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">หน่วยนับ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_unit" class="form-control" value="'.$med["UnitName"].'" readonly>';
             echo            '</div>';
@@ -629,7 +629,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Unit/Pack</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_unit" class="form-control" value="'.$med["MedPack"].'" readonly>';
             echo            '</div>';
@@ -638,7 +638,7 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Quantity</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">จำนวน</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_qty1" class="form-control" value="'.$lot["Qty"].'" readonly>';
             echo            '</div>';
@@ -647,7 +647,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Dealer Name </label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ชื่อตัวแทนจำหน่าย</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_OrderId" class="form-control" value="'.$Dealer["DealerName"].'" readonly>';
             echo            '</div>';
@@ -656,7 +656,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Dealer Address</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ที่อยู่ตัวแทนจำหน่าย</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_OrderId" class="form-control" value="'.$Dealer["DealerAddress"].'" readonly>';
             echo            '</div>';
@@ -665,7 +665,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Dealer Phone</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">เบอร์โทรศัพท์ตัวแทนจำหน่าย</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_OrderId" class="form-control" value="'.$Dealer["DealerPhone"].'" readonly>';
             echo            '</div>';
@@ -674,7 +674,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Delivery name</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">ชื่อคนส่งของ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_OrderId" class="form-control" value="'.$recclaim["RecClaimdate"].'" readonly>';
             echo            '</div>';
@@ -683,7 +683,7 @@
 
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">Reason</label>';
+            echo        '<label for="Tel" class="col-sm-3 control-label">สาเหตุ</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_reason1" class="form-control" value="">';
             echo            '</div>';
@@ -692,8 +692,8 @@
 
             echo '<div class="form-group text-center">';
             echo    '<div class="col-md-12 mt-3">';
-            echo        '<input type="submit" name="btn-Claiming" class="btn btn-success" value="Claim">';    
-            echo            '<a href="Lot.php" class="btn btn-danger">Back</a>';
+            echo        '<input type="submit" name="btn-Claiming" class="btn btn-success" value="เคลม">';    
+            echo            '<a href="Lot.php" class="btn btn-danger">กลับ</a>';
             echo    '</div>';
             echo '</div>';
 

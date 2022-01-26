@@ -21,13 +21,13 @@
         
         
         if (empty($DepartName)) {
-            $errorMsg = "Please enter Departmentname ";
+            $errorMsg = "กรุณาใส่ชื่อแผนก";
         }  else {
             $query = "SELECT * FROM tbl_department WHERE DepartName = '$DepartName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
             $row = mysqli_fetch_array($result);
             if($row["DepartName"] === $DepartName) {
-                $errorMsg =  "DepartName already exists";
+                $errorMsg =  "ชื่อแผนกซ้ำ กรุณาใส่ใหม่";
             }
             else {
             $sql = "INSERT INTO tbl_department(DepartName) VALUES ('$DepartName')";

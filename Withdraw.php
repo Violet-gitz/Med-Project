@@ -72,7 +72,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -87,12 +87,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -182,7 +182,7 @@
                                 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Lot</label>
+                    <label for="Tel" class="col-sm-3 control-label">ล็อตที่</label>
                         <div class="col-sm-7">
                             <input type="text" name="txt_Lot" class="form-control" value="<?php echo $Lot["LotId"]; ?>" readonly>
                     </div>
@@ -191,7 +191,7 @@
         
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">Medicine</label>
+                    <label for="Tel" class="col-sm-3 control-label">ชื่อยา</label>
                         <div class="col-sm-7">
                             <input type="text" name="txt_MedName" class="form-control" value="<?php echo $Med["MedName"]; ?>" readonly>
                     </div>
@@ -201,7 +201,7 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicine Category" class="col-sm-3 control-label">Category</label>
+                    <label for="Medicine Category" class="col-sm-3 control-label">หมวดหมู่</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedCate" class="form-control" value="<?php echo $Med["CateName"]; ?>" readonly>
                     </div>
@@ -210,7 +210,7 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicine Volumn" class="col-sm-3 control-label">Volumn</label>
+                    <label for="Medicine Volumn" class="col-sm-3 control-label">ปริมาณ</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedVolumn" class="form-control" value="<?php echo $Med["VolumnName"]; ?>" readonly>
                     </div>
@@ -219,7 +219,7 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicine Unit" class="col-sm-3 control-label">Unit</label>
+                    <label for="Medicine Unit" class="col-sm-3 control-label">หน่วยนับ</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedUnit" class="form-control" value="<?php echo $Med["UnitName"]; ?>" readonly>
                     </div>
@@ -228,7 +228,7 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicine pack" class="col-sm-3 control-label">Unit/Pack</label>
+                    <label for="Medicine pack" class="col-sm-3 control-label">จำนวนต่อหีบห่อ</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $Med["MedPack"]; ?>" readonly>
                     </div>
@@ -237,7 +237,7 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Total/Pack</label>
+                    <label for="Medicine Price" class="col-sm-3 control-label">จำนวนทั้งหมด</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_Total" class="form-control" value="<?php echo $sum; ?>" readonly>
                     </div>
@@ -256,9 +256,9 @@
                             <div class="form-group text-center">
                                 <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">
                                 <input type ="hidden" name = "act" value = "add">
-                                <input type="submit" class = "btn btn-info" value = "Add to cart"> 
+                                <input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าลงตะกร้า"> 
                                 <input type ="hidden" name = "valueid" value = "<?php echo $rec["LotId"];?>">
-                                <a href="Lot.php" class="btn btn-danger">Back</a>
+                                <a href="Lot.php" class="btn btn-danger">กลับ</a>
                             </div>
                             </form>  
                     </div>

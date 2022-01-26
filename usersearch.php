@@ -70,7 +70,7 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="Mainuser.php" class="navbar-brand">Home Page</a>
+                  <a href="Mainuser.php" class="navbar-brand">หนัาหลัก</a>
                 </div>
 
                 <!-- <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
@@ -88,12 +88,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="edituser.php">
-                                            <a class="dropdown-item" href="edituser.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="edituser.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -112,8 +112,8 @@
             <div class="row">
                     <div class="col-md-4 ms-auto">
                         <form action="usersearch.php" method="post">
-                            <input type="text" name="textsearch" placeholder = "Search">
-                            <input type="submit" name="submit" value="Search">
+                            <input type="text" name="textsearch" placeholder = "ค้นหา">
+                            <input type="submit" name="submit" value="ค้นหา">
                         </form>
                     </div>
             </div>
@@ -123,16 +123,16 @@
     
         <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-            List Approve
-           
+         <h2>รายการขออนุมัติ</h2>
+            </div>
             <thead >
             <tr>
-                <th>WithId</th>
-                <th>StaffId</th>
-                <th>Quantity</th>
-                <th>Status</th>
-                <th>WithDate</th>
-                <th>Report</th>
+                <th>รหัสการเบิก</th>
+                <th>ชื่อพนักงาน</th>
+                <th>จำนวน</th>
+                <th>สถานะ</th>
+                <th>วันที่เบิก</th>
+                <th>รายงาน</th>
             </tr>
         <tbody>
             <?php 
@@ -169,7 +169,7 @@
                         {
                             echo '<td>
                                     <form method = "POST" action = "userreport.php">
-                                        <button type = "submit" value = "'.$with["WithId"].'" name = "Report" class="btn btn-primary">Report</button>
+                                        <button type = "submit" value = "'.$with["WithId"].'" name = "Report" class="btn btn-primary">รายงาน</button>
                                         <input type ="hidden" name = "valueid" value = '.$with["WithId"].'">
                                     </form>
                                 </td>';
