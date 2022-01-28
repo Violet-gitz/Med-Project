@@ -52,7 +52,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase order</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -60,6 +60,14 @@
     </head>
 
 <style>
+    @media print 
+{
+   @page
+   {
+    size: 8.5in 5.5in;
+    size: portrait;
+  }
+}
 body{margin-top:20px;
     color: #2e323c;
     background: #f5f6fa;
@@ -226,14 +234,14 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Received Order </h3><br><br>";
+                                            echo "<h3>ใบรับยา</h3><br><br>";
                                         ?><br>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
-										M38 Petchkasem Rd, Bang Wa <br>
-										Phasi Charoen, Bangkok 10160.<br>
+                                        38 ถ. เพชรเกษม แขวง บางหว้า <br>
+										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
 										02 867 8088
 									</address>
 								</div>
@@ -244,24 +252,13 @@ body{margin-top:20px;
 								<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<address>
-										<?php 
-                                            // echo "Address : " .$dealer["DealerAddress"] . "<br>";
-                                            // echo "Contract : ". $dealer["DealerPhone"] . "<br>";
+										<?php                                            
+                                            echo "วันที่ออกรายงาน : ". $rec["RecDate"] . "<br>";
                                         ?>
 										</address>
 									</div>
 								</div>
-								<div class="col-xl-3 col-lg-3 col-md-9 col-sm-9 col-9">
-									<div class="invoice-details">
-										<div class="invoice-num">
-                                            <?php 
-                                                echo "Received Id : #" .$rec["RecId"] . "<br>";
-                                                echo "Date : ". $rec["RecDate"] . "<br>";
-                                            ?>
-										</div>
-									</div>													
-								</div>
-							</div>
+							
 							<!-- Row end -->
 						</div>
 						<div class="invoice-body">
@@ -272,11 +269,11 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th with = "80">Received Summary</th>
-													<th with = "80">Product ID</th>
-													<th with = "80">Quantity</th>
-                                                    <th with = "80">Manufactured Date</th>
-													<th with = "80">Expiration date</th>
+													<th with = "80">ชื่อยา</th>
+													<th with = "80">รหัสสินค้า</th>
+													<th with = "80">จำนวน</th>
+                                                    <th with = "80">วันผลิต</th>
+													<th with = "80">วันหมดอายุ</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -326,8 +323,10 @@ body{margin-top:20px;
 						</div>
 
                         <div class="row">
-                            <div class="col-md-12 text-right identity">
-                                <p><?php echo $rec["StaffName"];?><br><strong>..........................</strong></p>
+                            <div class="col-md-11 text-right identity">
+                                
+                                <p><strong>....................................</strong><br><?php echo "ลงชื่อพนักงานส่งของ";?></p>
+                                <p><strong>....................................</strong><br><?php echo $rec["StaffName"];?></p>
                             </div>
 						</div>
 
@@ -341,13 +340,13 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Receivedreport.pdf");
+    $mpdf->Output("report/ใบรับยา.pdf");
     ob_end_flush();
 ?>
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <a href="CheckReceived.php" class="btn btn-danger">Back</a>
+                    <a href="CheckReceived.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
 </html>

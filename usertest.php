@@ -180,7 +180,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase order</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -188,6 +187,15 @@
     </head>
 
 <style>
+@media print 
+{
+   @page
+   {
+    size: 8.5in 5.5in;
+    size: portrait;
+  }
+}
+
 body{margin-top:20px;
     color: #2e323c;
     background: #f5f6fa;
@@ -354,15 +362,16 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Wtihdraw </h3><br>";
+                                            echo "<h3>ใบเบิก</h3><br>";
                                         ?><br>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
-										M38 Petchkasem Rd, Bang Wa <br>
-										Phasi Charoen, Bangkok 10160.<br>
+								        38 ถ. เพชรเกษม แขวง บางหว้า <br>
+										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
 										02 867 8088
+
 									</address>
 								</div>
 				
@@ -372,17 +381,18 @@ body{margin-top:20px;
 								<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<address>
-									
+                                            <?php 
+                                                date_default_timezone_set("Asia/Bangkok");
+                                                $RecTime = date("Y-m-d h:i:sa");
+                                                echo "วันที่เบิก  : ". $RecTime;
+                                            ?>
 										</address>
 									</div>
 								</div>
                                 <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<div class="invoice-num">
-                                            <?php 
-                                                // echo "Purchase order : #" .$order["OrderId"] . "<br>";
-                                                // echo "Date order : ". $order["OrderDate"] . "<br>";
-                                            ?>
+                                           
 										</div>
 									</div>													
 								</div>
@@ -398,9 +408,9 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th>Order Summary</th>
-													<th>Product ID</th>
-													<th>Quantity</th>
+													<th>รายการเบิก</th>
+													<th>รหัสสินค้า</th>
+													<th>จำนวน</th>
 													
 												</tr>
 											<!-- </thead> -->
@@ -435,7 +445,7 @@ body{margin-top:20px;
 														<p>
 															<!-- Subtotal<br>
 															Tax (7%)<br> -->
-                                                            <h5 class="text-success"><strong>Grand Total</strong></h5>
+                                                            <h5 class="text-success"><strong>จำนวนทั้งหมด</strong></h5>
 														</p>
 														
 													</td>			
@@ -451,8 +461,8 @@ body{margin-top:20px;
 
                         <div class="row">
                             <div class="col-md-12 text-right identity">
-                                <p><?php echo "Department : ".$depart["DepartName"];?><br></p>
-                                <p><?php echo $staff["StaffName"];?><br><strong>..........................</strong></p>
+                                <p><?php echo "แผนก : ".$depart["DepartName"];?><br></p>
+                                <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
                             </div>
 						</div>
 
@@ -472,10 +482,10 @@ body{margin-top:20px;
             <form name="frmcart" method="post">
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type ="submit" name = "btn-Order" class = "btn btn-info" value = "Order">
+                    <input type ="submit" name = "btn-Order" class = "btn btn-info" value = "เบิก">
                     <input type ="hidden" name = "total" value = "<?php echo $sum;?>">
                     <input type ="hidden" name = "selDealer" value = "<?php echo $DealerId;?>">
-                    <a href="cartuser.php" class="btn btn-danger">Back</a>
+                    <a href="cartuser.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
         </form>

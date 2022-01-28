@@ -52,7 +52,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase order</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -60,6 +60,15 @@
     </head>
 
 <style>
+
+@media print 
+{
+   @page
+   {
+    size: 8.5in 5.5in;
+    size: portrait;
+  }
+}
 body{margin-top:20px;
     color: #2e323c;
     background: #f5f6fa;
@@ -206,33 +215,19 @@ body{margin-top:20px;
 					<div class="invoice-container">
 						<div class="invoice-header">
 
-							<!-- Row start -->
-							<!-- <div class="row gutters">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-									<div class="custom-actions-btns mb-5">
-										<a href="#" class="btn btn-primary">
-											<i class="icon-download"></i> Download
-										</a>
-										<a href="#" class="btn btn-secondary">
-											<i class="icon-printer"></i> Print
-										</a>
-									</div>
-								</div>
-							</div> -->
-							<!-- Row end -->
-							<!-- Row start -->
+						
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                           echo "<h3>Monthly report<br> </h3>";
+                                           echo "<h3>รายงานการรับ<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
                                         ?><br>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
-										M38 Petchkasem Rd, Bang Wa <br>
-										Phasi Charoen, Bangkok 10160.<br>
+                                        38 ถ. เพชรเกษม แขวง บางหว้า <br>
+										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
 										02 867 8088
 									</address>
 								</div>
@@ -244,8 +239,9 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<address>
 										<?php 
-                                            // echo "Address : " .$dealer["DealerAddress"] . "<br>";
-                                            // echo "Contract : ". $dealer["DealerPhone"] . "<br>";
+                                               date_default_timezone_set("Asia/Bangkok");
+                                               $Datereport = date("Y-m-d h:i:sa");
+                                               echo "วันที่ออกรายงาน : ". $Datereport;
                                         ?>
 										</address>
 									</div>
@@ -253,12 +249,7 @@ body{margin-top:20px;
 								<div class="col-xl-3 col-lg-3 col-md-9 col-sm-9 col-9">
 									<div class="invoice-details">
 										<div class="invoice-num">
-                                            <?php 
-                                                
-                                                date_default_timezone_set("Asia/Bangkok");
-                                                $Datereport = date("Y-m-d h:i:sa");
-                                                echo "Date : ". $Datereport;
-                                           ?>
+                                           
 										</div>
 									</div>													
 								</div>
@@ -273,15 +264,15 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th width = "30">Received Order</th>
-                                                    <th width = "100">Received Date</th>
-                                                    <th width = "30">Lot ID</th>
-													<th width = "80">Medicine</th>
-                                                    <th width = "80">Manufactured</th>
-													<th width = "100">Expiration</th>
-                                                    <th width = "80">Receivd Name</th>
-                                                    <th width = "80">Delivery Name</th>
-													<th width = "80">Quantity</th>
+													<th width = "30">รหัสการรับ</th>
+                                                    <th width = "100">วันที่รับ</th>
+                                                    <th width = "30">ล็อตยา</th>
+													<th width = "80">ชื่อยา</th>
+                                                    <th width = "80">วันผลิต</th>
+													<th width = "100">วันหมดอายุ</th>
+                                                    <th width = "80">ชื่อพนักงานรับ</th>
+                                                    <th width = "80">ชื่อพนักงานส่งของ</th>
+													<th width = "80">จำนวน</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -350,7 +341,7 @@ body{margin-top:20px;
 										
 												<tr>
 													<td colspan="8">
-														<h5 class="text-success"><strong>Grand Total</strong></h5>
+														<h5 class="text-success"><strong>จำนวนรวม</strong></h5>
 													</td>			
                                                     <td><?php echo $sum;?></td>
 												</tr>
@@ -378,13 +369,13 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Export-Received.pdf");
+    $mpdf->Output("report/รายงานการรับประจำเดือน.pdf");
     ob_end_flush();
 ?>
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <a href="CheckReceived.php" class="btn btn-danger">Back</a>
+                    <a href="CheckReceived.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
 </html>

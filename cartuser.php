@@ -289,7 +289,7 @@
 
                         <div class="form-group text-center">
                             <div class="col-md-12 mt-3">
-                                <input type="submit" name = "Order"class = "btn btn-info" value = "สั่งซื้อ">
+                                <input type="submit" name = "Order"class = "btn btn-info" value = "เบิก">
                                 <input type ="hidden" name = "StaffId" value = "<?php echo $staff["StaffId"];?>">
                                 <a href="Mainuser.php" class="btn btn-danger">กลับ</a>
                             </div>

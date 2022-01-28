@@ -79,6 +79,15 @@
     </head>
 
 <style>
+
+@media print 
+{
+   @page
+   {
+    size: 8.5in 5.5in;
+    size: portrait;
+  }
+}
 body{margin-top:20px;
     color: #2e323c;
     background: #f5f6fa;
@@ -226,33 +235,19 @@ body{margin-top:20px;
 					<div class="invoice-container">
 						<div class="invoice-header">
 
-							<!-- Row start -->
-							<!-- <div class="row gutters">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-									<div class="custom-actions-btns mb-5">
-										<a href="#" class="btn btn-primary">
-											<i class="icon-download"></i> Download
-										</a>
-										<a href="#" class="btn btn-secondary">
-											<i class="icon-printer"></i> Print
-										</a>
-									</div>
-								</div>
-							</div> -->
-							<!-- Row end -->
-							<!-- Row start -->
+						
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Monthly report<br> </h3><br>".$dealer["DealerName"]."<br>";
-                                        ?><br>
+                                            echo "<h3>รายงานการซื้อ<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
+                                        ?>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
-										M38 Petchkasem Rd, Bang Wa <br>
-										Phasi Charoen, Bangkok 10160.<br>
+                                        38 ถ. เพชรเกษม แขวง บางหว้า <br>
+										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
 										02 867 8088
 									</address>
 								</div>
@@ -264,8 +259,12 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<address>
 										<?php 
-                                            echo "Address : " .$dealer["DealerAddress"] . "<br>";
-                                            echo "Contract : ". $dealer["DealerPhone"] . "<br>";
+                                             echo "ตัวแทนจำหน่าย : " .$dealer["DealerName"] . "<br>";
+                                             echo "ที่อยู่ : " .$dealer["DealerAddress"] . "<br>";
+                                             echo "เบอร์โทรศัพท์ : ". $dealer["DealerPhone"] . "<br>";
+                                             date_default_timezone_set("Asia/Bangkok");
+                                             $Datereport = date("Y-m-d h:i:sa");
+                                             echo "วันที่ออกรายงาน : ". $Datereport;
                                         ?>
 										</address>
 									</div>
@@ -274,9 +273,7 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<div class="invoice-num">
                                                 <?php
-                                                     date_default_timezone_set("Asia/Bangkok");
-                                                     $Datereport = date("Y-m-d h:i:sa");
-                                                     echo "Date : ". $Datereport;
+                                                   
                                                 ?>
 										</div>
 									</div>													
@@ -292,13 +289,13 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th>Order</th>
-                                                    <th>StaffName</th>
-													<th>OrderDate</th>
-                                                    <th>Medicine Name</th>
-                                                    <th>Quantity</th>
-													<th>OrderStatus</th>
-													<th>OrderTotal</th>
+													<th>รายการสั่งซื้อ</th>
+                                                    <th>พนักงาน</th>
+													<th>วันที่สั่ง</th>
+                                                    <th>ชื่อยา</th>
+                                                    <th>จำนวน</th>
+													<th>สถานะการสั่งซื้อ</th>
+													<th>ราคา</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -363,7 +360,7 @@ body{margin-top:20px;
                                             <?php } ?>
 
 												<tr>
-													<td colspan="4"><h5 class="text-success"><strong>Grand Total</strong></h5></td>	
+													<td colspan="4"><h5 class="text-success"><strong>จำนวนรวมทั้งหมด</strong></h5></td>	
                                                     <td><h5 class="text-success"><strong><?php echo $qty. "<br>";?></strong></h5></td>	
                                                     <td></td>	
 													<td><h5 class="text-success"><strong><?php echo "฿ ".$sum. "<br>";?></strong></h5></td>
@@ -392,13 +389,13 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Export-Order.pdf");
+    $mpdf->Output("report/รายงานการซื้อประจำเดือน.pdf");
     ob_end_flush();
 ?>
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <a href="CheckOrder.php" class="btn btn-danger">Back</a>
+                    <a href="CheckOrder.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
 </html>

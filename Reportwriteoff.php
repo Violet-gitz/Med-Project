@@ -49,7 +49,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claim order</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -57,6 +57,14 @@
     </head>
 
 <style>
+    @media print 
+{
+   @page
+   {
+    size: 8.5in 5.5in;
+    size: portrait;
+  }
+}
 body{margin-top:20px;
     color: #2e323c;
     background: #f5f6fa;
@@ -197,34 +205,18 @@ body{margin-top:20px;
 				<div class="card-body p-0">
 					<div class="invoice-container">
 						<div class="invoice-header">
-
-							<!-- Row start -->
-							<!-- <div class="row gutters">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-									<div class="custom-actions-btns mb-5">
-										<a href="#" class="btn btn-primary">
-											<i class="icon-download"></i> Download
-										</a>
-										<a href="#" class="btn btn-secondary">
-											<i class="icon-printer"></i> Print
-										</a>
-									</div>
-								</div>
-							</div> -->
-							<!-- Row end -->
-							<!-- Row start -->
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>Writeoff </h3>";
+                                           echo "<h3>ใบตัดจำหน่าย</h3><br><br>";
                                         ?><br>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
-										M38 Petchkasem Rd, Bang Wa <br>
-										Phasi Charoen, Bangkok 10160.<br>
+                                        38 ถ. เพชรเกษม แขวง บางหว้า <br>
+										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
 										02 867 8088
 									</address>
 								</div>
@@ -236,8 +228,7 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<address>
 										<?php 
-                                           echo "Writeoff Id : #". $write["WriteId"] . "<br>";
-                                           echo "Date order : ". $write["WriteDate"] . "<br>";
+                                           echo "วันที่ : ". $write["WriteDate"] . "<br>";
                                         ?>
 										</address>
 									</div>
@@ -260,10 +251,10 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th width = "80">Writeoff</th>
-                                                    <th with = "30">Lot ID</th>
-													<th width = "30">Product ID</th>
-													<th width = "80">Quantity</th>
+													<th width = "80">ชื่อยา</th>
+                                                    <th with = "30">ล็อตที่</th>
+													<th width = "30">รหัสยา</th>
+													<th width = "80">จำนวน</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -301,7 +292,7 @@ body{margin-top:20px;
 				
                         <div class="row">
                             <div class="col-md-12 text-right identity">
-                            <p><?php echo $write["StaffName"];?><br><strong>..........................</strong></p>
+                            <p><strong>....................</strong><br><?php echo $write["StaffName"];?></p>
                             </div>
 						</div>
 
@@ -315,13 +306,13 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Writeoffreport.pdf");
+    $mpdf->Output("report/ใบตัดจำหน่าย.pdf");
     ob_end_flush();
 ?>
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <a href="Writeoffshow.php" class="btn btn-danger">Back</a>
+                    <a href="Writeoffshow.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
 </html>

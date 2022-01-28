@@ -92,12 +92,22 @@ span.mpdf_toc_t_level_2 { /* Title level 2 */
 
 span.mpdf_toc_p_level_2 { /* Page no. level 2 - may be inside <a> */
 }
+
+
+@media print 
+{
+   @page
+   {
+    size: 8.5in 5.5in;
+    size: portrait;
+  }
+}
 body{margin-top:20px;
     color: #2e323c;
     background: #f5f6fa;
     position: relative;
     height: 100%;
-    font-family: 'Sarabun', sans-serif;
+    font-family: 'THKrub', sans-serif;
 }
 .invoice-container {
     padding: 1rem;
@@ -225,4 +235,53 @@ body{margin-top:20px;
 
 .container {
     width: 786px;
+}
+
+@font-face {
+    font-family: 'THKrub';
+    src: url('th_krub_bold_italic-webfont.eot');
+    src: url('th_krub_bold_italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('th_krub_bold_italic-webfont.woff') format('woff'),
+         url('th_krub_bold_italic-webfont.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'THKrub';
+    src: url('th_krub_bold-webfont.eot');
+    src: url('th_krub_bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('th_krub_bold-webfont.woff') format('woff'),
+         url('th_krub_bold-webfont.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'THKrub';
+    src: url('th_krub_italic-webfont.eot');
+    src: url('th_krub_italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('th_krub_italic-webfont.woff') format('woff'),
+         url('th_krub_italic-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+@font-face {
+    font-family: 'THKrub';
+    src: url('th_krub-webfont.eot');
+    src: url('th_krub-webfont.eot?#iefix') format('embedded-opentype'),
+         url('th_krub-webfont.woff') format('woff'),
+         url('th_krub-webfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+.th_krub{
+   font-family: 'THKrub', sans-serif;
 }

@@ -52,7 +52,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claim order</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -200,34 +200,18 @@ body{margin-top:20px;
 				<div class="card-body p-0">
 					<div class="invoice-container">
 						<div class="invoice-header">
-
-							<!-- Row start -->
-							<!-- <div class="row gutters">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-									<div class="custom-actions-btns mb-5">
-										<a href="#" class="btn btn-primary">
-											<i class="icon-download"></i> Download
-										</a>
-										<a href="#" class="btn btn-secondary">
-											<i class="icon-printer"></i> Print
-										</a>
-									</div>
-								</div>
-							</div> -->
-							<!-- Row end -->
-							<!-- Row start -->
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                           echo "<h3>Monthly report<br> </h3><br>";
+                                           echo "<h3>รายงานการตัดจำหน่าย<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
                                         ?><br>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
-										M38 Petchkasem Rd, Bang Wa <br>
-										Phasi Charoen, Bangkok 10160.<br>
+                                        38 ถ. เพชรเกษม แขวง บางหว้า <br>
+										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
 										02 867 8088
 									</address>
 								</div>
@@ -241,7 +225,7 @@ body{margin-top:20px;
 										<?php 
                                            date_default_timezone_set("Asia/Bangkok");
                                            $Datereport = date("Y-m-d h:i:sa");
-                                           echo "Date : ". $Datereport;
+                                           echo "วันที่ออกรายงาน : ". $Datereport;
                                         ?>
 										</address>
 									</div>
@@ -264,10 +248,10 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th width = "220">Writeoff</th>
-                                                    <th with = "80">Lot ID</th>
-													<th width = "100">Product ID</th>
-													<th width = "80">Quantity</th>
+													<th width = "220">ชื่อยา</th>
+                                                    <th with = "80">ล็อตที่</th>
+													<th width = "100">รหัสยา</th>
+													<th width = "80">จำนวน</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -309,7 +293,7 @@ body{margin-top:20px;
                                                     ?>
 											
 												<tr>
-                                                    <td colspan="1"><h5 class="text-success"><strong>Grand Total</strong></h5></td>	
+                                                    <td colspan="1"><h5 class="text-success"><strong>จำนวนรวม</strong></h5></td>	
                                                     <td><h5 class="text-success"><strong></strong></h5></td>	
                                                     <td></td>	
 													<td><h5 class="text-success"><strong><?php echo $sum. "<br>";?></strong></h5></td>
@@ -340,13 +324,13 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Export-Writeoff.pdf");
+    $mpdf->Output("report/รายงานการตัดจำหน่ายประจำเดือน.pdf");
     ob_end_flush();
 ?>
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <a href="Writeoffshow.php" class="btn btn-danger">Back</a>
+                    <a href="Writeoffshow.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
 </html>

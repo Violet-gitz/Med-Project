@@ -77,6 +77,14 @@
     </head>
 
 <style>
+@media print 
+{
+   @page
+   {
+    size: 8.5in 5.5in;
+    size: portrait;
+  }
+}
 body{margin-top:20px;
     color: #2e323c;
     background: #f5f6fa;
@@ -229,13 +237,15 @@ body{margin-top:20px;
 							<!-- Row start -->
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                    Monthly report<br>
+                                        <?php 
+                                            echo "<h3>รายงานการเบิก<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
+                                        ?>
                                     
 								</div>
 								<div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
-                                        M38 Petchkasem Rd, Bang Wa <br>
-										Phasi Charoen, Bangkok 10160.<br>
+                                        38 ถ. เพชรเกษม แขวง บางหว้า <br>
+										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
 										02 867 8088
 									</address>
 								</div>
@@ -249,7 +259,7 @@ body{margin-top:20px;
                                                 <?php
                                                      date_default_timezone_set("Asia/Bangkok");
                                                      $Datereport = date("Y-m-d h:i:sa");
-                                                     echo "Date : ". $Datereport;
+                                                     echo "วันที่ออกรายงาน : ". $Datereport;
                                                 ?>
 										</address>
 									</div>
@@ -263,12 +273,12 @@ body{margin-top:20px;
                                 <thead>
                                 </thead>
                                     <tr>
-                                        <th width = "30">With Order</th>
-                                        <th width = "40">Name</th>
-                                        <th width = "50">Department</th>
-                                        <th width = "50">Status</th>
-                                        <th width = "180">WithDate</th>
-                                        <th width = "50">Quantity</th>
+                                        <th width = "30">รหัสการเบิก</th>
+                                        <th width = "40">ชื่อพนักงาน</th>
+                                        <th width = "50">แผนก</th>
+                                        <th width = "50">สถานะ</th>
+                                        <th width = "180">วันที่เบิก</th>
+                                        <th width = "50">จำนวน</th>
                                     </tr>
 
                                 <tbody>
@@ -325,7 +335,7 @@ body{margin-top:20px;
                                             ?>
                                         <tr>
                                             <td colspan = "4"></td>
-                                            <th colspan = "2"><?php echo "Name : ".$med["MedName"] ."  :  ". $withde["Qty"]; ?></td>
+                                            <th colspan = "2"><?php echo "ชื่อยา : ".$med["MedName"] ."  :  ". $withde["Qty"]; ?></td>
 
                                         
                                             <?php } } ?>
@@ -333,7 +343,7 @@ body{margin-top:20px;
 
                                         <?php } } ?>
                                         <tr>
-                                            <td colspan = "5">ToTal</td>
+                                            <td colspan = "5">จำนวน</td>
                                             <td><?php echo $sum; ?></td>
                                             
                                         </tr>
@@ -358,13 +368,13 @@ body{margin-top:20px;
 <?php
     $html=ob_get_contents();
     $mpdf->WriteHTML($html);
-    $mpdf->Output("report/Export-Writdraw.pdf");
+    $mpdf->Output("report/รายงานการเบิกประจำเดือน.pdf");
     ob_end_flush();
 ?>
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <a href="Approve.php" class="btn btn-danger">Back</a>
+                    <a href="Approve.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
 </body>

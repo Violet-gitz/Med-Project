@@ -26,7 +26,7 @@
             'default_font' => 'TH Krub'
         ]);
         ob_start(); 
-        // $stylesheet = file_get_contents('/data/mpdf.css');
+        $stylesheet = file_get_contents('/data/mpdf.css');
 
      
         
@@ -130,6 +130,15 @@
     </head>
 
 <style>
+
+@media print 
+{
+   @page
+   {
+    size: 8.5in 5.5in;
+    size: portrait;
+  }
+}
 body{margin-top:20px;
     color: #2e323c;
     background: #f5f6fa;
@@ -294,15 +303,16 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>รายการสั่งซื้อ </h3><br>".$dealer["DealerName"]."<br>";
+                                            echo "<h3>รายการสั่งซื้อ </h3><br>";
                                         ?><br>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
-										M38 Petchkasem Rd, Bang Wa <br>
-										Phasi Charoen, Bangkok 10160.<br>
+                                        38 ถ. เพชรเกษม แขวง บางหว้า <br>
+										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
 										02 867 8088
+
 									</address>
 								</div>
 				
@@ -313,8 +323,12 @@ body{margin-top:20px;
 									<div class="invoice-details">
 										<address>
 										<?php 
-                                            echo "Address : " .$dealer["DealerAddress"] . "<br>";
-                                            echo "Contract : ". $dealer["DealerPhone"] . "<br>";
+                                            echo "ตัวแทนจำหน่าย : " .$dealer["DealerName"] . "<br>";
+                                            echo "ที่อยู่ : " .$dealer["DealerAddress"] . "<br>";
+                                            echo "เบอร์โทรศัพท์ : ". $dealer["DealerPhone"] . "<br>";
+                                            date_default_timezone_set("Asia/Bangkok");
+                                            $RecTime = date("Y-m-d h:i:sa");
+                                            echo "วันที่เบิก  : ". $RecTime;
                                         ?>
 										</address>
 									</div>
@@ -322,10 +336,7 @@ body{margin-top:20px;
 								<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<div class="invoice-num">
-                                            <?php 
-                                                // echo "Purchase order : #" .$order["OrderId"] . "<br>";
-                                                // echo "Date order : ". $order["OrderDate"] . "<br>";
-                                            ?>
+                                           
 										</div>
 									</div>													
 								</div>
@@ -403,7 +414,7 @@ body{margin-top:20px;
 
                         <div class="row">
                             <div class="col-md-12 text-right identity">
-                                <p><?php echo $staff["StaffName"];?><br><strong>..........................</strong></p>
+                                <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
                             </div>
 						</div>
 
@@ -421,7 +432,7 @@ body{margin-top:20px;
     $mpdf->WriteHTML($html);
  
 
-    $mpdf->Output('report/รายงานการซื้้อ.pdf');
+    $mpdf->Output('report/รายงานการซื้อ.pdf');
     ob_end_flush();
 ?>
         <form name="frmcart" method="post">
