@@ -177,8 +177,6 @@
                   
                 }
 
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -359,7 +357,6 @@
                 </div>
             </div>
 
-
             <div class="form-group text-center">
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">วันผลิต</label>
@@ -389,7 +386,7 @@
             
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_receivedclaim" class="btn btn-success" value="รัย">
+                    <input type="submit" name="btn_receivedclaim" class="btn btn-success" value="รับ">
                     <a href="CheckClaim.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>

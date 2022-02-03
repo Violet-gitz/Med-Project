@@ -58,8 +58,8 @@ body {
 }
 </style>
   <div id="mySidenav" class="sidenav">
-    <a href="Mainuser.php">Home</a>
-    <a href="Approveuser.php">Approve</a>
+    <a href="Mainuser.php">หน้าหลัก</a>
+    <a href="Approveuser.php">อนุมัติ</a>
   </div>
   <span style="font-size:30px;cursor:pointer;color: white;" onclick="openNav()">&#9776;</span>
   <script>

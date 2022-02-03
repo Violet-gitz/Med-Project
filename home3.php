@@ -88,34 +88,42 @@
    
 <div class="container">
   <div class="row" style = "margin-top : 70px;">
-    <div class="col">
-        <a href="home1.php">
-            <img src="./Pictures/people.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูลพื้นฐาน</p>
-
-        </a>
-    </div>
 
     <div class="col">
-        <a href="Orders.php">
-            <img src="./Pictures/shopping-cart.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>สั่งซื้อ</p>
+        <a href="Typeshow.php">
+            <img src="./Pictures/type-1.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลประเภทยา</p>
         </a>
     </div>
 
     <div class="col">
-        <a href="home3.php">
-            <img src="./Pictures/pills.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูลยา</p>
+        <a href="Cateshow.php">
+            <img src="./Pictures/categories.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลหมวดหมู่ยา</p>
         </a>
     </div>
 
-     <div class="col">
-        <a href="home2.php">
-            <img src="./Pictures/package.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูล</p>
+    <div class="col">
+        <a href="Volumnshow.php">
+            <img src="./Pictures/measure.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ช้อมูลปริมาณยา</p>
         </a>
     </div>
+
+    <div class="col">
+        <a href="Unitshow.php">
+            <img src="./Pictures/unit.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลหน่วยนับ</p>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="Medshow.php">
+            <img src="./Pictures/medicine.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลยา</p>
+        </a>
+    </div>
+    
 
   </div>  
 <body>

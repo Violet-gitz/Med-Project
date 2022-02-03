@@ -88,34 +88,50 @@
    
 <div class="container">
   <div class="row" style = "margin-top : 70px;">
-    <div class="col">
-        <a href="home1.php">
-            <img src="./Pictures/people.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูลพื้นฐาน</p>
-
-        </a>
-    </div>
 
     <div class="col">
-        <a href="Orders.php">
-            <img src="./Pictures/shopping-cart.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>สั่งซื้อ</p>
+        <a href="CheckOrder.php">
+            <img src="./Pictures/cargo.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลการซื้อ</p>
         </a>
     </div>
 
     <div class="col">
-        <a href="home3.php">
-            <img src="./Pictures/pills.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูลยา</p>
+        <a href="CheckReceived.php">
+            <img src="./Pictures/parcel.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลการรับยา</p>
         </a>
     </div>
 
-     <div class="col">
-        <a href="home2.php">
-            <img src="./Pictures/package.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูล</p>
+    <div class="col">
+        <a href="Approve.php">
+            <img src="./Pictures/approved.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลการอนุมัติ</p>
         </a>
     </div>
+
+    <div class="col">
+        <a href="CheckClaim.php">
+            <img src="./Pictures/error.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลการเคลม</p>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="ClaimReceived.php">
+            <img src="./Pictures/delivery.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลการรับเคลม</p>
+        </a>
+    </div>
+    
+    <div class="col">
+        <a href="Writeoffshow.php">
+            <img src="./Pictures/littering.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <p>ข้อมูลการตัดจำหน่าย</p>
+        </a>
+    </div>
+
+   
 
   </div>  
 <body>

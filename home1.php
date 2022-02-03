@@ -89,33 +89,28 @@
 <div class="container">
   <div class="row" style = "margin-top : 70px;">
     <div class="col">
-        <a href="home1.php">
-            <img src="./Pictures/people.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูลพื้นฐาน</p>
+        <a href="Medshow.php">
+            <img src="./Pictures/profile.png" alt="HTML tutorial" style="width:250px;height:250px;">
+            <p>ข้อมูลผู้ใช้</p>
 
         </a>
     </div>
 
     <div class="col">
-        <a href="Orders.php">
-            <img src="./Pictures/shopping-cart.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>สั่งซื้อ</p>
+        <a href="Dealershow.php">
+            <img src="./Pictures/drug-dealer.png" alt="HTML tutorial" style="width:250px;height:250px;">
+            <p>ข้อมูลตัวแทนจำหน่าย</p>
         </a>
     </div>
 
     <div class="col">
-        <a href="home3.php">
-            <img src="./Pictures/pills.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูลยา</p>
+        <a href="Departmentshow.php">
+            <img src="./Pictures/department.png" alt="HTML tutorial" style="width:250px;height:250px;">
+            <p>ข้อมูลแผนก</p>
         </a>
     </div>
 
-     <div class="col">
-        <a href="home2.php">
-            <img src="./Pictures/package.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูล</p>
-        </a>
-    </div>
+   
 
   </div>  
 <body>

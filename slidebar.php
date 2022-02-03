@@ -59,32 +59,34 @@ body {
 </style>
        
         <div id="mySidenav" class="sidenav">
-          <!-- <a href="main.php">หน้าหลัก</a>
+          <a href="main.php">หน้าหลัก</a>
 
-          <a href="StaffHome.php">จัดการข้อมูลพนักงาน</a> 
-            <a href="Departmentshow.php">Department</a>
+          <a href="home1.php">จัดการข้อมูลพื้นฐาน</a> 
+         
+            <!-- <a href="Departmentshow.php">Department</a> -->
           
-          <a href="MedHome.php">จัดการข้อมูลยา</a>
-            <a href="Typeshow.php">Type</a>
+          <a href="home3.php">จัดการข้อมูลยา</a>
+          <a href="home2.php">จัดการข้อมูล</a> 
+            <!-- <a href="Typeshow.php">Type</a>
             <a href="Cateshow.php">Category</a>
             <a href="Volumnshow.php">Volumn</a>
             <a href="Unitshow.php">Unit</a>
-            <a href="Medshow.php">Medicine</a>
+            <a href="Medshow.php">Medicine</a> -->
 
           <a href="Orders.php">จัดซื้อ</a>
 
-          <a href="Received.php">การรับยา</a>
-            <a href="CheckOrder.php">รับยา</a>
-            <a href="CheckClaim.php">รับยาเคลม</a>
+          <a href="CheckReceived.php">การรับยา</a>
+            <!-- <a href="CheckOrder.php">รับยา</a>
+            <a href="CheckClaim.php">รับยาเคลม</a> -->
 
-          <a href="Lot.php">ล็อตยา</a>
+          
 
           <a href="Approve.php">รายการเบิกยา</a>
 
           <a href="Writeoffshow.php">การตัดจำหน่าย</a>
-          <a href="Dealershow.php">ตัวแทนจำหน่าย</a> -->
 
-          <a href="main.php">Home</a>
+
+          <!-- <a href="main.php">Home</a>
           <a href="Staffshow.php">Staff</a>
           <a href="Departmentshow.php">Department</a>
           <a href="Dealershow.php">Dealer</a>
@@ -100,7 +102,7 @@ body {
           <a href="Approve.php">Approve</a>
           <a href="CheckClaim.php">List order Claim</a>
           <a href="ClaimReceived.php">Received Claim</a>
-          <a href="Writeoffshow.php">Writoff List</a>
+          <a href="Writeoffshow.php">Writoff List</a> -->
           
           
         </div>

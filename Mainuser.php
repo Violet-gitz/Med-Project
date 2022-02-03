@@ -129,7 +129,7 @@
 
             <tbody>
                 <?php       
-                        $sumReserve = 0; 
+                        
                                    
                         $sql = 'SELECT * FROM tbl_med';
                         $result = $conn->query($sql);
@@ -139,6 +139,7 @@
                         }
                         foreach($data as $key => $Med){
                             $sum = 0; 
+                            $sumReserve = 0; 
                             $medtotal = $Med["MedTotal"];
                             $medid = $Med["MedId"];
 
@@ -162,7 +163,7 @@
                         <td><?php echo $Med["MedName"]; ?></td>
                         <td><?php echo $Med["MedDes"]; ?></td>
                         <td><?php echo $sum; ?></td>
-                        <td><input type="number" name="quantity" min="1" max="<?php echo $medtotal - $sumReserve; ?>" value= "1"></td>
+                        <td><input type="number" name="quantity" min="1" max="<?php echo $sum; ?>" value= "1"></td>
                         <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าลงตะกร้า"></td>
                         <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">
                         <input type ="hidden" name = "act" value = "add">
