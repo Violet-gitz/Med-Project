@@ -1,29 +1,7 @@
 <?php
     include('Connect.php'); 
     if (isset($_REQUEST['Report'])) 
-    {
-        require_once __DIR__ . '/vendor/autoload.php';
-        $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
-        
-        $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-L']);
-        $mpdf = new \Mpdf\Mpdf([
-            'fontDir' => array_merge($fontDirs, [
-                __DIR__ . '/tmp',
-            ]),
-            'fontdata' => $fontData + [
-                'sarabun' => [
-                    'R' => 'TH Krub.ttf',
-                    'I' => 'TH Krub Italic.ttf',
-                    'B' => 'TH Krub Bold.ttf',
-                    'BI'=> 'TH Krub Bold Italic.ttf'
-                ]
-            ],
-            'default_font' => 'TH Krub'
-        ]);
-        ob_start();   
+    {  
         $orderid = $_REQUEST["valueid"];
        
         $sql = "SELECT * FROM tbl_order WHERE OrderId = '$orderid'";
@@ -60,7 +38,6 @@
         }
     }
 
-    
 ?>
 
 <!DOCTYPE html>
@@ -73,7 +50,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet">
-    </head>
+
+<script language="javascript" type="text/javascript">
+    function printWindow()
+    {
+    var printReadyEle = document.getElementById("printContent");
+    var shtml = '<HTML>\n<HEAD>\n';
+    if (document.getElementsByTagName != null)
+    {
+        var sheadTags = document.getElementsByTagName("head");
+        if (sheadTags.length > 0)
+            shtml += sheadTags[0].innerHTML;
+        }
+        shtml += '</HEAD>\n<BODY onload="window.print();">\n';
+        if (printReadyEle != null)
+        {
+        shtml += '<form name = frmform1>';
+        shtml += printReadyEle.innerHTML;
+        }
+        shtml += '\n</form>\n</BODY>\n</HTML>';
+        var printWin1 = window.open();
+        printWin1.document.open();
+        printWin1.document.write(shtml);
+        printWin1.document.close();
+
+    }
+</script>
+</head>
 
 <style>
 @media print 
@@ -222,164 +225,159 @@ body{margin-top:20px;
 
 <body>
 <div class="container">
-<div class="row gutters">
-		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-			<div class="card">
-				<div class="card-body p-0">
-					<div class="invoice-container">
-						<div class="invoice-header">
+    <div class="row gutters"  id="printContent">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="invoice-container">
+                            <div class="invoice-header">
 
-							<!-- Row start -->
-							<!-- <div class="row gutters">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-									<div class="custom-actions-btns mb-5">
-										<a href="#" class="btn btn-primary">
-											<i class="icon-download"></i> Download
-										</a>
-										<a href="#" class="btn btn-secondary">
-											<i class="icon-printer"></i> Print
-										</a>
-									</div>
-								</div>
-							</div> -->
-							<!-- Row end -->
-							<!-- Row start -->
-							<div class="row gutters">
-								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-									
-                                        <?php 
-                                              echo "<h3>ใบสั่งซื้อ </h3><br>";
-                                        ?><br>
+                                <!-- Row start -->
+                                <!-- <div class="row gutters">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        <div class="custom-actions-btns mb-5">
+                                            <a href="#" class="btn btn-primary">
+                                                <i class="icon-download"></i> Download
+                                            </a>
+                                            <a href="#" class="btn btn-secondary">
+                                                <i class="icon-printer"></i> Print
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <!-- Row end -->
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
+                                        
+                                            <?php 
+                                                echo "<h3>ใบสั่งซื้อ </h3><br>";
+                                            ?><br>
 
-								</div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-									<address class="text-right">
-                                        38 ถ. เพชรเกษม แขวง บางหว้า <br>
-										เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
-										02 867 8088
-									</address>
-								</div>
-				
-							<!-- Row end -->
-							<!-- Row start -->
-							<div class="row gutters">
-								<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-									<div class="invoice-details">
-										<address>
-										<?php 
-                                             echo "ตัวแทนจำหน่าย : " .$dealer["DealerName"] . "<br>";
-                                             echo "ที่อยู่ : " .$dealer["DealerAddress"] . "<br>";
-                                             echo "เบอร์โทรศัพท์ : ". $dealer["DealerPhone"] . "<br>";
-                                             date_default_timezone_set("Asia/Bangkok");
-                                             $RecTime = date("Y-m-d h:i:sa");
-                                             echo "วันที่เบิก  : ". $RecTime;
-                                        ?>
-										</address>
-									</div>
-								</div>
-								<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-									<div class="invoice-details">
-										<div class="invoice-num">
-                                           
-										</div>
-									</div>													
-								</div>
-							</div>
-							<!-- Row end -->
-						</div>
-						<div class="invoice-body">
-							<!-- Row start -->
-							<div class="row gutters">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="table-responsive">
-										<table class="table custom-table m-0">
-											<!-- <thead> -->
-												<tr>
-												    <th>รายการสั่งซื้อ</th>
-													<th>รหัสสินค้า</th>
-													<th>จำนวน</th>
-													<th>ราคา</th>
-												</tr>
-											<!-- </thead> -->
-											<tbody>
-                                                <?php
-                                                      $orderid = $order['OrderId'];
-                                                      $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
-                                                      $result = $conn->query($sql);
-                                                      $data = array();
-                                                      while($row = $result->fetch_assoc()) {
-                                                      $data[] = $row;  
-                                                      }
-                                                      foreach($data as $key => $orderdetailid){
-                                      
-                                                          $MedId = $orderdetailid["MedId"];
-                                                          $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                                                          $result = $conn->query($sqli);
-                                                          $data = array();
-                                                          while($row = $result->fetch_assoc()) {
-                                                          $data[] = $row;   
-                                                          }
-                                                          
-                                                          foreach($data as $key => $med){
-                                                ?>
-												<tr>
-													<td><?php echo $med["MedName"];?></td>
-													<td><?php echo "#".$med["MedId"];?></td>
-													<td><?php echo $orderdetailid["Qty"];?></td>
-													<td><?php echo "฿ ".$orderdetailid["Price"];?></td>
-												</tr>
-                                                    <?php
-                                                            }}
-                                                    ?>
-										
-												<tr>
-													<td colspan="3">
-														<p>
-                                                            ราคารวม<br>
-															ภาษี (7%)<br>
-														</p>
-														<h5 class="text-success"><strong>ราคารวมภาษี</strong></h5>
-													</td>			
-													<td>
-														<p>
-                                                            <?php echo "฿ ".$order["OrderPrice"]. "<br>";?>
-															<?php echo "฿ ".$ordertax. "<br>";?>
-															
-														</p>
-														<h5 class="text-success"><strong><?php echo "฿ ".$order["OrderTotal"]. "<br>";?></strong></h5>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<!-- Row end -->
-						</div>
-
-                        <div class="row">
-                            <div class="col-md-12 text-right identity">
-                                <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <address class="text-right">
+                                            38 ถ. เพชรเกษม แขวง บางหว้า <br>
+                                            เขตภาษีเจริญ กรุงเทพมหานคร 10160.<br>
+                                            02 867 8088
+                                        </address>
+                                    </div>
+                    
+                                <!-- Row end -->
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                                        <div class="invoice-details">
+                                            <address>
+                                            <?php 
+                                                echo "ตัวแทนจำหน่าย : " .$dealer["DealerName"] . "<br>";
+                                                echo "ที่อยู่ : " .$dealer["DealerAddress"] . "<br>";
+                                                echo "เบอร์โทรศัพท์ : ". $dealer["DealerPhone"] . "<br>";
+                                                date_default_timezone_set("Asia/Bangkok");
+                                                $RecTime = date("Y-m-d h:i:sa");
+                                                echo "วันที่เบิก  : ". $RecTime;
+                                            ?>
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                                        <div class="invoice-details">
+                                            <div class="invoice-num">
+                                            
+                                            </div>
+                                        </div>													
+                                    </div>
+                                </div>
+                                <!-- Row end -->
                             </div>
-						</div>
+                            <div class="invoice-body">
+                                <!-- Row start -->
+                                <div class="row gutters">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="table-responsive">
+                                            <table class="table custom-table m-0">
+                                                <!-- <thead> -->
+                                                    <tr>
+                                                        <th>รายการสั่งซื้อ</th>
+                                                        <th>รหัสสินค้า</th>
+                                                        <th>จำนวน</th>
+                                                        <th>ราคา</th>
+                                                    </tr>
+                                                <!-- </thead> -->
+                                                <tbody>
+                                                    <?php
+                                                        $orderid = $order['OrderId'];
+                                                        $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
+                                                        $result = $conn->query($sql);
+                                                        $data = array();
+                                                        while($row = $result->fetch_assoc()) {
+                                                        $data[] = $row;  
+                                                        }
+                                                        foreach($data as $key => $orderdetailid){
+                                        
+                                                            $MedId = $orderdetailid["MedId"];
+                                                            $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                                                            $result = $conn->query($sqli);
+                                                            $data = array();
+                                                            while($row = $result->fetch_assoc()) {
+                                                            $data[] = $row;   
+                                                            }
+                                                            
+                                                            foreach($data as $key => $med){
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $med["MedName"];?></td>
+                                                        <td><?php echo "#".$med["MedId"];?></td>
+                                                        <td><?php echo $orderdetailid["Qty"];?></td>
+                                                        <td><?php echo "฿ ".$orderdetailid["Price"];?></td>
+                                                    </tr>
+                                                        <?php
+                                                                }}
+                                                        ?>
+                                            
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            <p>
+                                                                ราคารวม<br>
+                                                                ภาษี (7%)<br>
+                                                            </p>
+                                                            <h5 class="text-success"><strong>ราคารวมภาษี</strong></h5>
+                                                        </td>			
+                                                        <td>
+                                                            <p>
+                                                                <?php echo "฿ ".$order["OrderPrice"]. "<br>";?>
+                                                                <?php echo "฿ ".$ordertax. "<br>";?>
+                                                                
+                                                            </p>
+                                                            <h5 class="text-success"><strong><?php echo "฿ ".$order["OrderTotal"]. "<br>";?></strong></h5>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Row end -->
+                            </div>
 
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                            <div class="row">
+                                <div class="col-md-12 text-right identity">
+                                    <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
 </div>
-</body>
-<?php
-    $html=ob_get_contents();
-    $mpdf->WriteHTML($html);
-    $mpdf->Output("report/ใบสั่งซื้อ.pdf");
-    ob_end_flush();
-?>
-
-            <div class="form-group text-center">
+<div class="form-group text-center">
                 <div class="col-md-12 mt-3">
+                    <input type="button" value="ปริ้น" class="btn btn-primary" onclick="window.printWindow()" /> 
                     <a href="CheckOrder.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
+
+</body>            
 </html>

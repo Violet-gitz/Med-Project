@@ -4,33 +4,6 @@
     error_reporting(0);
     if (isset($_REQUEST['Order'])) 
     {
-        require_once __DIR__ . '/vendor/autoload.php';
-        $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
-        
-        $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-L']);
-        $mpdf = new \Mpdf\Mpdf([
-            'fontDir' => array_merge($fontDirs, [
-                __DIR__ . '/tmp',
-            ]),
-            'fontdata' => $fontData + [
-                'sarabun' => [
-                    'R' => 'TH Krub.ttf',
-                    'I' => 'TH Krub Italic.ttf',
-                    'B' => 'TH Krub Bold.ttf',
-                    'BI'=> 'TH Krub Bold Italic.ttf'
-                ]
-            ],
-            'default_font' => 'TH Krub'
-        ]);
-        ob_start(); 
-        $stylesheet = file_get_contents('/data/mpdf.css');
-
-     
-        
-
         $DealerId = $_REQUEST['selDealer'];
         $sql = "SELECT * FROM tbl_dealer WHERE DealerId = '$DealerId'";
         $result = $conn->query($sql);
@@ -273,6 +246,13 @@ body{margin-top:20px;
 .container {
     width: 786px;
 }
+.sig-box {
+    float:right;
+    border:1px solid black;
+    padding : 30px 20px 10px;
+    text-align: center;
+    margin-right: 20px;
+}
 </style>
 
 <body>
@@ -283,28 +263,13 @@ body{margin-top:20px;
 				<div class="card-body p-0">
 					<div class="invoice-container">
 						<div class="invoice-header">
-
-							<!-- Row start -->
-							<!-- <div class="row gutters">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-									<div class="custom-actions-btns mb-5">
-										<a href="#" class="btn btn-primary">
-											<i class="icon-download"></i> Download
-										</a>
-										<a href="#" class="btn btn-secondary">
-											<i class="icon-printer"></i> Print
-										</a>
-									</div>
-								</div>
-							</div> -->
-							<!-- Row end -->
 							<!-- Row start -->
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>รายการสั่งซื้อ </h3><br>";
-                                        ?><br>
+                                            echo "<h3>รายการสั่งซื้อ </h3>";
+                                        ?>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -315,7 +280,7 @@ body{margin-top:20px;
 
 									</address>
 								</div>
-				
+                            </div>
 							<!-- Row end -->
 							<!-- Row start -->
 							<div class="row gutters">
@@ -413,8 +378,10 @@ body{margin-top:20px;
 						</div>
 
                         <div class="row">
-                            <div class="col-md-12 text-right identity">
-                                <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
+                            <div class="sig-box">
+                                <div class="col-md-12 identity">
+                                    <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
+                                </div>
                             </div>
 						</div>
 
@@ -425,16 +392,7 @@ body{margin-top:20px;
 	</div>
 </div>
 </body>
-<?php
-    $html=ob_get_contents();
-    // $mpdf->WriteHTML($html);
- 
-    $mpdf->WriteHTML($html);
- 
 
-    $mpdf->Output('report/รายงานการซื้อ.pdf');
-    ob_end_flush();
-?>
         <form name="frmcart" method="post">
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">

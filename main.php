@@ -41,7 +41,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
                 <div style='margin-right: 15px'>
                     <?php
@@ -79,7 +79,25 @@
                     </div>
                 </div>
             </div>
-        </nav> 
+        </nav>
+
+    <style>
+        .container {
+            margin: 0 auto;
+            min-width: 920px;
+        }
+        .col {
+            text-align : center;
+        }
+        img {
+            width: 200px;   
+            height: 200px;
+        }
+        h4 {
+            margin-top: 20px;
+        }
+    </style>
+
 
 </head>
 
@@ -87,33 +105,32 @@
 <body>
    
 <div class="container">
-  <div class="row" style = "margin-top : 70px;">
+  <div class="row" style = "margin-top : 25%;">
     <div class="col">
         <a href="home1.php">
-            <img src="./Pictures/people.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูลพื้นฐาน</p>
-
+            <img src="./Pictures/people.png" alt="HTML tutorial">
+            <h4 style = "text-align:center;">จัดการข้อมูลพื้นฐาน</h4>
         </a>
     </div>
 
     <div class="col">
         <a href="Orders.php">
-            <img src="./Pictures/shopping-cart.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>สั่งซื้อ</p>
+            <img src="./Pictures/shopping-cart.png" alt="HTML tutorial">
+            <h4 style = "text-align:center;">สั่งซื้อ</h4>
         </a>
     </div>
 
     <div class="col">
         <a href="home3.php">
-            <img src="./Pictures/pills.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูลยา</p>
+            <img src="./Pictures/pills.png" alt="HTML tutorial">
+            <h4 style = "text-align:center;">จัดการข้อมูลยา</h4>
         </a>
     </div>
 
      <div class="col">
         <a href="home2.php">
-            <img src="./Pictures/package.png" alt="HTML tutorial" style="width:250px;height:250px;">
-            <p>จัดการข้อมูล</p>
+            <img src="./Pictures/package.png" alt="HTML tutorial">
+            <h4 style = "text-align:center;">จัดการข้อมูล</h4>
         </a>
     </div>
 

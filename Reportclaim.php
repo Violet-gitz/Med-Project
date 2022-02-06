@@ -2,28 +2,6 @@
     include('Connect.php'); 
     if (isset($_REQUEST['Report'])) 
     {
-        require_once __DIR__ . '/vendor/autoload.php';
-        $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
-        
-        $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-L']);
-        $mpdf = new \Mpdf\Mpdf([
-            'fontDir' => array_merge($fontDirs, [
-                __DIR__ . '/tmp',
-            ]),
-            'fontdata' => $fontData + [
-                'sarabun' => [
-                    'R' => 'TH Krub.ttf',
-                    'I' => 'TH Krub Italic.ttf',
-                    'B' => 'TH Krub Bold.ttf',
-                    'BI'=> 'TH Krub Bold Italic.ttf'
-                ]
-            ],
-            'default_font' => 'TH Krub'
-        ]);
-        ob_start();   
         $claimid = $_REQUEST["valueid"];
        
         $sql = "SELECT * FROM tbl_claim WHERE ClaimId = '$claimid'";
@@ -71,7 +49,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Sarabun&display=swap" rel="stylesheet">
-    </head>
+
+    <script language="javascript" type="text/javascript">
+        function printWindow()
+        {
+        var printReadyEle = document.getElementById("printContent");
+        var shtml = '<HTML>\n<HEAD>\n';
+        if (document.getElementsByTagName != null)
+        {
+            var sheadTags = document.getElementsByTagName("head");
+            if (sheadTags.length > 0)
+                shtml += sheadTags[0].innerHTML;
+            }
+            shtml += '</HEAD>\n<BODY onload="window.print();">\n';
+            if (printReadyEle != null)
+            {
+            shtml += '<form name = frmform1>';
+            shtml += printReadyEle.innerHTML;
+            }
+            shtml += '\n</form>\n</BODY>\n</HTML>';
+            var printWin1 = window.open();
+            printWin1.document.open();
+            printWin1.document.write(shtml);
+            printWin1.document.close();
+
+        }
+    </script>
+</head>
 
 <style>
 @media print 
@@ -216,21 +220,18 @@ body{margin-top:20px;
 
 <body>
 <div class="container">
-<div class="row gutters">
+<div class="row gutters" id="printContent">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 			<div class="card">
 				<div class="card-body p-0">
 					<div class="invoice-container">
 						<div class="invoice-header">
-
 					
 							<div class="row gutters">
-								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-									
+								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">					
                                         <?php 
                                             echo "<h3>ใบเคลม</h3>";
-                                        ?><br>
-
+                                        ?>
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
@@ -320,16 +321,13 @@ body{margin-top:20px;
 		</div>
 	</div>
 </div>
+</div>
 </body>
-<?php
-    $html=ob_get_contents();
-    $mpdf->WriteHTML($html);
-    $mpdf->Output("report/ใบส่งเคลม.pdf");
-    ob_end_flush();
-?>
+
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
+                    <input type="button" value="ปริ้น" class="btn btn-primary" onclick="window.printWindow()" /> 
                     <a href="CheckClaim.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>

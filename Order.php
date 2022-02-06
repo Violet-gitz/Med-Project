@@ -190,7 +190,7 @@
                                 <div class="col-md-12 mt-3">
                                 <input type="submit" name = "Order"class = "btn btn-info" value = "สั่งซื้อ">
                                 <input type ="hidden" name = "StaffId" value = "<?php echo $staff["StaffId"];?>">
-                                <a href="Orders.php" class="btn btn-danger">กลับ</a>
+                                <a href="Orders.php" class="btn btn-danger">เลือกยาเพิ่ม</a>
                                 </div>
                             </div>
                         </div>

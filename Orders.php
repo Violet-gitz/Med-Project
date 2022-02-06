@@ -126,11 +126,6 @@
             </div>
     </div>
 
-
-        <?php
-            include('slidebar.php');
-        ?>
-    
     <?php 
          if (isset($errorMsg)) {
     ?>
@@ -147,7 +142,7 @@
         </div>
     <?php } ?>
 
-    <h2>หน้ารายการสั่งซื้อ</h2>
+    <h2>รายการยา</h2>
     <div class="container-sm">
     
     <table class="table table-striped" style='margin-top:4rem;'>
@@ -155,7 +150,10 @@
             <tr>
                 <th>รูปภาพ</th>
                 <th style="width:20%">ชื่อยา</th>
-                <th>รายละเอียดยา</th>
+                <th>ประเภท</th>
+                <th>หมวดหมู่</th>
+                <th>ปริมาณ</th>
+                <th>หน่วยหนับ</th>
                 <th>จำนวน</th>
                 <th>ซื้อสินค้า</th>              
             </tr>
@@ -165,7 +163,12 @@
             <?php       
                     $sumReserve = 0; 
                                
-                    $sql = 'SELECT * FROM tbl_med';
+                    $sql = 'SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+                    FROM tbl_med
+                    INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
+                    INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
+                    INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
+                    INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId;';
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
@@ -177,7 +180,10 @@
                     <form action = "Order.php" method="post">
                     <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                     <td><?php echo $Med["MedName"]; ?></td>
-                    <td><?php echo $Med["MedDes"]; ?></td>
+                    <td><?php echo $Med["TypeName"]; ?></td>
+                    <td><?php echo $Med["CateName"]; ?></td>
+                    <td><?php echo $Med["VolumnName"]; ?></td>
+                    <td><?php echo $Med["UnitName"]; ?></td>
                     <td><input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p></td>
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">

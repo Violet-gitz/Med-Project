@@ -79,7 +79,31 @@
                     </div>
                 </div>
             </div>
-        </nav> 
+        </nav>
+
+    <style>
+        .container {
+            margin: 0 auto;
+            min-width: 920px;
+        }
+        .row {
+            margin-top: 25%;
+        }
+        .col {
+            text-align : center;
+        }
+        img {
+            width: 200px;   
+            height: 200px;
+        }
+        h4 {
+            margin-top: 20px;
+        }
+        p {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    </style>
 
 </head>
 
@@ -87,10 +111,10 @@
 <body>
    
 <div class="container">
-  <div class="row" style = "margin-top : 70px;">
+  <div class="row">
     <div class="col">
-        <a href="Medshow.php">
-            <img src="./Pictures/profile.png" alt="HTML tutorial" style="width:250px;height:250px;">
+        <a href="Staffshow.php">
+            <img src="./Pictures/profile.png">
             <p>ข้อมูลผู้ใช้</p>
 
         </a>
@@ -98,14 +122,14 @@
 
     <div class="col">
         <a href="Dealershow.php">
-            <img src="./Pictures/drug-dealer.png" alt="HTML tutorial" style="width:250px;height:250px;">
+            <img src="./Pictures/drug-dealer.png">
             <p>ข้อมูลตัวแทนจำหน่าย</p>
         </a>
     </div>
 
     <div class="col">
         <a href="Departmentshow.php">
-            <img src="./Pictures/department.png" alt="HTML tutorial" style="width:250px;height:250px;">
+            <img src="./Pictures/department.png">
             <p>ข้อมูลแผนก</p>
         </a>
     </div>

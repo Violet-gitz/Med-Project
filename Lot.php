@@ -192,7 +192,8 @@
  
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-         <h2>หน้าล็อตยา</h2>
+         <h2>ล็อตยา</h2>
+         <h5>เลือก เคลมหรือตัดจำหน่ายล็อตยาที่ต้องการ</h5>
            </div>
             <thead >
             <tr>
@@ -204,7 +205,7 @@
                 <th>สถานะ</th>
                 <th>วันหมดอายุ</th>
                 <th>รายละเอียด</th>
-                <th>Action</th>
+                <th></th>
             </tr>
         </thead>
 
@@ -302,7 +303,7 @@
                                         echo $buttonStatus;
                                     }
                                 ?> 
-                                >Action
+                                >ทำรายการ
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 

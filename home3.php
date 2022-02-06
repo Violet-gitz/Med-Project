@@ -79,7 +79,42 @@
                     </div>
                 </div>
             </div>
-        </nav> 
+        </nav>
+
+    <style>
+        .container {
+            margin: 0 auto;
+            min-width: 920px;
+        }
+        .row {
+            margin-top: 20%;
+        }
+        .col {
+            float: left;
+        }
+        img {
+            width: 200px;   
+            height: 200px;
+        }
+        h4 {
+            margin-top: 20px;
+        }
+        p {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .row2 {
+            margin-top: 20px;
+            margin-right: 20px;
+        }
+        .row2 .col {
+            Float: left;
+            width: 200px;
+        }
+        .col a {
+            text-align: center;
+        }
+    </style>
 
 </head>
 
@@ -87,45 +122,46 @@
 <body>
    
 <div class="container">
-  <div class="row" style = "margin-top : 70px;">
+  <div class="row">
 
     <div class="col">
         <a href="Typeshow.php">
-            <img src="./Pictures/type-1.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <img src="./Pictures/type-1.png">
             <p>ข้อมูลประเภทยา</p>
         </a>
     </div>
 
     <div class="col">
         <a href="Cateshow.php">
-            <img src="./Pictures/categories.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <img src="./Pictures/categories.png">
             <p>ข้อมูลหมวดหมู่ยา</p>
         </a>
     </div>
 
     <div class="col">
         <a href="Volumnshow.php">
-            <img src="./Pictures/measure.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <img src="./Pictures/measure.png">
             <p>ช้อมูลปริมาณยา</p>
         </a>
     </div>
 
     <div class="col">
         <a href="Unitshow.php">
-            <img src="./Pictures/unit.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <img src="./Pictures/unit.png" >
             <p>ข้อมูลหน่วยนับ</p>
         </a>
-    </div>
+    </div>   
+
+  </div>
+  <div class="row2">     
 
     <div class="col">
         <a href="Medshow.php">
-            <img src="./Pictures/medicine.png" alt="HTML tutorial" style="width:180px;height:180px;">
+            <img src="./Pictures/medicine.png" >
             <p>ข้อมูลยา</p>
         </a>
     </div>
-    
-
-  </div>  
+  </div>
 <body>
         
     <script src="js/slim.js"></script>

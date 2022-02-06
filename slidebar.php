@@ -84,7 +84,7 @@ body {
           <a href="Approve.php">รายการเบิกยา</a>
 
           <a href="Writeoffshow.php">การตัดจำหน่าย</a>
-
+          <a href="Lot.php">ล็อตยา</a>
 
           <!-- <a href="main.php">Home</a>
           <a href="Staffshow.php">Staff</a>
