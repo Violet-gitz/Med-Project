@@ -201,6 +201,14 @@ body{margin-top:20px;
 .custom-actions-btns .btn {
     margin: .3rem 0 .3rem .3rem;
 }
+
+.sig-box {
+    float:right;
+    border:1px solid black;
+    padding : 30px 20px 10px;
+    text-align: center;
+    margin-right: 20px;
+}
 </style>
 
 <body>
@@ -297,10 +305,12 @@ body{margin-top:20px;
 						</div>
 				
                         <div class="row">
-                            <div class="col-md-12 text-right identity">
-                            <p><strong>....................</strong><br><?php echo $write["StaffName"];?></p>
+                            <div class="sig-box">
+                                <div class="col-md-12 identity">
+                                    <p><strong>.............</strong><br><?php echo $write["StaffName"];?></p>
+                                </div>
                             </div>
-						</div>
+                        </div>
 
 					</div>
 				</div>

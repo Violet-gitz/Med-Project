@@ -75,16 +75,15 @@ body {
 
           <a href="Orders.php">จัดซื้อ</a>
 
-          <a href="CheckReceived.php">การรับยา</a>
             <!-- <a href="CheckOrder.php">รับยา</a>
             <a href="CheckClaim.php">รับยาเคลม</a> -->
 
-          
+          <a href="Lot.php">ล็อตยา</a>
 
           <a href="Approve.php">รายการเบิกยา</a>
 
           <a href="Writeoffshow.php">การตัดจำหน่าย</a>
-          <a href="Lot.php">ล็อตยา</a>
+          
 
           <!-- <a href="main.php">Home</a>
           <a href="Staffshow.php">Staff</a>

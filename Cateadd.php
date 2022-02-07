@@ -1,6 +1,7 @@
 <?php 
     include('connect.php');
     session_start();
+    error_reporting(0);
     
     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";

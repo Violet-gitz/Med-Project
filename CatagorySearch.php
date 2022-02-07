@@ -163,7 +163,10 @@
             <tr>
                 <th>รูปภาพ</th>
                 <th style="width:20%">ชื่อยา</th>
-                <th>รายละเอียดยา</th>
+                <th>ประเภท</th>
+                <th>หมวดหมู่</th>
+                <th>ปริมาณ</th>
+                <th>หน่วยหนับ</th>
                 <th>จำนวน</th>
                 <th>ซื้อสินค้า</th>              
             </tr>
@@ -191,7 +194,10 @@
                     <form action = "Order.php" method="post">
                     <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                     <td><?php echo $Med["MedName"]; ?></td>
-                    <td><?php echo $Med["MedDes"]; ?></td>
+                    <td><?php echo $Med["TypeName"]; ?></td>
+                    <td><?php echo $Med["CateName"]; ?></td>
+                    <td><?php echo $Med["VolumnName"]; ?></td>
+                    <td><?php echo $Med["UnitName"]; ?></td>
                     <td><input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p></td>
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">

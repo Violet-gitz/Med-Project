@@ -221,6 +221,13 @@ body{margin-top:20px;
 .container {
     width: 786px;
 }
+.sig-box {
+    float:right;
+    border:1px solid black;
+    padding : 30px 20px 10px;
+    text-align: center;
+    margin-right: 20px;
+}
 </style>
 
 <body>
@@ -361,8 +368,10 @@ body{margin-top:20px;
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12 text-right identity">
-                                    <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
+                                <div class="sig-box">
+                                    <div class="col-md-12 identity">
+                                        <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
+                                    </div>
                                 </div>
                             </div>
 

@@ -1,31 +1,7 @@
 <?php
     include('Connect.php'); 
     session_start();
-    if (isset($_REQUEST['Order'])) 
-    {
-        require_once __DIR__ . '/vendor/autoload.php';
-        $defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
-        $fontDirs = $defaultConfig['fontDir'];
-        
-        $defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
-        $fontData = $defaultFontConfig['fontdata'];
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'A4-L']);
-        $mpdf = new \Mpdf\Mpdf([
-            'fontDir' => array_merge($fontDirs, [
-                __DIR__ . '/tmp',
-            ]),
-            'fontdata' => $fontData + [
-                'sarabun' => [
-                    'R' => 'TH Krub.ttf',
-                    'I' => 'TH Krub Italic.ttf',
-                    'B' => 'TH Krub Bold.ttf',
-                    'BI'=> 'TH Krub Bold Italic.ttf'
-                ]
-            ],
-            'default_font' => 'TH Krub'
-        ]);
-        ob_start();      
-    }
+  
 
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -472,13 +448,9 @@ body{margin-top:20px;
 		</div>
 	</div>
 </div>
+</div>
 </body>
-<?php
-    $html=ob_get_contents();
-    $mpdf->WriteHTML($html);
-    $mpdf->Output("report/รายงานการเบิก.pdf");
-    ob_end_flush();
-?>
+
             <form name="frmcart" method="post">
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
