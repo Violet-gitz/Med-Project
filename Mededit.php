@@ -29,7 +29,7 @@
             $e->getMessage();
         }
     }
-
+    
     if (isset($_REQUEST['btn_update'])) {
         $MedName = $_REQUEST['txt_MedName'];
         $MedDes = $_REQUEST['txt_MedDes'];
@@ -44,33 +44,36 @@
         $MedPoint = $_REQUEST['txt_MedPoint'];
         $TypeId = $_REQUEST['txt_Medtype'];
         $MedExp = $_REQUEST['txt_MedExp'];
+        $MedNoti = $_REQUEST['txt_MedNoti'];
         
         if (empty($MedName)) {
-            $errorMsg = "Please enter Medicine Name";
+            $errorMsg = "กรุณาใส่ชื่อยา";
         }else if (empty($MedDes)) {
-            $errorMsg = "Please Enter Medicine Description";
-        } else if (empty($CateId)) {
-            $errorMsg = "Please Enter Medicine Catetory";
-        } else if (empty($VolumnId)) {
-            $errorMsg = "Please Enter Medicine Volumn";
-        } else if (empty($UnitId)) {
-            $errorMsg = "Please Enter Medicine Unit";
+            $errorMsg = "กรุณาใส่รายละเอียดยา";
+        }else if (empty($CateId)) {
+            $errorMsg = "กรุณาเลือกหมวดหมู่";
+        }else if (empty($VolumnId)) {
+            $errorMsg = "กรุณาเลือกปริมาณ";
+        }else if (empty($UnitId)) {
+            $errorMsg = "กรุณาเลือกหน่วยยา";
         }else if (empty($MedPack)) {
-            $errorMsg = "Please Enter Medicine Pack";
+            $errorMsg = "กรุณาใส่จำนวนต่อหนึ่งหีบห่อ";
         }else if (empty($MedPrice)) {
-            $errorMsg = "Please Enter Medicine Price";
+            $errorMsg = "กรุณาใส่ราคาต่อหีบห่อ";
         }else if (empty($MedIndi)) {
-            $errorMsg = "Please Enter Medicine Indication";
+            $errorMsg = "กรุณาใส่ข้อบ่งชี้";
         }else if (empty($MedPoint)) {
-            $errorMsg = "Please Enter Point of Order";
+            $errorMsg = "กรุณาใส่จุดสั่งซื้อ";
         }else if (empty($MedExp)) {
-            $errorMsg = "Please Enter Medicine Exp";
+            $errorMsg = "กรุณาใส่จำนวนวันหมดอายุ";
         }else if (empty($TypeId)) {
-            $errorMsg = "Please Enter Medicine Type";
-        }  else {
+            $errorMsg = "กรุณาเลือกประเภทยา";
+        }else if (empty($MedNoti)) {
+            $errorMsg = "กรุณาใส่วันที่ต้องการให้แจ้งเตือนก่อน";
+        }else {
             try {
                 if (!isset($errorMsg)) {
-                    $update_stmt = $db->prepare("UPDATE tbl_med SET MedName = :1name, CateId = :2name, VolumnId = :3name, UnitId = :4name, MedPack = :5name, MedPrice = :6name, MedTotal = :7name,  MedPoint = :8name, MedDes = :9name, MedLow = :10name, TypeId = :11name, MedIndi = :12name, MedExp = :13name WHERE MedId = :MedId");
+                    $update_stmt = $db->prepare("UPDATE tbl_med SET MedName = :1name, CateId = :2name, VolumnId = :3name, UnitId = :4name, MedPack = :5name, MedPrice = :6name, MedTotal = :7name,  MedPoint = :8name, MedDes = :9name, MedLow = :10name, TypeId = :11name, MedIndi = :12name, MedExp = :13name, MedNoti = :14name WHERE MedId = :MedId");
                     $update_stmt->bindParam(':1name', $MedName);
                     $update_stmt->bindParam(':2name', $CateId);
                     $update_stmt->bindParam(':3name', $VolumnId);
@@ -83,11 +86,12 @@
                     $update_stmt->bindParam(':10name', $MedLow);
                     $update_stmt->bindParam(':11name', $TypeId);
                     $update_stmt->bindParam(':12name', $MedIndi);
-                    $update_stmt->bindParam(':13name', $MedExp);    
+                    $update_stmt->bindParam(':13name', $MedExp);
+                    $update_stmt->bindParam(':14name', $MedNoti);       
                     $update_stmt->bindParam(':MedId', $id);
 
                     if ($update_stmt->execute()) {
-                        $updateMsg = "Record update successfully...";
+                        $updateMsg = "แก้ไขข้อมูลสำเร็จ...";
                         header("refresh:1;Medshow.php");
                     }
                 }
@@ -104,10 +108,18 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
         }
 
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med1 = array();
+    while($row = $result1->fetch_assoc()) 
+        {
+            $med1[] = $row;  
+        }
 
 ?>
 <!DOCTYPE html>
@@ -126,6 +138,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med1) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med1) > 0)
+                                {
+                                    echo "<sup>".count($med1)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                               
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -163,7 +196,7 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
@@ -172,12 +205,11 @@
          if (isset($updateMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $updateMsg; ?></strong>
         </div>
     <?php } ?>
 
-    
-    
+    <center><strong><h2>แก้ไขข้อมูลยา</h2></strong></center>
         <form method="post" class="form-horizontal mt-5">
             <div class="container">
                 <div class="form-group text-center">
@@ -248,6 +280,15 @@
                         <td><label for="Medicineprcie" class="col-sm-3 control-label">จำนวนวันหมดอายุ</label></td>
                             <div class="col-sm-7">
                                 <td><input type="number" name="txt_MedExp" class="form-control" value="<?php echo $med["MedExp"]; ?>"></td>
+                            </div>
+                        </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="row">
+                        <td><label for="Medicineprcie" class="col-sm-3 control-label">ตั้งจำนวนวันแจ้งเตือน</label></td>
+                            <div class="col-sm-7">
+                                <td><input type="number" name="txt_MedNoti" class="form-control" value="<?php echo $med["MedNoti"]; ?>"></td>
                             </div>
                         </div>
                 </div>
@@ -364,5 +405,47 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
 </body>
 </html>

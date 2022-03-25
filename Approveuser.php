@@ -27,7 +27,7 @@
         {
             $withid = $_REQUEST['Cancel_id'];
     
-            $sql = "UPDATE tbl_withdraw SET WithStatus = 'Cancel' WHERE WithId = $withid";
+            $sql = "UPDATE tbl_withdraw SET WithStatus = 'ยกเลิก' WHERE WithId = $withid";
             if ($conn->query($sql) === TRUE) {     
             } else {
               echo "Error updating record: " . $conn->error;
@@ -206,7 +206,7 @@
                     <td><?php echo $with["WithStatus"]; ?></td>
                     <td><?php echo $with["WithDate"]; ?></td>
                     <?php
-                        if ($withstatus == "Approved")
+                        if ($withstatus == "อนุมัติสำเร็จ")
                         {
                             echo '<td>
                                     <form method = "POST" action = "userreport.php">

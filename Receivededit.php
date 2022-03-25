@@ -2,7 +2,7 @@
 <?php 
     include('connect.php');
     session_start();
-
+    error_reporting(0);
     
     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
@@ -26,7 +26,6 @@
         foreach($data as $key => $staff){      
             $staffid = $staff["StaffId"];
         }
-
 
     if (isset($_REQUEST['Edit'])) {
         
@@ -76,61 +75,63 @@
             
                 }
             }
-        }
-
-        
+        }     
     }
 
-    if (isset($_REQUEST['btn_received'])) {
+
+    if (isset($_REQUEST['btn_received'])) 
+    {       
         $i = 0;
         $orderid = $_REQUEST['txt_OrderId'];
         $sql ="SELECT * FROM tbl_orderdetail WHERE $orderid = OrderId";
         $result = $conn->query($sql);
         $data = array();
-        while($row = $result->fetch_assoc()) {
+        while($row = $result->fetch_assoc()) 
+        {
             $data[] = $row;   
         }
         foreach($data as $key => $Orderde)
-        {
-            
+        {       
             $MedId = $Orderde["MedId"];
             $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
             $result = $conn->query($sqli);
             $data = array();
-                while($row = $result->fetch_assoc()) {
+                while($row = $result->fetch_assoc()) 
+                {
                     $data[] = $row;   
                 }
-                foreach($data as $key => $med){
+                foreach($data as $key => $med)
+                {
+                    $OrderId = $Orderde["OrderId"];
+                    $sql ="SELECT * FROM tbl_Order WHERE $OrderId = OrderId";
+                    $result = $conn->query($sql);
+                    $data = array();
+                        while($row = $result->fetch_assoc()) 
+                        {
+                            $data[] = $row;   
+                        }
+                        foreach($data as $key => $Order)
+                        {
+                            $DealerId = $Order["DealerId"];
+                            $sql ="SELECT * FROM tbl_dealer WHERE $DealerId = DealerId";
+                            $result = $conn->query($sql);
+                            $data = array();
+                                while($row = $result->fetch_assoc()) 
+                                {
+                                    $data[] = $row;   
+                                }
+                                foreach($data as $key => $Dealer)
+                                {
 
-            $OrderId = $Orderde["OrderId"];
-            $sql ="SELECT * FROM tbl_Order WHERE $OrderId = OrderId";
-            $result = $conn->query($sql);
-            $data = array();
-                while($row = $result->fetch_assoc()) {
-                    $data[] = $row;   
+                                }                   
+                        }
                 }
-                foreach($data as $key => $Order){
-
-            $DealerId = $Order["DealerId"];
-            $sql ="SELECT * FROM tbl_dealer WHERE $DealerId = DealerId";
-            $result = $conn->query($sql);
-            $data = array();
-                while($row = $result->fetch_assoc()) {
-                    $data[] = $row;   
-                }
-                foreach($data as $key => $Dealer){
-
-                }
-        
-            }
         }
-    }
 
         $OrderId = $_REQUEST['txt_OrderId'];
         date_default_timezone_set("Asia/Bangkok");
-        $RecTime = date("Y-m-d h:i:sa");
+        $RecTime = date("d")."-".date("m")."-".(date("Y")+543);  
         $RecDeli = $_REQUEST['txt_delivery'];
-        $OrderStatus = "Received";
         $LotStatus = "Avialable";
 
          if (empty($OrderId)) {
@@ -141,115 +142,107 @@
             $errorMsg = "Please Enter Received Delivery";
         }  else 
 
-                if (!isset($errorMsg)) {
-
-                    $sql = "UPDATE tbl_received SET StaffId = '$staffid' , RecDate = '$RecTime' , RecDeli = '$RecDeli'WHERE OrderId = $OrderId";
-                    if ($conn->query($sql) === TRUE) {   
-                    } else {
-                        echo "Error updating record: " . $conn->error;
-                    }
+            if (!isset($errorMsg))
+            {
+                $sql = "UPDATE tbl_received SET StaffId = '$staffid' , RecDate = '$RecTime' , RecDeli = '$RecDeli'WHERE OrderId = $OrderId";
+                if ($conn->query($sql) === TRUE) {   
+                } else {
+                    echo "Error updating record: " . $conn->error;
+                }
       
-                    $sql = "UPDATE tbl_order SET OrderStatus = 'Received' WHERE $OrderId=OrderId";
-                    if ($conn->query($sql) === TRUE) {
-                    } else {
-                        echo "Error updating record: " . $conn->error;
+                $sql = "UPDATE tbl_order SET OrderStatus = 'รับสำเร็จ' WHERE $OrderId=OrderId";
+                if ($conn->query($sql) === TRUE) {
+                } else {
+                     echo "Error updating record: " . $conn->error;
                     }
 
-                    $orderid = $Order['OrderId'];
-                    $sql = "SELECT* FROM tbl_received WHERE OrderId=$orderid";
+                
+                $orderid = $Order['OrderId'];
+                $sql = "SELECT* FROM tbl_received WHERE OrderId=$orderid";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) {
+                $data[] = $row;  
+                }
+                foreach($data as $key => $order){
+
+                    $recid = $order["RecId"];
+                    $sql = "SELECT* FROM tbl_receiveddetail WHERE RecId=$recid";
+
                     $result = $conn->query($sql);
                     $data = array();
                     while($row = $result->fetch_assoc()) {
                     $data[] = $row;  
                     }
-                    foreach($data as $key => $order){
-
-                        $recid = $order["RecId"];
-                        $sql = "SELECT* FROM tbl_receiveddetail WHERE RecId=$recid";
-                        $result = $conn->query($sql);
-                        $data = array();
-                        while($row = $result->fetch_assoc()) {
-                        $data[] = $row;  
-                        }
-                        foreach($data as $key => $rec){
+                    foreach($data as $key => $rec){
                         
-                        $MedId = $rec["MedId"];
-                        $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                        $result = $conn->query($sqli);
-                        $data = array();
-                        while($row = $result->fetch_assoc()) {
-                        $data[] = $row;   
-                        }
-                        foreach($data as $key => $med){
-                        $Medexp = $med["MedExp"];
+                    $MedId = $rec["MedId"];
+                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                    $result = $conn->query($sqli);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;   
+                    }
+                    foreach($data as $key => $med){
+                    $Medexp = $med["MedExp"];
 
-                        $MfdDate = $_REQUEST["mfd".$i];
-                        $ExpDate = $_REQUEST["exd".$i];
-                        $datemfd=date_create($MfdDate);
-                        $dateexp=date_create($ExpDate);
-                        $diff=date_diff($datemfd,$dateexp);
-                        // echo $diff->format('%R%a');
-                        
-                        if($diff->format('%R%a')<=$Medexp)
+                    $MfdDate = $_REQUEST["mfd".$i];
+                    $ExpDate = $_REQUEST["exd".$i];
+                    $datemfd=date_create($MfdDate);
+                    $dateexp=date_create($ExpDate);
+                    $diff=date_diff($datemfd,$dateexp);
+                    // echo $diff->format('%R%a');
+                    $i++;
+                    if($diff->format('%R%a')<=$Medexp)
+                    {
+                        $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า ". $Medexp;
+                        header("refresh:1;CheckReceived.php");
+                    }else
+                        if(!isset($errorMsg)) 
                         {
-                            $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า ". $Medexp;
-                            header("refresh:2;CheckReceived.php");
-                        }else
-                            if(!isset($errorMsg)) 
+                            $sql = "UPDATE tbl_receiveddetail SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE RecId = $recid and MedId = $MedId";
+                                
+                            if ($conn->query($sql) === TRUE) { 
+                            } else {
+                                echo "Error updating record: " . $conn->error;
+                            }
+
+                            $sql = "SELECT * FROM tbl_receiveddetail WHERE RecId = $recid AND MedId = $MedId";
+                            $result = $conn->query($sql);
+                            $data = array();
+                            while($row = $result->fetch_assoc()) {
+                            $data[] = $row;   
+                            }
+                            foreach($data as $key => $recde)
                             {
-                                $sql = "UPDATE tbl_receiveddetail SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE RecId = $recid and MedId = $MedId";
+                                $LotId = $recde["LotId"];
+                                    
+                                $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  LotId = $LotId";
                                 
                                 if ($conn->query($sql) === TRUE) { 
+                                       
                                 } else {
-                                    echo "Error updating record: " . $conn->error;
+                                     echo "Error updating record: " . $conn->error;
                                 }
+                            }$insertMsg = "เพิ่มข้อมูลสำเร็จ...";
+                            header("refresh:1;lot.php");
 
-                                $sql = "SELECT * FROM tbl_receiveddetail WHERE RecId = $recid AND MedId = $MedId";
-                                $result = $conn->query($sql);
-                                $data = array();
-                                while($row = $result->fetch_assoc()) {
-                                $data[] = $row;   
-                                }
-                                foreach($data as $key => $recde)
-                                {
-                                    $LotId = $recde["LotId"];
-                                    
-                                    $sql = "UPDATE tbl_lot SET Mfd = '$MfdDate' , Exd = '$ExpDate' WHERE  LotId = $LotId";
-                                    $i++;
-                                    if ($conn->query($sql) === TRUE) { 
-                                        $insertMsg = "Insert Successfully...";
-                                        header("refresh:1;lot.php");
-                                    } else {
-                                        echo "Error updating record: " . $conn->error;
-                                    }
-                                }
-
-                                // $query = "SELECT LotId FROM tbl_lot ORDER BY LotId DESC LIMIT 1";
-                                // $result = mysqli_query($conn, $query); 
-                                // $row = mysqli_fetch_array($result);
-                                // $LotId = $row["LotId"];
-        
- 
-                                // $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
-                                // if ($conn->query($sql) === TRUE) {
-                                    
-                                // } else {
-                                //   echo "Error updating record: " . $conn->error;
-                                // }
-                            }
-                        }
+                        } 
+                        
+                        }               
                     }
-                    
-            }
-            
-        } 
-        
+                }       
+            }       
     } //catch (PDOException $e) {
-       //echo $e->getMessage();
-                    
-            
-          
+       //echo $e->getMessage();     
 
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+    while($row = $result1->fetch_assoc()) 
+    {
+        $med[] = $row;  
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -257,6 +250,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="js/datepicker.css">
     <title>Document</title>
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -268,6 +262,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -303,28 +318,49 @@
 
 <body>
 
-    <?php 
+<?php 
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ไม่สำเร็จ! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
 
     <?php 
-         if (isset($updateMsg)) {
+         if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
-    <?php } ?>
+<?php } ?>
 
     
+    <div class="row" style ="display: flex; justify-content: center;">
+    <div class="col-md-9">
+        <table class="table table-bordered">
+            <div style='margin-bottom: 15px;'>
+                    <h2>แก้ไขการรับยา<h2>
+            </div>
+                <form method="post" class="form-horizontal mt-5" name="myform">
 
-        <form method="post" class="form-horizontal mt-5" name="myform">
-
-        <?php
+                <thead>
+                    <tr>
+                        <th>รูป</th>
+                        <th>รายการ</th>
+                        <th style="width:125px">วันที่สั่ง</th>
+                        <th>ชื่อตัวแทนจำหน่าย</th>
+                        <th>ที่อยู่ตัวแทนจำหน่าย</th>
+                        <th>ชื่อยา</th>    
+                        <th>จำนวนต่อหนึ่งหีบห่อ</td>
+                        <th>วันหมดอายุ</td>
+                        <th>จำนวน</td>
+                        <th>ราคา</td>
+                        <th>วันผลิต</td>  
+                        <th>วันหมดอายุ</td>                             
+                    </tr>
+                </thead>
+            <?php
                 $i = 0;
                 $orderid = $Order['OrderId'];
                 $sql = "SELECT* FROM tbl_orderdetail WHERE OrderId=$orderid";
@@ -335,159 +371,227 @@
                 }
                 foreach($data as $key => $orderdetailid){
 
-                    $MedId = $orderdetailid["MedId"];
-                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                    $result = $conn->query($sqli);
-                    $data = array();
-                    while($row = $result->fetch_assoc()) {
-                    $data[] = $row;   
-                    }
-                    
-                    foreach($data as $key => $med){
+                        $sqli ="SELECT * FROM tbl_received WHERE OrderId=$orderid";
+                        $result = $conn->query($sqli);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
+                        }
                         
-                   
-            ?>
-             <div class="container">
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Name" class="col-sm-3 control-label"></label>
-                        <div class="col-sm-7">
-                        <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
-                    </div>
-                </div>
-            </div>
+                        foreach($data as $key => $received){     
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">รายการ</label>
-                        <div class="col-sm-7">
-                            <input type="text" name="txt_OrderId" class="form-control" value="<?php echo $Order["OrderId"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">วันที่สั่ง</label>
-                        <div class="col-sm-7">
-                            <input type="text" name="txt_OrderDate" class="form-control" value="<?php echo $Order["OrderDate"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">ชื่อตัวแทนจำหน่าย</label>
-                        <div class="col-sm-7">
-                            <input type="text" name="txt_DealerName" class="form-control" value="<?php echo $Dealer["DealerName"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Tel" class="col-sm-3 control-label">ที่อยู่ตัวแทนจำหน่าย</label>
-                        <div class="col-sm-7">
-                            <input type="text" name="txt_OrderDate" class="form-control" value="<?php echo $Dealer["DealerAddress"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-        
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Name" class="col-sm-3 control-label">ชื่อยา</label>
-                        <div class="col-sm-7">
-                            <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine pack" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">ราคาต่อหีบห่อ</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedPrice" class="form-control" value="<?php echo $med["MedPrice"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">จำนวน</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_Qty" class="form-control" value="<?php echo $orderdetailid["Qty"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">ราคา</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="Price" class="form-control" value="<?php echo $orderdetailid["Price"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">ชื่อคนส่งของ</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_delivery" class="form-control" value="<?php echo $rec["RecDeli"]; ?>">
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">วันผลิต</label>
-                    <div class="col-sm-1">
-                    <input type="date"  name="mfd<?php echo $i;?>"
-                                        value="<?php echo date('Y-m-j'); ?>" required 
-                                        min="2021-3-22" max="2030-12-31">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">วันหมดอายุ</label>
-                    <div class="col-sm-1">
-                    <input type="date"  name="exd<?php echo $i;?>"
-                                        value="<?php echo date('Y-m-j'); ?>" required
-                                        min="2021-3-22" max="2030-12-31">
-                    </div>
-                </div>
-            </div>
-
-            <?php
-                $i++;}}
+                            $idrecived = $received["RecId"];
+                            $sqli ="SELECT * FROM tbl_receiveddetail WHERE RecdeId=$idrecived";
+                            $result = $conn->query($sqli);
+                            $data = array();
+                            while($row = $result->fetch_assoc()) {
+                            $data[] = $row;   
+                            }
+                            
+                            foreach($data as $key => $redetail){      
+                                
+                                $MedId = $redetail["MedId"];
+                                $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                                $result = $conn->query($sqli);
+                                $data = array();
+                                while($row = $result->fetch_assoc()) {
+                                $data[] = $row;   
+                                }
+                                
+                                foreach($data as $key => $med){   
             ?>
 
             
-            <div class="form-group text-center">
-                <div class="col-md-12 mt-3">
-                    <input type="submit" name="btn_received" class="btn btn-success" value="รับ">
-                    <a href="CheckReceived.php" class="btn btn-danger">กลับ</a>
+                <tr>
+                    <td><?php echo '<img style = "width:80px;height:80px"  src="upload/'. $med["MedPath"]; ?>"></td>
+
+                    <td><input type="text" name="txt_OrderId" class="form-control" value="<?php echo $Order["OrderId"]; ?>" readonly></td>
+
+                    <td><?php echo $Order["OrderDate"]; ?></td>
+
+                    <td><?php echo $Dealer["DealerName"]; ?></td>
+
+                    <td><?php echo $Dealer["DealerAddress"]; ?></td>
+
+                    <td><?php echo $med["MedName"]; ?></td>
+
+                    <td><?php echo $med["MedPack"]; ?></td>
+
+                    <td><?php echo $med["MedPrice"]; ?></td>
+
+                    <td><?php echo $orderdetailid["Qty"]; ?></td>
+
+                    <td><?php echo $orderdetailid["Price"]; ?></td>
+
+                    <td><input type="text" name="mfd<?php echo $i;?>" id="testdate5" value="<?php echo $redetail["Mfd"]; ?>" style="width:100px;"></td>
+
+                    <td><input type="text" name="exd<?php echo $i;?>" id="testdate6" value="<?php echo $redetail["Exd"]; ?>" style="width:100px;"></td>
+
+                    <!-- <td><input type="date"  name="mfd<?php echo $i;?>"
+                                            value="<?php echo date('Y-m-j'); ?>" required  
+                                            min="2021-3-22" max="2030-12-31">
+                    </td> -->
+
+                    <!-- <td>
+                        <input type="date"  name="exd<?php echo $i;?>"
+                                            value="<?php echo date('Y-m-j'); ?>" required 
+                                            min="2021-3-22" max="2030-12-31">
+                    </td> -->
+                </tr>
+
+                <?php
+                    $i++;}}}}
+                ?>
+                <tr>
+                    <td colspan="2">
+                        <label for="Medicine Price">ชื่อคนส่งของ</label>
+                    </td>
+
+                    <td colspan="11" style="text-align:right">
+                        <div class="col-sm-3">
+                            <input type="text" name="txt_delivery" class="form-control" style="text-align:right" value="<?php echo $rec["RecDeli"]; ?>">
+                        </div>          
+                    </td>
+                </tr>
+                </table>
+                
+                <div class="form-group text-center">
+                    <div class="col-md-12 mt-3">
+                        <input type="submit" name="btn_received" class="btn btn-success" value="รับ">
+                        <a href="CheckReceived.php" class="btn btn-danger">กลับ</a>
+                    </div>
                 </div>
-            </div>
-            </div>
+
+                </div>
+            
             
         </form>
+        </div></div>
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>  
+    <script src="js/datepicker.js"></script>
+    <script type="text/javascript">   
+    $(function(){
+        
+        $.datetimepicker.setLocale('th'); // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+        
+        // กรณีใช้แบบ inline
+    /*  $("#testdate4").datetimepicker({
+            timepicker:false,
+            format:'d-m-Y',  // กำหนดรูปแบบวันที่ ที่ใช้ เป็น 00-00-0000            
+            lang:'th',  // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+            inline:true  
+        });    */   
+        
+        
+        // กรณีใช้แบบ input
+        $("#testdate5").datetimepicker({
+            timepicker:false,
+            format:'d-m-Y',  // กำหนดรูปแบบวันที่ ที่ใช้ เป็น 00-00-0000            
+            lang:'th',  // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+            onSelectDate:function(dp,$input){
+                var yearT=new Date(dp).getFullYear();  
+                var yearTH=yearT+543;
+                var fulldate=$input.val();
+                var fulldateTH=fulldate.replace(yearT,yearTH);
+                $input.val(fulldateTH);
+            },
+        });       
+        // กรณีใช้กับ input ต้องกำหนดส่วนนี้ด้วยเสมอ เพื่อปรับปีให้เป็น ค.ศ. ก่อนแสดงปฏิทิน
+        $("#testdate5").on("mouseenter mouseleave",function(e){
+            var dateValue=$(this).val();
+            if(dateValue!=""){
+                    var arr_date=dateValue.split("-"); // ถ้าใช้ตัวแบ่งรูปแบบอื่น ให้เปลี่ยนเป็นตามรูปแบบนั้น
+                    // ในที่นี้อยู่ในรูปแบบ 00-00-0000 เป็น d-m-Y  แบ่งด่วย - ดังนั้น ตัวแปรที่เป็นปี จะอยู่ใน array
+                    //  ตัวที่สอง arr_date[2] โดยเริ่มนับจาก 0 
+                    if(e.type=="mouseenter"){
+                        var yearT=arr_date[2]-543;
+                    }       
+                    if(e.type=="mouseleave"){
+                        var yearT=parseInt(arr_date[2])+543;
+                    }   
+                    dateValue=dateValue.replace(arr_date[2],yearT);
+                    $(this).val(dateValue);                                                 
+            }       
+        });
+
+        $("#testdate6").datetimepicker({
+            timepicker:false,
+            format:'d-m-Y',  // กำหนดรูปแบบวันที่ ที่ใช้ เป็น 00-00-0000            
+            lang:'th',  // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+            onSelectDate:function(dp,$input){
+                var yearT=new Date(dp).getFullYear();  
+                var yearTH=yearT+543;
+                var fulldate=$input.val();
+                var fulldateTH=fulldate.replace(yearT,yearTH);
+                $input.val(fulldateTH);
+            },
+        });       
+        // กรณีใช้กับ input ต้องกำหนดส่วนนี้ด้วยเสมอ เพื่อปรับปีให้เป็น ค.ศ. ก่อนแสดงปฏิทิน
+        $("#testdate6").on("mouseenter mouseleave",function(e){
+            var dateValue=$(this).val();
+            if(dateValue!=""){
+                    var arr_date=dateValue.split("-"); // ถ้าใช้ตัวแบ่งรูปแบบอื่น ให้เปลี่ยนเป็นตามรูปแบบนั้น
+                    // ในที่นี้อยู่ในรูปแบบ 00-00-0000 เป็น d-m-Y  แบ่งด่วย - ดังนั้น ตัวแปรที่เป็นปี จะอยู่ใน array
+                    //  ตัวที่สอง arr_date[2] โดยเริ่มนับจาก 0 
+                    if(e.type=="mouseenter"){
+                        var yearT=arr_date[2]-543;
+                    }       
+                    if(e.type=="mouseleave"){
+                        var yearT=parseInt(arr_date[2])+543;
+                    }   
+                    dateValue=dateValue.replace(arr_date[2],yearT);
+                    $(this).val(dateValue);                                                 
+            }       
+        });
+        
+        
+    });
+    </script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+    
 </body>
 </html>

@@ -1,5 +1,5 @@
 <?php 
-     include('Connect.php'); 
+    include('Connect.php'); 
      
     session_start();
 
@@ -57,7 +57,6 @@
                         }
                         foreach($data as $key => $Rec){
         
-
                 $idorder = $Rec["OrderId"];
 
                 $sql ="SELECT * FROM tbl_order WHERE $idorder = OrderId";
@@ -79,7 +78,7 @@
                     }}}
      
         date_default_timezone_set("Asia/Bangkok");
-        $ClaimDate = date("Y-m-d h:i:sa");
+        $ClaimDate = date("d")."-".date("m")."-".(date("Y")+543);
         $Qty = $_REQUEST["txt_qty"];
         $DealerId = $_REQUEST["txt_derler"];
         $Reason = $_REQUEST['txt_reason'];
@@ -91,10 +90,10 @@
         $Totalrec = $Recde["Qty"];
         $sum = $Totalrec-$Qty;
         
-        $status = "Claim";
+        $status = "เคลม";
         
         if (empty($Reason)) {
-            $errorMsg = "Please Enter Reason";
+            $errorMsg = "กรุณาใส่เหตุผลในการส่งเคลม";
         }  else {
             
                 if (!isset($errorMsg)) {
@@ -127,10 +126,10 @@
                       echo "Error updating record: " . $conn->error;
                     }    
                 }
-            }      
-            $insertMsg = "Insert Successfully...";
-            header("refresh:1;lot.php");
-        }
+            }
+            
+        }$insertMsg = "เคลมสำเร็จ..."; 
+        header("refresh:1;lot.php");
     }
 
 
@@ -183,7 +182,7 @@
         }
      
         date_default_timezone_set("Asia/Bangkok");
-        $ClaimDate = date("Y-m-d h:i:sa");
+        $ClaimDate = date("d")."-".date("m")."-".(date("Y")+543);
         $Qty = $_REQUEST["txt_qty1"];
         $DealerId = $_REQUEST["txt_derler1"];
         $Reason = $_REQUEST['txt_reason1'];
@@ -195,13 +194,15 @@
         $Totalrec = $Claim["Qty"];
         $sum = $Totalrec-$Qty;
         
-        $status = "Claim";
+        $status = "เคลม";
         
         if (empty($Reason)) {
-            $errorMsg = "Please Enter Reason";
-        }  else {
+            $errorMsg = "กรุณาใส่เหตุผลในการส่งเคลม";
+        }  else 
+            {
             
-                if (!isset($errorMsg)) {
+                if (!isset($errorMsg)) 
+                {
                     
                     $sql = "INSERT INTO tbl_claim(LotId, StaffId, DealerId, MedId, Qty, Reason, ClaimDate, ClaimStatus) VALUES ('$idlot', '$StaffId', '$DealerId', '$idmed', '$Qty', '$Reason', '$ClaimDate', '$status')";
                     if ($conn->query($sql) === TRUE) {
@@ -231,18 +232,20 @@
                       echo "Error updating record: " . $conn->error;
                     }    
                 }
-            }      
-            $insertMsg = "Insert Successfully...";
-            header("refresh:1;lot.php");
-        }
-
+            }
+                
+            
+        } header("refresh:1;lot.php");
+        $insertMsg = "เคลมสำเร็จ..."; 
     }
 
-
-    
-    
-   
-
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med1 = array();
+    while($row = $result1->fetch_assoc()) 
+    {
+        $med1[] = $row;  
+    }  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -260,6 +263,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                      <?php
+                      if(count($med1) > 0)
+                          {
+                              echo "red";
+                          }
+                      else 
+                          {
+                              echo "white";
+                          }
+                      ?> 
+                      ; margin-left: 22em;" aria-hidden="true">  
+                      <?php
+                          if(count($med1) > 0)
+                              {
+                                  echo "<sup>".count($med1)."</sup>";
+                              }
+                      ?>
+                      </i>
+                  </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -289,29 +313,25 @@
                     </div>
                 </div>
             </div>
-        </nav> 
-    
-    
+        </nav>   
 </head>
 
 <body>
     <?php 
-         if (isset($errorMsg)) {
+        if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
-
     <?php 
-         if (isset($updateMsg)) {
+        if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
-
 
     <?php
          if (isset($_REQUEST['Claim'])) {
@@ -410,51 +430,6 @@
             echo        '<label for="Tel" class="col-sm-3 control-label">ชื่อยา</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_MedName" class="form-control" value="'.$med["MedName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';
-            
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">ประเภท</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_Type" class="form-control" value="'.$med["TypeName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';
-            
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">หมวดหมู่</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_Cate" class="form-control" value="'.$med["CateName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';
-             
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">ปริมาณ</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_vol" class="form-control" value="'.$med["VolumnName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';   
-            
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">หน่วยนับ</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_unit" class="form-control" value="'.$med["UnitName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';
- 
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_unit" class="form-control" value="'.$med["MedPack"].'" readonly>';
             echo            '</div>';
             echo    '</div>';
             echo '</div>';
@@ -593,51 +568,6 @@
             
             echo '<div class="form-group text-center">'; 
             echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">ประเภท</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_Type" class="form-control" value="'.$med["TypeName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';
-            
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">หมวดหมู่</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_Cate" class="form-control" value="'.$med["CateName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';
-            
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">ปริมาณ</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_vol" class="form-control" value="'.$med["VolumnName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';   
-            
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">หน่วยนับ</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_unit" class="form-control" value="'.$med["UnitName"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';
-
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
-            echo        '<label for="Tel" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label>';
-            echo            '<div class="col-sm-7">';
-            echo                '<input type="text" name="txt_unit" class="form-control" value="'.$med["MedPack"].'" readonly>';
-            echo            '</div>';
-            echo    '</div>';
-            echo '</div>';
-            
-            echo '<div class="form-group text-center">'; 
-            echo    '<div class="row">';
             echo        '<label for="Tel" class="col-sm-3 control-label">จำนวน</label>';
             echo            '<div class="col-sm-7">';
             echo                '<input type="text" name="txt_qty1" class="form-control" value="'.$lot["Qty"].'" readonly>';
@@ -715,5 +645,47 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
 </body>
 </html>

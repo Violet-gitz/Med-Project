@@ -1,12 +1,9 @@
 
 <?php 
-     include('Connect.php'); 
+    include('Connect.php'); 
      
-
     session_start();
 
-    
-    
     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
@@ -18,28 +15,30 @@
         header('location: login.php');
     }
 
-    if (isset($_REQUEST['withdraw'])) {
-                
-            $Lotid = $_REQUEST['withdraw'];
-            $sql = "SELECT* FROM tbl_lot WHERE LotId=$Lotid";
+    if (isset($_REQUEST['withdraw'])) 
+    {         
+        $Lotid = $_REQUEST['withdraw'];
+        $sql = "SELECT* FROM tbl_lot WHERE LotId=$Lotid";
+        $result = $conn->query($sql);
+        $data = array();
+        while($row = $result->fetch_assoc()) 
+        {
+            $data[] = $row;  
+        }
+        foreach($data as $key => $Lot)
+        {
+            
+            $idmed = $Lot["MedId"];
+            $sql ="SELECT * FROM tbl_med WHERE $idmed = MedId";
             $result = $conn->query($sql);
             $data = array();
-            while($row = $result->fetch_assoc()) {
-            $data[] = $row;  
-            }
-            foreach($data as $key => $Lot){
-            
-            
-                $idmed = $Lot["MedId"];
-                $sql ="SELECT * FROM tbl_med WHERE $idmed = MedId";
-                $result = $conn->query($sql);
-                $data = array();
-                    while($row = $result->fetch_assoc()) {
-                        $data[] = $row;   
-                    }
-                    foreach($data as $key => $med){
-                    }
-    
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;   
+                }
+                foreach($data as $key => $med)
+                {
+                }   
         }
     }
 
@@ -51,11 +50,9 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
-
+        foreach($data as $key => $staff)
+        {      
         }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,6 +70,8 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: red; margin-left: 23em;" aria-hidden="true"></i></a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -103,8 +102,7 @@
                 </div>
             </div>
         </nav> 
-    
-    
+      
 </head>
 
 <body>
@@ -112,24 +110,20 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
-
     <?php 
          if (isset($updateMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $updateMsg; ?></strong>
         </div>
     <?php } ?>
 
-    
-    
-    
+    <center><strong><h2>เบิกยา</h2></strong></center>
     <div class="container mt-5">
-
                 <?php 
                         $Lot = $Lot["LotId"];
                         $sql = "SELECT* FROM tbl_lot WHERE LotId=$Lot";
@@ -198,7 +192,6 @@
                 </div>
             </div>
             
-
             <div class="form-group text-center">
                 <div class="row">
                     <label for="Medicine Category" class="col-sm-3 control-label">หมวดหมู่</label>
@@ -246,7 +239,7 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicine Price" class="col-sm-3 control-label">Quantity</label>
+                    <label for="Medicine Price" class="col-sm-3 control-label">จำนวนที่จะเบิก</label>
                     <div class="col-sm-7">
                     <input type="number" name="quantity" min="1" max="<?php echo $sum; ?>" value= "1"></p>
                     </div>

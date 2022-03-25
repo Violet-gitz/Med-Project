@@ -33,8 +33,17 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
+        }
+
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+        while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
         }
 ?>
 
@@ -84,6 +93,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 19em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -93,7 +123,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Cateadd.php" class ="btn btn-success">เพิ่มหมวดหมู่ยา</a></td>
+                                    <td><a href="Cateadd.php" class ="btn btn-success" style ="width: 130px;">เพิ่มหมวดหมู่ยา</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -175,5 +205,46 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
 </body>
 </html>

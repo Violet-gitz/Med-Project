@@ -231,27 +231,12 @@ body{margin-top:20px;
 						<div class="invoice-header">
 
 							<!-- Row start -->
-							<!-- <div class="row gutters">
-								<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-									<div class="custom-actions-btns mb-5">
-										<a href="#" class="btn btn-primary">
-											<i class="icon-download"></i> Download
-										</a>
-										<a href="#" class="btn btn-secondary">
-											<i class="icon-printer"></i> Print
-										</a>
-									</div>
-								</div>
-							</div> -->
-							<!-- Row end -->
-							<!-- Row start -->
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>ใบรับยา</h3><br><br>";
-                                        ?><br>
-
+                                            echo "<h3>ใบรับยา</h3>";
+                                        ?>
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
 									<address class="text-right">
@@ -260,6 +245,7 @@ body{margin-top:20px;
 										02 867 8088
 									</address>
 								</div>
+                            </div>
 				
 							<!-- Row end -->
 							<!-- Row start -->
@@ -267,7 +253,7 @@ body{margin-top:20px;
 								<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
 									<div class="invoice-details">
 										<address>
-										<?php                                            
+										<?php                                         
                                             echo "วันที่ออกรายงาน : ". $rec["RecDate"] . "<br>";
                                         ?>
 										</address>
@@ -284,8 +270,8 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
+                                                    <th with = "80">รหัสสินค้า</th>
 													<th with = "80">ชื่อยา</th>
-													<th with = "80">รหัสสินค้า</th>
 													<th with = "80">จำนวน</th>
                                                     <th with = "80">วันผลิต</th>
 													<th with = "80">วันหมดอายุ</th>
@@ -312,8 +298,8 @@ body{margin-top:20px;
                                                           foreach($data as $key => $med){
                                                 ?>
 												<tr>
+                                                    <td><?php echo "#".$med["MedId"];?></td>
 													<td><?php echo $med["MedName"];?></td>
-													<td><?php echo "#".$med["MedId"];?></td>
                                                     <td><?php echo $recde["Qty"];?></td>
 													<td><?php echo $recde["Mfd"];?></td>
 													<td><?php echo $recde["Exd"];?></td>
@@ -340,8 +326,14 @@ body{margin-top:20px;
                         <div class="row">
                             <div class="sig-box">
                                 <div class="col-md-12 identity">
-                                    <p><strong>....................................</strong><br><?php echo "ลงชื่อพนักงานส่งของ";?></p>
-                                    <p><strong>.............</strong><br><?php echo $rec["StaffName"];?></p>
+                                    <p><?php echo "ชื่อพนักงานส่งของ";?><br><strong><?php echo $rec["RecDeli"];?></strong></p>
+                                    <p><?php echo "ชื่อพนักงานรับ"?><br><strong><?php echo $rec["StaffName"];?></strong></p>
+                                    <?php
+                                        date_default_timezone_set("Asia/Bangkok");
+                                            
+                                        $RecTime = date("d")."-".date("m")."-".(date("Y")+543);  
+                                        echo "วันที่<br>".$RecTime;
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -357,7 +349,7 @@ body{margin-top:20px;
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="button" value="ปริ้น" class="btn btn-primary" onclick="window.printWindow()" /> 
+                    <input type="button" value="พิมพ์" class="btn btn-primary" onclick="window.printWindow()" /> 
                     <a href="CheckReceived.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>

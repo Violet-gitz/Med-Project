@@ -261,7 +261,7 @@ body{margin-top:20px;
 										<address>
                                                 <?php
                                                      date_default_timezone_set("Asia/Bangkok");
-                                                     $Datereport = date("Y-m-d h:i:sa");
+                                                     $Datereport = date("d")."-".date("m")."-".(date("Y")+543);  
                                                      echo "วันที่ออกรายงาน : ". $Datereport;
                                                 ?>
 										</address>
@@ -371,7 +371,7 @@ body{margin-top:20px;
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="button" value="ปริ้น" class="btn btn-primary" onclick="window.printWindow()" /> 
+                    <input type="button" value="พิมพ์" class="btn btn-primary" onclick="window.printWindow()" /> 
                     <a href="Approve.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>

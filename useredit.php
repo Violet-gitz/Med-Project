@@ -52,7 +52,7 @@
                     $update_stmt->bindParam(':StaffId', $id);
 
                     if ($update_stmt->execute()) {
-                        $updateMsg = "Record update successfully...";
+                        $updateMsg = "แก้ไขข้อมูลสำเร็จ...";
                         header("refresh:1;Mainuser.php");
                     }
                 }
@@ -138,7 +138,7 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
@@ -147,7 +147,7 @@
          if (isset($updateMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $updateMsg; ?></strong>
         </div>
     <?php } ?>
 

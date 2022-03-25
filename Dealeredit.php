@@ -35,9 +35,6 @@
         $DealerName = $_REQUEST['txt_DealerName'];
         $DealerAddress = $_REQUEST['txt_DealerAddress'];
         $DealerPhone = $_REQUEST['txt_DealerPhone'];
-        $ContractStart = $_REQUEST['ContractStart'];
-        $ContractEnd = $_REQUEST['ContractEnd'];
-        
 
         if (empty($DealerName)) {
             $errorMsg = "Please Enter Dealer Name";
@@ -45,18 +42,14 @@
             $errorMsg = "Please Enter Dealer Address";
         } else if (empty($DealerPhone)) {
             $errorMsg = "please Enter Dealer Phone";
-        } else if (empty($ContractStart)) {
-            $errorMsg = "please Enter Dealer Contract Start";
-        } else if (empty($ContractEnd)) {
-            $errorMsg = "please Enter Dealer Contract End";
         } else {
 
                 if (!isset($errorMsg)) 
                     {
-                        $sql = "UPDATE tbl_dealer SET DealerName = '$DealerName', DealerAddress = '$DealerAddress', DealerPhone = '$DealerPhone', ContractStart = '$ContractStart', ContractEnd = '$ContractEnd' WHERE DealerId = '$id'";
+                        $sql = "UPDATE tbl_dealer SET DealerName = '$DealerName', DealerAddress = '$DealerAddress', DealerPhone = '$DealerPhone' WHERE DealerId = '$id'";
                         if ($conn->query($sql) === TRUE)
                             {
-                                $insertMsg = "Insert Successfully...";
+                                $insertMsg = "แก้ไขข้อมูลสำเร็จ...";
                                 header("refresh:1;Dealershow.php");
                             }
                             else {echo "Error updating record: " . $conn->error;}
@@ -75,9 +68,18 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
         }
+
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+    while($row = $result1->fetch_assoc()) 
+    {
+        $med[] = $row;  
+    }    
 
 
 ?>
@@ -97,6 +99,28 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        
+                        ?>
+                        </i>
+                    </a>                               
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -134,21 +158,19 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
-
     <?php 
-         if (isset($updateMsg)) {
+         if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
 
-
-    
+    <center><strong><h2>แก้ไขข้อมูลตัวแทนจำหน่าย</h2></strong></center>
         <form method="post" class="form-horizontal mt-5">
             <div class="container">
                 <div class="form-group text-center">
@@ -179,30 +201,6 @@
                 </div>
 
                 <div class="form-group text-center">
-                    <div class="row">
-                        <label for="Medicine Price" class="col-sm-3 control-label">วันเริ่มต้นสัญญา</label>
-                        <div class="col-sm-1">
-                        <input type="date"  name="ContractStart"
-                                            value="<?php echo date('Y-m-j'); ?>" required 
-                                            min="2021-3-22" max="2030-12-31">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group text-center">
-                    <div class="row">
-                        <label for="Medicine Price" class="col-sm-3 control-label">วันสิ้นสุดสัญญา</label>
-                        <div class="col-sm-1">
-                        <input type="date"  name="ContractEnd"
-                                            value="<?php echo date('Y-m-j'); ?>" required 
-                                            min="2021-3-22" max="2030-12-31">
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="form-group text-center">
                     <div class="col-md-12 mt-3">
                         <input type="submit" name="btn_update" class="btn btn-success" value="อัปเดต">
                         <a href="Dealershow.php" class="btn btn-danger">กลับ</a>
@@ -214,5 +212,47 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
 </body>
 </html>

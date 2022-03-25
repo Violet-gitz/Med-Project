@@ -62,12 +62,12 @@
                     ini_set('display_startup_errors', 1);
                     error_reporting(E_ALL);
                     date_default_timezone_set("Asia/Bangkok");
-                    $sToken = "5QZMmRQRyNbvtvPsg0utZxUal4y02ag6Ec1Eqhrz1ch";
+                    $sToken = "tpIhKWBEGejBDvkVnlUeGlnf6VvtJPgc6ud5xsV0Ob2";
             
                     $lot = $lot["LotId"];
                     $medname = $Med["MedName"];
                 
-                    $sMessage = $medname ." Lot #". $lot." Expiry tracking alert "."in ".$diff->format('%R%a'). " day ! " . "link http://localhost/project/Lot.php";
+                    $sMessage = $medname ." ล็อคที่ #". $lot." กำลังจะหมดอายุภายในอีก  ".$diff->format('%R%a'). " วัน ! ";
                     $chOne = curl_init(); 
                     curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
                     curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
@@ -101,10 +101,18 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
         }
-    
+
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+    while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
+        }  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,6 +137,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 19em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -138,7 +167,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                              <li class="nav-item">
-                                    <td><a href="Withdrawcart.php" class ="btn btn-success">เพิ่มสินค้าในตะกร้า</a></td>
+                                    <td><a href="Withdrawcart.php" class ="btn btn-success" style ="width: 130px;">ตะกร้าสินค้า</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -165,7 +194,6 @@
         </nav> 
 </head>
 
-
 <body>
  
 <div class="container">
@@ -182,19 +210,20 @@
  
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
-         <h2>หน้าล็อตยา</h2>
+         <h2>ล็อตยา</h2>
            </div>
             <thead>
             <tr>
-                <th>รหัสล็อตยา</th>
+                <th style="width:110px">รหัสล็อตยา</th>
                 <th>ชื่อยา</th>
                 <th>รูป</th>
                 <th>จำนวน</th>
-                <th>จำนวนที่ถูกจอง</th>
-                <th>สถานะ</th>
-                <th>วันหมดอายุ</th>
-                <th>รายละเอียด</th>
-                <th>Action</th>
+                <th style="width:125px">จำนวนที่รอการอนุมัติ</th>
+                <th style="width:130px">สถานะ</th>
+                <th>จำนวนวันคงเหลือ</th>
+                <th style="width:125px">วันหมดอายุ</th>
+                <th style="width:110px">รายละเอียด</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -218,15 +247,15 @@
                         $Reserve = $lot["Reserve"];
                         $checkclaim = $lot["RecClaimid"];
                         $checkreserve = $checkqty - $Reserve;
-                        if($checkqty == '0' and $LotStatus != 'Claim')
+                        if($checkqty == '0' and $LotStatus != 'เคลม')
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = 'Not Available' WHERE LotId = $LotId"; 
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'ไม่สามารถใช้งานได้' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;
                             }
                         }
-                        else if ($checkreserve == '0' and $LotStatus != 'Claim') 
+                        else if ($checkreserve == '0' and $LotStatus != 'เคลม') 
                         {
                             $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
@@ -263,6 +292,7 @@
                     <td><?php echo $lot["Reserve"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
                     <td><?php echo $diff->format('%R%a'); ?>
+                    <td><?php echo $lot["Exd"];?></td>
                     <td>            
                         <form method="POSt" action="lotdetail.php">
                             <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-info">รายละเอียด</button>
@@ -281,12 +311,12 @@
                                         $buttonStatus = "disabled";
                                         echo $buttonStatus;
                                     }
-                                    else if ($LotStatus == "Writeoff")
+                                    else if ($LotStatus == "ตัดจำหน่าย")
                                     {
                                         $buttonStatus = "disabled";
                                         echo $buttonStatus;
                                     }
-                                    else if ($LotStatus == "Claim")
+                                    else if ($LotStatus == "เคลม")
                                     {
                                         $buttonStatus = "disabled";
                                         echo $buttonStatus;
@@ -344,6 +374,46 @@
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
 
-  
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
 </body>
 </html>

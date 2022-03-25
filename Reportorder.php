@@ -255,12 +255,10 @@ body{margin-top:20px;
                                 <!-- Row end -->
                                 <!-- Row start -->
                                 <div class="row gutters">
-                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                        
+                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">  
                                             <?php 
-                                                echo "<h3>ใบสั่งซื้อ </h3><br>";
-                                            ?><br>
-
+                                                echo "<h3>ใบสั่งซื้อ </h3>";
+                                            ?>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <address class="text-right">
@@ -269,7 +267,7 @@ body{margin-top:20px;
                                             02 867 8088
                                         </address>
                                     </div>
-                    
+                                </div>
                                 <!-- Row end -->
                                 <!-- Row start -->
                                 <div class="row gutters">
@@ -281,8 +279,8 @@ body{margin-top:20px;
                                                 echo "ที่อยู่ : " .$dealer["DealerAddress"] . "<br>";
                                                 echo "เบอร์โทรศัพท์ : ". $dealer["DealerPhone"] . "<br>";
                                                 date_default_timezone_set("Asia/Bangkok");
-                                                $RecTime = date("Y-m-d h:i:sa");
-                                                echo "วันที่เบิก  : ". $RecTime;
+                                                $RecTime = date("d")."-".date("m")."-".(date("Y")+543);
+                                                echo "วันที่เบิก ". $RecTime;
                                             ?>
                                             </address>
                                         </div>
@@ -305,10 +303,10 @@ body{margin-top:20px;
                                             <table class="table custom-table m-0">
                                                 <!-- <thead> -->
                                                     <tr>
-                                                        <th>รายการสั่งซื้อ</th>
                                                         <th>รหัสสินค้า</th>
+                                                        <th>รายการสั่งซื้อ</th>
                                                         <th>จำนวน</th>
-                                                        <th>ราคา</th>
+                                                        <th style = "text-align:right">บาท</th>
                                                     </tr>
                                                 <!-- </thead> -->
                                                 <tbody>
@@ -333,10 +331,10 @@ body{margin-top:20px;
                                                             foreach($data as $key => $med){
                                                     ?>
                                                     <tr>
-                                                        <td><?php echo $med["MedName"];?></td>
                                                         <td><?php echo "#".$med["MedId"];?></td>
+                                                        <td><?php echo $med["MedName"];?></td>
                                                         <td><?php echo $orderdetailid["Qty"];?></td>
-                                                        <td><?php echo "฿ ".$orderdetailid["Price"];?></td>
+                                                        <td style="text-align:right"><?php echo number_format($orderdetailid["Price"], 2);?></td>
                                                     </tr>
                                                         <?php
                                                                 }}
@@ -350,13 +348,13 @@ body{margin-top:20px;
                                                             </p>
                                                             <h5 class="text-success"><strong>ราคารวมภาษี</strong></h5>
                                                         </td>			
-                                                        <td>
+                                                        <td style="text-align:right">
                                                             <p>
-                                                                <?php echo "฿ ".$order["OrderPrice"]. "<br>";?>
-                                                                <?php echo "฿ ".$ordertax. "<br>";?>
+                                                                <?php echo number_format($order["OrderPrice"], 2). "<br>";?>
+                                                                <?php echo number_format($ordertax, 2). "<br>";?>
                                                                 
                                                             </p>
-                                                            <h5 class="text-success"><strong><?php echo "฿ ".$order["OrderTotal"]. "<br>";?></strong></h5>
+                                                            <h5 class="text-success"><strong><?php echo number_format($order["OrderTotal"], 2). "<br>";?></strong></h5>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -370,6 +368,7 @@ body{margin-top:20px;
                             <div class="row">
                                 <div class="sig-box">
                                     <div class="col-md-12 identity">
+                                        
                                         <p><strong>.............</strong><br><?php echo $staff["StaffName"];?></p>
                                     </div>
                                 </div>
@@ -383,7 +382,7 @@ body{margin-top:20px;
 </div>
 <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="button" value="ปริ้น" class="btn btn-primary" onclick="window.printWindow()" /> 
+                    <input type="button" value="พิมพ์" class="btn btn-primary" onclick="window.printWindow()" /> 
                     <a href="CheckOrder.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>

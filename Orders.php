@@ -5,7 +5,7 @@
         if (isset($_REQUEST['btn-Order'])) 
         {
             date_default_timezone_set("Asia/Bangkok");
-            $OrderDate = date("Y-m-d h:i:sa");
+            $OrderDate =  date("d")."-".date("m")."-".(date("Y")+543);  
             $OrderStatus = "Ordering";
             $OrderPrice = $_REQUEST['total'];
             $OrderTotal = ($OrderPrice * 0.07)+$OrderPrice;
@@ -44,8 +44,9 @@
                                     if ($conn->query($sql) === TRUE) {unset($_SESSION['cart']);} 
                                     else {echo "Error updating record: " . $conn->error;}
                                 }
-                            }
+                            }$insertMsg = "เพิ่มข้อมูลสำเร็จ...";
                             header("refresh:1;main.php");
+                           
                     }
         }
         $staff =  $_SESSION['StaffName'];
@@ -56,8 +57,17 @@
             {
                 $data[] = $row;  
             }
-            foreach($data as $key => $staff){      
+            foreach($data as $key => $staff)
+            {      
 
+            }
+
+        $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+        $result1 = $conn->query($sql);
+        $med = array();
+            while($row = $result1->fetch_assoc()) 
+            {
+                $med[] = $row;  
             }
 ?>
      
@@ -77,6 +87,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 20em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -86,7 +117,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Shipping.php" class ="btn btn-success">ตะกร้า</a></td>
+                                    <td><a href="Shipping.php" class ="btn btn-success" style ="width: 100px;">ตะกร้า</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -135,10 +166,10 @@
     <?php } ?>
     
     <?php 
-         if (isset($updateMsg)) {
+         if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>Success! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
 
@@ -153,8 +184,8 @@
                 <th>ประเภท</th>
                 <th>หมวดหมู่</th>
                 <th>ปริมาณ</th>
-                <th>หน่วยหนับ</th>
-                <th>จำนวน</th>
+                <th style="width:13%">จำนวนต่อหีบห่อ</th>
+                <th>จำนวน(หีบห่อ)</th>
                 <th>ซื้อสินค้า</th>              
             </tr>
         </thead>
@@ -183,7 +214,7 @@
                     <td><?php echo $Med["TypeName"]; ?></td>
                     <td><?php echo $Med["CateName"]; ?></td>
                     <td><?php echo $Med["VolumnName"]; ?></td>
-                    <td><?php echo $Med["UnitName"]; ?></td>
+                    <td><?php echo $Med["MedPack"]; ?></td>
                     <td><input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p></td>
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
@@ -201,5 +232,47 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
     </body>
     </html>

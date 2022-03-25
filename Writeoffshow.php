@@ -1,10 +1,8 @@
 <?php 
-     include('Connect.php'); 
+    include('Connect.php'); 
+    session_start();
 
-     session_start();
-
-    
-     if (!isset($_SESSION['StaffName'])) {
+    if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
     }
@@ -29,7 +27,7 @@
             foreach($data as $key => $writeoff)
             { 
                 $lotid = $writeoff["LotId"];     
-                $sql = "UPDATE tbl_lot SET LotStatus = 'Available' WHERE LotId = $lotid";
+                $sql = "UPDATE tbl_lot SET LotStatus = 'สามารถใช้งานได้' WHERE LotId = $lotid";
                 if ($conn->query($sql) === TRUE) {     
                 } else {
                 echo "Error updating record: " . $conn->error;
@@ -57,22 +55,6 @@
             }
     }
 
-    // if (isset($_REQUEST['Report'])) 
-    // {
-    //     require_once __DIR__ . '/vendor/autoload.php';
-    //     $mpdf = new \Mpdf\Mpdf();
-
-    //     $orderid = $_REQUEST["valueid"];
-       
-    //     $mpdf->WriteHTML
-    //     (
-    //        "Test" . $orderid
-
-    //             );
-    //     // Output a PDF file directly to the browser
-    //     $mpdf->Output();
-    // }
-
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT * FROM tbl_staff WHERE StaffName = '$staff'";
     $result = $conn->query($sql);
@@ -84,9 +66,14 @@
         foreach($data as $key => $staff){      
 
         }
-    
-
-    
+        
+        $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+        $result1 = $conn->query($sql);
+        $med = array();
+        while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
+        }
 ?>
 
 <!DOCTYPE html>
@@ -134,6 +121,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -180,7 +188,6 @@
     </div>
     <form method = "POST" action = "Exportwriteoff.php" style='display: flex;justify-content: end;'>
         <select name="Year" class='mr-2'>
-            <option value="2021-">2021</option>
             <option value="2022-">2022</option>
             <option value="2023-">2023</option>
             <option value="2024-">2024</option>
@@ -208,7 +215,7 @@
          <h2>รายการตัดจำหน่าย<h2>
                 </div>
             <thead>
-            <tr>
+                <tr>
                     <th>รายการตัดจำหน่าย</th>
                     <th>ล็อต</th>
                     <th>ชื่อยา</th>
@@ -216,11 +223,9 @@
                     <th>วันที่</th> 
                     <th>ชื่อพนักงาน</th>
                     <th>รายงาน</th>   
-                    <th>ยกเลิก</th>
-                    
-                    
+                    <th>ยกเลิก</th>  
                 </tr>
-    </thead>
+            </thead>
 
             <tbody>
                 <?php 
@@ -250,7 +255,7 @@
                             <form method = "POST" action = "Reportwriteoff.php">
                                 <button type = "submit" value = "<?php echo $write["WriteId"]; ?>" name = "Report" class="btn btn-primary"
                                 <?php
-                                    if($Status == "Available")
+                                    if($Status == "สามารถใช้งานได้")
                                     {
                                         $buttonStatus = "Disabled";
                                         echo $buttonStatus;
@@ -265,7 +270,7 @@
                             <form method = "POST" action = "Writeoffshow.php">
                                 <button type = "submit" value = "<?php echo $write["WriteId"]; ?>" name = "Cancelwriteoff" class="btn btn-danger" onclick ="CancelFunction(`<?php echo $write['WriteId']; ?>`)"
                                     <?php
-                                        if($Status == "Available")
+                                        if($Status == "สามารถใช้งานได้")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
@@ -293,6 +298,46 @@
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
   
-    
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
 </body>
 </html>

@@ -52,9 +52,9 @@
         if (isset($_REQUEST['btn-Order'])) 
         {   
 
-            $WithStatus = "Pending approval";
+            $WithStatus = "รอการอนุมัติ";
             date_default_timezone_set("Asia/Bangkok");
-            $WithDate = date("Y-m-d h:i:sa");
+            $WithDate = date("d")."-".date("m")."-".(date("Y")+543);
 
             $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate, WithStatus) VALUES ('$StaffId', '$WithDate', '$WithStatus')";
             if ($conn->query($sql) === TRUE) { 
@@ -163,7 +163,10 @@
                             }
                         }
                         }
+
                     }unset($_SESSION['test']);
+                    $insertMsg = "เบิกสำเร็จ...";
+                    header("refresh:1;Mainuser.php"); 
             }
 
 ?>
@@ -225,15 +228,15 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
     <?php 
-         if (isset($updateMsg)) {
+         if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
 

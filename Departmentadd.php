@@ -3,8 +3,6 @@
     session_start();
     error_reporting(0);
     
-
-   
     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
@@ -19,8 +17,7 @@
 
     if (isset($_REQUEST['btn_insert'])) {
         $DepartName = $_REQUEST['Departmentname'];
-        
-        
+             
         if (empty($DepartName)) {
             $errorMsg = "กรุณาใส่ชื่อแผนก";
         }  else {
@@ -33,7 +30,7 @@
             else {
             $sql = "INSERT INTO tbl_department(DepartName) VALUES ('$DepartName')";
             if ($conn->query($sql) === TRUE){
-                $insertMsg = "Insert Successfully...";
+                $insertMsg = "เพิ่มข้อมูลสำเร็จ...";
                 header("refresh:1;Departmentshow.php");
             }
                 else {echo "Error updating record: " . $conn->error;}
@@ -49,9 +46,18 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
         }
+
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+    while($row = $result1->fetch_assoc()) 
+    {
+        $med[] = $row;  
+    }    
 ?>
 
 <!DOCTYPE html>
@@ -70,6 +76,28 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        
+                        ?>
+                        </i>
+                    </a>                                               
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -110,7 +138,7 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
@@ -119,10 +147,11 @@
          if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $insertMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
 
+    <center><strong><h2>เพิ่มข้อมูลแผนก</h2></strong></center>
         <form method="post" class="form-horizontal mt-5">
             <div class="container">
                 <div class="form-group text-center">
@@ -146,5 +175,47 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+    
 </body>
 </html>

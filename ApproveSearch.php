@@ -84,10 +84,18 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
         }
-    
+        
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+        while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
+        }
 ?>
 
 <!DOCTYPE html>
@@ -103,11 +111,33 @@
         <div style='margin-right: 15px'>           
         <?php
             include('slidebar.php');      
-        ?></div>
-            <a href="main.php" class="navbar-brand">หน้าหลัก</a>
-            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar1">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        ?>
+        </div>
+            <div> 
+                <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+
+                <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                    <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                </a>                
+            </div> 
+
             <div id="navbar1" class="collapse navbar-collapse" style="justify-content: end;">
                 <div class="dropdown">
 
@@ -153,7 +183,6 @@
     </div>
     <form method = "POST" action = "Exportapprove.php" style='display: flex;justify-content: end;'>
         <select name="Year" class='mr-2'>
-            <option value="2021-">2021</option>
             <option value="2022-">2022</option>
             <option value="2023-">2023</option>
             <option value="2024-">2024</option>
@@ -187,7 +216,7 @@
                 <th>จำนวน</th>
                 <th>สถานะ</th>
                 <th>วันที่เบิก</th>
-                <th>Action</th>
+                <th>อนุมัติ</th>
                 <th>รายงาน</th>
                 <th>ยกเลิก</th>        
             </tr>
@@ -225,12 +254,12 @@
                             <form method = "POST" action = "Approvedetaill.php?">
                                 <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Approve" class = "btn btn-success"
                                     <?php
-                                        if($withstatus == "Approved")
+                                        if($withstatus == "อนุมัติสำเร็จ")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
                                         }
-                                        else if($withstatus == "Cancel")
+                                        else if($withstatus == "ยกเลิก")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
@@ -253,12 +282,12 @@
                             <form method = "POST" action = "Approve.php">
                                 <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Cancel_id" class="btn btn-danger"
                                     <?php
-                                        if($withstatus == "Approved")
+                                        if($withstatus == "อนุมัติสำเร็จ")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
                                         }
-                                        else if($withstatus == "Cancel")
+                                        else if($withstatus == "ยกเลิก")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
@@ -284,6 +313,46 @@
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
 
-  
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+    
 </body>
 </html>

@@ -29,10 +29,18 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
         }
 
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+    while($row = $result1->fetch_assoc()) 
+    {
+        $med[] = $row;  
+    }
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +59,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -97,7 +126,6 @@
     </div>
     <form method = "POST" action = "Exportreceivedclaim.php" style='display: flex;justify-content: end;'>
         <select name="Year" class='mr-2'>
-            <option value="2021-">2021</option>
             <option value="2022-">2022</option>
             <option value="2023-">2023</option>
             <option value="2024-">2024</option>
@@ -117,7 +145,7 @@
             <option value="11">พฤศจิกายน</option>
             <option value="12">ธันวาคม</option>
         </select>
-        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-danger mr-2">รายงาน</button>
+        <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">รายงาน</button>
     </form>
  
     <table class="table table-striped">
@@ -143,14 +171,14 @@
                         FROM tbl_recclaim
                         INNER JOIN tbl_claim ON tbl_recclaim.ClaimId = tbl_claim.ClaimId
                         INNER JOIN tbl_staff ON tbl_recclaim.StaffId = tbl_staff.StaffId 
-                        WHERE RecClaimdate LIKE '%{$search}%' || ClaimStatus LIKE '%{$search}%'";
+                        WHERE RecClaimid LIKE '%{$search}%' || RecClaimName LIKE '%{$search}%'";
                         $result = $conn->query($sql);
                         $data = array();
                         while($row = $result->fetch_assoc()) {
                             $data[] = $row;   
                         }
                         foreach($data as $key => $claim){
-       
+                            
                 ?>
 
                     <tr>
@@ -163,47 +191,15 @@
                         <td><?php echo $claim["RecClaimdate"]; ?></td>
                         <td>
                             <form method = "POST" action = "Receivededitclaim.php">
-                                <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Edit" class = "btn btn-primary"
-                                    <?php
-                                        // if($OrderStatus == "Received")
-                                        // {
-                                        //     $buttonStatus = "Disabled";
-                                        //     echo $buttonStatus;
-                                        // }
-                                        // else if($OrderStatus == "Cancel")
-                                        // {
-                                        //     $buttonStatus = "Disabled";
-                                        //     echo $buttonStatus;
-                                        // }
-                                    ?>
-                                    >แก้ไข
-                                </button>
+                                <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Edit" class = "btn btn-warning">แก้ไข</button>
                             </form>
                         </td>
 
-                        <!-- <td>
-                            <form method = "POST" action = "CheckOrder.php">
-                                <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Cancel_id" class="btn btn-danger"
-                                    <?php
-                                        if($OrderStatus == "Received")
-                                        {
-                                            $buttonStatus = "Disabled";
-                                            echo $buttonStatus;
-                                        }
-                                        else if($OrderStatus == "Cancel")
-                                        {
-                                            $buttonStatus = "Disabled";
-                                            echo $buttonStatus;
-                                        }
-                                    ?>
-                                    >Cancel
-                                </button>
-                            </form>
-                        </td> -->
+                      
 
                     <td>
                         <form method = "POST" action = "Reportreceivedclaim.php">
-                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-danger">รายงาน</button>
+                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Report" class="btn btn-primary">รายงาน</button>
                             <input type ="hidden" name = "valueid" value = "<?php echo $claim["ClaimId"]; ?>">
                         </form>
                     </td>
@@ -220,7 +216,47 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
-  
+    
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
     
 </body>
 </html>

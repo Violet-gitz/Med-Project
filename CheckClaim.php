@@ -1,9 +1,7 @@
 <?php 
      include('Connect.php'); 
-
      session_start();
 
-    
      if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
@@ -19,7 +17,7 @@
     {
         $cliamid = $_REQUEST['Cancelclaim'];
 
-        $sql = "UPDATE tbl_claim SET ClaimStatus  = 'Cancel' WHERE ClaimId = $cliamid";
+        $sql = "UPDATE tbl_claim SET ClaimStatus  = 'ยกเลิก' WHERE ClaimId = $cliamid";
         if ($conn->query($sql) === TRUE) {     
         } else {
         echo "Error updating record: " . $conn->error;
@@ -38,7 +36,7 @@
                 $claimqty = $claim["Qty"];
 
                  
-                $sql = "UPDATE tbl_lot SET LotStatus = 'Available' , Qty = $claimqty WHERE LotId = $lotid";
+                $sql = "UPDATE tbl_lot SET LotStatus = 'สามารถใช้งานได้' , Qty = $claimqty WHERE LotId = $lotid";
                 if ($conn->query($sql) === TRUE) {     
                 } else {
                 echo "Error updating record: " . $conn->error;
@@ -75,10 +73,18 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
         }
 
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+    while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
+        }
     
 ?>
 
@@ -127,6 +133,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -157,7 +184,6 @@
                 </div>
             </div>
         </nav> 
-
 </head>
 <body>
 
@@ -174,7 +200,6 @@
     </div>
     <form method = "POST" action = "Exportclaim.php" style='display: flex;justify-content: end;'>
         <select name="Year" class='mr-2'>
-            <option value="2021-">2021</option>
             <option value="2022-">2022</option>
             <option value="2023-">2023</option>
             <option value="2024-">2024</option>
@@ -232,10 +257,8 @@
                         $data[] = $row;   
                     }
                     foreach($data as $key => $claim){
-
                      
-                                $ClaimStatus = $claim["ClaimStatus"];
-                        
+                        $ClaimStatus = $claim["ClaimStatus"];                   
             ?>
 
                 <tr>
@@ -250,12 +273,12 @@
                         <form method = "POST" action = "ReceivdClaim.php">
                             <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Claim_id" class = "btn btn-success"
                                 <?php
-                                    if($ClaimStatus == "Received")
+                                    if($ClaimStatus == "รับสำเร็จ")
                                     {
                                         $buttonStatus = "Disabled";
                                         echo $buttonStatus;
                                     }
-                                    else if($ClaimStatus == "Cancel")
+                                    else if($ClaimStatus == "ยกเลิก")
                                     {
                                         $buttonStatus = "Disabled";
                                         echo $buttonStatus;
@@ -274,32 +297,29 @@
                     </td>
 
                     <td>
-                            <form method = "POST" action = "CheckClaim.php">
-                                <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Cancelclaim" class="btn btn-danger" onclick ="CancelFunction(`<?php echo $claim['ClaimId']; ?>`)"
-                                    <?php
-                                        if($ClaimStatus == "Available")
+                        <form method = "POST" action = "CheckClaim.php">
+                            <button type = "submit" value = "<?php echo $claim["ClaimId"]; ?>" name = "Cancelclaim" class="btn btn-danger" onclick ="CancelFunction(`<?php echo $claim['ClaimId']; ?>`)"
+                                <?php
+                                    if($ClaimStatus == "สามารถใช้งานได้")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
                                         }
-                                        else if($ClaimStatus == "Received")
+                                        else if($ClaimStatus == "รับสำเร็จ")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
                                         }
-                                        else if($ClaimStatus == "Cancel")
+                                        else if($ClaimStatus == "ยกเลิก")
                                         {
                                             $buttonStatus = "Disabled";
                                             echo $buttonStatus;
                                         }
-                                    ?>
+                                ?>
                                     >ยกเลิก
-                                </button>
-                            </form>
-                        </td>
-
-                   
-                    
+                            </button>
+                        </form>
+                    </td> 
                 </tr>
 
                 <?php 
@@ -315,6 +335,47 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+    
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
     
 </body>
 </html>

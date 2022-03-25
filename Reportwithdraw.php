@@ -246,8 +246,8 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                             echo "<h3>ใบเบิก</h3><br>";
-                                        ?><br>
+                                             echo "<h3>ใบเบิก</h3>";
+                                        ?>
 
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -284,8 +284,9 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-                                                    <th>รายการเบิก</th>
-													<th>รหัสสินค้า</th>
+                                                    <th>ล็อต</th>
+                                                    <th>รหัสสินค้า</th>
+                                                    <th>รายการยา</th>													
 													<th>จำนวน</th>
 													
 												</tr>
@@ -312,8 +313,10 @@ body{margin-top:20px;
                                                           foreach($data as $key => $med){
                                                 ?>
 												<tr>
+                                                    <td><?php echo "#".$withde["LotId"];?></td>
+                                                    <td><?php echo "#".$med["MedId"];?></td>
 													<td><?php echo $med["MedName"];?></td>
-													<td><?php echo "#".$med["MedId"];?></td>
+													
 													<td><?php echo $withde["Qty"];?></td>
 													
 												</tr>
@@ -322,14 +325,14 @@ body{margin-top:20px;
                                                     ?>
 										
 												<tr>
-													<td colspan="2">
+													<td colspan="3">
 														<p>
 															<!-- Subtotal<br>
 															Tax (7%)<br> -->
                                                             <h5 class="text-success"><strong>จำนวนทั้งหมด</strong></h5>
 														</p>
 														
-													</td>			
+													</td>	
                                                     <td><h5 class="text-success"><strong><?php echo $with["Qtysum"]. "<br>". "<br>";?></strong></h5></td>
 												</tr>
 											</tbody>
@@ -361,7 +364,7 @@ body{margin-top:20px;
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="button" value="ปริ้น" class="btn btn-primary" onclick="window.printWindow()" /> 
+                    <input type="button" value="พิมพ์" class="btn btn-primary" onclick="window.printWindow()" /> 
                     <a href="Approve.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>

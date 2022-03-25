@@ -3,7 +3,6 @@
     include('connect.php');
     session_start();
 
-    
     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
@@ -98,14 +97,12 @@
 
         $Claimid = $_REQUEST['txt_ClaimId'];
         date_default_timezone_set("Asia/Bangkok");
-        $RecTime = date("Y-m-d h:i:sa");
+        $RecTime = date("d")."-".date("m")."-".(date("Y")+543);  
         $RecDeli = $_REQUEST['txt_delivery'];
-        $OrderStatus = "Received";
-        $LotStatus = "Avialable";
+        $OrderStatus = "รับสำเร็จ";
+        $LotStatus = "สามารถใช้งานได้";
 
-         if (empty($Claimid)) {
-            $errorMsg = "Please Enter Lot Id";
-        }else if (empty($RecDeli)) {
+        if (empty($RecDeli)) {
             $errorMsg = "กรุณาใส่ชื่อคนส่งของ";
         }else 
 
@@ -117,7 +114,7 @@
                         echo "Error updating record: " . $conn->error;
                     }          
                   
-                    $sql = "UPDATE tbl_claim SET ClaimStatus = 'Received' WHERE ClaimId = $Claimid";
+                    $sql = "UPDATE tbl_claim SET ClaimStatus = 'รับสำเร็จ' WHERE ClaimId = $Claimid";
                     if ($conn->query($sql) === TRUE) {
                     } else {
                         echo "Error updating record: " . $conn->error;
@@ -154,7 +151,7 @@
                             } else {
                                 echo "Error updating record: " . $conn->error;
                             }
-                            header("refresh:2;CheckClaim.php");
+                            header("refresh:1;CheckClaim.php");
                         }else
                             if(!isset($errorMsg)) 
                             {
@@ -166,17 +163,25 @@
 
                                 $sql = "UPDATE tbl_med SET MedTotal = '$MedSum' WHERE $MedId=MedId";
                                 if ($conn->query($sql) === TRUE) {
-                                    $insertMsg = "Insert Successfully...";
-                                    header("refresh:1;lot.php");
+                                    $insertMsg = "เพิ่มข้อมูลสำเร็จ...";
+                                    header("refresh:1;lot.php"); 
                                 } else {
                                   echo "Error updating record: " . $conn->error;
                                 }
                             }
+                          
                     
-                    }
-                  
+                    }  
                 }
 
+        $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+        $result1 = $conn->query($sql);
+        $med = array();
+        while($row = $result1->fetch_assoc()) 
+            {
+                $med[] = $row;  
+            }
+                
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -184,6 +189,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="js/datepicker.css">
     <title>Document</title>
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -195,6 +201,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -234,21 +261,21 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
 
     <?php 
-         if (isset($updateMsg)) {
+         if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
 
     
-
+    <center><strong><h2>รับยาเคลม</h2></strong></center>
         <form method="post" class="form-horizontal mt-5" name="myform">
        
         <?php
@@ -271,7 +298,7 @@
                     <div class="row">
                         <label for="Medicine Name" class="col-sm-3 control-label"></label>
                             <div class="col-sm-7">
-                            <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
+                            <div> <?php echo '<img style = "width:250px;height:300px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
                     </div>
                 </div>
             </div>
@@ -321,23 +348,14 @@
                 </div>
             </div>
 
-            <div class="form-group text-center">
-                <div class="row">
-                    <label for="Medicine pack" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label>
-                    <div class="col-sm-7">
-                        <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group text-center">
+            <!-- <div class="form-group text-center">
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">ราคาต่อหีบห่อ</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedPrice" class="form-control" value="<?php echo $med["MedPrice"]; ?>" readonly>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="form-group text-center">
                 <div class="row">
@@ -361,9 +379,8 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">วันผลิต</label>
                     <div class="col-sm-1">
-                    <input type="date"  name="mfd1"
-                                        value="<?php echo date('Y-m-j'); ?>" required 
-                                        min="2021-3-22" max="2030-12-31">
+                    <input type="text"  name="mfd1" id="testdate5"
+                                        value="<?php echo date("d")."-".date("m")."-".(date("Y")+543); ?>" required >
                     </div>
                 </div>
             </div>
@@ -372,9 +389,8 @@
                 <div class="row">
                     <label for="Medicine Price" class="col-sm-3 control-label">วันหมดอายุ</label>
                     <div class="col-sm-1">
-                    <input type="date"  name="exd1"
-                                        value="<?php echo date('Y-m-j'); ?>" required
-                                        min="2021-3-22" max="2030-12-31">
+                    <input type="text"  name="exd1" id="testdate6"
+                                        value="<?php echo date("d")."-".date("m")."-".(date("Y")+543); ?>" required >
                     </div>
                 </div>
             </div>
@@ -397,5 +413,127 @@
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>  
+    <script src="js/datepicker.js"></script>
+    <script type="text/javascript">   
+    $(function(){
+        
+        $.datetimepicker.setLocale('th'); // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+        
+        // กรณีใช้แบบ inline
+    /*  $("#testdate4").datetimepicker({
+            timepicker:false,
+            format:'d-m-Y',  // กำหนดรูปแบบวันที่ ที่ใช้ เป็น 00-00-0000            
+            lang:'th',  // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+            inline:true  
+        });    */   
+        
+        
+        // กรณีใช้แบบ input
+        $("#testdate5").datetimepicker({
+            timepicker:false,
+            format:'d-m-Y',  // กำหนดรูปแบบวันที่ ที่ใช้ เป็น 00-00-0000            
+            lang:'th',  // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+            onSelectDate:function(dp,$input){
+                var yearT=new Date(dp).getFullYear();  
+                var yearTH=yearT+543;
+                var fulldate=$input.val();
+                var fulldateTH=fulldate.replace(yearT,yearTH);
+                $input.val(fulldateTH);
+            },
+        });       
+        // กรณีใช้กับ input ต้องกำหนดส่วนนี้ด้วยเสมอ เพื่อปรับปีให้เป็น ค.ศ. ก่อนแสดงปฏิทิน
+        $("#testdate5").on("mouseenter mouseleave",function(e){
+            var dateValue=$(this).val();
+            if(dateValue!=""){
+                    var arr_date=dateValue.split("-"); // ถ้าใช้ตัวแบ่งรูปแบบอื่น ให้เปลี่ยนเป็นตามรูปแบบนั้น
+                    // ในที่นี้อยู่ในรูปแบบ 00-00-0000 เป็น d-m-Y  แบ่งด่วย - ดังนั้น ตัวแปรที่เป็นปี จะอยู่ใน array
+                    //  ตัวที่สอง arr_date[2] โดยเริ่มนับจาก 0 
+                    if(e.type=="mouseenter"){
+                        var yearT=arr_date[2]-543;
+                    }       
+                    if(e.type=="mouseleave"){
+                        var yearT=parseInt(arr_date[2])+543;
+                    }   
+                    dateValue=dateValue.replace(arr_date[2],yearT);
+                    $(this).val(dateValue);                                                 
+            }       
+        });
+
+        $("#testdate6").datetimepicker({
+            timepicker:false,
+            format:'d-m-Y',  // กำหนดรูปแบบวันที่ ที่ใช้ เป็น 00-00-0000            
+            lang:'th',  // ต้องกำหนดเสมอถ้าใช้ภาษาไทย และ เป็นปี พ.ศ.
+            onSelectDate:function(dp,$input){
+                var yearT=new Date(dp).getFullYear();  
+                var yearTH=yearT+543;
+                var fulldate=$input.val();
+                var fulldateTH=fulldate.replace(yearT,yearTH);
+                $input.val(fulldateTH);
+            },
+        });       
+        // กรณีใช้กับ input ต้องกำหนดส่วนนี้ด้วยเสมอ เพื่อปรับปีให้เป็น ค.ศ. ก่อนแสดงปฏิทิน
+        $("#testdate6").on("mouseenter mouseleave",function(e){
+            var dateValue=$(this).val();
+            if(dateValue!=""){
+                    var arr_date=dateValue.split("-"); // ถ้าใช้ตัวแบ่งรูปแบบอื่น ให้เปลี่ยนเป็นตามรูปแบบนั้น
+                    // ในที่นี้อยู่ในรูปแบบ 00-00-0000 เป็น d-m-Y  แบ่งด่วย - ดังนั้น ตัวแปรที่เป็นปี จะอยู่ใน array
+                    //  ตัวที่สอง arr_date[2] โดยเริ่มนับจาก 0 
+                    if(e.type=="mouseenter"){
+                        var yearT=arr_date[2]-543;
+                    }       
+                    if(e.type=="mouseleave"){
+                        var yearT=parseInt(arr_date[2])+543;
+                    }   
+                    dateValue=dateValue.replace(arr_date[2],yearT);
+                    $(this).val(dateValue);                                                 
+            }       
+        });
+        
+        
+    });
+    </script>
+
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
 </body>
 </html>

@@ -2,8 +2,7 @@
      include('Connect.php'); 
 
      session_start();
-
-    
+ 
      if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
@@ -28,59 +27,6 @@
       
     }
 
-    
-    
-    $sql = "SELECT * FROM tbl_med";
-    $result = $conn->query($sql);
-    $data = array();
-        while($row = $result->fetch_assoc()) 
-        {
-            $data[] = $row;  
-        }
-        foreach($data as $key => $med)
-        {   
-            $MedPoint = $med["MedPoint"];  
-            $MedTotal = $med["MedTotal"];  
-            if($MedTotal <= $MedPoint)
-            {
-                ini_set('display_errors', 1);
-                ini_set('display_startup_errors', 1);
-                error_reporting(E_ALL);
-                date_default_timezone_set("Asia/Bangkok");
-                $sToken = "5QZMmRQRyNbvtvPsg0utZxUal4y02ag6Ec1Eqhrz1ch";
-
-                $medname = $med["MedName"];
-            
-                $sMessage = $medname ." was reached reorder point !";
-                $chOne = curl_init(); 
-                curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
-                curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
-                curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
-                curl_setopt( $chOne, CURLOPT_POST, 1); 
-                curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
-                $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
-                curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
-                curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1);
-                $result = curl_exec( $chOne ); 
-                //Result error 
-                    if(curl_error($chOne)) 
-                    { 
-                        echo 'error:' . curl_error($chOne);
-                    } 
-                    else 
-                    { 
-                        $result_ = json_decode($result, true); 
-                            // echo "status : ".$result_['status']; echo "message : ". $result_['message'];
-                    } 
-                        curl_close( $chOne );
-            }
-        }
-
-
-
-
-
-
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT * FROM tbl_staff WHERE StaffName = '$staff'";
     $result = $conn->query($sql);
@@ -92,6 +38,14 @@
         foreach($data as $key => $staff)
         {      
         }
+
+        $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+        $result1 = $conn->query($sql);
+        $med = array();
+            while($row = $result1->fetch_assoc()) 
+            {
+                $med[] = $row;  
+            }
     
 ?>
 
@@ -140,6 +94,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 19em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -149,7 +124,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Medadd.php" class ="btn btn-success">เพิ่มข้อมูลยา</a></td>
+                                    <td><a href="Medadd.php" class ="btn btn-success" style ="width: 130px;">เพิ่มข้อมูลยา</a></td>
                                 </li>
 
                                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -177,17 +152,22 @@
 
 </head>
 <body>
-        <div class="container">
-            <div class="row">
-                    <div class="col-md-4 ms-auto">
+    <div class="container">
+        <div class="container-sm">
+            <div class="row mb-5">
+                    <div class="col-md-4 ms-auto"  style="text-align: end;">
                         <form action="Medsearch.php" method="post">
                             <input type="text" name="textsearch" placeholder = "ค้นหา">
                             <input type="submit" name="submit" value="ค้นหา">
                         </form>
                     </div>
             </div>
-        </div><br>
+        </div>
 
+        <form method = "POST" action = "Medreport.php" style='display: flex;justify-content: end;'>
+            <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">รายงานยาคงคลัง</button>
+        </form>
+    </div>
         
 
     <div class="container-sm">
@@ -195,6 +175,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>รหัสยา</th>
                     <th>รูปยา</th>
                     <th>ชื่อยา</th>
                     <th>รายละเอียด</th>
@@ -219,6 +200,7 @@
                 ?>
 
                     <tr>
+                        <td><?php echo $Med["MedId"]; ?></td>
                         <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                         <td><?php echo $Med["MedName"]; ?></td>
                         <td><?php echo $Med["MedDes"]; ?></td>
@@ -252,11 +234,50 @@
             </tbody>
         </table>
     </div>
-    
-      
 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
 </body>
 </html>

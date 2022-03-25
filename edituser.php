@@ -38,13 +38,13 @@
         
 
         if (empty($Name)) {
-            $errorMsg = "Please Enter Username";
+            $errorMsg = "กรุณาใส่ชื่อ";
         }  else if (empty($Telephone)) {
-            $errorMsg = "Please Enter Telephone";
+            $errorMsg = "กรุณาใส่เบอร์โทร";
         }  else if (empty($Email)) {
-            $errorMsg = "Please Enter Email";
+            $errorMsg = "กรุณาใส่เมลล์";
         }  else if (empty($DepartName)) {
-            $errorMsg = "pleas Enter Department";
+            $errorMsg = "กรุณาใส่ชื่อแผนก";
         } else {
             try {
                 if (!isset($errorMsg)) {
@@ -56,7 +56,7 @@
                     $update_stmt->bindParam(':StaffId', $id);
 
                     if ($update_stmt->execute()) {
-                        $updateMsg = "Record update successfully...";
+                        $updateMsg = "เพิ่มข้อมูลสำเร็จ...";
                         header("refresh:1;Staffshow.php");
                     }
                 }
@@ -138,7 +138,7 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
@@ -147,13 +147,13 @@
          if (isset($updateMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $updateMsg; ?></strong>
         </div>
     <?php } ?>
 
-    
+    <center><strong><h2>แก้ไขมูลพนักงาน</h2></strong></center>
         <form method="post" class="form-horizontal mt-5">
-            
+        <div class="container">
 
             <div class="form-group text-center">
                 <div class="row">
@@ -211,7 +211,7 @@
                     <a href="Mainuser.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
-
+        </div>
 
         </form>
 

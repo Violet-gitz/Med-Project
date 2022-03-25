@@ -36,9 +36,6 @@
        
     }
 
-    
-
-
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
     $result = $conn->query($sql);

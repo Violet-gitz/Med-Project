@@ -40,20 +40,22 @@
         }
     }
 
-    if (isset($_REQUEST['btn-Order'])) 
-        {
+    if (isset($_REQUEST['btn-Order'])) {
+
             date_default_timezone_set("Asia/Bangkok");
-            $OrderDate = date("Y-m-d h:i:sa");
-            $OrderStatus = "Ordering";
+            $OrderDate = date("d")."-".date("m")."-".(date("Y")+543);
+
+            $OrderStatus = "สั่งซื้อ";
             $OrderPrice = $_REQUEST["total"];
             $OrderTotal = ($OrderPrice * 0.07)+$OrderPrice;
             $DealerId = $_REQUEST['selDealer'];
             $StaffName = $_SESSION['StaffName'];
             
-                if (empty($_SESSION['cart']))
-                {
-                $errorMsg = "Please Select Medicine";
-                header("refresh:1;Medshow.php");
+                if (empty($_SESSION['cart'])){
+                $errorMsg = "ไม่มีสินค้าในตะกร้า";
+                header("refresh:1;Orders.php");
+                }else if (empty($DealerId)) {
+                    $errorMsg = "กรุณาเลือกตัวแทนจำหน่าย";
                 }else 
                     if (!isset($errorMsg)) 
                     {
@@ -84,10 +86,11 @@
                                 }
                             }
                             header("refresh:1;CheckOrder.php");
+                            $insertMsg = "เพิ่มข้อมูลสำเร็จ...";
                     }
+                
         }
-
-    
+          
 ?>
 
 <!DOCTYPE html>
@@ -256,6 +259,23 @@ body{margin-top:20px;
 </style>
 
 <body>
+<?php 
+         if (isset($errorMsg)) {
+    ?>
+        <div class="alert alert-danger">
+            <strong>ไม่สำเร็จ! <?php echo $errorMsg; ?></strong>
+        </div>
+    <?php } ?>
+    
+
+    <?php 
+         if (isset($insertMsg)) {
+    ?>
+        <div class="alert alert-success">
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
+        </div>
+<?php } ?>
+
 <div class="container">
 <div class="row gutters">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -292,8 +312,13 @@ body{margin-top:20px;
                                             echo "ที่อยู่ : " .$dealer["DealerAddress"] . "<br>";
                                             echo "เบอร์โทรศัพท์ : ". $dealer["DealerPhone"] . "<br>";
                                             date_default_timezone_set("Asia/Bangkok");
-                                            $RecTime = date("Y-m-d h:i:sa");
-                                            echo "วันที่เบิก  : ". $RecTime;
+                                            
+                                            $RecTime = date("Y-m-d");
+                                            $day = substr($RecTime,5,9);
+                                            $year = substr($RecTime,0,4);
+                                            $test = $year + 543;
+                                            echo "วันที่เบิก ".$day. "-".$test;
+                                            // echo "วันที่เบิก  : ". $RecTime;
                                         ?>
 										</address>
 									</div>
@@ -316,10 +341,10 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th>รายการสั่งซื้อ</th>
-													<th>รหัสสินค้า</th>
+                                                    <th>รหัสสินค้า</th>
+													<th>รายการสั่งซื้อ</th>	
 													<th>จำนวน</th>
-													<th>ราคา</th>
+													<th style = "text-align:right">บาท</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -343,30 +368,31 @@ body{margin-top:20px;
                                                                 $sumvax += $vax;
                                                 ?>
 												<tr>
-													<td><?php echo $Med["MedName"];?></td>
-													<td><?php echo "#".$Med["MedId"];?></td>
+                                                    <td><?php echo "#".$Med["MedId"];?></td>
+													<td><?php echo $Med["MedName"];?></td>													
 													<td><?php echo $Quantity;?></td>
-													<td><?php echo "฿ ".$Medsum;?></td>
+													<td style="text-align:right"><?php echo number_format($Medsum, 2);?></td>
 												</tr>
                                                     <?php
                                                             }}
                                                     ?>
 										
 												<tr>
-													<td colspan="3">
+													<td colspan="3" >
 														<p>
 															ราคารวม<br>
 															ภาษี (7%)<br>
 														</p>
 														<h5 class="text-success"><strong>ราคารวมภาษี</strong></h5>
 													</td>			
-													<td>
+													<td style="text-align:right">
 														<p>
-                                                            <?php echo "฿ ".$sum. "<br>";?>
-															<?php echo "฿ ".$sumvax. "<br>";?>
+                                                            <?php echo number_format($sum, 2). "<br>";?>
+															<?php echo number_format($sumvax, 2). "<br>";?>
+
 															
 														</p>
-														<h5 class="text-success"><strong><?php $sumall = $sum + $sumvax; echo "฿ ".$sumall; "<br>";?></strong></h5>
+														<h5 class="text-success"><strong><?php $sumall = $sum + $sumvax; echo number_format($sumall, 2). "<br>";?></strong></h5>
 													</td>
 												</tr>
 											</tbody>

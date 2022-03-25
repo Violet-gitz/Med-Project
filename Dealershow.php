@@ -13,7 +13,8 @@
         header('location: login.php');
     }
 
-    if (isset($_GET['delete'])) {
+    if (isset($_GET['delete'])) 
+    {
         $id = $_GET['delete'];
 
         
@@ -34,59 +35,18 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
-
-        }
-
-
-    $sql = "SELECT *FROM tbl_dealer";
-    $result = $conn->query($sql);
-    $data = array();
-    while($row = $result->fetch_assoc()) 
-    {
-    $data[] = $row;   
-    }
-    foreach($data as $key => $deal)
-    {
-        $dealername = $deal["DealerName"];
-        $MfdDate = $deal["ContractStart"];
-        $ExpDate = $deal["ContractEnd"];
-        $datemfd=date_create($MfdDate);
-        $dateexp=date_create($ExpDate);
-        $diff=date_diff($datemfd,$dateexp);
-        if($diff->format('%R%a')<=400)
+        foreach($data as $key => $staff)
         {
-            ini_set('display_errors', 1);
-            ini_set('display_startup_errors', 1);
-            error_reporting(E_ALL);
-            date_default_timezone_set("Asia/Bangkok");
-            $sToken = "5QZMmRQRyNbvtvPsg0utZxUal4y02ag6Ec1Eqhrz1ch";
-                
-            $sMessage = $dealername. "Contract Expire in " . $diff->format('%R%a') . " Day !!!";
-            $chOne = curl_init(); 
-            curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
-            curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
-            curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
-            curl_setopt( $chOne, CURLOPT_POST, 1); 
-            curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
-            $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
-            curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
-            curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1);
-            $result = curl_exec( $chOne ); 
-            //Result error 
-            if(curl_error($chOne)) 
-                { 
-                    echo 'error:' . curl_error($chOne);
-                } 
-                else 
-                { 
-                $result_ = json_decode($result, true); 
-                // echo "status : ".$result_['status']; echo "message : ". $result_['message'];
-                } 
-                curl_close( $chOne );
-                }
-            
-    }
+
+        }      
+
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+        while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
+        }
 ?>
 
 <!DOCTYPE html>
@@ -135,6 +95,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 18em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -144,7 +125,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                             <li class="nav-item">
-                                    <td><a href="Dealeradd.php" class ="btn btn-success">เพิ่มตัวแทนจำหน่าย</a></td>
+                                    <td><a href="Dealeradd.php" class ="btn btn-success" style ="width: 150px;">เพิ่มตัวแทนจำหน่าย</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -183,8 +164,6 @@
                     <th>ชื่อตัวแทนจำหน่าย</th>
                     <th style="width:15%">ที่อยู่ตัวแทนจำหน่าย</th>
                     <th>เบอร์โทรศัพท์ตัวแทนจำหน่าย</th>
-                    <th style="width:13%">วันเริ่มต้นสัญญา</th>
-                    <th style="width:13%">วันสิ้นสุดสัญญา</th>
                     <th style="width:15%">แก้ไขข้อมูล</th>
                     <th style="width:10%">ลบข้อมูล</th>
                 </tr>
@@ -212,8 +191,6 @@
                         <td><?php echo $dealer["DealerName"]; ?></td>
                         <td><?php echo $dealer["DealerAddress"]; ?></td> 
                         <td><?php echo $dealer["DealerPhone"]; ?></td> 
-                        <td><?php echo $dealer["ContractStart"]; ?></td> 
-                        <td><?php echo $dealer["ContractEnd"]; ?></td> 
                         <td><a href="Dealeredit.php?update_id=<?php echo $dealer["DealerId"];?>" class="btn btn-warning">แก้ไขข้อมูล</a></td>
                         <form action = "Dealershow.php" method = "POST">
                             <input type ="hidden" name = "delete" value = "<?php echo $dealer["DealerId"]; ?>">
@@ -229,13 +206,50 @@
             </tbody>
         </table>
     </div>
-    
-
-    
-    
-
+ 
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
+
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
 </body>
 </html>

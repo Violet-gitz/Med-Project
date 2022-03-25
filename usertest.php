@@ -2,7 +2,6 @@
     include('Connect.php'); 
     session_start();
   
-
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
     $result = $conn->query($sql);
@@ -25,12 +24,16 @@
             foreach($data as $key => $depart){} 
         }
 
-    if (isset($_REQUEST['btn-Order'])) 
-    {   
-
-        $WithStatus = "Pending approval";
+    if (isset($_REQUEST['btn-Order'])) {   
+        if(empty($_SESSION['usercart']))
+        {
+            $errorMsg = "ไม่มีสินค้า";
+        }
+        else
+        {
+        $WithStatus = "รอการอนุมัติ";
         date_default_timezone_set("Asia/Bangkok");
-        $WithDate = date("Y-m-d h:i:sa");
+        $WithDate = date("Y-m-d");
 
         $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate, WithStatus) VALUES ('$staffId', '$WithDate', '$WithStatus')";
         if ($conn->query($sql) === TRUE) { 
@@ -45,7 +48,7 @@
                 {
                     $test = 0;
                     // echo $Quantity. "<br>";
-                    $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId' AND LotStatus != 'Claim' AND LotStatus != 'Writeoff' AND LotStatus != 'Not Available' AND LotStatus != 'Reserve'";
+                    $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId' AND LotStatus != 'เคลม' AND LotStatus != 'ตัดจำหน่าย' AND LotStatus != 'ไม่สามารถใช้งานได้' AND LotStatus != 'จอง'";
                     $result = $conn->query($sql);
                     $data = array();
                             
@@ -88,12 +91,9 @@
                             }  
 
                         }
-
                 }
             }unset($_SESSION['usercart']);
             
-    
-
         if(!empty($_SESSION['test']))
         {   
             $sum = 0;
@@ -141,14 +141,12 @@
                     }
                     }
                 }unset($_SESSION['test']);
+                $insertMsg = "เบิกสำเร็จ...";
                 header("refresh:1;Mainuser.php"); 
         }
-
+    }
     }
 
- 
-
-    
 ?>
 
 <!DOCTYPE html>
@@ -311,6 +309,22 @@ body{margin-top:20px;
 </style>
 
 <body>
+    <?php 
+         if (isset($errorMsg)) {
+    ?>
+        <div class="alert alert-danger">
+            <strong>ผิดพลาด! <?php echo $errorMsg; ?></strong>
+        </div>
+    <?php } ?>
+    
+    <?php 
+         if (isset($insertMsg)) {
+    ?>
+        <div class="alert alert-success">
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
+        </div>
+    <?php } ?>
+
 <div class="container">
 <div class="row gutters">
 		<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -359,7 +373,7 @@ body{margin-top:20px;
 										<address>
                                             <?php 
                                                 date_default_timezone_set("Asia/Bangkok");
-                                                $RecTime = date("Y-m-d h:i:sa");
+                                                $RecTime = date("d")."-".date("m")."-".(date("Y")+543);
                                                 echo "วันที่เบิก  : ". $RecTime;
                                             ?>
 										</address>
@@ -386,8 +400,7 @@ body{margin-top:20px;
 												<tr>
 													<th>รายการเบิก</th>
 													<th>รหัสสินค้า</th>
-													<th>จำนวน</th>
-													
+													<th>จำนวน</th>		
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -450,6 +463,7 @@ body{margin-top:20px;
 </div>
 </div>
 </body>
+
 
             <form name="frmcart" method="post">
             <div class="form-group text-center">

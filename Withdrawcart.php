@@ -53,98 +53,102 @@
         
       
     if (isset($_REQUEST['btn_withdraw'])) {
-        $i = 0;   
-        $Lotid = $_REQUEST['LotId'];
-        $sql ="SELECT * FROM tbl_receiveddetail WHERE $Lotid = LotId";
-        $result = $conn->query($sql);
-        $data = array();
-        while($row = $result->fetch_assoc()) {
-            $data[] = $row;   
+        if(empty($_SESSION['withdraw']))
+        {
+            $errorMsg = "ไม่มีสินค้า";
         }
-        foreach($data as $key => $Lot){
-
-        
-            $idmed = $Lot["MedId"];
-            $sql ="SELECT * FROM tbl_med WHERE $idmed = MedId";
+        else
+        {
+            $i = 0;   
+            $Lotid = $_REQUEST['LotId'];
+            $sql ="SELECT * FROM tbl_receiveddetail WHERE $Lotid = LotId";
             $result = $conn->query($sql);
             $data = array();
-                while($row = $result->fetch_assoc()) {
-                    $data[] = $row;   
-                }
-                foreach($data as $key => $med){}
-        
-
+            while($row = $result->fetch_assoc()) {
+                $data[] = $row;   
             }
+            foreach($data as $key => $Lot){
         
-        date_default_timezone_set("Asia/Bangkok");
-        $WithDate = date("Y-m-d h:i:sa");
-        $WithStatus = "Pending approval";
-        
-         if (empty($StaffId)) {
-            $errorMsg = "Please Enter StaffId";
-        }  else 
-            {
-                if (!isset($errorMsg))
-                {
-                    $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate, WithStatus) VALUES ('$StaffId', '$WithDate', '$WithStatus')";
-                    if ($conn->query($sql) === TRUE) { 
-                    } else {
-                        echo "Error updating record: " . $conn->error;
+                $idmed = $Lot["MedId"];
+                $sql ="SELECT * FROM tbl_med WHERE $idmed = MedId";
+                $result = $conn->query($sql);
+                $data = array();
+                    while($row = $result->fetch_assoc()) {
+                        $data[] = $row;   
                     }
-                            $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId  DESC LIMIT 1";
-                            $result = mysqli_query($conn, $query); 
-                            $row = mysqli_fetch_array($result);
-                            $WithId  = $row["WithId"];
-
-                            foreach($_SESSION['withdraw'] as $value)
-                            {
-                            $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$value[0].' and MedId = '.$value[1];
-
-                            $result = $conn->query($sql);
-                            $data = array();
-                            
-                            while($row = $result->fetch_assoc()) 
-                            {
-                                $data[] = $row;  
-                            }
-                            foreach($data as $key => $lot)
-                            {       
-                                $Quantity = $value[2];   
-                                $MedId = $lot["MedId"];
-                                $LotId = $lot["LotId"];
-                                $Mfd = $lot["Mfd"];
-                                $Exd = $lot["Exd"];
-                                
-                                $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$LotId', '$Quantity', '$Mfd', '$Exd')";
-                            
-                                if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw']);
-                                } else {
-                                    echo "Error updating record: " . $conn->error;
-                                }
-                                $sql = "UPDATE tbl_lot SET Reserve = '$Quantity' WHERE LotId = '$LotId'";
-                                if ($conn->query($sql) === TRUE) { 
-                                } else {
-                                    echo "Error updating record: " . $conn->error;
-                                }
-                                    $qty += $value[2];
-   
-                                $sql = "UPDATE tbl_withdraw SET Qtysum = $qty WHERE WithId = $WithId"; 
-                                if ($conn->query($sql) === TRUE) { 
-                                } else {
-                                    echo "Error updating record: " . $conn->error;
-                                }  
-                            }
-                           
-                    }     
+                    foreach($data as $key => $med){}
                 }
-            } $insertMsg = "Insert Successfully...";
-            header("refresh:1;main.php");   
-}
+            
+            date_default_timezone_set("Asia/Bangkok");
+            $WithDate = date("d")."-".date("m")."-".(date("Y")+543);
+            $WithStatus = "รออนุมัติ";
+            
+            if (empty($StaffId)) {
+                $errorMsg = "Please Enter StaffId";
+            }  else 
+                {
+                    if (!isset($errorMsg))
+                    {
+                        $sql = "INSERT INTO tbl_withdraw(StaffId, WithDate, WithStatus) VALUES ('$StaffId', '$WithDate', '$WithStatus')";
+                        if ($conn->query($sql) === TRUE) { 
+                        } else {
+                            echo "Error updating record: " . $conn->error;
+                        }
+                                $query = "SELECT WithId FROM tbl_withdraw ORDER BY WithId  DESC LIMIT 1";
+                                $result = mysqli_query($conn, $query); 
+                                $row = mysqli_fetch_array($result);
+                                $WithId  = $row["WithId"];
 
+                                foreach($_SESSION['withdraw'] as $value)
+                                {
+                                $sql = 'SELECT * FROM tbl_lot WHERE LotId ='.$value[0].' and MedId = '.$value[1];
+
+                                $result = $conn->query($sql);
+                                $data = array();
+                                
+                                while($row = $result->fetch_assoc()) 
+                                {
+                                    $data[] = $row;  
+                                }
+                                foreach($data as $key => $lot)
+                                {     
+                                    $lotreserve = $lot["Reserve"];
+                                    $Quantity = $value[2];  
+                                    $sumReserve = $lotreserve + $Quantity; 
+                                    $MedId = $lot["MedId"];
+                                    $LotId = $lot["LotId"];
+                                    $Mfd = $lot["Mfd"];
+                                    $Exd = $lot["Exd"];
+                                    
+                                    $sql = "INSERT INTO tbl_withdrawdetail(WithId, MedId, LotId, Qty, Mfd, Exd) VALUES ('$WithId', '$MedId', '$LotId', '$Quantity', '$Mfd', '$Exd')";
+                                
+                                    if ($conn->query($sql) === TRUE) { unset($_SESSION['withdraw']);
+                                    } else {
+                                        echo "Error updating record: " . $conn->error;
+                                    }
+                                    $sql = "UPDATE tbl_lot SET Reserve = '$sumReserve' WHERE LotId = '$LotId'";
+                                    if ($conn->query($sql) === TRUE) { 
+                                    } else {
+                                        echo "Error updating record: " . $conn->error;
+                                    }
+                                        $qty += $value[2];
+    
+                                    $sql = "UPDATE tbl_withdraw SET Qtysum = $qty WHERE WithId = $WithId"; 
+                                    if ($conn->query($sql) === TRUE) { 
+                                    } else {
+                                        echo "Error updating record: " . $conn->error;
+                                    }  
+                                }$insertMsg = "เพิ่มข้อมูลสำเร็จ...";
+                                header("refresh:1;main.php");                          
+                        }     
+                    }
+                }  
+            }  
+    }
 
 ?>
      
-     <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -159,7 +163,9 @@
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">Home Page</a>
+                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: red; margin-left: 23em;" aria-hidden="true"></i></a>
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -174,12 +180,12 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                         <form method="POST" action="Staffedit.php">
-                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">Edit</a>
+                                            <a class="dropdown-item" href="Staffedit.php?update_id=<?php echo $staff["StaffId"];?>">แก้ไขข้อมูลส่วนตัว</a>
                                             <input type="hidden" name ='update_id' value ="<?php echo $staff["StaffId"]; ?>">
                                         </from>
 
                                         <form method="POST" action="index.php">
-                                            <a class="dropdown-item" href="index.php?logout='1'">Logout</a>
+                                            <a class="dropdown-item" href="index.php?logout='1'">ออกจากระบบ</a>
                                             <input type ="hidden" name ='logout' value ="1">
                                         </form>
 
@@ -201,15 +207,15 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ไม่สำเร็จ! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
     <?php 
-         if (isset($updateMsg)) {
+         if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
 
@@ -217,12 +223,12 @@
       <table width="600" border="0" align="center" class="square">
         <tr>
           <td colspan="5" bgcolor="#CCCCCC">
-          <b>Cart</span></td>
+          <b>ตะกร้าสินค้า</span></td>
         </tr>
         <tr>
-          <td bgcolor="#EAEAEA">Order</td>
-          <td align="center" bgcolor="#EAEAEA">Quantity</td>
-          <td align="center" bgcolor="#EAEAEA">Remove</td>
+          <td bgcolor="#EAEAEA">รายการ</td>
+          <td align="center" bgcolor="#EAEAEA">จำนวน</td>
+          <td align="center" bgcolor="#EAEAEA">ลบ</td>
         </tr>
     <?php
     $total=0;
@@ -248,7 +254,7 @@
             // echo "<input type='number'name=".$Med["MedId"]."value=".$value[2]." size='2'/></td>";
             echo "<input type ='number' name='".$Med["MedId"]."' value='".$value[2]."'disabled size='2'></td>"; 
             
-            echo "<td width='46' align='center'><a href='Withdrawcart.php?testMedId=".$value[1]."&act=remove&quantity=0&valueid=".$value[0]."'>Remove</a></td>";
+            echo "<td width='46' align='center'><a href='Withdrawcart.php?testMedId=".$value[1]."&act=remove&quantity=0&valueid=".$value[0]."'>ลบ</a></td>";
             echo "</tr>";
             }
             echo "<tr>";
@@ -257,13 +263,13 @@
             echo "</tr>";
     ?>
     <tr>
-        <td><a href="Lot.php" class="btn btn-success">Medicine</a></td>
+        <td><a href="Lot.php" class="btn btn-success">ล็อตยา</a></td>
     </tr>
     </table>
                    
                             <div class="form-group text-center">
                                 <div class="col-md-12 mt-3">
-                                    <input type="submit" name = "btn_withdraw"class = "btn btn-info" value = "Withdraw">
+                                    <input type="submit" name = "btn_withdraw"class = "btn btn-info" value = "เบิก">
                                     <input type ="hidden" name = "LotId" value = "<?php echo $LotId;?>">
                                 </div>
                             </div>

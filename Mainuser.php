@@ -111,6 +111,7 @@
             </div>
     </div>
 
+    <center><strong><h2>รายการยา</h2></strong></center>
     <div class="container-sm">
     
         <table class="table table-striped" style='margin-top:4rem;'>
@@ -125,8 +126,6 @@
                     <th>จำนวนคงเหลือ</th>
                     <th>จำนวน</th>
                     <th>เบิก</th>
-
-                   
                 </tr>
             </thead>
 

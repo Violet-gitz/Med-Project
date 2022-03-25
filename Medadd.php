@@ -16,7 +16,7 @@
     }
 
     if (isset($_REQUEST['btn_insert'])) {
-        
+          
         $MedName = $_REQUEST['txt_MedName'];
         $MedDes = $_REQUEST['txt_MedDes'];
         $MedIndi = $_REQUEST["txt_MedIndi"];
@@ -29,6 +29,7 @@
         $MedPoint = $_REQUEST['txt_MedPoint'];
         $MedType = $_REQUEST['txt_Medtype'];
         $MedExp = $_REQUEST['txt_MedExp'];
+        $MedNoti = $_REQUEST['txt_MedNoti'];
         $MedTotal = 0;
         
         $dir = "upload/";
@@ -48,6 +49,8 @@
             $errorMsg = "กรุณาใส่จุดสั่งซื้อ";
         }else if (empty($MedExp)) {
             $errorMsg = "กรุณาใส่จำนวนวันหมดอายุ";
+        }else if (empty($MedNoti)) {
+            $errorMsg = "กรุณาใส่วันที่ต้องการให้แจ้งเตือนก่อน";
         }else {
             $query = "SELECT * FROM tbl_med WHERE MedName = '$MedName'  LIMIT 1";
             $result = mysqli_query($conn, $query); 
@@ -56,9 +59,9 @@
             $errorMsg =  "ชื่อยาซ้ำ กรุณาใส่ใหม่";
         }
         else {
-        $sql = "INSERT INTO tbl_med(MedName,CateId,VolumnId,UnitId,MedPack,MedPrice,MedLow,MedDes,MedPoint,MedTotal,MedPath,MedIndi,TypeId,MedExp) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedPoint', '$MedTotal', '$MedPath' , '$MedIndi' , '$MedType' , '$MedExp')";
+        $sql = "INSERT INTO tbl_med(MedName,CateId,VolumnId,UnitId,MedPack,MedPrice,MedLow,MedDes,MedPoint,MedTotal,MedPath,MedIndi,TypeId,MedExp,MedNoti) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedPoint', '$MedTotal', '$MedPath' , '$MedIndi' , '$MedType' , '$MedExp' , '$MedNoti')";
         if ($conn->query($sql) === TRUE){
-            $insertMsg = "Insert Successfully...";
+            $insertMsg = "เพิ่มข้อมูลสำเร็จ...";
             header("refresh:1;Medshow.php");
         }
             else {echo "Error updating record: " . $conn->error;}
@@ -75,8 +78,17 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
+        }
+
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+    while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
         }
 ?>
 
@@ -96,6 +108,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 22em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                               
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -133,7 +166,7 @@
          if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ไม่สำเร็จ! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
     
@@ -142,11 +175,11 @@
          if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $insertMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
 
-    
+    <center><strong><h2>เพิ่มข้อมูลยา</h2></strong></center>
         <form method="post" class="form-horizontal mt-5" enctype="multipart/form-data">
             
                 <div class="container">
@@ -219,6 +252,15 @@
                                 <td><label for="Medicineprcie" class="col-sm-3 control-label">จำนวนวันหมดอายุ</label></td>
                                 <div class="col-sm-7">
                                     <td><input type="number" name="txt_MedExp" class="form-control" placeholder="กรุณาใส่จำนวนวันหมดอายุ..."></td>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <div class="row">
+                                <td><label for="Medicineprcie" class="col-sm-3 control-label">ตั้งจำนวนวันแจ้งเตือน</label></td>
+                                <div class="col-sm-7">
+                                    <td><input type="number" name="txt_MedNoti" class="form-control" placeholder="กรุณาใส่วันที่ต้องการให้แจ้งเตือนก่อน..."></td>
                                 </div>
                             </div>
                         </div>
@@ -336,4 +378,45 @@
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
 </body>
+
+<div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">Modal title</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']."<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
 </html>

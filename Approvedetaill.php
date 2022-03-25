@@ -1,12 +1,10 @@
 
 <?php 
-     include('Connect.php'); 
+    include('Connect.php'); 
      
-
     session_start();
     error_reporting(0);
-    
-    
+      
     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
@@ -28,8 +26,7 @@
             $data[] = $row;  
             }
             foreach($data as $key => $With){
-            
-            
+               
                 $idwith = $With["WithId"];
                 $sql ="SELECT * FROM tbl_withdrawdetail WHERE WithId = $idwith";
                 $result = $conn->query($sql);
@@ -51,7 +48,8 @@
         }
     }
 
-    if (isset($_REQUEST['btn_approve'])) {
+    if (isset($_REQUEST['btn_approve'])) 
+    {
 
         $WithId = $_REQUEST['txt_WithId'];
 
@@ -93,7 +91,6 @@
                             } else {
                             echo "Error updating record: " . $conn->error;
                             }
-                        
                         }
 
                     $MedId = $withde["MedId"];
@@ -116,17 +113,15 @@
                             echo "Error updating record: " . $conn->error;
                             }
                         }
-
                 }
-
-                    $sql = "UPDATE tbl_withdraw SET WithStatus = 'Approved' WHERE WithId = $WithId"; 
+                    $sql = "UPDATE tbl_withdraw SET WithStatus = 'อนุมัติสำเร็จ' WHERE WithId = $WithId"; 
                     if ($conn->query($sql) === TRUE) { 
                     } else {
                      echo "Error updating record: " . $conn->error;
+                        }       
+        } $insertMsg = "อนุมัติสำเร็จ...";
+        header("refresh:1;Approve.php");
     }
-    header("refresh:1;Approve.php");
-    }
-}
 
 $staff =  $_SESSION['StaffName'];
 $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
@@ -136,9 +131,18 @@ $data = array();
     {
         $data[] = $row;  
     }
-    foreach($data as $key => $staff){      
+    foreach($data as $key => $staff)
+    {      
 
     }
+
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+        while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
+        }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -155,8 +159,29 @@ $data = array();
                     ?>
                 </div>
                 <div> 
-                  <a href="main.php" class="navbar-brand">หน้าหลัก</a>
-                </div>
+                    <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                    <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "red";
+                                }
+                            else 
+                                {
+                                    echo "white";
+                                }
+                            ?> 
+                            ; margin-left: 22em;" aria-hidden="true">  
+                            <?php
+                                if(count($med) > 0)
+                                    {
+                                        echo "<sup>".count($med)."</sup>";
+                                    }
+                        ?>
+                        </i>
+                </a>                
+            </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
                     <div class="dropdown">
@@ -192,224 +217,151 @@ $data = array();
 <body>
 
     <?php 
-         if (isset($errorMsg)) {
+        if (isset($errorMsg)) {
     ?>
         <div class="alert alert-danger">
-            <strong>Wrong! <?php echo $errorMsg; ?></strong>
+            <strong>ไม่สำเร็จ! <?php echo $errorMsg; ?></strong>
         </div>
     <?php } ?>
-    
-
+         
     <?php 
-         if (isset($updateMsg)) {
+        if (isset($insertMsg)) {
     ?>
         <div class="alert alert-success">
-            <strong>Success! <?php echo $updateMsg; ?></strong>
+            <strong>สำเร็จ! <?php echo $insertMsg; ?></strong>
         </div>
     <?php } ?>
 
-<form method="post" class="form-horizontal mt-5" name="myform">
-
-    <?php
-        $i = 0;
-        $sql = "SELECT * FROM tbl_withdrawdetail WHERE WithId = $withid";
-        $result = $conn->query($sql);
-        $data = array();
-        while($row = $result->fetch_assoc()) {
-        $data[] = $row;  
-        }
-        foreach($data as $key => $withdetailid){
-
-            $MedId = $withdetailid["MedId"];
-            $sqli ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
-            FROM tbl_med
-            INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
-            INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
-            INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
-            INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId
-            WHERE tbl_med.MedId = $MedId";
-            $result = $conn->query($sqli);
-            $data = array();
-            while($row = $result->fetch_assoc()) {
-            $data[] = $row;   
-            }
-            
-            foreach($data as $key => $med){
-                
-        
-    ?>
-    <div class="container">
-        <div class="form-group text-center">
-            <div class="row">
-                <label for="Medicine Name" class="col-sm-3 control-label"></label>
-                    <div class="col-sm-7">
-                    <div> <?php echo '<img style = "width:325px;height:325px"  src="upload/'. $med["MedPath"]; ?>"> </div> 
-                </div>
+    <div class="container-xl">
+        <table class="table table-bordered">
+            <div style='margin-bottom: 10px;'>
+                    <h2>อนุมัติ<h2>
             </div>
-        </div>
+                <form method="post" class="form-horizontal mt-5" name="myform">
+                    
+                <thead>
+                    <tr>
+                        <th>รูป</th>
+                        <th>รหัสการเบิก</th>
+                        <th>ล็อตที่</td>
+                        <th>คนขออนุมัติ</th>
+                        <th>วันที่เบิก</th>
+                        <th>จำนวนที่เบิก</th>
+                        <th>สถานะ</th>
+                        <th>ชื่อยา</th>   
+                        <th>วันผลิต</td>          
+                        <th>วันหมดอายุ</td>                                                
+                    </tr>
+                </thead>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">รหัสการเบิกที่</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_WithId" class="form-control" value="<?php echo $With["WithId"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+            <?php
+                $i = 0;
+                $sql = "SELECT * FROM tbl_withdrawdetail WHERE WithId = $withid";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) {
+                $data[] = $row;  
+                }
+                foreach($data as $key => $withdetailid){
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">วันที่เบิก</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_WithDate" class="form-control" value="<?php echo $With["WithDate"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                    $MedId = $withdetailid["MedId"];
+                    $sqli ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+                    FROM tbl_med
+                    INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
+                    INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
+                    INNER JOIN tbl_volumn ON tbl_volumn.VolumnId = tbl_med.VolumnId
+                    INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId
+                    WHERE tbl_med.MedId = $MedId";
+                    $result = $conn->query($sqli);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;   
+                    }
+                    
+                    foreach($data as $key => $med){   
+            ?>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">ชื่อคนขอเบิก</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_StaffName" class="form-control" value="<?php echo $Staff["StaffName"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+        <div class="container">
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">จำนวน</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_Qty" class="form-control" value="<?php echo $With["Qtysum"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+            <tr>
+                <td><?php echo '<img style = "width:80px;height:80px"  src="upload/'. $med["MedPath"]; ?>"></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Tel" class="col-sm-3 control-label">สถานะ</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_Status" class="form-control" value="<?php echo $With["WithStatus"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                <td><input type="text" name="txt_WithId" class="form-control" value="<?php echo $With["WithId"]; ?>" readonly></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine Name" class="col-sm-3 control-label">ล็อตที่</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_MedName" class="form-control" value="<?php echo $withdetailid["LotId"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                <td><?php echo $withdetailid["LotId"]; ?></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine Name" class="col-sm-3 control-label">ชื่อยา</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_MedName" class="form-control" value="<?php echo $med["MedName"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                <td><?php echo $Staff["StaffName"]; ?></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">รายละเอียด</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedDes"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                <td><?php echo $With["WithDate"]; ?></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">ประเภท</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["TypeName"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                <td><?php echo $withdetailid["Qty"]; ?></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">หมวดหมู่</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["CateName"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                <td><?php echo $With["WithStatus"]; ?></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">ปริมาณ</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["VolumnName"]; ?>" readonly>
-             </div>
-        </div>
-    </div>
+                <td><?php echo $med["MedName"]; ?></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">หน่วยนับ</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["UnitName"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                <td><?php echo $withdetailid["Mfd"]; ?></td>
 
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine pack" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine Price" class="col-sm-3 control-label">จำนวน</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Qty"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group text-center">
-        <div class="row">
-             <label for="Medicine Price" class="col-sm-3 control-label">วันที่ผลิต</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Mfd"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group text-center">
-        <div class="row">
-            <label for="Medicine Price" class="col-sm-3 control-label">วันที่หมดอายุ</label>
-                <div class="col-sm-7">
-                    <input type="text" name="txt_Qty" class="form-control" value="<?php echo $withdetailid["Exd"]; ?>" readonly>
-            </div>
-        </div>
-    </div>
+                <td><?php echo $withdetailid["Exd"]; ?></td>
+            </tr>
+       
 
         <?php }}?>
-
+        </table>
         <div class="form-group text-center">
             <div class="col-md-12 mt-3">
                 <input type="submit" name="btn_approve" class="btn btn-success" value="อนุมัติ">
                 <a href="Approve.php" class="btn btn-danger">กลับ</a>
             </div>
         </div>
-    </div>
 
     </div>
-                
 </form>
 
 <script src="js/slim.js"></script>
 <script src="js/popper.js"></script>
 <script src="js/bootstrap.js"></script>
+
+<div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
 </body>
 </html>
 

@@ -1,7 +1,6 @@
 <?php 
-     include('Connect.php'); 
+    include('Connect.php'); 
      
-
     session_start();
     
     if (!isset($_SESSION['StaffName'])) {
@@ -15,93 +14,13 @@
         header('location: login.php');
     }
 
-
-     if (isset($_GET['logout'])) {
+    if (isset($_GET['logout'])) {
             session_destroy();
             unset($_SESSION['StaffUsername']);
             header('location: login.php');
         }
 
-        /*if (isset($_GET['delete'])) {
-            $id = $_GET['delete'];
-
-
-        // Delete an original record from db
-        //$sql = 'DELETE FROM tbl_Staff WHERE StaffId' =.$id);
-
-
-        $sql = "DELETE FROM tbl_lot WHERE LotId = '".$id."'";
-        if($conn->query($sql) == TRUE){
-            echo "<script type='text/javascript'>alert('ลบข้อมูลสำเร็จ');</script>";
-        }else{
-            echo "<script type='text/javascript'>alert('ลบข้อมูลไม่สำเร็จ');</script>";
-        }
-      
-    }*/
-
-    $sql = "SELECT *FROM tbl_lot";
-    $result = $conn->query($sql);
-    $data = array();
-    while($row = $result->fetch_assoc()) 
-    {
-    $data[] = $row;   
-    }
-    foreach($data as $key => $lot)
-    {
-        $MedId = $lot["MedId"];
-        $sql = "SELECT* FROM tbl_med WHERE MedId = $MedId";
-        $result = $conn->query($sql);
-        $data = array();
-            while($row = $result->fetch_assoc()) 
-            {
-                $data[] = $row;  
-            }
-            foreach($data as $key => $Med)
-            {
-                $Medexp = $Med["MedExp"];
-                $MfdDate = $lot["Mfd"];
-                $ExpDate = $lot["Exd"];
-                $datemfd=date_create($MfdDate);
-                $dateexp=date_create($ExpDate);
-                $diff=date_diff($datemfd,$dateexp);
-                if($diff->format('%R%a')<= $Medexp)
-                {
-                    ini_set('display_errors', 1);
-                    ini_set('display_startup_errors', 1);
-                    error_reporting(E_ALL);
-                    date_default_timezone_set("Asia/Bangkok");
-                    $sToken = "5QZMmRQRyNbvtvPsg0utZxUal4y02ag6Ec1Eqhrz1ch";
-            
-                    $lot = $lot["LotId"];
-                    $medname = $Med["MedName"];
-                
-                    $sMessage = $medname ." Lot #". $lot." Expiry tracking alert "."in ".$diff->format('%R%a'). " day ! " . "link http://localhost/project/Lot.php";
-                    $chOne = curl_init(); 
-                    curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
-                    curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
-                    curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
-                    curl_setopt( $chOne, CURLOPT_POST, 1); 
-                    curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
-                    $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
-                    curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
-                    curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1);
-                    $result = curl_exec( $chOne ); 
-                    //Result error 
-                        if(curl_error($chOne)) 
-                        { 
-                            echo 'error:' . curl_error($chOne);
-                        } 
-                        else 
-                        { 
-                            $result_ = json_decode($result, true); 
-                                // echo "status : ".$result_['status']; echo "message : ". $result_['message'];
-                        } 
-                            curl_close( $chOne );
-                }
-            }
-    }
-
-
+    
     $staff =  $_SESSION['StaffName'];
     $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
     $result = $conn->query($sql);
@@ -110,11 +29,19 @@
         {
             $data[] = $row;  
         }
-        foreach($data as $key => $staff){      
+        foreach($data as $key => $staff)
+        {      
 
         }
 
-    
+    $sql = "SELECT * FROM tbl_med WHERE MedTotal <= MedPoint";
+    $result1 = $conn->query($sql);
+    $med = array();
+    while($row = $result1->fetch_assoc()) 
+        {
+            $med[] = $row;  
+        }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,6 +65,27 @@
                 </div>
                 <div> 
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
+                  
+                  <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
+                        <?php
+                        if(count($med) > 0)
+                            {
+                                echo "red";
+                            }
+                        else 
+                            {
+                                echo "white";
+                            }
+                        ?> 
+                        ; margin-left: 19em;" aria-hidden="true">  
+                        <?php
+                            if(count($med) > 0)
+                                {
+                                    echo "<sup>".count($med)."</sup>";
+                                }
+                        ?>
+                        </i>
+                    </a>                
                 </div>
 
                 <div id="navbar1" class="collapse navbar-collapse" style='justify-content: end;'>
@@ -147,7 +95,7 @@
                             <ul class="navbar-nav ms-auto">
                                 
                              <li class="nav-item">
-                                    <td><a href="Withdrawcart.php" class ="btn btn-success">ตะกร้าสินค้า</a></td>
+                                    <td><a href="Withdrawcart.php" class ="btn btn-success" style ="width: 130px;">ตะกร้าสินค้า</a></td>
                                 </li>
 
                                 <button class="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -193,18 +141,18 @@
     <table class="table table-striped">
          <div style='margin-bottom: 15px;'>
          <h2>ล็อตยา</h2>
-         <h5>เลือก เคลมหรือตัดจำหน่ายล็อตยาที่ต้องการ</h5>
            </div>
             <thead >
             <tr>
-                <th>รหัสล็อตยา</th>
+                <th style="width:110px">รหัสล็อตยา</th>
                 <th>ชื่อยา</th>
                 <th>รูป</th>
                 <th>จำนวน</th>
-                <th>จำนวนที่ถูกจอง</th>
-                <th>สถานะ</th>
-                <th>วันหมดอายุ</th>
-                <th>รายละเอียด</th>
+                <th style="width:125px">จำนวนที่รอการอนุมัติ</th>
+                <th style="width:130px">สถานะ</th>
+                <th>จำนวนวันคงเหลือ</th>
+                <th style="width:125px">วันหมดอายุ</th>
+                <th style="width:110px">รายละเอียด</th>
                 <th></th>
             </tr>
         </thead>
@@ -223,20 +171,19 @@
                         $checkqty = $lot["Qty"];
                         $LotId = $lot["LotId"];
                         $LotStatus = $lot["LotStatus"];
-                        $status = "Not Available";
                         $checkclaim = $lot["RecClaimid"];
                         $Reserve = $lot["Reserve"];
                         $checkreserve = $checkqty - $Reserve;
                         
-                        if($checkqty == '0' and $LotStatus != 'Claim')
+                        if($checkqty == '0' and $LotStatus != 'เคลม')
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = 'Not Available' WHERE LotId = $LotId"; 
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'ไม่สามารถใช้งานได้' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;
                             }
                         }
-                        else if ($checkreserve == '0' and $LotStatus != 'Claim') 
+                        else if ($checkreserve == '0' and $LotStatus != 'เคลม') 
                         {
                             $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
@@ -259,13 +206,12 @@
                             $recqty = $receiv["Qty"];
                             }
                         }
-
-                            $MfdDate = $lot["Mfd"];
+                            date_default_timezone_set("Asia/Bangkok");
+                            $datenow = date("d")."-".date("m")."-".(date("Y")+543);
                             $ExpDate = $lot["Exd"];
-                            $datemfd=date_create($MfdDate);
+                            $datenow=date_create($datenow);
                             $dateexp=date_create($ExpDate);
-                            $diff=date_diff($datemfd,$dateexp);
-
+                            $diff=date_diff($datenow,$dateexp);
             ?>
 
                 <tr>
@@ -276,6 +222,7 @@
                     <td><?php echo $lot["Reserve"]; ?></td>
                     <td><?php echo $lot["LotStatus"]; ?></td>
                     <td><?php echo $diff->format('%R%a');?></td>
+                    <td><?php echo $lot["Exd"];?></td>
                     <td>            
                         <form method="POSt" action="lotdetail.php">
                             <button type = "submit" value = "<?php echo $lot["LotId"]; ?>" name = "detail" class="btn btn-info">รายละเอียด</button>
@@ -292,12 +239,12 @@
                                         $buttonStatus = "disabled";
                                         echo $buttonStatus;
                                     }
-                                    else if ($LotStatus == "Writeoff")
+                                    else if ($LotStatus == "ตัดจำหน่าย")
                                     {
                                         $buttonStatus = "disabled";
                                         echo $buttonStatus;
                                     }
-                                    else if ($LotStatus == "Claim")
+                                    else if ($LotStatus == "เคลม")
                                     {
                                         $buttonStatus = "disabled";
                                         echo $buttonStatus;
@@ -324,7 +271,7 @@
                                         
                                                 if($Reserve == '0' && $recqty == $checkqty)
                                                 {
-                                                    echo '<a class="dropdown-item" href="Claim.php?Claim='.$lot["LotId"].'">เคลม</a>';
+                                                    echo '<a class="dropdown-item" href="Claim.php?Claim='.$lot["LotId"].'">ส่งเคลม</a>';
                                                     echo '<input type ="hidden" name ="Claim" value ="'.$lot["LotId"].'">';
                                                 }
                                                 // if(is_null($checkclaim))
@@ -355,7 +302,47 @@
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.js"></script>
 
-  
+    <div class="modal fade" id="centralModalLg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+          <!--Header-->
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="myModalLabel">รายการแจ้งเตือน</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--Body-->
+          <?php
+            $sql = "SELECT * FROM tbl_med";
+            $result = $conn->query($sql);
+            $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                    $data[] = $row;  
+                }
+                foreach($data as $key => $med)
+                {   
+                    $MedPoint = $med["MedPoint"];  
+                    $MedTotal = $med["MedTotal"];  
+                    if($MedTotal <= $MedPoint)
+                    {
+                        echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+            ?>
+   
+          <!--Footer-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+        <!--/.Content-->
+      </div>
+    </div>
+
 </body>
 </html>
 

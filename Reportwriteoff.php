@@ -322,7 +322,7 @@ body{margin-top:20px;
 </body>
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                    <input type="button" value="ปริ้น" class="btn btn-primary" onclick="window.printWindow()" /> 
+                    <input type="button" value="พิมพ์" class="btn btn-primary" onclick="window.printWindow()" /> 
                     <a href="Writeoffshow.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>
