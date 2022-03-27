@@ -5,7 +5,7 @@
     {
         $Year = $_REQUEST["Year"];
         $Month = $_REQUEST["Month"];
-        $date=$Year.$Month;
+        $date=$Month.$Year;
        
         $sql = "SELECT tbl_writeoff.WriteId,tbl_writeoff.LotId,tbl_writeoff.MedId,tbl_writeoff.Qty,tbl_writeoff.WriteDate,tbl_lot.LotStatus,tbl_med.MedName,tbl_staff.StaffName 
         FROM tbl_writeoff
@@ -208,7 +208,7 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                           echo "<h3>รายงานการตัดจำหน่าย<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
+                                           echo "<h3>รายงานการตัดจำหน่าย<br>ประจำเดือนที่ ".$Month . $Year."</h3>";
                                         ?><br>
 
 								</div>

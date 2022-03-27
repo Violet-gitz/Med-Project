@@ -5,7 +5,7 @@
     {
         $Year = $_REQUEST["Year"];
         $Month = $_REQUEST["Month"];
-        $date=$Year.$Month;
+        $date=$Month.$Year;
   
         $sql = "SELECT tbl_claim.ClaimId,tbl_claim.Qty,tbl_claim.Reason,tbl_claim.ClaimStatus,tbl_claim.LotId,tbl_claim.StaffId,tbl_claim.DealerId,tbl_claim.MedId,tbl_staff.StaffName,tbl_recclaim.RecClaimid,tbl_recclaim.ClaimId,tbl_recclaim.RecClaimName,tbl_recclaim.RecClaimdate
         FROM tbl_recclaim
@@ -231,7 +231,7 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                          echo "<h3>รายงานการรับยาเคลม<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
+                                          echo "<h3>รายงานการรับยาเคลม<br>ประจำเดือนที่ ".$Month . $Year."</h3>";
                                         ?><br>
 
 								</div>

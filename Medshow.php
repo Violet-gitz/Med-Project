@@ -46,6 +46,41 @@
             {
                 $med[] = $row;  
             }
+
+            $sql = "SELECT * FROM tbl_lot WHERE LotStatus != 'เคลม' AND LotStatus != 'ตัดจำหน่าย' AND LotStatus != 'ไม่สามารถใช้งานได้'";
+            $result = $conn->query($sql);
+            $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+            $data[] = $row;   
+            }
+            $Alert = 0;
+            foreach($data as $key => $lot)
+            {
+                $Medid = $lot["MedId"];
+                $sql = "SELECT * FROM tbl_med WHERE $Medid = MedId";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                $data[] = $row;   
+                }
+                foreach($data as $key => $Med)
+                {
+
+                    $mednotidate = $Med["MedNoti"];
+                    date_default_timezone_set("Asia/Bangkok");
+                    $datenow = date("d")."-".date("m")."-".(date("Y")+543);
+                    $ExpDate = $lot["Exd"];
+                    $datenow=date_create($datenow);
+                    $dateexp=date_create($ExpDate);
+                    $diff=date_diff($datenow,$dateexp);
+                    if($diff->format('%R%a') <= $mednotidate)
+                    {
+                    $Alert++;
+                    }
+                }   
+            }
     
 ?>
 
@@ -97,7 +132,7 @@
                   
                   <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
                         <?php
-                        if(count($med) > 0)
+                        if((count($med)+$Alert) > 0)
                             {
                                 echo "red";
                             }
@@ -108,10 +143,11 @@
                         ?> 
                         ; margin-left: 19em;" aria-hidden="true">  
                         <?php
-                            if(count($med) > 0)
+                            if((count($med)+$Alert) > 0)
                                 {
-                                    echo "<sup>".count($med)."</sup>";
+                                    echo "<sup>".(count($med)+$Alert)."</sup>";
                                 }
+                        
                         ?>
                         </i>
                     </a>                
@@ -228,9 +264,6 @@
 
                     <?php } ?>
 
-                    
-
-                
             </tbody>
         </table>
     </div>
@@ -266,6 +299,44 @@
                     if($MedTotal <= $MedPoint)
                     {
                         echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+
+                $sql = "SELECT * FROM tbl_lot WHERE LotStatus != 'เคลม' AND LotStatus != 'ตัดจำหน่าย' AND LotStatus != 'ไม่สามารถใช้งานได้'";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                $data[] = $row;   
+                }
+
+                    foreach($data as $key => $lot)
+                    {
+                        $Medid = $lot["MedId"];
+                        $sql = "SELECT * FROM tbl_med WHERE $Medid = MedId";
+                        $result = $conn->query($sql);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) 
+                        {
+                        $data[] = $row;   
+                        }
+                        foreach($data as $key => $Med)
+                        {
+        
+                        $mednotidate = $Med["MedNoti"];
+                        date_default_timezone_set("Asia/Bangkok");
+                        $datenow = date("d")."-".date("m")."-".(date("Y")+543);
+                        $ExpDate = $lot["Exd"];
+                        $lot = $lot["LotId"];
+                        $medname = $Med["MedName"];
+                        $datenow=date_create($datenow);
+                        $dateexp=date_create($ExpDate);
+                        $diff=date_diff($datenow,$dateexp);
+                        if($diff->format('%R%a') <= $mednotidate)
+                        {
+                        
+                            echo $medname ." : ล็อคที่  ". $lot." กำลังจะหมดอายุภายในอีก  ".$diff->format("%a"). " วัน  <br>";
+                        }
                     }
                 }
             ?>

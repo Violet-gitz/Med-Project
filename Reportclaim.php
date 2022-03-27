@@ -275,10 +275,10 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-                                                    <th width = "220">ชื่อยา</th>
-                                                    <th width = "80">ล็อตยา</th>
-													<th width = "100">รหัสยา</th>
-													<th width = "80">จำนวน</th>
+                                                    <th>ชื่อยา</th>
+                                                    <th>ล็อตยา</th>
+													<th>รหัสยา</th>
+													<th>จำนวน</th>
 													<th>สาเหตุ</th>
 												</tr>
 											<!-- </thead> -->
@@ -295,10 +295,10 @@ body{margin-top:20px;
                                                         foreach($data as $key => $med){
                                                 ?>
 												<tr>
-													<td width = "220"><?php echo $med["MedName"];?></td>
-                                                    <td width = "100"><?php echo "#".$claim["LotId"];?></td>
-													<td width = "100"><?php echo "#".$med["MedId"];?></td>
-													<td width = "80"><?php echo $claim["Qty"];?></td>
+													<td><?php echo $med["MedName"];?></td>
+                                                    <td><?php echo "#".$claim["LotId"];?></td>
+													<td><?php echo "#".$med["MedId"];?></td>
+													<td><?php echo $claim["Qty"];?></td>
 													<td><?php echo $claim["Reason"];?></td>
 												</tr>
                                                     <?php

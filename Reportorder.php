@@ -305,7 +305,7 @@ body{margin-top:20px;
                                                     <tr>
                                                         <th>รหัสสินค้า</th>
                                                         <th>รายการสั่งซื้อ</th>
-                                                        <th>จำนวน</th>
+                                                        <th style = "text-align:right">จำนวน(หีบห่อ)</th>
                                                         <th style = "text-align:right">บาท</th>
                                                     </tr>
                                                 <!-- </thead> -->
@@ -333,8 +333,8 @@ body{margin-top:20px;
                                                     <tr>
                                                         <td><?php echo "#".$med["MedId"];?></td>
                                                         <td><?php echo $med["MedName"];?></td>
-                                                        <td><?php echo $orderdetailid["Qty"];?></td>
-                                                        <td style="text-align:right"><?php echo number_format($orderdetailid["Price"], 2);?></td>
+                                                        <td style = "text-align:right"><?php echo $orderdetailid["Qty"];?></td>
+                                                        <td style = "text-align:right"><?php echo number_format($orderdetailid["Price"], 2);?></td>
                                                     </tr>
                                                         <?php
                                                                 }}

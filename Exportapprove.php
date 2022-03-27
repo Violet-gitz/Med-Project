@@ -5,7 +5,7 @@
     {
         $Year = $_REQUEST["Year"];
         $Month = $_REQUEST["Month"];
-        $date=$Year.$Month;
+        $date=$Month.$Year;
        
         $sql = "SELECT * FROM tbl_withdraw WHERE WithDate LIKE '%{$date}%'";
         $result = $conn->query($sql);
@@ -241,7 +241,7 @@ body{margin-top:20px;
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                         <?php 
-                                            echo "<h3>รายงานการเบิก<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
+                                            echo "<h3>รายงานการเบิก<br>ประจำเดือนที่ ".$Month . $Year."</h3>";
                                         ?>
                                     
 								</div>
@@ -276,12 +276,13 @@ body{margin-top:20px;
                                 <thead>
                                 </thead>
                                     <tr>
-                                        <th width = "30">รหัสการเบิก</th>
-                                        <th width = "40">ชื่อพนักงาน</th>
-                                        <th width = "50">แผนก</th>
-                                        <th width = "50">สถานะ</th>
-                                        <th width = "180">วันที่เบิก</th>
-                                        <th width = "50">จำนวน</th>
+                                        <th style = "width:80px">รหัสการเบิก</th>
+                                        <th style = "width:100px">ชื่อพนักงาน</th>
+                                        <th style = "width:80px">แผนก</th>
+                                        <th style = "width:80px">สถานะ</th>
+                                        <th style = "width:100px">วันที่เบิก</th>
+                                        <th>ชื่อยา</th>
+                                        <th style = "width:80px">จำนวน</th>
                                     </tr>
 
                                 <tbody>
@@ -312,6 +313,7 @@ body{margin-top:20px;
                                             <td><?php echo $depart["DepartName"]; ?></td>
                                             <td><?php echo $with["WithStatus"]; ?></td>
                                             <td><?php echo $with["WithDate"]; ?></td>
+                                            <td colspan = "1"></td>
                                             <td><?php echo $with["Qtysum"]; ?></td>
                                         </tr>
 
@@ -337,17 +339,18 @@ body{margin-top:20px;
                                                     foreach($data as $key => $med){
                                             ?>
                                         <tr>
-                                            <td colspan = "4"></td>
-                                            <th colspan = "2"><?php echo "ชื่อยา : ".$med["MedName"] ."  :  ". $withde["Qty"]; ?></td>
-
+                                            <td colspan = "5"></td>
+                                            <th colspan = "1"><?php echo $med["MedName"]; ?></td>
+                                            <td><?php echo $withde["Qty"];?></td>
                                         
                                             <?php } } ?>
                                         </tr>
 
                                         <?php } } ?>
                                         <tr>
-                                            <td colspan = "5">จำนวน</td>
-                                            <td><?php echo $sum; ?></td>
+                                            
+                                            <td colspan="6"><h5 class="text-success"><strong>จำนวนรวมทั้งหมด</strong></h5></td>	
+                                            <td><h5 class="text-success"><strong><?php echo $sum; ?></strong></h5></td>
                                             
                                         </tr>
                                     

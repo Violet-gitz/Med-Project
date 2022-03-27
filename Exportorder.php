@@ -5,7 +5,7 @@
     {
         $Year = $_REQUEST["Year"];
         $Month = $_REQUEST["Month"];
-        $date=$Year.$Month;
+        $date=$Month.$Year;
        
         $sql = "SELECT * FROM tbl_order WHERE OrderDate LIKE '%{$date}%'";
         $result = $conn->query($sql);
@@ -244,7 +244,7 @@ body{margin-top:20px;
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
                                         <?php 
-                                            echo "<h3>รายงานการซื้อ<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
+                                            echo "<h3>รายงานการซื้อ<br>ประจำเดือนที่ ".$Month . $Year."</h3>";
                                         ?>
 
 								</div>
@@ -293,13 +293,13 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-													<th>รายการสั่งซื้อ</th>
-                                                    <th>พนักงาน</th>
+													<th style = "width:100px">รายการสั่งซื้อ</th>
+                                                    <th style = "width:80px">พนักงาน</th>
 													<th>วันที่สั่ง</th>
                                                     <th>ชื่อยา</th>
-                                                    <th>จำนวน</th>
-													<th>สถานะการสั่งซื้อ</th>
-													<th>ราคา</th>
+                                                    <th style = "width:50px">จำนวน(หีบห่อ)</th>
+													<th style = "text-align:center">สถานะการสั่งซื้อ</th>
+													<th style = "text-align:right">ราคา</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -329,8 +329,8 @@ body{margin-top:20px;
 													<td><?php echo "#".$order["OrderId"];?></td>
 													<td><?php echo $staff["StaffName"];?></td>
 													<td colspan = "3"><?php echo $order["OrderDate"];?></td>
-                                                    <td><?php echo $order["OrderStatus"];?></td>
-													<td><?php echo "฿ ".$order["OrderTotal"];?></td>
+                                                    <td style = "text-align:center"><?php echo $order["OrderStatus"];?></td>
+                                                    <td style = "text-align:right"><?php echo number_format($order["OrderTotal"], 2);?></td>
 												</tr>
                                                    
                                                 <tr>
@@ -357,7 +357,7 @@ body{margin-top:20px;
                                                 <tr>
                                                     <td colspan = "3"></td>
                                                     <td><?php echo $med["MedName"];?></td>
-                                                    <td><?php echo $orderde["Qty"];?></td>
+                                                    <td style = "text-align:right "><?php echo $orderde["Qty"];?></td>
                                                             
                                             <?php } } ?>
                                                 </tr>
@@ -365,9 +365,9 @@ body{margin-top:20px;
 
 												<tr>
 													<td colspan="4"><h5 class="text-success"><strong>จำนวนรวมทั้งหมด</strong></h5></td>	
-                                                    <td><h5 class="text-success"><strong><?php echo $qty. "<br>";?></strong></h5></td>	
+                                                    <td style = "text-align:right"><h5 class="text-success"><strong><?php echo $qty. "<br>";?></strong></h5></td>	
                                                     <td></td>	
-													<td><h5 class="text-success"><strong><?php echo "฿ ".$sum. "<br>";?></strong></h5></td>
+													<td style = "text-align:right"><h5 class="text-success"><strong><?php echo number_format($sum, 2). "<br>";?></strong></h5></td>
 												</tr>
 											</tbody>
 										</table>

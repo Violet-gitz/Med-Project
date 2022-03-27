@@ -46,7 +46,7 @@
                         curl_close( $chOne );
             }
             
-            $sql = "SELECT * FROM tbl_lot";
+            $sql = "SELECT * FROM tbl_lot WHERE LotStatus != 'เคลม' AND LotStatus != 'ตัดจำหน่าย' AND LotStatus != 'ไม่สามารถใช้งานได้'";
             $result = $conn->query($sql);
             $data = array();
             while($row = $result->fetch_assoc()) 
@@ -73,7 +73,7 @@
         
                 $lot = $lot["LotId"];
                 $medname = $med["MedName"];
-                $sMessage = $medname ." ล็อคที่ #". $lot." กำลังจะหมดอายุภายในอีก  ".$diff->format('%R%a'). " วัน ! ";
+                $sMessage = $medname ." ล็อคที่ #". $lot." กำลังจะหมดอายุภายในอีก  ".$diff->format("%a"). " วัน ! ";
                 $chOne = curl_init(); 
                 curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
                 curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 

@@ -34,6 +34,41 @@
         {
             $med[] = $row;  
         }
+
+        $sql = "SELECT * FROM tbl_lot WHERE LotStatus != 'เคลม' AND LotStatus != 'ตัดจำหน่าย' AND LotStatus != 'ไม่สามารถใช้งานได้'";
+        $result = $conn->query($sql);
+        $data = array();
+        while($row = $result->fetch_assoc()) 
+        {
+        $data[] = $row;   
+        }
+        $Alert = 0;
+        foreach($data as $key => $lot)
+        {
+            $Medid = $lot["MedId"];
+            $sql = "SELECT * FROM tbl_med WHERE $Medid = MedId";
+            $result = $conn->query($sql);
+            $data = array();
+            while($row = $result->fetch_assoc()) 
+            {
+            $data[] = $row;   
+            }
+            foreach($data as $key => $Med)
+            {
+
+                $mednotidate = $Med["MedNoti"];
+                date_default_timezone_set("Asia/Bangkok");
+                $datenow = date("d")."-".date("m")."-".(date("Y")+543);
+                $ExpDate = $lot["Exd"];
+                $datenow=date_create($datenow);
+                $dateexp=date_create($ExpDate);
+                $diff=date_diff($datenow,$dateexp);
+                if($diff->format('%R%a') <= $mednotidate)
+                {
+                $Alert++;
+                }
+            }   
+        }
 ?>
 
 <!DOCTYPE html>
@@ -54,8 +89,8 @@
                   <a href="main.php" class="navbar-brand">หน้าหลัก</a>
                   
                   <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
-                        <?php
-                        if(count($med) > 0)
+                          <?php
+                        if((count($med)+$Alert) > 0)
                             {
                                 echo "red";
                             }
@@ -66,10 +101,11 @@
                         ?> 
                         ; margin-left: 22em;" aria-hidden="true">  
                         <?php
-                            if(count($med) > 0)
+                            if((count($med)+$Alert) > 0)
                                 {
-                                    echo "<sup>".count($med)."</sup>";
+                                    echo "<sup>".(count($med)+$Alert)."</sup>";
                                 }
+                        
                         ?>
                         </i>
                     </a>                
@@ -119,24 +155,24 @@
     </div>
     <form method = "POST" action = "Exportreceivedclaim.php" style='display: flex;justify-content: end;'>
         <select name="Year" class='mr-2'>
-            <option value="2022-">2022</option>
-            <option value="2023-">2023</option>
-            <option value="2024-">2024</option>
-            <option value="2025-">2025</option>
+            <option value="2565">2565</option>
+            <option value="2566">2566</option>
+            <option value="2567">2567</option>
+            <option value="2568">2568</option>
         </select> 
         <select name="Month" class='mr-2' >
-            <option value="01">มกราคม</option>
-            <option value="02">กุมภาพันธ์</option>
-            <option value="03">มีนาคม</option>
-            <option value="04">เมษายน</option>
-            <option value="05">พฤษภาคม</option>
-            <option value="06">มิถุนายน</option>
-            <option value="07">กรกฎาคม</option>
-            <option value="08">สิงหาคม</option>
-            <option value="09">กันยายน</option>
-            <option value="10">ตุลาคม</option>
-            <option value="11">พฤศจิกายน</option>
-            <option value="12">ธันวาคม</option>
+            <option value="01-">มกราคม</option>
+            <option value="02-">กุมภาพันธ์</option>
+            <option value="03-">มีนาคม</option>
+            <option value="04-">เมษายน</option>
+            <option value="05-">พฤษภาคม</option>
+            <option value="06-">มิถุนายน</option>
+            <option value="07-">กรกฎาคม</option>
+            <option value="08-">สิงหาคม</option>
+            <option value="09-">กันยายน</option>
+            <option value="10-">ตุลาคม</option>
+            <option value="11-">พฤศจิกายน</option>
+            <option value="12-">ธันวาคม</option>
         </select>
         <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">รายงาน</button>
     </form>
@@ -244,6 +280,44 @@
                     if($MedTotal <= $MedPoint)
                     {
                         echo $med['MedName']." : ต่ำกว่าจุดสั่งซื้อ<br>";
+                    }
+                }
+
+                $sql = "SELECT * FROM tbl_lot WHERE LotStatus != 'เคลม' AND LotStatus != 'ตัดจำหน่าย' AND LotStatus != 'ไม่สามารถใช้งานได้'";
+                $result = $conn->query($sql);
+                $data = array();
+                while($row = $result->fetch_assoc()) 
+                {
+                $data[] = $row;   
+                }
+
+                    foreach($data as $key => $lot)
+                    {
+                        $Medid = $lot["MedId"];
+                        $sql = "SELECT * FROM tbl_med WHERE $Medid = MedId";
+                        $result = $conn->query($sql);
+                        $data = array();
+                        while($row = $result->fetch_assoc()) 
+                        {
+                        $data[] = $row;   
+                        }
+                        foreach($data as $key => $Med)
+                        {
+        
+                        $mednotidate = $Med["MedNoti"];
+                        date_default_timezone_set("Asia/Bangkok");
+                        $datenow = date("d")."-".date("m")."-".(date("Y")+543);
+                        $ExpDate = $lot["Exd"];
+                        $lot = $lot["LotId"];
+                        $medname = $Med["MedName"];
+                        $datenow=date_create($datenow);
+                        $dateexp=date_create($ExpDate);
+                        $diff=date_diff($datenow,$dateexp);
+                        if($diff->format('%R%a') <= $mednotidate)
+                        {
+                        
+                            echo $medname ." : ล็อคที่  ". $lot." กำลังจะหมดอายุภายในอีก  ".$diff->format("%a"). " วัน  <br>";
+                        }
                     }
                 }
             ?>

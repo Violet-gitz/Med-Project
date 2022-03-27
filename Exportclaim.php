@@ -5,7 +5,7 @@
     {
         $Year = $_REQUEST["Year"];
         $Month = $_REQUEST["Month"];
-        $date=$Year.$Month;
+        $date=$Month.$Year;
        
         $sql = "SELECT * FROM tbl_claim WHERE ClaimDate LIKE '%{$date}%'";
         $result = $conn->query($sql);
@@ -233,7 +233,7 @@ body{margin-top:20px;
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
                                         <?php 
-                                             echo "<h3>รายงานการเคลม<br>ประจำเดือนที่ ".$Month ."-". $Year."</h3>";
+                                             echo "<h3>รายงานการเคลม<br>ประจำเดือนที่ ".$Month . $Year."</h3>";
                                         ?>
 								</div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -272,11 +272,11 @@ body{margin-top:20px;
 										<table class="table custom-table m-0">
 											<!-- <thead> -->
 												<tr>
-                                                    <th>ชื่อยา</th>
-                                                    <th>ล็อตที่</th>
-													<th>รหัสยา</th>
-													<th>สาเหตุ</th>
-                                                    <th>จำนวน</th>
+                                                    <th style = "width:230px">ชื่อยา</th>
+                                                    <th style = "width:70px">ล็อตที่</th>
+													<th style = "width:70px">รหัสยา</th>
+													<th style = "width:300px">สาเหตุ</th>
+                                                    <th style = "width:70px">จำนวน</th>
 												</tr>
 											<!-- </thead> -->
 											<tbody>
@@ -306,8 +306,8 @@ body{margin-top:20px;
 													<td><?php echo $med["MedName"];?></td>
                                                     <td><?php echo "#".$claim["LotId"];?></td>
 													<td><?php echo "#".$med["MedId"];?></td>
-                                                    <td width = "100"><?php echo $claim["Reason"];?></td>
-													<td><?php echo $claim["Qty"];?></td>				
+                                                    <td><?php echo $claim["Reason"];?></td>
+													<td style = "text-align:right"><?php echo $claim["Qty"];?></td>				
 												</tr>
                                                     <?php
                                                             }}
@@ -315,7 +315,7 @@ body{margin-top:20px;
 											
 												<tr>
                                                     <td colspan="4"><h5 class="text-success"><strong>จำนวน</strong></h5></td>
-                                                    <td><h5 class="text-success"><strong><?php echo $qty. "<br>";?></strong></h5></td>	
+                                                    <td style = "text-align:right"><h5 class="text-success"><strong><?php echo $qty. "<br>";?></strong></h5></td>	
 												</tr>
 											</tbody>
 										</table>
