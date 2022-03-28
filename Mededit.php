@@ -176,7 +176,7 @@
                   
                   <a herf="main.php"><i class="fa fa-bell" data-toggle="modal" data-target="#centralModalLg" style ="font-size: 36px; color: 
                         <?php
-                        if((count($med)+$Alert) > 0)
+                        if((count($med1)+$Alert) > 0)
                             {
                                 echo "red";
                             }
@@ -187,9 +187,9 @@
                         ?> 
                         ; margin-left: 22em;" aria-hidden="true">  
                         <?php
-                            if((count($med)+$Alert) > 0)
+                            if((count($med1)+$Alert) > 0)
                                 {
-                                    echo "<sup>".(count($med)+$Alert)."</sup>";
+                                    echo "<sup>".(count($med1)+$Alert)."</sup>";
                                 }
                         
                         ?>
