@@ -174,12 +174,14 @@
                 </form>
             </div>
     </div>
- 
-    <table class="table table-striped">
-         <div style='margin-bottom: 15px;'>
-         <h2>ล็อตยา</h2>
-           </div>
-            <thead >
+
+    <div style='margin-bottom: 15px;'>
+        <h2>ล็อตยา</h2>
+    </div>
+
+    <table class="table table-striped" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
+        
+        <thead>
             <tr>
                 <th style="width:110px">รหัสล็อตยา</th>
                 <th>ชื่อยา</th>

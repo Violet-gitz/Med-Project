@@ -163,16 +163,19 @@
         h4 {
             margin-top: 20px;
         }
+        .line {
+            margin-top : 100px;
+        }
+        .line-container {
+            text-align : center;
+        }
     </style>
 
 </head>
 
 <body>
 
-    <div class="container">
-        <img src="./Pictures/line.jpg">
-        <p style = "text-align:center;">รับการแจ้งเตือน</p>
-    </div>
+    
 
 <div class="container">
   <div class="row" style = "margin-top : 10%;">
@@ -208,7 +211,15 @@
   </div>  
 </div>  
     
-<body>
+    <div class="line">
+        <div class="line-container">
+            <img src="./Pictures/line.jpg">
+            <p>สแกนคิวอาร์โค๊ด</p>
+            <p>เพื่อรับการแจ้งเตือน ผ่านแอพพลิเคชั่นไลน์</p>
+        </div>
+    </div>
+
+</body>
         
     <script src="js/slim.js"></script>
     <script src="js/popper.js"></script>
@@ -305,6 +316,4 @@
         <!--/.Content-->
       </div>
     </div>
-
-</body>
 </html>

@@ -49,6 +49,7 @@
                            
                     }
         }
+        
         $staff =  $_SESSION['StaffName'];
         $sql = "SELECT* FROM tbl_staff WHERE StaffName = '$staff'";
         $result = $conn->query($sql);
@@ -105,7 +106,6 @@
                 }   
             }
 ?>
-     
      <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -212,7 +212,7 @@
     
     <div class="container-sm">
     <h2>หน้ารายการสั่งซื้อ</h2>
-    <table class="table table-striped" style='margin-top:4rem;'>
+    <table class="table table-striped"  style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
         <thead>
             <tr>
                 <th>รูปภาพ</th>
@@ -220,8 +220,8 @@
                 <th>ประเภท</th>
                 <th>หมวดหมู่</th>
                 <th>ปริมาณ</th>
-                <th style="width:13%">จำนวนต่อหีบห่อ</th>
-                <th>จำนวน(หีบห่อ)</th>
+                <th style="width:13%">จำนวนต่อบรรจุภัณฑ์</th>
+                <th>จำนวน(บรรจุภัณฑ์)</th>
                 <th>ซื้อสินค้า</th>              
             </tr>
         </thead>
@@ -250,7 +250,7 @@
                     <td><?php echo $Med["TypeName"]; ?></td>
                     <td><?php echo $Med["CateName"]; ?></td>
                     <td><?php echo $Med["VolumnName"]; ?></td>
-                    <td><?php echo $Med["MedPack"]; ?></td>
+                    <td><?php echo $Med["MedPack"] ." ". $Med["UnitName"]; ?></td>
                     <td><input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p></td>
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
