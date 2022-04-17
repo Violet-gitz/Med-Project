@@ -223,7 +223,7 @@
        
     <div class="container-sm">
     <h2>หน้ารายการสั่งซื้อ</h2>
-    <table class="table table-striped" style='margin-top:4rem;'>
+    <table class="table table-striped" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
         <thead>
             <tr>
                 <th>รูปภาพ</th>

@@ -269,7 +269,7 @@ $data = array();
     <?php } ?>
 
     <div class="container-xl">
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
             <div style='margin-bottom: 10px;'>
                     <h2>อนุมัติ<h2>
             </div>
@@ -278,7 +278,7 @@ $data = array();
                 <thead>
                     <tr>
                         <th>รูป</th>
-                        <th>รหัสการเบิก</th>
+                        <th style = "width:120px">รหัสการเบิก</th>
                         <th>ล็อตที่</td>
                         <th>คนขออนุมัติ</th>
                         <th>วันที่เบิก</th>

@@ -224,7 +224,7 @@
                         }
                         else if ($checkreserve == '0' and $LotStatus != 'เคลม') 
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'จอง' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;

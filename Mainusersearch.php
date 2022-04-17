@@ -161,20 +161,22 @@
                 </form>
             </div>
     </div>
-
+    
+    <center><strong><h2>รายการยา</h2></strong></center>
     <div class="container-sm">
     
-        <table class="table table-striped" style='margin-top:4rem;'>
+        <table class="table table-striped" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
             <thead>
                 <tr>
-                <th>รูป</th>
+                    <th>รูป</th>
                     <th style="width:20%">ชื่อยา</th>
-                    <th>รายละเอียด</th>
+                    <th>ประเภท</th>
+                    <th>หมวดหมู่</th>
+                    <th>ปริมาณ</th>
+                    <th>หน่วยหนับ</th>
                     <th>จำนวนคงเหลือ</th>
                     <th>จำนวน</th>
                     <th>เบิก</th>
-
-                   
                 </tr>
             </thead>
 
@@ -213,12 +215,15 @@
                 ?>
 
                     <tr>
-                        <form action = "cartuser.php" method="post">
+                    <form action = "cartuser.php" method="post">
                         <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                         <td><?php echo $Med["MedName"]; ?></td>
-                        <td><?php echo $Med["MedDes"]; ?></td>
-                        <td><?php echo $medtotal - $sumReserve; ?></td>
-                        <td><input type="number" name="quantity" min="1" max="<?php echo $medtotal - $sumReserve; ?>" value= "1"></td>
+                        <td><?php echo $Med["TypeName"]; ?></td>
+                        <td><?php echo $Med["CateName"]; ?></td>
+                        <td><?php echo $Med["VolumnName"]; ?></td>
+                        <td><?php echo $Med["UnitName"]; ?></td>
+                        <td><?php echo $sum; ?></td>
+                        <td><input type="number" name="quantity" min="1" max="<?php echo $sum; ?>" value= "1"></td>
                         <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าลงตะกร้า"></td>
                         <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">
                         <input type ="hidden" name = "act" value = "add">

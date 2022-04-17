@@ -176,12 +176,13 @@
                         $result = mysqli_query($conn, $query); 
                         $row = mysqli_fetch_array($result);
                         $RecId = $row["RecId"];
-
+                        $Medtotal = $med["MedTotal"];
                         $Medexp = $med["MedExp"];
 
                         $medpack = $med["MedPack"];
                         $medqty = $orderdetailid["Qty"];
-                        $medsum = $medpack * $medqty;
+                        $medtest = $medpack * $medqty;
+                        $medsum = $medtest + $Medtotal;
 
                         // $MedQty = $orderdetailid["Qty"];
                         // $MedTotal = $med["MedTotal"];
@@ -212,7 +213,7 @@
                         }else
                             if(!isset($errorMsg)) 
                             {
-                                $sql = "INSERT INTO tbl_lot(Qty, MedId, LotStatus, Mfd, Exd, Reserve) VALUES ('$medsum', '$MedId','$LotStatus','$MfdDate','$ExpDate','$Reserve')";
+                                $sql = "INSERT INTO tbl_lot(Qty, MedId, LotStatus, Mfd, Exd, Reserve) VALUES ('$medtest', '$MedId','$LotStatus','$MfdDate','$ExpDate','$Reserve')";
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {
                                     echo "Error updating record: " . $conn->error;

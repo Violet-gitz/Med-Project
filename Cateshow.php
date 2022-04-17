@@ -191,7 +191,7 @@
 
     <div class="container-sm">
     <h2>ตารางข้อมูลหมวดหมู่ยา</h2>
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
             <thead>
                 <tr>
                     <th>รหัสหมวดหมู่ยา</th>

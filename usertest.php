@@ -48,7 +48,7 @@
                 {
                     $test = 0;
                     // echo $Quantity. "<br>";
-                    $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId' AND LotStatus != 'เคลม' AND LotStatus != 'ตัดจำหน่าย' AND LotStatus != 'ไม่สามารถใช้งานได้' AND LotStatus != 'จอง'";
+                    $sql = "SELECT * FROM tbl_lot WHERE MedId ='$MedId' AND LotStatus != 'เคลม' AND LotStatus != 'ตัดจำหน่าย' AND LotStatus != 'ไม่สามารถใช้งานได้' AND LotStatus != 'จอง' AND Qty != 0";
                     $result = $conn->query($sql);
                     $data = array();
                             

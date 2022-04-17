@@ -228,7 +228,7 @@
         <button type = "submit" value = "<?php echo $with["WithId"]; ?>" name = "Report" class="btn btn-primary mr-2">รายงาน</button>
     </form>
  
-    <table class="table table-striped">
+    <table class="table table-striped" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
          <div style='margin-bottom: 15px;'>
          <h2>รายการตัดจำหน่าย<h2>
                 </div>

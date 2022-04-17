@@ -244,7 +244,7 @@
             </div>
     </div>
  
-    <table class="table table-striped">
+    <table class="table table-striped" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
          <div style='margin-bottom: 15px;'>
          <h2>ล็อตยา</h2>
            </div>
@@ -293,7 +293,7 @@
                         }
                         else if ($checkreserve == '0' and $LotStatus != 'เคลม') 
                         {
-                            $sql = "UPDATE tbl_lot SET LotStatus = 'Reserve' WHERE LotId = $LotId"; 
+                            $sql = "UPDATE tbl_lot SET LotStatus = 'จอง' WHERE LotId = $LotId"; 
                             if ($conn->query($sql) === TRUE) { 
                             } else {
                                 echo "Error updating record: " . $conn->error;

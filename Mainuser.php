@@ -114,7 +114,7 @@
     <center><strong><h2>รายการยา</h2></strong></center>
     <div class="container-sm">
     
-        <table class="table table-striped" style='margin-top:4rem;'>
+        <table class="table table-striped" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
             <thead>
                 <tr>
                     <th>รูป</th>
