@@ -64,8 +64,6 @@
             $errorMsg = "กรุณาใส่ข้อบ่งชี้";
         }else if (empty($MedPoint)) {
             $errorMsg = "กรุณาใส่จุดสั่งซื้อ";
-        }else if (empty($MedExp)) {
-            $errorMsg = "กรุณาใส่จำนวนวันหมดอายุ";
         }else if (empty($TypeId)) {
             $errorMsg = "กรุณาเลือกประเภทยา";
         }else if (empty($MedNoti)) {
@@ -73,7 +71,7 @@
         }else {
             try {
                 if (!isset($errorMsg)) {
-                    $update_stmt = $db->prepare("UPDATE tbl_med SET MedName = :1name, CateId = :2name, VolumnId = :3name, UnitId = :4name, MedPack = :5name, MedPrice = :6name, MedTotal = :7name,  MedPoint = :8name, MedDes = :9name, MedLow = :10name, TypeId = :11name, MedIndi = :12name, MedExp = :13name, MedNoti = :14name WHERE MedId = :MedId");
+                    $update_stmt = $db->prepare("UPDATE tbl_med SET MedName = :1name, CateId = :2name, VolumnId = :3name, UnitId = :4name, MedPack = :5name, MedPrice = :6name, MedTotal = :7name,  MedPoint = :8name, MedDes = :9name, MedLow = :10name, TypeId = :11name, MedIndi = :12name, MedNoti = :13name WHERE MedId = :MedId");
                     $update_stmt->bindParam(':1name', $MedName);
                     $update_stmt->bindParam(':2name', $CateId);
                     $update_stmt->bindParam(':3name', $VolumnId);
@@ -86,8 +84,7 @@
                     $update_stmt->bindParam(':10name', $MedLow);
                     $update_stmt->bindParam(':11name', $TypeId);
                     $update_stmt->bindParam(':12name', $MedIndi);
-                    $update_stmt->bindParam(':13name', $MedExp);
-                    $update_stmt->bindParam(':14name', $MedNoti);       
+                    $update_stmt->bindParam(':13name', $MedNoti);       
                     $update_stmt->bindParam(':MedId', $id);
 
                     if ($update_stmt->execute()) {
@@ -309,15 +306,6 @@
                                 <td><input type="text" name="txt_MedPoint" class="form-control" value="<?php echo $med["MedPoint"]?>"></td>
                             </div>
                     </div>
-                </div>
-
-                <div class="form-group text-center">
-                    <div class="row">
-                        <td><label for="Medicineprcie" class="col-sm-3 control-label">จำนวนวันหมดอายุ</label></td>
-                            <div class="col-sm-7">
-                                <td><input type="number" name="txt_MedExp" class="form-control" value="<?php echo $med["MedExp"]; ?>"></td>
-                            </div>
-                        </div>
                 </div>
 
                 <div class="form-group text-center">

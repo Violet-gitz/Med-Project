@@ -1,4 +1,3 @@
-
 <?php 
     include('connect.php');
     session_start();
@@ -184,7 +183,6 @@
                     $data[] = $row;   
                     }
                     foreach($data as $key => $med){
-                    $Medexp = $med["MedExp"];
 
                     $MfdDate = $_REQUEST["mfd".$i];
                     $ExpDate = $_REQUEST["exd".$i];
@@ -193,9 +191,9 @@
                     $diff=date_diff($datemfd,$dateexp);
                     // echo $diff->format('%R%a');
                     $i++;
-                    if($diff->format('%R%a')<=$Medexp)
+                    if($diff->format('%R%a')<=30)
                     {
-                        $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า ". $Medexp;
+                        $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า 30 วัน";
                         header("refresh:1;CheckReceived.php");
                     }else
                         if(!isset($errorMsg)) 
@@ -406,35 +404,16 @@
                 $data[] = $row;  
                 }
                 foreach($data as $key => $orderdetailid){
-
-                        $sqli ="SELECT * FROM tbl_received WHERE OrderId=$orderid";
-                        $result = $conn->query($sqli);
-                        $data = array();
-                        while($row = $result->fetch_assoc()) {
-                        $data[] = $row;   
-                        }
-                        
-                        foreach($data as $key => $received){     
-
-                            $idrecived = $received["RecId"];
-                            $sqli ="SELECT * FROM tbl_receiveddetail WHERE RecdeId=$idrecived";
-                            $result = $conn->query($sqli);
-                            $data = array();
-                            while($row = $result->fetch_assoc()) {
-                            $data[] = $row;   
-                            }
-                            
-                            foreach($data as $key => $redetail){      
                                 
-                                $MedId = $redetail["MedId"];
-                                $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
-                                $result = $conn->query($sqli);
-                                $data = array();
-                                while($row = $result->fetch_assoc()) {
-                                $data[] = $row;   
-                                }
+                    $MedId = $recde["MedId"];
+                    $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                    $result = $conn->query($sqli);
+                    $data = array();
+                    while($row = $result->fetch_assoc()) {
+                    $data[] = $row;   
+                    }
                                 
-                                foreach($data as $key => $med){   
+                    foreach($data as $key => $med){   
             ?>
 
             
@@ -459,24 +438,15 @@
 
                     <td><?php echo $orderdetailid["Price"]; ?></td>
 
-                    <td><input type="text" name="mfd<?php echo $i;?>" id="testdate5" value="<?php echo $redetail["Mfd"]; ?>" style="width:100px;"></td>
+                    <td><input type="text" name="mfd<?php echo $i;?>" id="testdate5" value="<?php echo $recde["Mfd"]; ?>" style="width:100px;"></td>
 
-                    <td><input type="text" name="exd<?php echo $i;?>" id="testdate6" value="<?php echo $redetail["Exd"]; ?>" style="width:100px;"></td>
+                    <td><input type="text" name="exd<?php echo $i;?>" id="testdate6" value="<?php echo $recde["Exd"]; ?>" style="width:100px;"></td>
 
-                    <!-- <td><input type="date"  name="mfd<?php echo $i;?>"
-                                            value="<?php echo date('Y-m-j'); ?>" required  
-                                            min="2021-3-22" max="2030-12-31">
-                    </td> -->
-
-                    <!-- <td>
-                        <input type="date"  name="exd<?php echo $i;?>"
-                                            value="<?php echo date('Y-m-j'); ?>" required 
-                                            min="2021-3-22" max="2030-12-31">
-                    </td> -->
                 </tr>
 
                 <?php
-                    $i++;}}}}
+                    $i++;
+                }}
                 ?>
                 <tr>
                     <td colspan="2">

@@ -221,6 +221,7 @@
                         <td>
                             <form method = "POST" action = "Receivededit.php">
                                 <button type = "submit" value = "<?php echo $rec["RecId"]; ?>" name = "Edit" class = "btn btn-warning">แก้ไข</button>
+                                <input type ="hidden" name = "Edit" value = "<?php echo $rec["RecId"]; ?>">
                             </form>
                         </td>
 

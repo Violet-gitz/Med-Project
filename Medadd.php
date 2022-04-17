@@ -28,7 +28,6 @@
         $MedLow = $_REQUEST['txt_Medlow'];
         $MedPoint = $_REQUEST['txt_MedPoint'];
         $MedType = $_REQUEST['txt_Medtype'];
-        $MedExp = $_REQUEST['txt_MedExp'];
         $MedNoti = $_REQUEST['txt_MedNoti'];
         $MedTotal = 0;
         
@@ -47,8 +46,6 @@
             $errorMsg = "กรุณาใส่ขั้นต่ำในการซื้อ";
         }else if (empty($MedPoint)) {
             $errorMsg = "กรุณาใส่จุดสั่งซื้อ";
-        }else if (empty($MedExp)) {
-            $errorMsg = "กรุณาใส่จำนวนวันหมดอายุ";
         }else if (empty($MedNoti)) {
             $errorMsg = "กรุณาใส่วันที่ต้องการให้แจ้งเตือนก่อน";
         }else {
@@ -59,7 +56,7 @@
             $errorMsg =  "ชื่อยาซ้ำ กรุณาใส่ใหม่";
         }
         else {
-        $sql = "INSERT INTO tbl_med(MedName,CateId,VolumnId,UnitId,MedPack,MedPrice,MedLow,MedDes,MedPoint,MedTotal,MedPath,MedIndi,TypeId,MedExp,MedNoti) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedPoint', '$MedTotal', '$MedPath' , '$MedIndi' , '$MedType' , '$MedExp' , '$MedNoti')";
+        $sql = "INSERT INTO tbl_med(MedName,CateId,VolumnId,UnitId,MedPack,MedPrice,MedLow,MedDes,MedPoint,MedTotal,MedPath,MedIndi,TypeId,MedNoti) VALUES ('$MedName', '$MedCate','$MedVolumn', '$MedUnit', '$MedPack', '$MedPrice', '$MedLow', '$MedDes', '$MedPoint', '$MedTotal', '$MedPath' , '$MedIndi' , '$MedType' , '$MedNoti')";
         if ($conn->query($sql) === TRUE){
             $insertMsg = "เพิ่มข้อมูลสำเร็จ...";
             header("refresh:1;Medshow.php");
@@ -279,15 +276,6 @@
                                 <td><label for="Medicineprcie" class="col-sm-3 control-label">จุดสั่งซื้อ</label></td>
                                 <div class="col-sm-7">
                                     <td><input type="number" name="txt_MedPoint" class="form-control" placeholder="กรุณาใส่จุดสั่งซื้อ..."></td>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group text-center">
-                            <div class="row">
-                                <td><label for="Medicineprcie" class="col-sm-3 control-label">จำนวนวันหมดอายุ</label></td>
-                                <div class="col-sm-7">
-                                    <td><input type="number" name="txt_MedExp" class="form-control" placeholder="กรุณาใส่จำนวนวันหมดอายุ..."></td>
                                 </div>
                             </div>
                         </div>

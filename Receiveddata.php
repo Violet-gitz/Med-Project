@@ -177,7 +177,7 @@
                         $row = mysqli_fetch_array($result);
                         $RecId = $row["RecId"];
                         $Medtotal = $med["MedTotal"];
-                        $Medexp = $med["MedExp"];
+
 
                         $medpack = $med["MedPack"];
                         $medqty = $orderdetailid["Qty"];
@@ -196,9 +196,9 @@
                         $diff=date_diff($datemfd,$dateexp);
                         // echo $diff->format('%R%a');
                         
-                        if($diff->format('%R%a')<=$Medexp)
+                        if($diff->format('%R%a')<=30)
                         {
-                            $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า ". $Medexp ;
+                            $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า 30 วัน" ;
 
                             $sql = "DELETE FROM tbl_received where RecId = '".$RecId."'";
                             if($conn->query($sql) == TRUE){}

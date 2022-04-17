@@ -146,7 +146,7 @@
                             }
                             foreach($data as $key => $med){
 
-                            $Medexp = $med["MedExp"];
+
                             $MfdDate = $_REQUEST["mfd"];
                             $ExpDate = $_REQUEST["exd"];
                             $datemfd=date_create($MfdDate);
@@ -154,9 +154,9 @@
                             $diff=date_diff($datemfd,$dateexp);
                             // echo $diff->format('%R%a');
                             
-                            if($diff->format('%R%a')<= $Medexp)
+                            if($diff->format('%R%a')<=30)
                             {
-                                $errorMsg ="Error,Please enter a new expiration date. " . $Medexp;
+                                $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า 30 วัน";
                                 header("refresh:2;ClaimReceived.php");
                             }else
                                 if(!isset($errorMsg)) 

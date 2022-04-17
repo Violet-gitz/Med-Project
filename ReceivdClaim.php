@@ -125,7 +125,7 @@
                     $row = mysqli_fetch_array($result);
                     $RecClaimid = $row["RecClaimid"];
 
-                        $Medexp = $med["MedExp"];
+
                         $Reserve = '0';
                         $LotId = $Claim["LotId"];
                         $MedQty = $Claim["Qty"];
@@ -138,9 +138,9 @@
                         $diff=date_diff($datemfd,$dateexp);
                         // echo $diff->format('%R%a');
                         
-                        if($diff->format('%R%a')<=$Medexp)
+                        if($diff->format('%R%a')<=30)
                         {
-                            $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า ". $Medexp;
+                            $errorMsg ="กรุณาใส่วันหมดอายุให้มากกว่า 30 วัน";
 
                             $sql = "DELETE FROM tbl_recclaim where RecClaimid = '".$RecClaimid."'";
                             if($conn->query($sql) == TRUE){}
