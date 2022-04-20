@@ -211,7 +211,7 @@
         </div>
     <?php } ?>
 
-    <center><strong><h2>แก้ไขมูลพนักงาน</h2></strong></center>
+    <center><strong><h2>แก้ไขข้อมูลพนักงาน</h2></strong></center>
 
         <form method="post" class="form-horizontal mt-5">
             <div class="container">

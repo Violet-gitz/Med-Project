@@ -139,7 +139,7 @@
                                 echo "white";
                             }
                         ?> 
-                        ; margin-left: 19em;" aria-hidden="true">  
+                        ; margin-left: 18em;" aria-hidden="true">  
                         <?php
                             if((count($med)+$Alert) > 0)
                                 {
