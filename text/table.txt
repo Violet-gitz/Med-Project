@@ -75,7 +75,6 @@ create table tbl_med
 	MedPrice varchar(255),
 	MedDes varchar(255),
 	MedIndi varchar(255),
-	MedExp varchar (255),
 	MedNoti varchar (255),
 	MedLow int,
 	MedTotal int,
@@ -236,3 +235,4 @@ ADD Foreign key (CateId) REFERENCES tbl_cate(CateId);
 
 
 https://notify-bot.line.me/my/
+authentication Failed. Enter login credentials
