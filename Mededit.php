@@ -43,7 +43,6 @@
         $MedIndi = $_REQUEST['txt_MedIndi'];
         $MedPoint = $_REQUEST['txt_MedPoint'];
         $TypeId = $_REQUEST['txt_Medtype'];
-        $MedExp = $_REQUEST['txt_MedExp'];
         $MedNoti = $_REQUEST['txt_MedNoti'];
         
         if (empty($MedName)) {
