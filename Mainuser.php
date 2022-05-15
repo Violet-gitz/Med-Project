@@ -121,9 +121,9 @@
                     <th style="width:20%">ชื่อยา</th>
                     <th>ประเภท</th>
                     <th>หมวดหมู่</th>
-                    <th>ปริมาณ</th>
-                    <th>หน่วยหนับ</th>
+                    <th>ปริมาณ</th>     
                     <th>จำนวนคงเหลือ</th>
+                    <th>หน่วยนับ</th>
                     <th>จำนวน</th>
                     <th>เบิก</th>
                 </tr>
@@ -170,9 +170,9 @@
                         <td><?php echo $Med["MedName"]; ?></td>
                         <td><?php echo $Med["TypeName"]; ?></td>
                         <td><?php echo $Med["CateName"]; ?></td>
-                        <td><?php echo $Med["VolumnName"]; ?></td>
-                        <td><?php echo $Med["UnitName"]; ?></td>
+                        <td><?php echo $Med["VolumnName"]; ?></td>  
                         <td><?php echo $sum; ?></td>
+                        <td><?php echo $Med["UnitName"]; ?></td>
                         <td><input type="number" name="quantity" min="1" max="<?php echo $sum; ?>" value= "1"></td>
                         <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าลงตะกร้า"></td>
                         <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">

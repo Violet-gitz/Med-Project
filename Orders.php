@@ -217,11 +217,11 @@
             <tr>
                 <th>รูปภาพ</th>
                 <th style="width:20%">ชื่อยา</th>
-                <th>ประเภท</th>
-                <th>หมวดหมู่</th>
-                <th>ปริมาณ</th>
-                <th style="width:13%">จำนวนต่อบรรจุภัณฑ์</th>
-                <th>จำนวน(บรรจุภัณฑ์)</th>
+                <th style="width:15%">ประเภท</th>
+                <th style="width:18%">หมวดหมู่</th>
+                <th style="width:10%">ปริมาณ</th>
+                <th style="width:15%">จำนวนต่อ(กล่อง)</th>
+                <th style="width:15%">จำนวน(กล่อง)</th>
                 <th>ซื้อสินค้า</th>              
             </tr>
         </thead>
@@ -255,7 +255,7 @@
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
 
-                                <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าในตะกร้า"> </td>
+                                <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้า"> </td>
                     </form>
                 </tr>
 

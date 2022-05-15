@@ -263,18 +263,18 @@
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="Medicine pack" class="col-sm-3 control-label">จำนวนต่อหีบห่อ</label>
+                        <label for="Medicine pack" class="col-sm-3 control-label">จำนวน(กล่อง)</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $Med["MedPack"]; ?>" readonly>
+                            <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $Med["MedPack"] ." ". $Med["UnitName"]; ?>" readonly>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group text-center">
                     <div class="row">
-                        <label for="Medicine pack" class="col-sm-3 control-label">ราคาต่อหีบห่อ</label>
+                        <label for="Medicine pack" class="col-sm-3 control-label">ราคา(กล่อง)</label>
                         <div class="col-sm-7">
-                            <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $Med["MedPrice"]; ?>" readonly>
+                            <input type="text" name="txt_MedPack" class="form-control" value="<?php  echo number_format($Med["MedPrice"], 2)?>" readonly>
                         </div>
                     </div>
                 </div>

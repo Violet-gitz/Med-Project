@@ -259,7 +259,6 @@ body{margin-top:20px;
 											<!-- <thead> -->
 												<tr>
 													<th>รหัสยา</th>
-                                                    <th>รูปยา</th>
 													<th>ชื่อยา</th>
                                                     <th>จำนวนคงเหลือ</th>
 												</tr>
@@ -278,7 +277,6 @@ body{margin-top:20px;
 											<tbody>
 												<tr>
                                                     <td><?php echo $Med["MedId"]; ?></td>
-                                                    <td><?php echo '<img src="upload/'.$Med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                                                     <td><?php echo $Med["MedName"]; ?></td>
                                                     <td><?php echo $Med["MedTotal"]; ?></td>
 												</tr>
@@ -287,7 +285,7 @@ body{margin-top:20px;
                                             <?php } ?>  
 
 												<tr>
-													<td colspan="3"><h5 class="text-success"><strong>จำนวนรวมทั้งหมด</strong></h5></td>	
+													<td colspan="2"><h5 class="text-success"><strong>จำนวนรวมทั้งหมด</strong></h5></td>	
                                                     <td><h5 class="text-success"><strong><?php echo $sum. "<br>";?></strong></h5></td>	
                                                   
 												</tr>

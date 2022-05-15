@@ -225,7 +225,7 @@
                                 $LotId = $row["LotId"];
         
                                 $Qty = $orderdetailid["Qty"];
-                                $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$medsum', '$MfdDate', '$ExpDate')";$i++;
+                                $sql = "INSERT INTO tbl_receiveddetail(RecId, LotId, MedId, Qty, Mfd, Exd) VALUES ('$RecId', '$LotId', '$MedId', '$medtest', '$MfdDate', '$ExpDate')";$i++;
                                 if ($conn->query($sql) === TRUE) { 
                                 } else {
                                     echo "Error updating record: " . $conn->error;
@@ -454,9 +454,7 @@
                     <tr>
                         <th>รูป</th>
                         <th>ชื่อยา</th>
-                        <th>จำนวนต่อหีบห่อ</th>
-                        <th>ราตาต่อหีบห่อ</th>
-                        <th>จำนวน</th>
+                        <th>จำนวน (กล่อง)</th>
                         <th>ราคา</th>    
                         <th>วันผลิต</td>
                         <th>วันหมดอายุ</td>            
@@ -488,10 +486,9 @@
                 <tr>        
                     <td><?php echo '<img src="upload/'.$med['MedPath'].'" height = "80" widht = "80"/>';?></td>
                     <td><?php echo $med["MedName"]; ?></td>
-                    <td><?php echo $med["MedPack"]; ?></td>
-                    <td><?php echo $med["MedPrice"]; ?></td>
                     <td><?php echo $orderdetailid["Qty"]; ?></td>
-                    <td><?php echo $orderdetailid["Price"]; ?></td>
+                    <td><?php echo number_format($orderdetailid["Price"], 2) ?></td>
+                    
                     <td><input type="text" name="mfd<?php echo $i;?>" id="testdate5" value="<?php echo date("d")."-".date("m")."-".(date("Y")+543); ?>" style="width:100px;"></td>
                     <td><input type="text" name="exd<?php echo $i;?>" id="testdate6" value="<?php echo date("d")."-".date("m")."-".(date("Y")+543); ?>" style="width:100px;"></td>
 

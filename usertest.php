@@ -410,7 +410,9 @@ body{margin-top:20px;
                                                     {
                                                         foreach($_SESSION['usercart'] as $MedId=>$Quantity)
                                                         {
-                                                            $sql = "SELECT* FROM tbl_Med WHERE MedId=$MedId";
+                                                            $sql = "SELECT tbl_med.MedName,tbl_med.MedId,tbl_med.UnitId,tbl_unit.UnitName
+                                                            FROM tbl_med
+                                                            INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId WHERE tbl_med.MedId = $MedId";
                                                             $result = $conn->query($sql);
                                                             $data = array();
                                                             while($row = $result->fetch_assoc()) {
@@ -422,7 +424,7 @@ body{margin-top:20px;
 												<tr>
 													<td><?php echo $Med["MedName"];?></td>
 													<td><?php echo "#".$Med["MedId"];?></td>
-													<td><?php echo $Quantity;?></td>
+													<td><?php echo $Quantity ." ". $Med["UnitName"];?></td>
 													
 												</tr>
                                                     <?php

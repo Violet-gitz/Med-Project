@@ -226,13 +226,13 @@
     <table class="table table-striped" style="width:1500px; margin-left:-200px ; margin-top: 4rem;">
         <thead>
             <tr>
-                <th>รูปภาพ</th>
+            <th>รูปภาพ</th>
                 <th style="width:20%">ชื่อยา</th>
-                <th>ประเภท</th>
-                <th>หมวดหมู่</th>
-                <th>ปริมาณ</th>
-                <th>หน่วยหนับ</th>
-                <th>จำนวน</th>
+                <th style="width:15%">ประเภท</th>
+                <th style="width:18%">หมวดหมู่</th>
+                <th style="width:10%">ปริมาณ</th>
+                <th style="width:15%">จำนวนต่อ(กล่อง)</th>
+                <th style="width:15%">จำนวน(กล่อง)</th>
                 <th>ซื้อสินค้า</th>              
             </tr>
         </thead>
@@ -262,12 +262,12 @@
                     <td><?php echo $Med["TypeName"]; ?></td>
                     <td><?php echo $Med["CateName"]; ?></td>
                     <td><?php echo $Med["VolumnName"]; ?></td>
-                    <td><?php echo $Med["UnitName"]; ?></td>
+                    <td><?php echo $Med["MedPack"] ." ". $Med["UnitName"]; ?></td>
                     <td><input type="number" name="quantity" min="<?php echo $Med["MedLow"]; ?>" max="1000" value= "<?php echo $Med["MedLow"]; ?>"></p></td>
                                 <input type ="hidden" name = "MedId" value = "<?php echo $Med["MedId"];?>">
                                 <input type ="hidden" name = "act" value = "add">
 
-                                <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าในตะกร้า"> </td>
+                                <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้า"> </td>
                     </form>
                 </tr>
 

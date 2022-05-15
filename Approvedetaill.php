@@ -331,7 +331,7 @@ $data = array();
 
                 <td><?php echo $With["WithDate"]; ?></td>
 
-                <td><?php echo $withdetailid["Qty"]; ?></td>
+                <td><?php echo $withdetailid["Qty"] ." ". $med["UnitName"]; ?></td>
 
                 <td><?php echo $With["WithStatus"]; ?></td>
 

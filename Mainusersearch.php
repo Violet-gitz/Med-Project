@@ -43,51 +43,7 @@
 
             }
 
-            $sql = "SELECT * FROM tbl_med";
-            $result = $conn->query($sql);
-            $data = array();
-                while($row = $result->fetch_assoc()) 
-                {
-                    $data[] = $row;  
-                }
-                foreach($data as $key => $med)
-                {   
-                    $MedPoint = $med["MedPoint"];  
-                    $MedTotal = $med["MedTotal"];  
-                    if($MedTotal <= $MedPoint)
-                    {
-                        ini_set('display_errors', 1);
-                        ini_set('display_startup_errors', 1);
-                        error_reporting(E_ALL);
-                        date_default_timezone_set("Asia/Bangkok");
-                        $sToken = "5QZMmRQRyNbvtvPsg0utZxUal4y02ag6Ec1Eqhrz1ch";
-        
-                        $medname = $med["MedName"];
-                    
-                        $sMessage = $medname ." was reached reorder point !";
-                        $chOne = curl_init(); 
-                        curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
-                        curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
-                        curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
-                        curl_setopt( $chOne, CURLOPT_POST, 1); 
-                        curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
-                        $headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
-                        curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
-                        curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1);
-                        $result = curl_exec( $chOne ); 
-                        //Result error 
-                            if(curl_error($chOne)) 
-                            { 
-                                echo 'error:' . curl_error($chOne);
-                            } 
-                            else 
-                            { 
-                                $result_ = json_decode($result, true); 
-                                    // echo "status : ".$result_['status']; echo "message : ". $result_['message'];
-                            } 
-                                curl_close( $chOne );
-                    }
-                }
+            
 
           
                     
@@ -172,9 +128,9 @@
                     <th style="width:20%">ชื่อยา</th>
                     <th>ประเภท</th>
                     <th>หมวดหมู่</th>
-                    <th>ปริมาณ</th>
-                    <th>หน่วยหนับ</th>
+                    <th>ปริมาณ</th>     
                     <th>จำนวนคงเหลือ</th>
+                    <th>หน่วยนับ</th>
                     <th>จำนวน</th>
                     <th>เบิก</th>
                 </tr>
@@ -221,8 +177,8 @@
                         <td><?php echo $Med["TypeName"]; ?></td>
                         <td><?php echo $Med["CateName"]; ?></td>
                         <td><?php echo $Med["VolumnName"]; ?></td>
-                        <td><?php echo $Med["UnitName"]; ?></td>
                         <td><?php echo $sum; ?></td>
+                        <td><?php echo $Med["UnitName"]; ?></td>
                         <td><input type="number" name="quantity" min="1" max="<?php echo $sum; ?>" value= "1"></td>
                         <td><input type="submit" class = "btn btn-info" value = "เพิ่มสินค้าลงตะกร้า"></td>
                         <input type ="hidden" name = "testMedId" value = "<?php echo $Med["MedId"]; ?>">

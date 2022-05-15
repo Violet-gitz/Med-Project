@@ -305,7 +305,7 @@ body{margin-top:20px;
                                                     <tr>
                                                         <th>รหัสสินค้า</th>
                                                         <th>รายการสั่งซื้อ</th>
-                                                        <th style = "text-align:right">จำนวน(หีบห่อ)</th>
+                                                        <th style = "text-align:right">จำนวน (กล่อง)</th>
                                                         <th style = "text-align:right">บาท</th>
                                                     </tr>
                                                 <!-- </thead> -->

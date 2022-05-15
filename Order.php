@@ -176,12 +176,12 @@
       <table width="600" border="0" align="center" class="square">
         <tr>
           <td colspan="5" bgcolor="#CCCCCC">
-          <b>ตะกร้า</span></td>
+          <!-- <b>ตะกร้า</span></td> -->
         </tr>
         <tr>
           <td bgcolor="#EAEAEA">รายการ</td>
           <td align="center" bgcolor="#EAEAEA">รูปภาพ</td>
-          <td align="center" bgcolor="#EAEAEA">จำนวน</td>
+          <td align="center" bgcolor="#EAEAEA">จำนวน (กล่อง)</td>
           <td align="center" bgcolor="#EAEAEA">ราคารวม</td>
           <td align="center" bgcolor="#EAEAEA">ลบ</td>
         </tr>

@@ -40,7 +40,7 @@
 
             {
                 $idmed = $Lot["MedId"];
-                $sql ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+                $sql ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
                 FROM tbl_med
                 INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
                 INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
@@ -71,7 +71,7 @@
 
         {
             $idmed = $Lot["MedId"];
-            $sql ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedExp,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
+            $sql ="SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
             FROM tbl_med
             INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
             INNER JOIN tbl_cate ON tbl_cate.CateId = tbl_med.CateId
@@ -341,7 +341,7 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label for="Medicine pack" class="col-sm-3 control-label">จำนวนต่อหีบห่อ</label>
+                    <label for="Medicine pack" class="col-sm-3 control-label">จำนวน (กล่อง)</label>
                     <div class="col-sm-7">
                         <input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]; ?>" readonly>
                     </div>

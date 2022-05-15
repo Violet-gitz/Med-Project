@@ -303,7 +303,9 @@ body{margin-top:20px;
                                                       foreach($data as $key => $withde){
                                       
                                                           $MedId = $withde["MedId"];
-                                                          $sqli ="SELECT * FROM tbl_med WHERE $MedId = MedId";
+                                                          $sqli ="SELECT tbl_med.MedName,tbl_med.MedId,tbl_med.UnitId,tbl_unit.UnitName
+                                                          FROM tbl_med
+                                                          INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId WHERE tbl_med.MedId = $MedId";
                                                           $result = $conn->query($sqli);
                                                           $data = array();
                                                           while($row = $result->fetch_assoc()) {
@@ -315,7 +317,7 @@ body{margin-top:20px;
 												<tr>
 													<td><?php echo $med["MedName"];?></td>
 													<td><?php echo "#".$med["MedId"];?></td>
-													<td><?php echo $withde["Qty"];?></td>
+													<td><?php echo $withde["Qty"] ." ". $med["UnitName"] ;?></td>
 													
 												</tr>
                                                     <?php
@@ -362,7 +364,7 @@ body{margin-top:20px;
 
             <div class="form-group text-center">
                 <div class="col-md-12 mt-3">
-                <input type="button" value="ปริ้น" class="btn btn-primary" onclick="window.printWindow()" /> 
+                <input type="button" value="พิมพ์" class="btn btn-primary" onclick="window.printWindow()" /> 
                     <a href="Approveuser.php" class="btn btn-danger">กลับ</a>
                 </div>
             </div>

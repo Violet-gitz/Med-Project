@@ -184,7 +184,7 @@
                                 echo "white";
                             }
                         ?> 
-                        ; margin-left: 22em;" aria-hidden="true">  
+                        ; margin-left: 19em;" aria-hidden="true">  
                         <?php
                             if((count($med)+$Alert) > 0)
                                 {
@@ -250,7 +250,7 @@
            </div>
             <thead>
             <tr>
-                <th style="width:110px">รหัสล็อตยา</th>
+            <th style="width:110px">รหัสล็อตยา</th>
                 <th>ชื่อยา</th>
                 <th>รูป</th>
                 <th>จำนวน</th>

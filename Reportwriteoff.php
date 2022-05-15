@@ -274,7 +274,9 @@ body{margin-top:20px;
 											<tbody>
                                                 <?php
                                                     $Med = $write["MedId"];
-                                                    $sqli ="SELECT * FROM tbl_med WHERE $Med = MedId";
+                                                    $sqli ="SELECT tbl_med.MedName,tbl_med.MedId,tbl_med.UnitId,tbl_unit.UnitName
+                                                    FROM tbl_med
+                                                    INNER JOIN tbl_unit ON tbl_unit.UnitId = tbl_med.UnitId WHERE tbl_med.MedId = $Med";
                                                     $result = $conn->query($sqli);
                                                     $data = array();
                                                     while($row = $result->fetch_assoc()) 
@@ -287,7 +289,7 @@ body{margin-top:20px;
 													<td width = "80"><?php echo $med["MedName"];?></td>
                                                     <td width = "30"><?php echo "#".$write["LotId"];?></td>
 													<td width = "30"><?php echo "#".$med["MedId"];?></td>
-													<td width = "80"><?php echo $write["Qty"];?></td>
+													<td width = "80"><?php echo $write["Qty"] ." ". $med["UnitName"] ;?></td>
 													
 												</tr>
                                                     <?php

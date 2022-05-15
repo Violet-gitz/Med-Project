@@ -381,14 +381,12 @@
                 <thead>
                     <tr>
                         <th>รูป</th>
-                        <th>รายการ</th>
+                        <th style="width:5%">รายการ</th>
                         <th style="width:125px">วันที่สั่ง</th>
                         <th>ชื่อตัวแทนจำหน่าย</th>
-                        <th>ที่อยู่ตัวแทนจำหน่าย</th>
+                        <th style="width:18%">ที่อยู่ตัวแทนจำหน่าย</th>
                         <th>ชื่อยา</th>    
-                        <th>จำนวนต่อหนึ่งหีบห่อ</td>
-                        <th>วันหมดอายุ</td>
-                        <th>จำนวน</td>
+                        <th style="width:10%">จำนวน (กล่อง)</td>
                         <th>ราคา</td>
                         <th>วันผลิต</td>  
                         <th>วันหมดอายุ</td>                             
@@ -430,13 +428,9 @@
 
                     <td><?php echo $med["MedName"]; ?></td>
 
-                    <td><?php echo $med["MedPack"]; ?></td>
-
-                    <td><?php echo $med["MedPrice"]; ?></td>
-
                     <td><?php echo $orderdetailid["Qty"]; ?></td>
 
-                    <td><?php echo $orderdetailid["Price"]; ?></td>
+                    <td><?php echo number_format($orderdetailid["Price"], 2); ?></td>
 
                     <td><input type="text" name="mfd<?php echo $i;?>" id="testdate5" value="<?php echo $recde["Mfd"]; ?>" style="width:100px;"></td>
 
