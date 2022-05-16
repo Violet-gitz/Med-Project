@@ -273,7 +273,7 @@
               
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicineprcie" class="col-sm-3 control-label">ราคาต่อหีบห่อ</label></td>
+                        <td><label for="Medicineprcie" class="col-sm-3 control-label">ราคา (กล่อง)</label></td>
                             <div class="col-sm-7">
                                 <td><input type="text" name="txt_MedPrice" class="form-control" value="<?php echo $med["MedPrice"]?>"></td>
                             </div>
@@ -282,7 +282,7 @@
               
                 <div class="form-group text-center">
                     <div class="row">
-                        <td><label for="Medicinepack" class="col-sm-3 control-label">จำนวนต่อหนึ่งหีบห่อ</label></td>
+                        <td><label for="Medicinepack" class="col-sm-3 control-label">จำนวน (กล่อง)</label></td>
                             <div class="col-sm-7">
                                 <td><input type="text" name="txt_MedPack" class="form-control" value="<?php echo $med["MedPack"]?>"></td>
                             </div>

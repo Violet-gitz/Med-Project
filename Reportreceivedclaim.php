@@ -233,8 +233,7 @@ body{margin-top:20px;
 				<div class="card-body p-0">
 					<div class="invoice-container">
 						<div class="invoice-header">
-
-					
+				
 							<div class="row gutters">
 								<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
 									
