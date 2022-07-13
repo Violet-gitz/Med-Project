@@ -185,11 +185,11 @@
 
             <div class="form-group text-center">
                 <div class="row">
-                    <label class="col-sm-3 control-label">ชื่อพนักงาน</label>
+                    <label class="col-sm-3 control-label">แผนก</label>
                         <div class="col-sm-1">
                             <select name="Seldepart">       
                                 <?php 
-                                    $sql = 'SELECT * FROM tbl_department';
+                                    $sql = 'SELECT * FROM tbl_department WHERE DepartId != 1';
                                     $result = $conn->query($sql);
                                     $data = array();
                                     while($row = $result->fetch_assoc()) 
