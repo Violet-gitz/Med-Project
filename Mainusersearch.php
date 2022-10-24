@@ -5,8 +5,6 @@
 
     session_start();
 
-    
-    
     if (!isset($_SESSION['StaffName'])) {
         $_SESSION['msg'] = "You must log in first";
         header('location: login.php');
@@ -42,11 +40,7 @@
             foreach($data as $key => $staff){      
 
             }
-
-            
-
-          
-                    
+              
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -138,7 +132,8 @@
 
             <tbody>
                 <?php       
-                        $sumReserve = 0;             
+                        $sumReserve = 0;        
+                        $sum = 0;     
                         $sql = "SELECT tbl_med.MedId,tbl_med.TypeId,tbl_med.CateId,tbl_med.VolumnId,tbl_med.UnitId,tbl_med.MedName,tbl_med.MedPack,tbl_med.MedPrice,tbl_med.MedDes,tbl_med.MedIndi,tbl_med.MedLow,tbl_med.MedTotal,tbl_med.MedPoint,tbl_med.MedPath,tbl_type.TypeName,tbl_cate.CateName,tbl_volumn.VolumnName,tbl_unit.UnitName
                         FROM tbl_med
                         INNER JOIN tbl_type ON tbl_type.TypeId = tbl_med.TypeId
@@ -162,6 +157,7 @@
                             while($row = $result->fetch_assoc()) {
                                 $data[] = $row;   
                             }
+                        
                             foreach($data as $key => $lot)
                             {
                                 $Reserve = $lot["Reserve"];
